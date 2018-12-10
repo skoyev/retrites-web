@@ -1,0 +1,268 @@
+<testsuites name="jest tests" tests="42" failures="23" time="5.514">
+  <testsuite name="\src\AddressBook\SearchContacts\PhraseInput.test.jsx" errors="0" failures="1" skipped="0" timestamp="2018-12-09T19:07:20" time="1.273" tests="2">
+    <testcase classname="&lt;PhraseInput&gt;" name="render provided phrase" time="0.035">
+    </testcase>
+    <testcase classname="&lt;PhraseInput&gt;" name="pass typed phrase to callback" time="0.009">
+      <failure>Error: expect(jest.fn()).toHaveBeenCalledWith(expected)
+
+Expected mock function to have been called with:
+  [&quot;what a phrase!&quot;]
+But it was called with:
+  [&quot;phrase&quot;]
+    at Object.it (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\AddressBook\SearchContacts\PhraseInput.test.jsx:39:32)
+    at Object.asyncFn (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\jest-jasmine2\build\jasmine-async.js:68:30)
+    at resolve (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\jest-jasmine2\build\queueRunner.js:38:12)
+    at new Promise (&lt;anonymous&gt;)
+    at mapper (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\jest-jasmine2\build\queueRunner.js:31:21)
+    at Promise.resolve.then.el (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\p-map\index.js:46:16)
+    at &lt;anonymous&gt;
+    at process._tickCallback (internal/process/next_tick.js:188:7)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="\src\AddressBook\ContactDetails\ContactDetails.test.jsx" errors="0" failures="0" skipped="0" timestamp="2018-12-09T19:07:21" time="0.276" tests="5">
+    <testcase classname="&lt;ContactDetails&gt;" name="render &lt;Placeholder&gt; if there is no contact fetched" time="0.011">
+    </testcase>
+    <testcase classname="&lt;ContactDetails&gt;" name="render &lt;FetchFailure&gt; if fetching failed" time="0.004">
+    </testcase>
+    <testcase classname="&lt;ContactDetails&gt;" name="render &lt;FetchFailure&gt; if fetching failed and there is previously fetched Contact available" time="0.003">
+    </testcase>
+    <testcase classname="&lt;ContactDetails&gt;" name="render name of fetched Contact Details" time="0.014">
+    </testcase>
+    <testcase classname="&lt;ContactDetails&gt;" name="render 1st address line of fetched Contact Details" time="0.011">
+    </testcase>
+  </testsuite>
+  <testsuite name="\src\AddressBook\SearchContacts\MatchingContacts.test.jsx" errors="0" failures="0" skipped="0" timestamp="2018-12-09T19:07:21" time="0.223" tests="4">
+    <testcase classname="&lt;MatchingContacts&gt;" name="render nothing if there is no data" time="0.006">
+    </testcase>
+    <testcase classname="&lt;MatchingContacts&gt;" name="render Matching Contacts" time="0.007">
+    </testcase>
+    <testcase classname="&lt;MatchingContacts&gt;" name="distinguish highlighted Matching Contact" time="0.014">
+    </testcase>
+    <testcase classname="&lt;MatchingContacts&gt;" name="distinguish nothing, if no Matching Contact is highlighted" time="0.007">
+    </testcase>
+  </testsuite>
+  <testsuite name="\src\App.test.js" errors="0" failures="1" skipped="0" timestamp="2018-12-09T19:07:22" time="0.803" tests="1">
+    <testcase classname="&lt;App&gt;" name="render crucial components" time="0.094">
+      <failure>Error: Expected &quot;[empty set]&quot; to exist.
+    at Object.it (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\App.test.js:34:37)
+    at &lt;anonymous&gt;</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="\src\integrationTests\searchForMatchingContacts.test.js" errors="0" failures="8" skipped="0" timestamp="2018-12-09T19:07:22" time="1.29" tests="10">
+    <testcase classname="search for matching Contacts › search Contact by search phrase" name="render text typed into search phrase input" time="0.018">
+      <failure>Error: Expected &lt;input&gt; component to have the value of &quot;a&quot; (using ===), but it didn&apos;t.
+&lt;input aria-autocomplete=&quot;list&quot; aria-labelledby=&quot;downshift-0-label&quot; autocomplete=&quot;off&quot; id=&quot;downshift-0-input&quot; class=&quot;PhraseInput&quot; placeholder=&quot;To show contact&apos;s details, type its name…&quot; value=&quot;phrase&quot; aria-controls=&quot;downshift-0-menu&quot;&gt;
+    at Object.it (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\searchForMatchingContacts.test.js:29:40)
+    at Object.asyncFn (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\jest-jasmine2\build\jasmine-async.js:68:30)
+    at resolve (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\jest-jasmine2\build\queueRunner.js:38:12)
+    at new Promise (&lt;anonymous&gt;)
+    at mapper (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\jest-jasmine2\build\queueRunner.js:31:21)
+    at Promise.resolve.then.el (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\p-map\index.js:46:16)
+    at &lt;anonymous&gt;</failure>
+    </testcase>
+    <testcase classname="search for matching Contacts › search Contact by search phrase" name="ask HTTP API for Matching Contacts after delay of minimal allowed interval" time="0.013">
+      <failure>Error: expect(jest.fn()).not.toHaveBeenCalled()
+
+Expected mock function not to be called but it was called with:
+  [{&quot;namePart&quot;: &quot;phrase&quot;}]
+    at Object.it (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\searchForMatchingContacts.test.js:36:53)
+    at Object.asyncFn (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\jest-jasmine2\build\jasmine-async.js:68:30)
+    at resolve (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\jest-jasmine2\build\queueRunner.js:38:12)
+    at new Promise (&lt;anonymous&gt;)
+    at mapper (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\jest-jasmine2\build\queueRunner.js:31:21)
+    at Promise.resolve.then.el (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\p-map\index.js:46:16)
+    at &lt;anonymous&gt;</failure>
+    </testcase>
+    <testcase classname="search for matching Contacts › search Contact by search phrase" name="ask HTTP API for Matching Contacts again after another minimal delay" time="0.015">
+      <failure>Error: expect(jest.fn()).toHaveBeenCalledTimes(1)
+
+Expected mock function to have been called one time, but it was called two times.
+    at Object.it (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\searchForMatchingContacts.test.js:52:49)
+    at Object.asyncFn (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\jest-jasmine2\build\jasmine-async.js:68:30)
+    at resolve (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\jest-jasmine2\build\queueRunner.js:38:12)
+    at new Promise (&lt;anonymous&gt;)
+    at mapper (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\jest-jasmine2\build\queueRunner.js:31:21)
+    at Promise.resolve.then.el (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\p-map\index.js:46:16)
+    at &lt;anonymous&gt;</failure>
+    </testcase>
+    <testcase classname="search for matching Contacts › Matching Contacts" name="don&apos;t show Matching Contacts if nothing was searched" time="0.004">
+    </testcase>
+    <testcase classname="search for matching Contacts › Matching Contacts" name="show found Matching Contacts" time="0.012">
+      <failure>Error: Expected &quot;[empty set]&quot; to exist.
+    at Object.it (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\searchForMatchingContacts.test.js:90:39)
+    at &lt;anonymous&gt;</failure>
+    </testcase>
+    <testcase classname="search for matching Contacts › failure while searching for Matching Contacts" name="show info about failed search for Matching Contacts" time="0.009">
+      <failure>Error: Expected &quot;[empty set]&quot; to exist.
+    at Object.it (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\searchForMatchingContacts.test.js:115:36)
+    at &lt;anonymous&gt;</failure>
+    </testcase>
+    <testcase classname="search for matching Contacts › failure while searching for Matching Contacts" name="don&apos;t show info about failed search if next Matching Contacts search started" time="0.016">
+      <failure>Error: Expected &quot;[empty set]&quot; to exist.
+    at Object.it (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\searchForMatchingContacts.test.js:125:36)
+    at &lt;anonymous&gt;</failure>
+    </testcase>
+    <testcase classname="search for matching Contacts › select Matching Contact" name="fill search input with name of selected Matching Contact" time="0.015">
+      <failure>Error: toHaveText must be called on a single node, not an empty node.
+    at Object.it (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\searchForMatchingContacts.test.js:159:53)
+    at &lt;anonymous&gt;</failure>
+    </testcase>
+    <testcase classname="search for matching Contacts › select Matching Contact" name="don&apos;t show previous Matching Contacts on new just started search" time="0.012">
+      <failure>Error: Method “simulate” is only meant to be run on a single node. 0 found instead.
+    at ReactWrapper.single (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\enzyme\build\ReactWrapper.js:1532:17)
+    at ReactWrapper.simulate (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\enzyme\build\ReactWrapper.js:867:14)
+    at Object.it (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\searchForMatchingContacts.test.js:175:45)
+    at &lt;anonymous&gt;</failure>
+    </testcase>
+    <testcase classname="search for matching Contacts › select Matching Contact" name="don&apos;t crash if no Matching Contact is selected for the first time" time="0.024">
+    </testcase>
+  </testsuite>
+  <testsuite name="\src\integrationTests\showContactDetails.test.js" errors="0" failures="11" skipped="0" timestamp="2018-12-09T19:07:24" time="0.305" tests="12">
+    <testcase classname="show Contact Details › first fetch" name="ask HTTP API for Contact Details if Matching Contact was selected" time="0.015">
+      <failure>Error: Method “simulate” is only meant to be run on a single node. 0 found instead.
+    at ReactWrapper.single (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\enzyme\build\ReactWrapper.js:1532:17)
+    at ReactWrapper.simulate (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\enzyme\build\ReactWrapper.js:867:14)
+    at selectFirstMatchingContact (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\showContactDetails.test.js:26:43)
+    at Object.it (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\showContactDetails.test.js:47:13)
+    at &lt;anonymous&gt;</failure>
+    </testcase>
+    <testcase classname="show Contact Details › first fetch" name="show placeholder if Matching Contact was not selected yet" time="0.013">
+    </testcase>
+    <testcase classname="show Contact Details › first fetch" name="show placeholder if Contact Details for selected Matching Contact are not fetched yet" time="0.009">
+      <failure>Error: Method “simulate” is only meant to be run on a single node. 0 found instead.
+    at ReactWrapper.single (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\enzyme\build\ReactWrapper.js:1532:17)
+    at ReactWrapper.simulate (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\enzyme\build\ReactWrapper.js:867:14)
+    at selectFirstMatchingContact (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\showContactDetails.test.js:26:43)
+    at Object.it (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\showContactDetails.test.js:77:13)
+    at &lt;anonymous&gt;</failure>
+    </testcase>
+    <testcase classname="show Contact Details › first fetch" name="don&apos;t show placeholder when Contact Details fetched" time="0.008">
+      <failure>Error: Method “simulate” is only meant to be run on a single node. 0 found instead.
+    at ReactWrapper.single (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\enzyme\build\ReactWrapper.js:1532:17)
+    at ReactWrapper.simulate (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\enzyme\build\ReactWrapper.js:867:14)
+    at selectFirstMatchingContact (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\showContactDetails.test.js:26:43)
+    at Object.it (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\showContactDetails.test.js:94:13)
+    at &lt;anonymous&gt;</failure>
+    </testcase>
+    <testcase classname="show Contact Details › first fetch" name="show structure for fetched Contact Details" time="0.01">
+      <failure>Error: Method “simulate” is only meant to be run on a single node. 0 found instead.
+    at ReactWrapper.single (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\enzyme\build\ReactWrapper.js:1532:17)
+    at ReactWrapper.simulate (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\enzyme\build\ReactWrapper.js:867:14)
+    at selectFirstMatchingContact (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\showContactDetails.test.js:26:43)
+    at Object.it (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\showContactDetails.test.js:109:13)
+    at &lt;anonymous&gt;</failure>
+    </testcase>
+    <testcase classname="show Contact Details › second fetch" name="don&apos;t show placeholder when User search for new Matching Contacts" time="0.009">
+      <failure>Error: Method “simulate” is only meant to be run on a single node. 0 found instead.
+    at ReactWrapper.single (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\enzyme\build\ReactWrapper.js:1532:17)
+    at ReactWrapper.simulate (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\enzyme\build\ReactWrapper.js:867:14)
+    at selectFirstMatchingContact (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\showContactDetails.test.js:26:43)
+    at Object.it (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\showContactDetails.test.js:132:13)
+    at &lt;anonymous&gt;</failure>
+    </testcase>
+    <testcase classname="show Contact Details › second fetch" name="show previously fetched Contact Details when User search for new Matching Contacts" time="0.016">
+      <failure>Error: Method “simulate” is only meant to be run on a single node. 0 found instead.
+    at ReactWrapper.single (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\enzyme\build\ReactWrapper.js:1532:17)
+    at ReactWrapper.simulate (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\enzyme\build\ReactWrapper.js:867:14)
+    at selectFirstMatchingContact (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\showContactDetails.test.js:26:43)
+    at Object.it (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\showContactDetails.test.js:155:13)
+    at &lt;anonymous&gt;</failure>
+    </testcase>
+    <testcase classname="show Contact Details › second fetch" name="do not fetch Contact Details again, if new selected are same as those currently shown" time="0.011">
+      <failure>Error: Method “simulate” is only meant to be run on a single node. 0 found instead.
+    at ReactWrapper.single (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\enzyme\build\ReactWrapper.js:1532:17)
+    at ReactWrapper.simulate (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\enzyme\build\ReactWrapper.js:867:14)
+    at selectFirstMatchingContact (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\showContactDetails.test.js:26:43)
+    at Object.it (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\showContactDetails.test.js:175:13)
+    at &lt;anonymous&gt;</failure>
+    </testcase>
+    <testcase classname="show Contact Details › second fetch" name="don&apos;t show previous Contact Details if next fetch just started" time="0.011">
+      <failure>Error: Method “simulate” is only meant to be run on a single node. 0 found instead.
+    at ReactWrapper.single (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\enzyme\build\ReactWrapper.js:1532:17)
+    at ReactWrapper.simulate (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\enzyme\build\ReactWrapper.js:867:14)
+    at selectFirstMatchingContact (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\showContactDetails.test.js:26:43)
+    at Object.it (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\showContactDetails.test.js:200:13)
+    at &lt;anonymous&gt;</failure>
+    </testcase>
+    <testcase classname="show Contact Details › failed fetch" name="show info about failed fetch of Contact Details" time="0.011">
+      <failure>Error: Method “simulate” is only meant to be run on a single node. 0 found instead.
+    at ReactWrapper.single (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\enzyme\build\ReactWrapper.js:1532:17)
+    at ReactWrapper.simulate (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\enzyme\build\ReactWrapper.js:867:14)
+    at selectFirstMatchingContact (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\showContactDetails.test.js:26:43)
+    at Object.it (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\showContactDetails.test.js:229:13)
+    at &lt;anonymous&gt;</failure>
+    </testcase>
+    <testcase classname="show Contact Details › caching" name="ask HTTP API for Contact Details for the 1st time" time="0.011">
+      <failure>Error: Method “simulate” is only meant to be run on a single node. 0 found instead.
+    at ReactWrapper.single (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\enzyme\build\ReactWrapper.js:1532:17)
+    at ReactWrapper.simulate (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\enzyme\build\ReactWrapper.js:867:14)
+    at selectFirstMatchingContact (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\showContactDetails.test.js:26:43)
+    at Object.it (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\showContactDetails.test.js:250:13)
+    at &lt;anonymous&gt;</failure>
+    </testcase>
+    <testcase classname="show Contact Details › caching" name="don&apos;t ask HTTP API for Contact Details for the 2nd time" time="0.016">
+      <failure>Error: Method “simulate” is only meant to be run on a single node. 0 found instead.
+    at ReactWrapper.single (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\enzyme\build\ReactWrapper.js:1532:17)
+    at ReactWrapper.simulate (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\enzyme\build\ReactWrapper.js:867:14)
+    at selectFirstMatchingContact (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\showContactDetails.test.js:26:43)
+    at Object.it (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\integrationTests\showContactDetails.test.js:276:13)
+    at &lt;anonymous&gt;</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="\src\AddressBook\ContactDetails\reducer.test.js" errors="0" failures="0" skipped="0" timestamp="2018-12-09T19:07:24" time="0.171" tests="2">
+    <testcase classname="Contact Details reducer" name="fetched Contact Details" time="0.003">
+    </testcase>
+    <testcase classname="Contact Details reducer" name="fetch failure" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="\src\AddressBook\SearchContacts\SearchContacts.test.jsx" errors="0" failures="0" skipped="0" timestamp="2018-12-09T19:07:24" time="0.183" tests="3">
+    <testcase classname="&lt;SearchContacts&gt;" name="render &lt;Downshift&gt; external autocomplete component by default" time="0.01">
+    </testcase>
+    <testcase classname="&lt;SearchContacts&gt;" name="render &lt;Downshift&gt; external autocomplete component even if search failed" time="0.005">
+    </testcase>
+    <testcase classname="&lt;SearchContacts&gt;" name="render &lt;SearchFailure&gt; if search failed" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="\src\AddressBook\SearchContacts\reducer.test.js" errors="0" failures="2" skipped="0" timestamp="2018-12-09T19:07:24" time="0.17" tests="3">
+    <testcase classname="Search reducer" name="Search Phrase" time="0.003">
+      <failure>Error: expect(received).toEqual(expected)
+
+Expected value to equal:
+  &quot;John&quot;
+Received:
+  undefined
+
+Difference:
+
+  Comparing two different types of values. Expected string but received undefined.
+    at check.reduce.check.reduce.check.state (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\AddressBook\SearchContacts\reducer.test.js:24:26)
+    at Object.checker [as check] (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\testUtils.js:21:5)
+    at Object.it (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\AddressBook\SearchContacts\reducer.test.js:23:5)
+    at Object.asyncFn (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\jest-jasmine2\build\jasmine-async.js:68:30)
+    at resolve (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\jest-jasmine2\build\queueRunner.js:38:12)
+    at new Promise (&lt;anonymous&gt;)
+    at mapper (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\jest-jasmine2\build\queueRunner.js:31:21)
+    at Promise.resolve.then.el (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\p-map\index.js:46:16)
+    at &lt;anonymous&gt;</failure>
+    </testcase>
+    <testcase classname="Search reducer" name="Matching Contacts" time="0.002">
+    </testcase>
+    <testcase classname="Search reducer" name="search failure" time="0">
+      <failure>Error: expect(received).toEqual(expected)
+
+Expected value to equal:
+  true
+Received:
+  false
+    at check.reduce.check.state (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\AddressBook\SearchContacts\reducer.test.js:52:33)
+    at Object.checker [as check] (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\testUtils.js:21:5)
+    at Object.it (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\src\AddressBook\SearchContacts\reducer.test.js:51:5)
+    at Object.asyncFn (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\jest-jasmine2\build\jasmine-async.js:68:30)
+    at resolve (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\jest-jasmine2\build\queueRunner.js:38:12)
+    at new Promise (&lt;anonymous&gt;)
+    at mapper (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\jest-jasmine2\build\queueRunner.js:31:21)
+    at Promise.resolve.then.el (C:\Work\projects\devskiller-code-ETRT-HETD-XP-S0F\node_modules\p-map\index.js:46:16)
+    at &lt;anonymous&gt;</failure>
+    </testcase>
+  </testsuite>
+</testsuites>
