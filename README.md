@@ -1,2 +1,2 @@
 # retrites-web
-Online Retreats Web Application
+Online Retreats Web Application.
