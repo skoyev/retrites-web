@@ -6,13 +6,12 @@ import PhraseInput from "./PhraseInput";
 const renderPhraseInput = (propsOverrides) =>
   mount(
     <PhraseInput
-      phrase=""
+      phrase={this.event.target.value}
       onPhraseChange={() => {}}
       downshiftGetInputProps={(props) => props}
       {...propsOverrides}
     />,
   );
-
 describe("<PhraseInput>", () => {
 
   it("render provided phrase", async () => {
