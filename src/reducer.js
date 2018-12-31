@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 
-import { reducer as addressBookReducer } from "./AddressBook";
+import { reducer as retriteReducer } from "./Retrite";
 
 export default combineReducers({
-  addressBook: addressBookReducer,
+  retrite: retriteReducer,
 });

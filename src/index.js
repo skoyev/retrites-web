@@ -2,12 +2,12 @@ import "normalize.css/normalize.css";
 import React from "react";
 import ReactDOM from "react-dom";
 
-import { FakeHttpApi } from "./httpApi";
+//import { FakeHttpApi } from "./httpApi";
 import { setupStore } from "./store";
 import App from "./App";
 
 const reduxStore = setupStore({
-  httpApi: new FakeHttpApi(),
+  //httpApi: new FakeHttpApi(),
 });
 
 ReactDOM.render(

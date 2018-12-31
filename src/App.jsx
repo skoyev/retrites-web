@@ -1,13 +1,13 @@
 import React from "react";
 import { Provider as ReduxProvider } from "react-redux";
-import AddressBook from "./AddressBook";
+import Retrite from "./Retrite";
 
 import "./App.css";
 
 const App = ({ reduxStore }) => (
   <ReduxProvider store={reduxStore}>
     <main className="App">
-      <AddressBook />
+      <Retrite />
     </main>
   </ReduxProvider>
 );
