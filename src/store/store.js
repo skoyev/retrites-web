@@ -2,7 +2,7 @@ import {
   applyMiddleware as applyReduxMiddleware,
   createStore as createReduxStore,
 } from "redux";
-import reducer from "../reducer";
+import reducer from "./reducer";
 import { composeWithDevTools as composeWithReduxDevTools } from "redux-devtools-extension";
 import reduxThunk from "redux-thunk";
 import debounce from "debounce-promise";

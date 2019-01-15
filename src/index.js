@@ -1,16 +1,17 @@
-import "normalize.css/normalize.css";
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+import { render } from 'react-dom';
+import { Provider } from 'react-redux';
 
-import { FakeHttpApi } from "./httpApi";
-import { setupStore } from "./store";
-import App from "./App";
+import { store } from './helpers';
+import { App } from './App';
 
-const reduxStore = setupStore({
-  httpApi: new FakeHttpApi(),
-});
+// setup fake backend
+import { configureFakeBackend } from './helpers';
+configureFakeBackend();
 
-ReactDOM.render(
-  <App reduxStore={reduxStore} />,
-  document.getElementById("root"),
+render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.getElementById('root')
 );

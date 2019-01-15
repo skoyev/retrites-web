@@ -5,7 +5,7 @@ import {
   httpOkResponse,
   mockHttpApi,
   renderApp,
-} from "./testUtils";
+} from "../testUtils";
 
 describe("<App>", () => {
 
