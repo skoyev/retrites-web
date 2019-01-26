@@ -14,7 +14,7 @@ class App extends React.Component {
     render() {
         //const { alert } = this.props;
         return (            
-            <div className="jumbotron">                
+            <div className="container">                
                 <Router history={history}>                    
                     <div>                         
                         <PrivateRoute exact path="/" component={DashboardPage} />                                
