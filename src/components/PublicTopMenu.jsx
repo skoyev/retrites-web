@@ -1,15 +1,19 @@
 import React from 'react';
 
-const PublicTopMenu = ({name}) => ( 
+const style = {
+    width: '100%'
+};
+
+const PublicTopMenu = ({name}) => (  
  <section role="navigation" class="navbar">
-    <nav class="navbar navbar-light bg-light">
-        <a class="nav-link" href="#">Link1</a>
-        <a class="nav-link" href="#">Link2</a>
-        <a class="nav-link" href="#">Link3</a>
-        <a class="nav-link" href="#">Link4</a>
-        <a class="nav-link" href="#">Link5</a>
-        <a class="nav-link" href="#">Link6</a>
-        <a class="nav-link" href="#">Link7</a>
+    <nav class="navbar navbar-light bg-light" style={style}>
+        <a class="nav-link" href="#">Retreates</a>
+        <a class="nav-link" href="#">Flights</a>
+        <a class="nav-link" href="#">Hotels</a>
+        <a class="nav-link" href="#">Cars</a>
+        <a class="nav-link" href="#">Cruises</a>
+        <a class="nav-link" href="#">Groups</a>
+        <a class="nav-link" href="#">Deals</a>
     </nav>
  </section>
 );
