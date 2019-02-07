@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 import { userActions } from '../store/action';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import LanguageToggle from './LanguageToggle';
+import './style/PublicHeader.css'
+import { Translate } from "react-localize-redux";
 
 class PublicHeader extends React.Component {
 
@@ -44,29 +47,38 @@ class PublicHeader extends React.Component {
         const { loggingIn } = this.props;
         const { username, password, submitted } = this.state;
         return (
-            <div className="col-md-6 col-md-offset-3">
-                Heder
-                <div>
-                    <form name="form" onSubmit={this.handleSubmit}>
-                    <div className={'form-group' + (submitted && !username ? ' has-error' : '')}>
-                        <label htmlFor="username">Username</label>
-                        <input type="text" className="form-control" name="username" value={username} onChange={this.handleChange} />
-                        {submitted && !username &&
-                            <div className="help-block">Username is required</div>
-                        }
-                    </div>
-                    <div className={'form-group' + (submitted && !password ? ' has-error' : '')}>
-                        <label htmlFor="password">Password</label>
-                        <input type="password" className="form-control" name="password" value={password} onChange={this.handleChange} />
-                        {submitted && !password &&
-                            <div className="help-block">Password is required</div>
-                        }
-                    </div>
-                    <div className="form-group">
-                        <button className="btn btn-primary">Login</button>
-                        <Link to="/register" className="btn btn-link">Register</Link>
-                    </div>
-                    </form>
+            <div className="row">
+                <div className="col-md-3 header">
+                    <h3>Retreate</h3>
+                </div>
+
+                <div className="col-md-6"> 
+                    <div className="row">
+                        <div className="col-md-4"></div>
+                        <div className="col-md-8 down-35">
+                            <div className="d-inline-block">
+                                <Translate>
+                                    {({ translate }) =>
+                                        <Link to="/new-retreate" className="btn btn-link d-inline">{translate('public.links.addretreate')}</Link>}
+                                </Translate>
+                            </div>
+                            <div className="d-inline-block">
+                                <Translate>
+                                    {({ translate }) =>
+                                        <Link to="/login" className="btn btn-link d-inline">{translate('public.links.login')}</Link>}
+                                </Translate>
+                            </div>                                
+                            <div className="d-inline-block">
+                                <Translate>
+                                    {({ translate }) =>
+                                        <Link to="/register" className="btn btn-link d-inline">{translate('public.links.signup')}</Link>}
+                                </Translate>
+                            </div>
+                        </div> 
+                    </div>                                                       
+                </div>
+                <div className="col-md-3">
+                    <LanguageToggle></LanguageToggle>
                 </div>
             </div>
         );

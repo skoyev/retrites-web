@@ -5,9 +5,12 @@ import { PrivateRoute } from '../components/PrivateRoute';
 
 import { history } from '../helpers';
 import { LoginPage } from '../pages/login/LoginPage';
-import { HomePage } from '../pages/home/HomePage';
+import HomePage from '../pages/home/HomePage';
 import RegisterPage  from '../pages/register/RegisterPage';
 import { DashboardPage } from '../pages/dashboard/DashboardPage';
+import { LocalizeProvider } from 'react-localize-redux';
+import './App.css'
+import { AddRetreatePage } from '../pages/retreate/new/AddRetreatePage';
 
 class App extends React.Component {
 
@@ -15,14 +18,17 @@ class App extends React.Component {
         //const { alert } = this.props;
         return (            
             <div className="container">                
-                <Router history={history}>                    
-                    <div>                         
-                        <PrivateRoute exact path="/" component={DashboardPage} />                                
-                        <Route path="/home" component={HomePage} />
-                        <Route path="/login" component={LoginPage} />
-                        <Route path="/register" component={RegisterPage} />                        
-                    </div>                    
-                </Router>                
+                <LocalizeProvider>
+                    <Router history={history}>                    
+                        <div>                         
+                            <PrivateRoute exact path="/" component={DashboardPage} />                                
+                            <Route path="/home" component={HomePage} />
+                            <Route path="/login" component={LoginPage} />
+                            <Route path="/register" component={RegisterPage} />                        
+                            <Route path="/new-retreate" component={AddRetreatePage} />                        
+                        </div>                    
+                    </Router>                
+                </LocalizeProvider>
             </div>
         );
     }

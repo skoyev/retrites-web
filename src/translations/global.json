@@ -1,0 +1,39 @@
+{
+    "movie": {
+      "title": ["Jurassic Park", "Le Parc jurassique"]
+    }, 
+    
+    "header": {
+      "newretrite": ["Add New Retreate","Add New Retreate Fr"]
+    },
+
+    "label": {
+      "name": ["Name", "Name Fr"],
+      "details": ["Details", "Details Fr"]
+    },
+
+    "button": {
+      "create": ["Create","Create Fr"]
+    },
+  
+    "public": {
+      "menu": {
+        "retrite": ["Retreate", "Retreate Fr"],
+        "flights": ["Flights", "Flights Fr"],
+        "hotels": ["Hotels", "Hotels Fr"],
+        "cars": ["Cars", "Cars Fr"],
+        "cruises": ["Cruises", "Cruises Fr"],
+        "groups": ["Groups", "Groups Fr"],
+        "deals": ["Deals", "Deals Fr"]
+      },
+      "slider": {
+        "slider1": ["Host Retreats? Find participants on Retreat Guru", "Host Retreats? Find participants on Retreat Guru Fr"]
+      },
+      "links": {
+        "addretreate": ["ADD RETREATE", "ADD RETREATE FR"],
+        "signup": ["SIGN UP","SIGN UP Fr"],
+        "login": ["LOGIN", "LOGIN FR"],
+        "cancel": ["Cancel", "Cancel FR"]
+      }
+    }
+  }
