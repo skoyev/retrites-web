@@ -31,36 +31,41 @@ export class LoginPage extends React.Component {
         //const { user, users } = this.props;
         const { username, password, submitted } = this.state;
         return (
-            <div className="col-md-6 col-md-offset-3">
-                Login
-                <form name="form" onSubmit={this.handleSubmit}>
-                        <div className="form-row">
-                            <div className={'form-group col-md-4' + (submitted && !username ? ' has-error' : '')}>
-                                <label htmlFor="username">Username</label>
-                                <input type="text" className="form-control" name="username" value={username} onChange={this.handleChange} />
-                                {submitted && !username &&
-                                    <div className="help-block">Username is required</div>
-                                }
-                            </div>
+            <div className="container">
+                <div className="row justify-content-center align-items-center new-retreate">
+                    <div class="col-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <Translate>{({ translate }) =><h2>{translate("header.login")}</h2>}</Translate>
+                                <form name="form" onSubmit={this.handleSubmit}>
+                                    <div className={'form-group' + (submitted && !username ? ' has-error' : '')}>
+                                        <label htmlFor="username">Username</label>
+                                        <input type="text" className="form-control" name="username" value={username} onChange={this.handleChange} />
+                                        {submitted && !username &&
+                                            <div className="help-block">Username is required</div>
+                                        }
+                                    </div>
 
-                            <div className={'form-group col-md-4' + (submitted && !password ? ' has-error' : '')}>
-                                <label htmlFor="password">Password</label>
-                                <input type="password" className="form-control" name="password" value={password} onChange={this.handleChange} />
-                                {submitted && !password &&
-                                    <div className="help-block">Password is required</div>
-                                }
-                            </div>
-                            <div className="form-group col-md-4 down-30">
-                                <div className="d-inline-block">
-                                    <Translate>
-                                        {({ translate }) =>
-                                            <Link to="/" className="btn btn-link d-inline">{translate('public.links.cancel')}</Link>}
-                                    </Translate>
-                                </div>                                
+                                    <div className={'form-group' + (submitted && !password ? ' has-error' : '')}>
+                                        <label htmlFor="password">Password</label>
+                                        <input type="password" className="form-control" name="password" value={password} onChange={this.handleChange} />
+                                        {submitted && !password &&
+                                            <div className="help-block">Password is required</div>
+                                        }
+                                    </div>
+
+                                    <div className="form-group">                                            
+                                        <Translate>{({ translate }) =><button className="btn btn-primary">{translate("button.login")}</button>}</Translate>
+                                        <Translate>
+                                            {({ translate }) =>
+                                                <Link to="/" className="btn btn-link d-inline">{translate('public.links.cancel')}</Link>}
+                                        </Translate>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                    </form>
-
+                    </div>
+                </div>
             </div>
         )
     }

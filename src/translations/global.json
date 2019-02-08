@@ -4,7 +4,9 @@
     }, 
     
     "header": {
-      "newretrite": ["Add New Retreate","Add New Retreate Fr"]
+      "newretrite": ["Add New Retreate","Add New Retreate Fr"],
+      "login": ["Login", "Login Fr"],
+      "newuser": ["New User", "New User Fr"]
     },
 
     "label": {
@@ -13,7 +15,8 @@
     },
 
     "button": {
-      "create": ["Create","Create Fr"]
+      "create": ["Create","Create Fr"],
+      "login": ["Login", "Login Fr"]
     },
   
     "public": {
