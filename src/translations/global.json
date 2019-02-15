@@ -16,7 +16,8 @@
 
     "button": {
       "create": ["Create","Create Fr"],
-      "login": ["Login", "Login Fr"]
+      "login": ["Login", "Login Fr"],
+      "search": ["Search", "Search Fr"]
     },
   
     "public": {

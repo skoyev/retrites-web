@@ -31,18 +31,18 @@ export class AddRetreatePage extends React.Component {
         return (
             <div className="container">
                 <div className="row justify-content-center align-items-center new-retreate">
-                    <div class="col-4">
-                        <div class="card">
-                            <div class="card-body">
+                    <div className="col-4">
+                        <div className="card">
+                            <div className="card-body">
                                 <Translate>{({ translate }) =><h2>{translate("header.newretrite")}</h2>}</Translate>
                                 <form name="form" onSubmit={this.handleSubmit}>
-                                    <div class="form-group">
+                                    <div className="form-group">
                                         <Translate>{({ translate }) =><label htmlFor="name">{translate("label.name")}</label>}</Translate>
-                                        <input type="text" class="form-control" name="name"></input>
+                                        <input type="text" className="form-control" name="name"></input>
                                     </div>
-                                    <div class="form-group">
+                                    <div className="form-group">
                                         <Translate>{({ translate }) =><label htmlFor="details">{translate("label.details")}</label>}</Translate>
-                                        <textarea type="text" class="form-control" name="details"></textarea>
+                                        <textarea type="text" className="form-control" name="details"></textarea>
                                     </div>                                
                                     <div className="form-group">
                                         <Translate>{({ translate }) =><button className="btn btn-primary">{translate("button.create")}</button>}</Translate>
