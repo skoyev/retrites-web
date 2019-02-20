@@ -1,6 +1,6 @@
 import React from 'react';
 import { Translate } from "react-localize-redux";
-import './style/SearchRetreateSection.css'
+import '../style/SearchRetreateSection.css'
 
 const SearchRetreateSection = ({name}) => (
  <div>
