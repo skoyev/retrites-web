@@ -34,7 +34,9 @@
     "react-router-dom": "4.3.1",
     "redux-logger": "3.0.6",
     "reactstrap": "7.1.0",
-    "react-localize-redux": "3.5.2"    
+    "react-localize-redux": "3.5.2",
+    "prop-types": "15.7.2",
+    "axios": "0.18.0"
   },
   "devDependencies": {
     "cross-env": "5.2.0",

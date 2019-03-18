@@ -1,10 +1,10 @@
 import React from 'react';
 import * as Redux from 'react-redux';
 import { Link } from 'react-router-dom';
-import { userActions } from '../store/action';
+import { userActions } from '../../store/action';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import LanguageToggle from './LanguageToggle';
+import LanguageToggle from '../common/LanguageToggle';
 import './style/PublicHeader.css'
 import { Translate } from "react-localize-redux";
 

@@ -1,21 +1,24 @@
 import React from 'react';
 import { Router, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { PrivateRoute } from '../components/PrivateRoute';
-
+import { PrivateRoute } from '../components/common/PrivateRoute';
+import { withLocalize, Translate } from "react-localize-redux";
 import { history } from '../helpers';
-import { LoginPage } from '../pages/login/LoginPage';
-import HomePage from '../pages/home/HomePage';
-import RegisterPage  from '../pages/register/RegisterPage';
-import { DashboardPage } from '../pages/dashboard/DashboardPage';
+import { LoginPage } from '../containers/login/LoginPage';
+import HomePage from '../containers/home/HomePage';
+import RegisterPage  from '../containers/register/RegisterPage';
+import { DashboardPage } from '../containers/dashboard/DashboardPage';
 import { LocalizeProvider } from 'react-localize-redux';
 import './App.css'
-import { AddRetreatePage } from '../pages/retreate/new/AddRetreatePage';
+import AddRetreatePage from '../containers/retreate/new/AddRetreatePage';
 
 class App extends React.Component {
+    
+    constructor(props){
+        super(props);
+    }    
 
     render() {
-        //const { alert } = this.props;
         return (            
             <div className="container">                
                 <LocalizeProvider>
@@ -34,12 +37,5 @@ class App extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
-    const { alert } = state;
-    return {
-        alert
-    };
-}
-
-const connectedApp = connect(mapStateToProps)(App);
-export { connectedApp as App }; 
+const connectedApp = connect(null)(App);
+export  { connectedApp as App }; 

@@ -33,9 +33,9 @@ export class LoginPage extends React.Component {
         return (
             <div className="container">
                 <div className="row justify-content-center align-items-center new-retreate">
-                    <div class="col-4">
-                        <div class="card">
-                            <div class="card-body">
+                    <div className="col-4">
+                        <div className="card">
+                            <div className="card-body">
                                 <Translate>{({ translate }) =><h2>{translate("header.login")}</h2>}</Translate>
                                 <form name="form" onSubmit={this.handleSubmit}>
                                     <div className={'form-group' + (submitted && !username ? ' has-error' : '')}>

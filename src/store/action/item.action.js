@@ -1,0 +1,59 @@
+import axios from "axios";
+import { client, ROOT_URL } from './';
+import {itemConstants} from '../../constants/item.constants';
+import { itemService } from '../../services';
+import { history } from '../../helpers';
+
+export const itemActions = {
+    fetch,
+    add,
+    addItemsSuccess,
+    fetchItemsSuccess
+};
+
+export function addItemsSuccess() { 
+    history.push('/');    
+    return { 
+        type: 'ADD_ITEM_SUCCESS',
+        shouldReloadItems: true
+    }     
+}
+
+export function fetchItemsSuccess(items) { 
+    return { 
+        type: 'ITEM_FETCH_SUCCESS', 
+        items 
+    } 
+}
+
+/**
+ * Create a new Item
+ * @param {*} item 
+ */
+export function add(item) {
+    return dispatch => {
+        return itemService.addItem(item).then(res => {
+            if(res.ok){
+                dispatch(addItemsSuccess())    
+            } else {
+                throw('Error while create a new item.');
+            }
+        }).catch(error => {
+            throw(error);
+        });
+    }
+}
+
+export function fetch() {
+    return dispatch => {
+        return itemService.loadItems().then(res => {
+            if(res.ok){
+                dispatch(fetchItemsSuccess(res.items))    
+            } else {
+                throw('No data');
+            }
+        }).catch(error => {
+            throw(error);
+        });
+    }
+}

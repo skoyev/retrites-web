@@ -11,11 +11,17 @@
 
     "label": {
       "name": ["Name", "Name Fr"],
-      "details": ["Details", "Details Fr"]
+      "details": ["Details", "Details Fr"],
+      "description": ["Description", "Description Fr"],
+      "price": ["Price", "price Fr"],
+      "currency": ["Currency", "currency Fr"],
+      "picture": ["Picture", "picture Fr"],
+      "location": ["Location", "location Fr"]
     },
 
     "button": {
       "create": ["Create","Create Fr"],
+      "cancel": ["Cancel","Cancel Fr"],
       "login": ["Login", "Login Fr"],
       "search": ["Search", "Search Fr"]
     },

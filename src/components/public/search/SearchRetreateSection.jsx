@@ -12,18 +12,18 @@ const SearchRetreateSection = ({name}) => (
             <input type="text" placeholder="To" className="form-control" name="to"></input>
         </div>
         <div className="form-group row">
-            <div class="col-sm-6">
+            <div className="col-sm-6">
                 <input type="text" placeholder="Depart" className="form-control" name="depart"></input>
             </div>
-            <div class="col-sm-6">
+            <div className="col-sm-6">
                 <input type="text" placeholder="Duration" className="form-control" name="duration"></input>
             </div>
         </div>
         <div className="form-group row">
-            <div class="col-sm-6">
+            <div className="col-sm-6">
                 <input type="text" placeholder="Room #" className="form-control" name="roomnum"></input>
             </div>
-            <div class="col-sm-6">
+            <div className="col-sm-6">
                 <input type="text" placeholder="Guests" className="form-control" name="guests"></input>
             </div>
         </div>

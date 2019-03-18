@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
-import PrivateHeader from '../../components/PrivateHeader';
-import {Footer} from '../../components/Footer';
+import PrivateHeader from '../../components/private/PrivateHeader';
+import Footer from '../../components/common/Footer';
 
 export class DashboardPage extends React.Component {
     render() {

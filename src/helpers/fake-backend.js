@@ -1,5 +1,35 @@
 // array in local storage for registered users
 let users = JSON.parse(localStorage.getItem('users')) || [];
+let items = [        
+    {id:6, name:'name6BE', description: '', price: 12, currency: '$', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/200766/medium/IMG_2079.jpg', location:''},
+    {id:1, name:'28 Days Meditation Teacher Training Rishikesh', description: 'Ongoing package (28 days / 27 nights) 300 Hours / 28 Days Meditation Teacher Training Rishikesh IndiaShree Mahesh Heritage ,Govt of India registered ', price: 12, currency: '$', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142259/medium/IMG_20170809_102212_755.jpg', location:'Rishikesh Uttarakhand India'},
+    {id:2, name:'name2', description: '', price: 12, currency: '$', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg', location:''},
+    {id:3, name:'name3', description: '', price: 12, currency: '$', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/181425/medium/IMG_1397.jpg', location:''},
+    {id:4, name:'name4', description: '', price: 12, currency: '$', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/190539/medium/Surf%20Dominical%20Costa%20Rica%20.jpg', location:''},
+    {id:5, name:'name5', description: '', price: 12, currency: '$', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/181360/medium/Shata-Group-RainTree.jpg', location:''}    
+];
+
+function getItems(resolve, reject, url, opts) {
+    resolve({ ok: true, items: items });
+}
+
+function createItem(resolve, reject, url, opts){
+    let id = items.map(i => i.id).reduce((prev, curr) => prev > curr ? prev : curr);
+    //console.log(id)
+    let params = JSON.parse(opts.body);
+
+    let item = {
+        id   : ++id, 
+        name : params.name, 
+        description: params.description, 
+        price: params.price, 
+        currency: params.currency, 
+        picture: params.picture, 
+        location: params.location};
+
+    items.push(item)
+    resolve({ ok: true });
+}
     
 export function configureFakeBackend() {
     let realFetch = window.fetch;
@@ -7,6 +37,17 @@ export function configureFakeBackend() {
         return new Promise((resolve, reject) => {
             // wrap in timeout to simulate server api call
             setTimeout(() => {
+                // get items
+                if (url.endsWith('/items') && opts.method === 'GET') {                    
+                    getItems(resolve, reject, url, opts)
+                    return;
+                }
+
+                // create item/retrite
+                if (url.endsWith('/items') && opts.method === 'POST') {                    
+                    createItem(resolve, reject, url, opts)
+                    return;
+                }
 
                 // authenticate
                 if (url.endsWith('/users/authenticate') && opts.method === 'POST') {

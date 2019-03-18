@@ -1,0 +1,47 @@
+import React from 'react';
+import PropTypes from 'prop-types'
+
+const style = {
+    marginBottom: '20px'
+}
+
+const ItemList = ({items, className, numItemsPerRow}) => {
+
+    let chunk = function(myItems, size) {
+        if (!myItems || 
+                !Array.isArray(myItems)) return [];                
+        const firstChunk = myItems.slice(0, size);
+        if (!firstChunk.length) {
+            return myItems; // this is the base case to terminal the recursive
+        }
+        return [firstChunk].concat(chunk(myItems.slice(size, myItems.length), size));
+    }
+
+    let itemsInRow = chunk(items, numItemsPerRow);
+
+    return (
+        <div className={`container ${className}`}>
+            {itemsInRow.map(items => (
+                <div className="row" style={style}>
+                    {items.map((item, index) => (
+                        <div className={index == 0 ? 'card col' : 'card col offset-sm-1'}>
+                            <img className="card-img-top" src={item.picture} alt="Card image cap"></img>
+                            <div className="card-body">
+                                {item.name}{index}
+                            </div>            
+                        </div>
+                    ))}                                    
+                </div>
+            ))}
+        </div>
+    )
+}
+
+ItemList.propTypes = {
+    items: PropTypes.array.isRequired,
+    className: PropTypes.string.isRequired,
+    numItemsPerRow: PropTypes.number.isRequired
+}
+
+
+export default ItemList;
