@@ -11,6 +11,7 @@ import { DashboardPage } from '../containers/dashboard/DashboardPage';
 import { LocalizeProvider } from 'react-localize-redux';
 import './App.css'
 import AddRetreatePage from '../containers/retreate/new/AddRetreatePage';
+import RetreateDetailPage from '../containers/retreate/RetreateDetailPage';
 
 class App extends React.Component {
     
@@ -28,7 +29,8 @@ class App extends React.Component {
                             <Route path="/home" component={HomePage} />
                             <Route path="/login" component={LoginPage} />
                             <Route path="/register" component={RegisterPage} />                        
-                            <Route path="/new-retreate" component={AddRetreatePage} />                        
+                            <Route path="/new-retreate" component={AddRetreatePage} />
+                            <Route path="/item/:itemID" component={RetreateDetailPage} />                        
                         </div>                    
                     </Router>                
                 </LocalizeProvider>

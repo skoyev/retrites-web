@@ -3,6 +3,7 @@ import { Container, Row, Col } from 'reactstrap';
 import PublicHeader from '../../components/public/PublicHeader';
 import PublicTopMenu from '../../components/public/PublicTopMenu';
 import PublicSearch from '../../components/public/PublicSearch';
+import PublicSearchSingle from '../../components/public/PublicSearchSingle';
 import ItemList from '../../components/public/ItemList';
 import NewsLetter from '../../components/public/NewsLetter';
 import SocialMedia from '../../components/public/SocialMedia';
@@ -52,13 +53,20 @@ class HomePage extends React.Component {
         return (
             <div>                
                 <PublicHeader/>
-                <PublicTopMenu name="PublicTopMenu"/>
+                {/*
                 <Translate>{({ translate }) =>
                     <PublicSearch 
                         name={translate('public.slider.slider1')}
                         menuItems={menuItems}>
                     </PublicSearch>}
+                    <PublicSearchSingle></PublicSearchSingle>
                 </Translate>
+                */}
+                
+                <Translate>{({ translate }) =>
+                    <PublicSearchSingle></PublicSearchSingle>}                    
+                </Translate>
+
                 <ItemList className="margin-top-bottom-50" 
                           items={items}
                           numItemsPerRow={4}/>

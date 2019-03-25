@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom';
 
 const style = {
     marginBottom: '20px'
@@ -26,8 +27,8 @@ const ItemList = ({items, className, numItemsPerRow}) => {
                     {items.map((item, index) => (
                         <div className={index == 0 ? 'card col' : 'card col offset-sm-1'}>
                             <img className="card-img-top" src={item.picture} alt="Card image cap"></img>
-                            <div className="card-body">
-                                {item.name}{index}
+                            <div className="card-body">                                
+                                <Link to={`/item/${item.id}`} className="btn btn-link d-inline">{item.name}</Link>
                             </div>            
                         </div>
                     ))}                                    
