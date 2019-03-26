@@ -4,7 +4,10 @@ import { Link } from 'react-router-dom';
 import { itemActions } from '../../store/action';
 import { connect } from 'react-redux';
 import { withLocalize } from "react-localize-redux";
-import RetreatDetailHeader from '../../components/common/RetreatDetailHeader'
+import RetreatDetailHeader from '../../components/common/RetreatDetailHeader';
+import RetreatDetails from '../../components/public/retreat/RetreatDetails';
+import RetreatBookSection from '../../components/public/retreat/RetreatBookSection';
+import { history } from '../../helpers';
 
 class RetreateDetailPage extends React.Component {
 
@@ -17,8 +20,9 @@ class RetreateDetailPage extends React.Component {
     componentDidMount() {
         let {match : {params}} = this.props;
         let itemID = params.itemID;
+        const { fetchByID } = this.props;
         if(itemID){
-            this.props.fetchByID(itemID);
+            fetchByID(itemID);
         } else {
             console.log('Item ID is null');
         }
@@ -27,10 +31,16 @@ class RetreateDetailPage extends React.Component {
     handleChange(event) {
     }
 
+    onBack(event){
+        event.preventDefault();
+        history.push('/');
+    }
+
     render() {      
         let {match : {params}} = this.props;
         console.log(params.itemID);
-        //const { registering  } = this.props;
+
+        const { item  } = this.props;
         //const { user, submitted } = this.state;
         
         return (
@@ -38,11 +48,18 @@ class RetreateDetailPage extends React.Component {
                 <RetreatDetailHeader text="Header"></RetreatDetailHeader>
                 <div className="row">
                     <div className="col-md-8">
-                        Col 1
+                        <RetreatDetails item={item}></RetreatDetails>
                     </div>
                     <div className="col-md-4">
-                        Col 2
+                        <RetreatBookSection item={item}></RetreatBookSection>
                     </div>
+                </div>
+                <div className="row">
+                    <Translate>
+                        {({ translate }) =>
+                            <button type="button" class="btn btn-outline-info" onClick={this.onBack}>{translate('button.go-back')}</button>
+                        }
+                    </Translate>
                 </div>
             </div>
         );
@@ -56,13 +73,9 @@ const mapDispatchToProps = {
 function mapStateToProps(state) {
     console.log(state)
     return {
-      items: state.items.items,
-      shouldReloadItems: state.items.shouldReloadItems
+      item: state.items.item
     };
 }
 
-export default withLocalize(connect(mapStateToProps, mapDispatchToProps)(RetreateDetailPage));
-
-
-//export default withLocalize(HomePage);
-//export default withLocalize(connect(mapStateToProps, {fetch})(HomePage));
+//export default withLocalize(connect(mapStateToProps, mapDispatchToProps)(RetreateDetailPage));
+export default connect(mapStateToProps, mapDispatchToProps)(RetreateDetailPage);

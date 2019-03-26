@@ -23,7 +23,8 @@
       "create": ["Create","Create Fr"],
       "cancel": ["Cancel","Cancel Fr"],
       "login": ["Login", "Login Fr"],
-      "search": ["Search", "Search Fr"]
+      "search": ["Search", "Search Fr"],
+      "go-back": ["Go Back", "Go Back Fr"]
     },
   
     "public": {

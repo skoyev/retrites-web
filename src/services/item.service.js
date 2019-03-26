@@ -3,7 +3,8 @@ import axios from 'axios';
 
 export const itemService = {
     loadItems,
-    addItem
+    addItem,
+    loadItemByID
 };
 
 function loadItems(){
@@ -26,4 +27,13 @@ function addItem(item){
     };
 
     return fetch(`/items`, requestOptions);    
+}
+
+function loadItemByID(id){
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }        
+    };
+
+    return fetch(`/items/${id}`, requestOptions);
 }

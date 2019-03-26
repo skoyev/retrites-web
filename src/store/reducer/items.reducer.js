@@ -2,18 +2,17 @@ import {itemConstants} from '../../constants';
 
 export function items(state = {}, action) {
     switch (action.type) {
-        case itemConstants.ITEM_FETCH_SUCCESS:
+        case itemConstants.ITEMS_FETCH_SUCCESS:
           return {
             ... state,
             items: action.items
-        };
-        /*
-        case ADD_ITEM_SUCCESS:
+          };
+        
+        case itemConstants.ITEM_FETCH_SUCCESS:
           return {
             ... state,
-            shouldReloadItems: action.shouldReloadItems
-        };
-        */
+            item: action.item
+          };        
         default:
           return state
     }

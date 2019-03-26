@@ -6,9 +6,11 @@ import { history } from '../../helpers';
 
 export const itemActions = {
     fetch,
+    fetchByID,
     add,
     addItemsSuccess,
-    fetchItemsSuccess
+    fetchItemsSuccess,
+    fetchItemSuccess
 };
 
 export function addItemsSuccess() { 
@@ -19,10 +21,17 @@ export function addItemsSuccess() {
     }     
 }
 
-export function fetchItemsSuccess(items) { 
+export function fetchItemSuccess(item){
     return { 
         type: 'ITEM_FETCH_SUCCESS', 
-        items 
+        item 
+    } 
+}
+
+export function fetchItemsSuccess(items) { 
+    return { 
+        type: 'ITEMS_FETCH_SUCCESS', 
+        items
     } 
 }
 
@@ -37,6 +46,20 @@ export function add(item) {
                 dispatch(addItemsSuccess())    
             } else {
                 throw('Error while create a new item.');
+            }
+        }).catch(error => {
+            throw(error);
+        });
+    }
+}
+
+export function fetchByID(id){
+    return dispatch => {
+        return itemService.loadItemByID(id).then(res => {
+            if(res.ok){
+                dispatch(fetchItemSuccess(res.item))    
+            } else {
+                throw('No data');
             }
         }).catch(error => {
             throw(error);
