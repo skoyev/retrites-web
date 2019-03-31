@@ -52,10 +52,10 @@ class PublicHeader extends React.Component {
                     <h3>Retreate</h3>
                 </div>
 
-                <div className="col-md-6"> 
+                <div className="col-md-9"> 
                     <div className="row">
-                        <div className="col-md-4"></div>
-                        <div className="col-md-8 down-35">
+                        <div className="col-md-7"></div>
+                        <div className="col-md-5 down-35">
                             <div className="d-inline-block">
                                 <Translate>
                                     {({ translate }) =>
@@ -77,9 +77,12 @@ class PublicHeader extends React.Component {
                         </div> 
                     </div>                                                       
                 </div>
+
+                {/*
                 <div className="col-md-3">
                     <LanguageToggle></LanguageToggle>
                 </div>
+                */}
             </div>
         );
     }

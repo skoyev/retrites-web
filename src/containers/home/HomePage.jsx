@@ -1,13 +1,13 @@
 import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
-import PublicHeader from '../../components/public/PublicHeader';
-import PublicTopMenu from '../../components/public/PublicTopMenu';
-import PublicSearch from '../../components/public/PublicSearch';
-import PublicSearchSingle from '../../components/public/PublicSearchSingle';
-import ItemList from '../../components/public/ItemList';
-import NewsLetter from '../../components/public/NewsLetter';
-import SocialMedia from '../../components/public/SocialMedia';
+
+import { PublicHeader, 
+         PublicSearchSingle, 
+         ItemList} from '../../components/public';
 import Footer from '../../components/common/Footer';
+import { RetreatByTypes, 
+         RetreatByCountries } from '../../components/public/retreat';
+
 import { renderToStaticMarkup } from "react-dom/server";
 import { withLocalize, Translate } from "react-localize-redux";
 import globalTranslations from "../../translations/global.json";
@@ -52,6 +52,7 @@ class HomePage extends React.Component {
         //console.log(items);
         return (
             <div>                
+                {/* Home Header Section */}
                 <PublicHeader/>
                 {/*
                 <Translate>{({ translate }) =>
@@ -62,16 +63,22 @@ class HomePage extends React.Component {
                     <PublicSearchSingle></PublicSearchSingle>
                 </Translate>
                 */}
-                
-                <Translate>{({ translate }) =>
-                    <PublicSearchSingle></PublicSearchSingle>}                    
-                </Translate>
 
+                {/* Slider/Search Section */}
+                <PublicSearchSingle/>                 
+
+                {/* Retreat By Type Section */}
+                <RetreatByTypes/>
+
+                {/* Popular Retreats */}
                 <ItemList className="margin-top-bottom-50" 
                           items={items}
+                          type="Popular Retreat Centers"
                           numItemsPerRow={4}/>
-                <NewsLetter name="NewsLetter"/>
-                <SocialMedia name="SocialMedia"/>
+
+                {/* Retreat By Countries Section */}
+                <RetreatByCountries/>
+
                 <Footer text="Footer Text"/>
             </div>
         )

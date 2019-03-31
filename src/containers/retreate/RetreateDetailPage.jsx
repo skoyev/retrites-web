@@ -6,6 +6,9 @@ import { connect } from 'react-redux';
 import { withLocalize } from "react-localize-redux";
 import RetreatDetailHeader from '../../components/common/RetreatDetailHeader';
 import RetreatDetails from '../../components/public/retreat/RetreatDetails';
+import RetreatBreadcrumb from '../../components/public/retreat/RetreatBreadcrumb';
+import RetreatPhotoAlbum from '../../components/public/retreat/RetreatPhotoAlbum';
+import RetreatDetailsSummary from '../../components/public/retreat/RetreatDetailsSummary';
 import RetreatBookSection from '../../components/public/retreat/RetreatBookSection';
 import { history } from '../../helpers';
 
@@ -45,13 +48,22 @@ class RetreateDetailPage extends React.Component {
         
         return (
             <div>
-                <RetreatDetailHeader text="Header"></RetreatDetailHeader>
+                <div className="row">
+                    <RetreatDetailHeader text="Header"></RetreatDetailHeader>
+                </div>                
+                <div className="row">
+                    <RetreatBreadcrumb item={item}></RetreatBreadcrumb>
+                </div>
+                <div className="row">
+                    <RetreatPhotoAlbum item={item}></RetreatPhotoAlbum>
+                </div>
                 <div className="row">
                     <div className="col-md-8">
                         <RetreatDetails item={item}></RetreatDetails>
                     </div>
                     <div className="col-md-4">
                         <RetreatBookSection item={item}></RetreatBookSection>
+                        <RetreatDetailsSummary item={item}></RetreatDetailsSummary>
                     </div>
                 </div>
                 <div className="row">

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 const RetreatDetailHeader = ({text}) => {
     return (
-        <div className="row">
+        <div>
             <div>{text}</div>
         </div>
     )
