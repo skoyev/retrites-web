@@ -6,7 +6,7 @@ const style = {
     marginBottom: '20px'
 }
 
-const ItemList = ({items, className, numItemsPerRow}) => {
+const ItemList = ({items, className, numItemsPerRow, headerText}) => {
 
     let chunk = function(myItems, size) {
         if (!myItems || 
@@ -22,6 +22,7 @@ const ItemList = ({items, className, numItemsPerRow}) => {
 
     return (
         <div className={`container ${className}`}>
+            {headerText ? <h2>{headerText}</h2> : ""}
             {itemsInRow.map(items => (
                 <div className="row" style={style}>
                     {items.map((item, index) => (
@@ -41,6 +42,7 @@ const ItemList = ({items, className, numItemsPerRow}) => {
 ItemList.propTypes = {
     items: PropTypes.array.isRequired,
     className: PropTypes.string.isRequired,
+    headerText: PropTypes.string,
     numItemsPerRow: PropTypes.number.isRequired
 }
 

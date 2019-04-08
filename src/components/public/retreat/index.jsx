@@ -1,7 +1,5 @@
-import RetreatByTypes from './RetreatByTypes';
-import RetreatByCountries from './RetreatByCountries';
+import RetreatBreadcrumb from './RetreatBreadcrumb';
 
-export {
-	RetreatByTypes,
-	RetreatByCountries
+export {	
+	RetreatBreadcrumb
 }
