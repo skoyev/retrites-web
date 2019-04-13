@@ -16,7 +16,13 @@
       "price": ["Price", "price Fr"],
       "currency": ["Currency", "currency Fr"],
       "picture": ["Picture", "picture Fr"],
-      "location": ["Location", "location Fr"]
+      "location": ["Location", "location Fr"],
+      "yoga":["Yoga", "Yoga Fr"],
+      "plantmedicine":["Plant Medicine", ""],
+      "meditation":["Meditation", ""],
+      "nutrition":["Health, Healing & Nutrition", ""],
+      "artscreativitymovement":["Art, Creativity & Movement", ""],
+      "adventure":["Adventure & Outdoor", ""]
     },
 
     "button": {

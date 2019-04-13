@@ -39,12 +39,12 @@ class HomePage extends React.Component {
                 'public.menu.groups'
             ],
             retreatTypes : [
-                {id:1, name:'public.label.yoga', picture:'https://s3-us-west-2.amazonaws.com/prod.retreat.guru/assets/categories/176466/medium-wide/Yoga.jpg'},
-                {id:2, name:'public.label.plantmedicine', picture:'https://s3-us-west-2.amazonaws.com/prod.retreat.guru/images/4314/medium-wide/ayahuasca-crop.jpg'},
-                {id:3, name:'public.label.meditation', picture:'https://s3-us-west-2.amazonaws.com/prod.retreat.guru/assets/categories/176464/medium-wide/Meditation.jpg'},                
-                {id:4, name:'public.label.nutrition', picture:'https://s3-us-west-2.amazonaws.com/prod.retreat.guru/assets/categories/176465/medium-wide/Nutrition.jpg'},                                
-                {id:5, name:'public.label.artscreativitymovement', picture:'https://s3-us-west-2.amazonaws.com/prod.retreat.guru/assets/categories/228634/medium-wide/iStock-821832920.jpg'},                                
-                {id:6, name:'public.label.adventure', picture:'https://s3-us-west-2.amazonaws.com/prod.retreat.guru/assets/categories/176462/medium-wide/Adventure.jpg'}                                
+                {id:1, name:'label.yoga', picture:'https://s3-us-west-2.amazonaws.com/prod.retreat.guru/assets/categories/176466/medium-wide/Yoga.jpg'},
+                {id:2, name:'label.plantmedicine', picture:'https://s3-us-west-2.amazonaws.com/prod.retreat.guru/images/4314/medium-wide/ayahuasca-crop.jpg'},
+                {id:3, name:'label.meditation', picture:'https://s3-us-west-2.amazonaws.com/prod.retreat.guru/assets/categories/176464/medium-wide/Meditation.jpg'},                
+                {id:4, name:'label.nutrition', picture:'https://s3-us-west-2.amazonaws.com/prod.retreat.guru/assets/categories/176465/medium-wide/Nutrition.jpg'},                                
+                {id:5, name:'label.artscreativitymovement', picture:'https://s3-us-west-2.amazonaws.com/prod.retreat.guru/assets/categories/228634/medium-wide/iStock-821832920.jpg'},                                
+                {id:6, name:'label.adventure', picture:'https://s3-us-west-2.amazonaws.com/prod.retreat.guru/assets/categories/176462/medium-wide/Adventure.jpg'}                                
             ],
             retreatByCountries : [
                 {id:1, name:'public.label.bali', picture:'https://retreat.guru/images/locations/bali-temple-medium-wide.jpg'},
@@ -54,7 +54,13 @@ class HomePage extends React.Component {
                 {id:5, name:'public.label.peru', picture:'https://retreat.guru/images/locations/peru-machu-picchu-medium-wide.jpg'},                                
                 {id:6, name:'public.label.california', picture:'https://retreat.guru/images/locations/california-yosemite-medium-wide.jpg'}                                
             ],
-            ourVisionDescription : 'Our Vision Description'
+            ourVisionDescription : 'Our Vision Description',
+            retreatByTypeTitle: 'Find Retreat By Type',
+            retreatByTypeDescription: 'Find Out More About Our Amazing Retreats',
+            popularRetreatTitle: 'Our Popular Destinations',
+            popularRetreatDescription: 'Find Best Places For Yourself',
+            retreatByCountriesTitle: 'Explore our sacred world',
+            retreatByCountriesDescription: ''
         }
     }
 
@@ -63,7 +69,13 @@ class HomePage extends React.Component {
     }
 
     render() {
-        const { retreatTypes, retreatByCountries, ourVisionDescription } = this.state;
+        const { retreatTypes, retreatByCountries, 
+                ourVisionDescription, retreatByTypeTitle,
+                retreatByTypeDescription,
+                popularRetreatTitle,
+                popularRetreatDescription,
+                retreatByCountriesTitle,
+                retreatByCountriesDescription } = this.state;
         const { items } = this.props;
         //console.log(items);
         return (
@@ -86,7 +98,8 @@ class HomePage extends React.Component {
                 {/* Retreat By Type Section */}
                 <ItemList className="margin-top-bottom-50" 
                           items={retreatTypes}
-                          type="Retreat By Type"
+                          title={retreatByTypeTitle}
+                          description={retreatByTypeDescription}
                           numItemsPerRow={3}/>
 
                 {/* Our Vision Section */}
@@ -95,12 +108,15 @@ class HomePage extends React.Component {
                 {/* Popular Retreats */}
                 <ItemList className="margin-top-bottom-50" 
                           items={items}
-                          type="Popular Retreat Centers"
+                          title={popularRetreatTitle}
+                          description={popularRetreatDescription}
                           numItemsPerRow={4}/>
 
                 {/* Retreat By Countries Section */}
                 <ItemList className="margin-top-bottom-50" 
                           items={retreatByCountries}
+                          title={retreatByCountriesTitle}
+                          description={retreatByCountriesDescription}
                           headerText="Retreat By Countries"
                           numItemsPerRow={3}/>
 

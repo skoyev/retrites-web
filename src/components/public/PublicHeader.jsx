@@ -19,7 +19,8 @@ class PublicHeader extends React.Component {
         this.state = {
             username: '',
             password: '',
-            submitted: false
+            submitted: false,
+            title: 'Retreat Your Mind'
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -45,11 +46,11 @@ class PublicHeader extends React.Component {
 
     render() {
         const { loggingIn } = this.props;
-        const { username, password, submitted } = this.state;
+        const { username, password, submitted, title } = this.state;
         return (
             <div className="row">
                 <div className="col-md-3 header">
-                    <h3>Retreate</h3>
+                    <h3>{title}</h3>
                 </div>
 
                 <div className="col-md-9"> 
