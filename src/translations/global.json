@@ -22,7 +22,13 @@
       "meditation":["Meditation", ""],
       "nutrition":["Health, Healing & Nutrition", ""],
       "artscreativitymovement":["Art, Creativity & Movement", ""],
-      "adventure":["Adventure & Outdoor", ""]
+      "adventure":["Adventure & Outdoor", ""],
+      "bali":["Bali",""],
+      "india":["India",""],
+      "mexico":["Mexico",""],
+      "costarica":["Costa Rica",""],
+      "peru":["Peru",""],
+      "california":["California",""]
     },
 
     "button": {

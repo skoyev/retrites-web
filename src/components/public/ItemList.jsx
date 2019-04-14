@@ -28,14 +28,18 @@ const ItemList = ({items, className, numItemsPerRow, title, description}) => {
             {itemsInRow.map(items => (
                 <div className="row" style={style}>
                     {items.map((item, index) => (
-                        <div className={index == 0 ? 'card col' : 'card col offset-sm-1'}>                            
+                        <div className={index == 0 ? 'card col' : 'card col offset-ssm-1'}>                            
                             <div className="img-container">                                
                                 <img className="card-img-top" src={item.picture} alt="Card image cap"></img>                                
                                 <div class="centered">
-                                    <Translate>
-                                        {({ translate }) =>
-                                            <Link to="/new-retreate" className="btn btn-link d-inline fancy-text">{translate(item.name)}</Link>}
-                                    </Translate>                                    
+                                    {item.name.includes(".") ? 
+                                        <Translate>
+                                            {({ translate }) =>
+                                                <Link to="/new-retreate" className="btn btn-link d-inline fancy-text">{translate(item.name)}</Link>}
+                                        </Translate> 
+                                        :
+                                        <Link to="/new-retreate" className="btn btn-link d-inline fancy-text">{item.name}</Link>
+                                    }                                   
                                 </div>
                             </div>            
                         </div>

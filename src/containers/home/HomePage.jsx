@@ -47,12 +47,12 @@ class HomePage extends React.Component {
                 {id:6, name:'label.adventure', picture:'https://s3-us-west-2.amazonaws.com/prod.retreat.guru/assets/categories/176462/medium-wide/Adventure.jpg'}                                
             ],
             retreatByCountries : [
-                {id:1, name:'public.label.bali', picture:'https://retreat.guru/images/locations/bali-temple-medium-wide.jpg'},
-                {id:2, name:'public.label.india', picture:'https://retreat.guru/images/locations/india-temple-arch-medium-wide.jpg'},
-                {id:3, name:'public.label.mexico', picture:'https://retreat.guru/images/locations/mexico-beach-medium-wide.jpg'},                
-                {id:4, name:'public.label.costarica', picture:'https://retreat.guru/images/locations/costa-rica-statue-medium-wide.jpg'},                                
-                {id:5, name:'public.label.peru', picture:'https://retreat.guru/images/locations/peru-machu-picchu-medium-wide.jpg'},                                
-                {id:6, name:'public.label.california', picture:'https://retreat.guru/images/locations/california-yosemite-medium-wide.jpg'}                                
+                {id:1, name:'label.bali', picture:'https://retreat.guru/images/locations/bali-temple-medium-wide.jpg'},
+                {id:2, name:'label.india', picture:'https://retreat.guru/images/locations/india-temple-arch-medium-wide.jpg'},
+                {id:3, name:'label.mexico', picture:'https://retreat.guru/images/locations/mexico-beach-medium-wide.jpg'},                
+                {id:4, name:'label.costarica', picture:'https://retreat.guru/images/locations/costa-rica-statue-medium-wide.jpg'},                                
+                {id:5, name:'label.peru', picture:'https://retreat.guru/images/locations/peru-machu-picchu-medium-wide.jpg'},                                
+                {id:6, name:'label.california', picture:'https://retreat.guru/images/locations/california-yosemite-medium-wide.jpg'}                                
             ],
             ourVisionDescription : 'Our Vision Description',
             retreatByTypeTitle: 'Find Retreat By Type',
