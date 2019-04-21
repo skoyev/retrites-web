@@ -95,30 +95,32 @@ class HomePage extends React.Component {
                 {/* Slider/Search Section */}
                 <PublicSearchSingle/>                 
 
-                {/* Retreat By Type Section */}
-                <ItemList className="margin-top-bottom-50" 
-                          items={retreatTypes}
-                          title={retreatByTypeTitle}
-                          description={retreatByTypeDescription}
-                          numItemsPerRow={3}/>
+                <div className="container">
+                    {/* Retreat By Type Section */}
+                    <ItemList className="margin-top-bottom-50" 
+                            items={retreatTypes}
+                            title={retreatByTypeTitle}
+                            description={retreatByTypeDescription}
+                            numItemsPerRow={3}/>
 
-                {/* Our Vision Section */}
-                <Section description={ourVisionDescription} />
+                    {/* Our Vision Section */}
+                    <Section description={ourVisionDescription} />
 
-                {/* Popular Retreats */}
-                <ItemList className="margin-top-bottom-50" 
-                          items={items}
-                          title={popularRetreatTitle}
-                          description={popularRetreatDescription}
-                          numItemsPerRow={4}/>
+                    {/* Popular Retreats */}
+                    <ItemList className="margin-top-bottom-50" 
+                            items={items}
+                            title={popularRetreatTitle}
+                            description={popularRetreatDescription}
+                            numItemsPerRow={4}/>
 
-                {/* Retreat By Countries Section */}
-                <ItemList className="margin-top-bottom-50" 
-                          items={retreatByCountries}
-                          title={retreatByCountriesTitle}
-                          description={retreatByCountriesDescription}
-                          headerText="Retreat By Countries"
-                          numItemsPerRow={3}/>
+                    {/* Retreat By Countries Section */}
+                    <ItemList className="margin-top-bottom-50" 
+                            items={retreatByCountries}
+                            title={retreatByCountriesTitle}
+                            description={retreatByCountriesDescription}
+                            headerText="Retreat By Countries"
+                            numItemsPerRow={3}/>
+                </div>
 
                 <Footer text="Footer Text"/>
             </div>
