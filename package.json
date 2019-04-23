@@ -36,7 +36,8 @@
     "reactstrap": "7.1.0",
     "react-localize-redux": "3.5.2",
     "prop-types": "15.7.2",
-    "axios": "0.18.0"
+    "axios": "0.18.0",
+    "antd": "3.16.5"
   },
   "devDependencies": {
     "cross-env": "5.2.0",
