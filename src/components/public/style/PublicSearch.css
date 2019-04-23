@@ -32,3 +32,7 @@
 .ant-calendar-picker-input {
     height: 35px !important;
 }
+
+.ant-btn-default {
+    height: 35px !important;
+}

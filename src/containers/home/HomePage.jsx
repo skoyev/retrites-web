@@ -68,6 +68,10 @@ class HomePage extends React.Component {
         this.props.fetch()
     }
 
+    search = () => {
+        console.log('Data');
+    }
+
     render() {
         const { retreatTypes, retreatByCountries, 
                 ourVisionDescription, retreatByTypeTitle,
@@ -93,7 +97,8 @@ class HomePage extends React.Component {
                 */}
 
                 {/* Slider/Search Section */}
-                <PublicSearchSingle/>                 
+                <PublicSearchSingle title="Find Retreates For Any Season"
+                                    search={this.search}/>                 
 
                 <div className="container">
                     {/* Retreat By Type Section */}
