@@ -60,7 +60,9 @@ class HomePage extends React.Component {
             popularRetreatTitle: 'Our Popular Destinations',
             popularRetreatDescription: 'Find Best Places For Yourself',
             retreatByCountriesTitle: 'Explore our sacred world',
-            retreatByCountriesDescription: ''
+            retreatByCountriesDescription: '',
+            ourVisionTitle: 'Our Vision',
+            ourVisionDescription: 'We believe human beings are innately wise, strong and kind. This wisdom, although not always experienced, is always present. Going on retreat is a beautiful way to reconnect to our basic sanity and health. Our aspiration at Retreat Guru is to inspire people to experience authentic retreats and reconnect with their innate wisdom, strength and kindness.'
         }
     }
 
@@ -74,12 +76,13 @@ class HomePage extends React.Component {
 
     render() {
         const { retreatTypes, retreatByCountries, 
-                ourVisionDescription, retreatByTypeTitle,
+                retreatByTypeTitle,
                 retreatByTypeDescription,
                 popularRetreatTitle,
                 popularRetreatDescription,
                 retreatByCountriesTitle,
-                retreatByCountriesDescription } = this.state;
+                retreatByCountriesDescription,
+                ourVisionTitle, ourVisionDescription } = this.state;
         const { items } = this.props;
         //console.log(items);
         return (
@@ -109,7 +112,7 @@ class HomePage extends React.Component {
                             numItemsPerRow={3}/>
 
                     {/* Our Vision Section */}
-                    <Section description={ourVisionDescription} />
+                    <Section description={ourVisionDescription} title={ourVisionTitle}/>
 
                     {/* Popular Retreats */}
                     <ItemList className="margin-top-bottom-50" 

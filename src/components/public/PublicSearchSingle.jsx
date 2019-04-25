@@ -24,7 +24,7 @@ const PublicSearchSingle = ({title, search, handleTypeClick, handleMenuClick}) =
                 <InputGroup compact>
                     <Input style={{ width: '40%', height: '35px' }} placeholder="Where would you like to go ?"/>
                     <Dropdown.Button onClick={handleTypeClick} overlay={menu} style={{ marginLeft: '5px' }}>
-                        Retreat Type
+                        <span style={{color: '#b1b0b0'}}>Retreat Type</span>
                     </Dropdown.Button>
                     <RangePicker style={{ width: '30%', marginLeft: '5px', height: '35px' }} />
                     <Button onClick={search} style={{ marginLeft: '5px', borderRadius: '5px', height: '35px' }} type="primary" icon="search">Search</Button>
