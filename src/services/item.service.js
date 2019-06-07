@@ -4,15 +4,20 @@ import axios from 'axios';
 export const itemService = {
     loadItems,
     addItem,
-    loadItemByID
+    loadItemByID,
+    findByType
 };
 
-function loadItems(){
-    const requestOptions = {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }        
-    };
+const requestOptions = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }        
+};
 
+function findByType (type, count, startFromNum) {
+    return fetch(`/items?type=${type}&count=${count}&startFromCount=${startFromNum}`, requestOptions);
+}
+
+function loadItems(){
     return fetch(`/items`, requestOptions);
 }
 
@@ -30,10 +35,5 @@ function addItem(item){
 }
 
 function loadItemByID(id){
-    const requestOptions = {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }        
-    };
-
     return fetch(`/items/${id}`, requestOptions);
 }

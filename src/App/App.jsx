@@ -12,6 +12,7 @@ import { LocalizeProvider } from 'react-localize-redux';
 import './App.css'
 import AddRetreatePage from '../containers/retreate/new/AddRetreatePage';
 import RetreateDetailPage from '../containers/retreate/RetreateDetailPage';
+import {SearchResultPage} from '../containers';
 
 class App extends React.Component {
     
@@ -31,6 +32,7 @@ class App extends React.Component {
                             <Route path="/register" component={RegisterPage} />                        
                             <Route path="/new-retreate" component={AddRetreatePage} />
                             <Route path="/item/:itemID" component={RetreateDetailPage} />                        
+                            <Route exact path="/items/:itemType" component={SearchResultPage} />                        
                         </div>                    
                     </Router>                
                 </LocalizeProvider>

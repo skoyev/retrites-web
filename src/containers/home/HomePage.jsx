@@ -39,12 +39,12 @@ class HomePage extends React.Component {
                 'public.menu.groups'
             ],
             retreatTypes : [
-                {id:1, name:'label.yoga', picture:'https://s3-us-west-2.amazonaws.com/prod.retreat.guru/assets/categories/176466/medium-wide/Yoga.jpg'},
-                {id:2, name:'label.plantmedicine', picture:'https://s3-us-west-2.amazonaws.com/prod.retreat.guru/images/4314/medium-wide/ayahuasca-crop.jpg'},
-                {id:3, name:'label.meditation', picture:'https://s3-us-west-2.amazonaws.com/prod.retreat.guru/assets/categories/176464/medium-wide/Meditation.jpg'},                
-                {id:4, name:'label.nutrition', picture:'https://s3-us-west-2.amazonaws.com/prod.retreat.guru/assets/categories/176465/medium-wide/Nutrition.jpg'},                                
-                {id:5, name:'label.artscreativitymovement', picture:'https://s3-us-west-2.amazonaws.com/prod.retreat.guru/assets/categories/228634/medium-wide/iStock-821832920.jpg'},                                
-                {id:6, name:'label.adventure', picture:'https://s3-us-west-2.amazonaws.com/prod.retreat.guru/assets/categories/176462/medium-wide/Adventure.jpg'}                                
+                {id:1, typelink: 'items/yoga', name:'label.yoga', picture:'https://s3-us-west-2.amazonaws.com/prod.retreat.guru/assets/categories/176466/medium-wide/Yoga.jpg'},
+                {id:2, typelink: 'items/plantmedicine', name:'label.plantmedicine', picture:'https://s3-us-west-2.amazonaws.com/prod.retreat.guru/images/4314/medium-wide/ayahuasca-crop.jpg'},
+                {id:3, typelink: 'items/meditation', name:'label.meditation', picture:'https://s3-us-west-2.amazonaws.com/prod.retreat.guru/assets/categories/176464/medium-wide/Meditation.jpg'},                
+                {id:4, typelink: 'items/nutrition', name:'label.nutrition', picture:'https://s3-us-west-2.amazonaws.com/prod.retreat.guru/assets/categories/176465/medium-wide/Nutrition.jpg'},                                
+                {id:5, typelink: 'items/artscreativitymovement', name:'label.artscreativitymovement', picture:'https://s3-us-west-2.amazonaws.com/prod.retreat.guru/assets/categories/228634/medium-wide/iStock-821832920.jpg'},                                
+                {id:6, typelink: 'items/adventure', name:'label.adventure', picture:'https://s3-us-west-2.amazonaws.com/prod.retreat.guru/assets/categories/176462/medium-wide/Adventure.jpg'}                                
             ],
             retreatByCountries : [
                 {id:1, name:'label.bali', picture:'https://retreat.guru/images/locations/bali-temple-medium-wide.jpg'},
@@ -62,7 +62,7 @@ class HomePage extends React.Component {
             retreatByCountriesTitle: 'Explore our sacred world',
             retreatByCountriesDescription: '',
             ourVisionTitle: 'Our Vision',
-            ourVisionDescription: 'We believe human beings are innately wise, strong and kind. This wisdom, although not always experienced, is always present. Going on retreat is a beautiful way to reconnect to our basic sanity and health. Our aspiration at Retreat Guru is to inspire people to experience authentic retreats and reconnect with their innate wisdom, strength and kindness.'
+            ourVisionDescription: 'We believe human beings are innately wise, strong and kind. This wisdom, although not always experienced, is always present. Going on retreat is a beautiful way to reconnect to our basic sanity and health. Our aspiration at Retreat Your Mind is to inspire people to experience authentic retreats and reconnect with their innate wisdom, strength and kindness.'
         }
     }
 
@@ -89,15 +89,6 @@ class HomePage extends React.Component {
             <div>                
                 {/* Home Header Section */}
                 <PublicHeader/>
-                {/*
-                <Translate>{({ translate }) =>
-                    <PublicSearch 
-                        name={translate('public.slider.slider1')}
-                        menuItems={menuItems}>
-                    </PublicSearch>}
-                    <PublicSearchSingle></PublicSearchSingle>
-                </Translate>
-                */}
 
                 {/* Slider/Search Section */}
                 <PublicSearchSingle title="Find Retreates For Any Season"

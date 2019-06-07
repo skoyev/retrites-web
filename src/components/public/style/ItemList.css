@@ -1,0 +1,40 @@
+.card-img-top{
+    border-radius: 3px; 
+}
+
+.full-width {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
+.width-295 {
+    max-width: 295px;
+}
+
+.card-font {
+    font-size: 14px;
+    text-align: left;
+    font-weight: 800;
+    color: rgb(118, 118, 118);
+}
+
+.card-body-no {
+    padding-top: 8px; 
+}
+
+.margin-top-4 {
+    margin-top: -4px; 
+}
+
+.card-font-3 {
+    font-size: 14px;
+    text-align: left;
+    color: rgb(118, 118, 118);
+}
+
+.card-font-2 {
+    font-size: 16px;
+    text-align: left;
+    font-weight: 800;
+    color: rgb(72, 72, 72);
+}

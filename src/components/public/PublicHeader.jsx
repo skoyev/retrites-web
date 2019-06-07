@@ -48,7 +48,7 @@ class PublicHeader extends React.Component {
         const { loggingIn } = this.props;
         const { username, password, submitted, title } = this.state;
         return (
-            <div className="row">
+            <div className="row offset-10">
                 <div className="col-md-3 header">
                     <h3>{title}</h3>
                 </div>

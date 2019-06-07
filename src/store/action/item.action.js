@@ -10,8 +10,23 @@ export const itemActions = {
     add,
     addItemsSuccess,
     fetchItemsSuccess,
-    fetchItemSuccess
+    fetchItemSuccess,
+    findByType
 };
+
+export function findByType(type, count, startFromNum){
+    return dispatch => {
+        return itemService.findByType(type, count, startFromNum).then(res => {
+            if(res.ok){
+                dispatch(fetchItemsSuccess(res.items))    
+            } else {
+                throw('No data');
+            }
+        }).catch(error => {
+            throw(error);
+        });
+    }
+}
 
 export function addItemsSuccess() { 
     history.push('/');    

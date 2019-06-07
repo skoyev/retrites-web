@@ -1,6 +1,10 @@
 import {itemConstants} from '../../constants';
 
-export function items(state = {}, action) {
+const INITIAL_STATE = {
+  items: []
+};
+
+export function items(state = INITIAL_STATE, action) {
     switch (action.type) {
         case itemConstants.ITEMS_FETCH_SUCCESS:
           return {
