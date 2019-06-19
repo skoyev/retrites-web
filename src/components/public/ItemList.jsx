@@ -9,7 +9,7 @@ const style = {
     marginBottom: '20px'
 }
 
-const ItemList = ({items, className, numItemsPerRow, title, description, handleMoreItems}) => {
+const ItemList = ({items, className, numItemsPerRow, title, description, handleMoreItems, category}) => {
 
     let chunk = function(myItems, size) {
         if (!myItems || 
@@ -32,7 +32,9 @@ const ItemList = ({items, className, numItemsPerRow, title, description, handleM
                     {items.map((item, index) => (
                         <div className={index == 0 ? 'card-no col full-width width-295' : 'card-no col offset-ssm-1 full-width width-295'}>                            
                             <div className="img-container">                                
-                                <img className="card-img-top" style={{maxHeight:'220px'}} src={item.picture} alt="Card image cap"></img>                                
+                                <Link to={'/' + category + '/' +item.id}>
+                                    <img className="card-img-top" style={{maxHeight:'220px', cursor:'pointer'}} src={item.picture} alt="Card image cap"></img>                                
+                                </Link>                                
                                 <div class="centered">
                                     {item.name && item.name.includes(".") ? 
                                         <Translate>
@@ -68,7 +70,8 @@ ItemList.propTypes = {
     title: PropTypes.string,
     description: PropTypes.string,
     numItemsPerRow: PropTypes.number.isRequired,
-    handleMoreItems: PropTypes.func
+    handleMoreItems: PropTypes.func,
+    category: PropTypes.string.isRequired
 }
 
 

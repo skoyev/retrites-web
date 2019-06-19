@@ -2,4 +2,12 @@
   background: none; }
 
 .ant-layout-sider-dark {
-  background: none; }
+  background: none; 
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+

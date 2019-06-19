@@ -94,10 +94,18 @@ function getItemsByType(resolve, reject, url, opts){
     let type = data[0].split('=')[1];
     let count = data[1].split('=')[1];    
     let startFrom = data[2].split('=')[1];    
+    let name = data[3].split('=')[1];    
 
     if( type && count && startFrom){
-        //let res = searchResult[type].slice(parseInt(startFrom), (parseInt(count) + parseInt(startFrom)));
-        let res = searchResult[type].slice(0, (parseInt(count) + parseInt(startFrom)));
+        let res = []
+        if(name){
+            res = searchResult[type].filter(item => item.title_center.includes(name))
+            if(res && res.length > 0) {
+                res = res.slice(0, (parseInt(count) + parseInt(startFrom)));    
+            }
+        } else {
+            res = searchResult[type].slice(0, (parseInt(count) + parseInt(startFrom)));
+        }        
         resolve({ ok: true, items: res });
     } else {
         reject('Type is null');
