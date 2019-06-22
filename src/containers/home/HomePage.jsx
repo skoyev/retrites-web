@@ -84,6 +84,7 @@ class HomePage extends React.Component {
                 retreatByCountriesDescription,
                 ourVisionTitle, ourVisionDescription } = this.state;
         const { items } = this.props;
+        const shouldHideLoadMore = true;
         //console.log(items);
         return (
             <div>                
@@ -100,6 +101,7 @@ class HomePage extends React.Component {
                             items={retreatTypes}
                             title={retreatByTypeTitle}
                             description={retreatByTypeDescription}
+                            shouldHideLoadMore={shouldHideLoadMore} 
                             numItemsPerRow={3}/>
 
                     {/* Our Vision Section */}
@@ -110,6 +112,7 @@ class HomePage extends React.Component {
                             items={items}
                             title={popularRetreatTitle}
                             description={popularRetreatDescription}
+                            shouldHideLoadMore={shouldHideLoadMore} 
                             numItemsPerRow={4}/>
 
                     {/* Retreat By Countries Section */}
@@ -117,6 +120,7 @@ class HomePage extends React.Component {
                             items={retreatByCountries}
                             title={retreatByCountriesTitle}
                             description={retreatByCountriesDescription}
+                            shouldHideLoadMore={shouldHideLoadMore} 
                             headerText="Retreat By Countries"
                             numItemsPerRow={3}/>
                 </div>

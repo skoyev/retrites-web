@@ -38,3 +38,7 @@
     font-weight: 800;
     color: rgb(72, 72, 72);
 }
+
+.hidden {
+    display: none;
+}

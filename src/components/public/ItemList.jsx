@@ -9,7 +9,7 @@ const style = {
     marginBottom: '20px'
 }
 
-const ItemList = ({items, className, numItemsPerRow, title, description, handleMoreItems, category}) => {
+const ItemList = ({items, className, numItemsPerRow, title, description, handleMoreItems, category, shouldHideLoadMore}) => {
 
     let chunk = function(myItems, size) {
         if (!myItems || 
@@ -57,7 +57,7 @@ const ItemList = ({items, className, numItemsPerRow, title, description, handleM
                     ))}                                    
                 </div>
             ))}
-            <div>
+            <div className={shouldHideLoadMore ? 'hidden' : ''}>
                 <div style={{'width':'100px', 'margin' : 'auto'}}><Button onClick={handleMoreItems}>Load More</Button></div>
             </div>
         </div>
@@ -71,7 +71,8 @@ ItemList.propTypes = {
     description: PropTypes.string,
     numItemsPerRow: PropTypes.number.isRequired,
     handleMoreItems: PropTypes.func,
-    category: PropTypes.string.isRequired
+    category: PropTypes.string.isRequired,
+    shouldHideLoadMore: PropTypes.bool.isRequired
 }
 
 

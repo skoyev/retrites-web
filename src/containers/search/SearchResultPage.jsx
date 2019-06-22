@@ -65,6 +65,7 @@ class SearchResultPage extends React.Component {
         const { itemType } = this.props.match.params;
         const { items } = this.props;
         const { numItemsPerRow } = this.state;
+        const shouldHideLoadMore = false;
 
         return (
          <div className="search">
@@ -76,6 +77,7 @@ class SearchResultPage extends React.Component {
                 <Content>
                     <ItemList items={items} 
                               category={itemType}
+                              shouldHideLoadMore={shouldHideLoadMore} 
                               numItemsPerRow={numItemsPerRow}
                               handleMoreItems={this.handleMoreItems}/>
                 </Content>
