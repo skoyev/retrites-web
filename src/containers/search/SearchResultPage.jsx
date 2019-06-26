@@ -8,6 +8,7 @@ import { SearchHeader, SearchResultListing, ItemList } from "../../components/pu
 import { SearchBar } from "../../components/public/search";
 import '../style/SearchResultPage.css';
 import {itemActions} from '../../store/action'
+import { constants } from 'fs';
 
 class SearchResultPage extends React.Component {
 
@@ -19,11 +20,20 @@ class SearchResultPage extends React.Component {
             recordsPerPage: 10,
             numItemsPerRow: 4,
             searchText: '',
-            delay: 1500
+            delay: 1500,
+            priceFrom: 0,
+            priceTo: 0,
+            fromDate: null,
+            toDate: null
         }
 
         this.handleMoreItems = this.handleMoreItems.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
+        this.handleSubmitSearch = this.handleSubmitSearch.bind(this);
+
+        this.handlePriceFromChange = this.handlePriceFromChange.bind(this);
+        this.handlePriceToChange = this.handlePriceToChange.bind(this);
+        this.onDateRangeChange = this.onDateRangeChange.bind(this);        
     }
 
     componentDidMount() {
@@ -37,11 +47,22 @@ class SearchResultPage extends React.Component {
 
     loadItems() {
         const {itemType} = this.props.match.params;
-        const {recordsPerPage, searchText} = this.state
+        const {recordsPerPage, searchText, priceFrom, priceTo, fromDate, toDate} = this.state
         const { items } = this.props;
 
-        this.props.findByType(itemType, recordsPerPage, 
-            (searchText === '') ? items.length : 0, searchText)                
+        let fromDateFormatted = fromDate ? new Date(fromDate) : '';
+        let fromDateFormattedDate = fromDate ? fromDateFormatted.getFullYear() + "/" + (fromDateFormatted.getMonth() + 1) + "/" + fromDateFormatted.getDate() : '';
+
+        let toDateFormatted = toDate ? new Date(toDate) : '';
+        let toDateFormattedDate = toDate ? toDateFormatted.getFullYear() + "/" + (toDateFormatted.getMonth() + 1) + "/" + toDateFormatted.getDate() : '';
+
+        this.props.findByType(itemType, 
+                              recordsPerPage, 
+                              (searchText === '') ? items.length : 0, searchText,
+                              (priceFrom && priceFrom > 0) ? priceFrom : '',
+                              (priceTo && priceTo > 0) ? priceTo : '',
+                              fromDate ? fromDateFormattedDate : '',
+                              toDate ? toDateFormattedDate : '')                
 
         this.setState({totalRecordsLoaded : items.length + recordsPerPage})
     }
@@ -59,7 +80,28 @@ class SearchResultPage extends React.Component {
             this.loadItems();
         }, this.state.delay);          
     };
+
+    handleSubmitSearch (event) {        
+        this.loadItems();
+        event.preventDefault();
+    }
         
+    handlePriceFromChange (event) {
+        this.setState({priceFrom:event.target.value})
+    }
+
+    handlePriceToChange (event) {
+        this.setState({priceTo:event.target.value})
+    }
+
+    onDateRangeChange(value) {
+        if(value && value.length == 2){
+            this.setState({fromDate:value[0].toDate(), toDate:value[1].toDate()})
+        } else {
+            this.setState({fromDate:null, toDate:null})
+        }       
+    }
+
     render() {
         const { Header, Footer, Sider, Content } = Layout;
         const { itemType } = this.props.match.params;
@@ -72,7 +114,10 @@ class SearchResultPage extends React.Component {
              <Layout style={{background:'none'}}>
                 <Header className="sticky" style={{zIndex:10, backgroundColor:'#ffffff'}}>
                     <SearchHeader title="Reatreat In Mind" handleSearch={this.handleSearch}/>
-                    <SearchBar/>
+                    <SearchBar handleSubmitSearch={this.handleSubmitSearch}
+                               handlePriceFromChange={this.handlePriceFromChange}
+                               handlePriceToChange={this.handlePriceToChange}
+                               onDateRangeChange={this.onDateRangeChange}/>
                 </Header>                
                 <Content>
                     <ItemList items={items} 

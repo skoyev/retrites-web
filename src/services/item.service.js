@@ -13,8 +13,8 @@ const requestOptions = {
     headers: { 'Content-Type': 'application/json' }        
 };
 
-function findByType (type, count, startFromNum, searchByName) {
-    return fetch(`/items?type=${type}&count=${count}&startFromCount=${startFromNum}&name=${searchByName}`, requestOptions);
+function findByType (type, count, startFromNum, searchByName, priceFrom, priceTo, fromDate, toDate) {
+    return fetch(`/items?type=${type}&count=${count}&startFromCount=${startFromNum}&name=${searchByName}&priceFrom=${priceFrom}&priceTo=${priceTo}&fromDate=${fromDate}&toDate=${toDate}`, requestOptions);
 }
 
 function loadItems(){

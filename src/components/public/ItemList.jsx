@@ -49,7 +49,8 @@ const ItemList = ({items, className, numItemsPerRow, title, description, handleM
                                     <h5 class="card-title card-font" style={{'display' : item.title ? 'block' : 'none'}}>{item.title ? item.title : ''}</h5>
                                     <h5 class="card-title card-font" style={{'display' : item.title_center ? 'block' : 'none'}}>{item.title_center ? item.title_center : ''}</h5>
                                     <h5 class="card-title card-font-2 margin-top-4" style={{'display' : item.title_bottom ? 'block' : 'none'}}>{item.title_bottom ? item.title_bottom : ''}</h5>
-                                    <div class="card-title card-font-3 margin-top-4" style={{'display' : item.price ? 'block' : 'none'}}>{item.price ? item.price : ''}</div>
+                                    <div class="card-title card-font-3 margin-top-4" style={{'display' : item.price ? 'block' : 'none'}}>{item.price ? '$' + item.price + '/per course': ''}</div>
+                                    <div class="card-title card-font-3 margin-top-4" style={{'display' : item.start_date ? 'block' : 'none'}}>{item.start_date ? item.start_date + '/' + item.duration + ' days': ''}</div>
                                     <p class="card-text">{item.description}</p>                                    
                                 </div>                                
                             </div>            

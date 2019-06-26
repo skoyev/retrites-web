@@ -14,9 +14,9 @@ export const itemActions = {
     findByType
 };
 
-export function findByType(type, count, startFromNum, searchByName){
+export function findByType(type, count, startFromNum, searchByName, priceFrom, priceTo, fromDate, toDate){
     return dispatch => {
-        return itemService.findByType(type, count, startFromNum, searchByName).then(res => {
+        return itemService.findByType(type, count, startFromNum, searchByName, priceFrom, priceTo, fromDate, toDate).then(res => {
             if(res.ok){
                 dispatch(fetchItemsSuccess(res.items))    
             } else {

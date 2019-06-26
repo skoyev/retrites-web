@@ -42,3 +42,8 @@
 .hidden {
     display: none;
 }
+
+.card-no:hover {
+    background-color: #f3f0f0;
+    cursor: pointer;
+}

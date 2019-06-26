@@ -2,7 +2,7 @@
   "name": "retrites",
   "version": "0.1.0",
   "private": true,
-  "scripts": {    
+  "scripts": {
     "build-css": "node-sass src/ -o src/",
     "watch-css": "npm run build-css && node-sass src/ -o src/",
     "start": "react-scripts start npm run build-css",
@@ -29,8 +29,8 @@
     "history": "4.7.2",
     "normalize.css": "8.0.0",
     "prop-types": "15.7.2",
-    "react": "16.4.1",
-    "react-dom": "16.4.1",
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
     "react-localize-redux": "3.5.2",
     "react-redux": "5.0.7",
     "react-router-dom": "4.3.1",

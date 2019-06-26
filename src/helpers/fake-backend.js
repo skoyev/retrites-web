@@ -13,46 +13,46 @@ let items = [
 
 let searchResult = {
     yoga: [
-        {id:1, title_center: 'Center 1', title_bottom: 'Bottom 1', price: '$193 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:2, title_center: 'Center 2', title_bottom: 'Bottom 2', price: '$293 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:3, title_center: 'Center 3', title_bottom: 'Bottom 3', price: '$143 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:4, title_center: 'Center 4', title_bottom: 'Bottom 4', price: '$233 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:5, title_center: 'Center 5', title_bottom: 'Bottom 5', price: '$643 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:6, title_center: 'Center 6', title_bottom: 'Bottom 6', price: '$193 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:7, title_center: 'Center 7', title_bottom: 'Bottom 7', price: '$293 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:8, title_center: 'Center 8', title_bottom: 'Bottom 8', price: '$143 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:9, title_center: 'Center 9', title_bottom: 'Bottom 9', price: '$233 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:10, title_center: 'Center 10', title_bottom: 'Bottom 10', price: '$643 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:11, title_center: 'Center 11', title_bottom: 'Bottom 11', price: '$193 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:12, title_center: 'Center 12', title_bottom: 'Bottom 12', price: '$293 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:13, title_center: 'Center 13', title_bottom: 'Bottom 13', price: '$143 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:14, title_center: 'Center 14', title_bottom: 'Bottom 14', price: '$233 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:15, title_center: 'Center 15', title_bottom: 'Bottom 15', price: '$643 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:16, title_center: 'Center 16', title_bottom: 'Bottom 16', price: '$193 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:17, title_center: 'Center 17', title_bottom: 'Bottom 17', price: '$293 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:18, title_center: 'Center 18', title_bottom: 'Bottom 18', price: '$143 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:19, title_center: 'Center 19', title_bottom: 'Bottom 19', price: '$233 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:20, title_center: 'Center 20', title_bottom: 'Bottom 20', price: '$643 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:21, title_center: 'Center 1', title_bottom: 'Bottom 21', price: '$193 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:22, title_center: 'Center 2', title_bottom: 'Bottom 22', price: '$293 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:23, title_center: 'Center 3', title_bottom: 'Bottom 23', price: '$143 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:24, title_center: 'Center 4', title_bottom: 'Bottom 24', price: '$233 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:25, title_center: 'Center 5', title_bottom: 'Bottom 25', price: '$643 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:26, title_center: 'Center 6', title_bottom: 'Bottom 26', price: '$193 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:27, title_center: 'Center 7', title_bottom: 'Bottom 27', price: '$293 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:28, title_center: 'Center 8', title_bottom: 'Bottom 28', price: '$143 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:29, title_center: 'Center 9', title_bottom: 'Bottom 29', price: '$233 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:30, title_center: 'Center 10', title_bottom: 'Bottom 30', price: '$643 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:31, title_center: 'Center 11', title_bottom: 'Bottom 31', price: '$193 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:32, title_center: 'Center 12', title_bottom: 'Bottom 32', price: '$293 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:33, title_center: 'Center 13', title_bottom: 'Bottom 33', price: '$143 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:34, title_center: 'Center 14', title_bottom: 'Bottom 34', price: '$233 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:35, title_center: 'Center 15', title_bottom: 'Bottom 35', price: '$643 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:36, title_center: 'Center 16', title_bottom: 'Bottom 36', price: '$193 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:37, title_center: 'Center 17', title_bottom: 'Bottom 37', price: '$293 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:38, title_center: 'Center 18', title_bottom: 'Bottom 38', price: '$143 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:39, title_center: 'Center 19', title_bottom: 'Bottom 39', price: '$233 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
-        {id:40, title_center: 'Center 20', title_bottom: 'Bottom 40', price: '$643 per course', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'}
+        {id:1, start_date:"2018/08/01", duration:"8", title_center: 'Center 1', title_bottom: 'Bottom 1', price: '1', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:2, start_date:"2018/08/02", duration:"8",title_center: 'Center 2', title_bottom: 'Bottom 2', price: '3', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:3, start_date:"2018/08/03", duration:"8",title_center: 'Center 3', title_bottom: 'Bottom 3', price: '143', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:4, start_date:"2018/08/04", duration:"8",title_center: 'Center 4', title_bottom: 'Bottom 4', price: '233', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:5, start_date:"2018/08/05", duration:"8",title_center: 'Center 5', title_bottom: 'Bottom 5', price: '643', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:6, start_date:"2018/08/06", duration:"8",title_center: 'Center 6', title_bottom: 'Bottom 6', price: '193', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:7, start_date:"2018/08/07", duration:"8",title_center: 'Center 7', title_bottom: 'Bottom 7', price: '293', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:8, start_date:"2018/08/08", duration:"8",title_center: 'Center 8', title_bottom: 'Bottom 8', price: '143', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:9, start_date:"2018/08/09", duration:"8",title_center: 'Center 9', title_bottom: 'Bottom 9', price: '233', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:10, start_date:"07/08/2018", duration:"8",title_center: 'Center 10', title_bottom: 'Bottom 10', price: '643', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:11, start_date:"07/04/2018", duration:"8",title_center: 'Center 11', title_bottom: 'Bottom 11', price: '193', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:12, start_date:"07/08/2018", duration:"8",title_center: 'Center 12', title_bottom: 'Bottom 12', price: '293', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:13, start_date:"07/02/2018", duration:"8",title_center: 'Center 13', title_bottom: 'Bottom 13', price: '143', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:14, start_date:"07/02/2018", duration:"8",title_center: 'Center 14', title_bottom: 'Bottom 14', price: '233', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:15, start_date:"07/08/2018", duration:"8",title_center: 'Center 15', title_bottom: 'Bottom 15', price: '643', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:16, start_date:"07/08/2018", duration:"8",title_center: 'Center 16', title_bottom: 'Bottom 16', price: '193', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:17, start_date:"07/04/2018", duration:"8",title_center: 'Center 17', title_bottom: 'Bottom 17', price: '293', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:18, start_date:"07/08/2018", duration:"8",title_center: 'Center 18', title_bottom: 'Bottom 18', price: '143', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:19, start_date:"07/08/2018", duration:"8",title_center: 'Center 19', title_bottom: 'Bottom 19', price: '233', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:20, start_date:"07/08/2018", duration:"8",title_center: 'Center 20', title_bottom: 'Bottom 20', price: '643', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:21, start_date:"07/08/2018", duration:"8",title_center: 'Center 1', title_bottom: 'Bottom 21', price: '193', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:22, start_date:"07/08/2018", duration:"8",title_center: 'Center 2', title_bottom: 'Bottom 22', price: '293', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:23, start_date:"07/08/2018", duration:"8",title_center: 'Center 3', title_bottom: 'Bottom 23', price: '143', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:24, start_date:"07/08/2018", duration:"8",title_center: 'Center 4', title_bottom: 'Bottom 24', price: '233', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:25, start_date:"07/08/2018", duration:"8",title_center: 'Center 5', title_bottom: 'Bottom 25', price: '643', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:26, start_date:"07/08/2018", duration:"8",title_center: 'Center 6', title_bottom: 'Bottom 26', price: '193', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:27, start_date:"07/08/2018", duration:"8",title_center: 'Center 7', title_bottom: 'Bottom 27', price: '293', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:28, start_date:"07/08/2018", duration:"8",title_center: 'Center 8', title_bottom: 'Bottom 28', price: '143', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:29, start_date:"07/08/2018", duration:"8",title_center: 'Center 9', title_bottom: 'Bottom 29', price: '233', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:30, start_date:"07/08/2018", duration:"8",title_center: 'Center 10', title_bottom: 'Bottom 30', price: '643', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:31, start_date:"07/08/2018", duration:"8",title_center: 'Center 11', title_bottom: 'Bottom 31', price: '193', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:32, start_date:"07/08/2018", duration:"8",title_center: 'Center 12', title_bottom: 'Bottom 32', price: '293', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:33, start_date:"07/08/2018", duration:"8",title_center: 'Center 13', title_bottom: 'Bottom 33', price: '143', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:34, start_date:"07/08/2018", duration:"8",title_center: 'Center 14', title_bottom: 'Bottom 34', price: '233', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:35, start_date:"07/08/2018", duration:"8",title_center: 'Center 15', title_bottom: 'Bottom 35', price: '$643', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:36, start_date:"07/08/2018", duration:"8",title_center: 'Center 16', title_bottom: 'Bottom 36', price: '193', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:37, start_date:"02/08/2018", duration:"8",title_center: 'Center 17', title_bottom: 'Bottom 37', price: '293', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:38, start_date:"02/08/2018", duration:"8",title_center: 'Center 18', title_bottom: 'Bottom 38', price: '143', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:39, start_date:"02/08/2018", duration:"8",title_center: 'Center 19', title_bottom: 'Bottom 39', price: '233', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
+        {id:40, start_date:"02/08/2018", duration:"8",title_center: 'Center 20', title_bottom: 'Bottom 40', price: '643', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'}
     ],
     meditation: [],
 }
@@ -95,18 +95,35 @@ function getItemsByType(resolve, reject, url, opts){
     let count = data[1].split('=')[1];    
     let startFrom = data[2].split('=')[1];    
     let name = data[3].split('=')[1];    
+    let priceFrom = data[4].split('=')[1];    
+    let priceTo = data[5].split('=')[1];    
+    let fromDate = data[6].split('=')[1];    
+    let toDate = data[7].split('=')[1];    
 
-    if( type && count && startFrom){
-        let res = []
-        if(name){
-            res = searchResult[type].filter(item => item.title_center.includes(name))
-            if(res && res.length > 0) {
-                res = res.slice(0, (parseInt(count) + parseInt(startFrom)));    
+    if(type && count && startFrom){        
+        let res = searchResult[type].filter(item => {
+            let resSearch = true;
+            if(name) {
+                resSearch = item.title_center.includes(name);
             }
-        } else {
-            res = searchResult[type].slice(0, (parseInt(count) + parseInt(startFrom)));
-        }        
-        resolve({ ok: true, items: res });
+
+            if(priceFrom && priceTo){
+                resSearch = (parseInt(item.price) >= parseInt(priceFrom)) && (parseInt(item.price) <= parseInt(priceTo));
+            }
+
+            if(fromDate && toDate){
+                let start_date = new Date(item.start_date).getTime();
+                let from = new Date(fromDate).getTime();
+                let to = new Date(toDate).getTime();
+                console.log(start_date >= from);
+                console.log(start_date <= to);
+                resSearch = start_date >= from && start_date <= to;
+            }
+
+            return resSearch;
+        }).slice(0, (parseInt(count) + parseInt(startFrom)));
+
+        resolve({ ok: true, items: res });        
     } else {
         reject('Type is null');
     }
