@@ -1,0 +1,10 @@
+.breadcrumb {
+    padding: 12px;
+    border-top: 1px solid rgb(195, 194, 194);
+    border-bottom: 1px solid rgb(195, 194, 194);
+    background-color: rgb(255, 255, 255);
+}
+
+.top {
+    margin-top: 40px;
+}

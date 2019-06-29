@@ -32,10 +32,10 @@ const ItemList = ({items, className, numItemsPerRow, title, description, handleM
                     {items.map((item, index) => (
                         <div className={index == 0 ? 'card-no col full-width width-295' : 'card-no col offset-ssm-1 full-width width-295'}>                            
                             <div className="img-container">                                
-                                <Link to={'/' + category + '/' +item.id}>
+                                <Link to={'/item/' + item.id + '?category=' + category}>
                                     <img className="card-img-top" style={{maxHeight:'220px', cursor:'pointer'}} src={item.picture} alt="Card image cap"></img>                                
                                 </Link>                                
-                                <div class="centered">
+                                <div className="centered">
                                     {item.name && item.name.includes(".") ? 
                                         <Translate>
                                             {({ translate }) =>
@@ -45,13 +45,13 @@ const ItemList = ({items, className, numItemsPerRow, title, description, handleM
                                         <Link to="/" className="btn btn-link d-inline fancy-text">{item.name}</Link>
                                     }                                   
                                 </div>
-                                <div class="card-body-no">
-                                    <h5 class="card-title card-font" style={{'display' : item.title ? 'block' : 'none'}}>{item.title ? item.title : ''}</h5>
-                                    <h5 class="card-title card-font" style={{'display' : item.title_center ? 'block' : 'none'}}>{item.title_center ? item.title_center : ''}</h5>
-                                    <h5 class="card-title card-font-2 margin-top-4" style={{'display' : item.title_bottom ? 'block' : 'none'}}>{item.title_bottom ? item.title_bottom : ''}</h5>
-                                    <div class="card-title card-font-3 margin-top-4" style={{'display' : item.price ? 'block' : 'none'}}>{item.price ? '$' + item.price + '/per course': ''}</div>
-                                    <div class="card-title card-font-3 margin-top-4" style={{'display' : item.start_date ? 'block' : 'none'}}>{item.start_date ? item.start_date + '/' + item.duration + ' days': ''}</div>
-                                    <p class="card-text">{item.description}</p>                                    
+                                <div className="card-body-no">
+                                    <h5 className="card-title card-font" style={{'display' : item.title ? 'block' : 'none'}}>{item.title ? item.title : ''}</h5>
+                                    <h5 className="card-title card-font" style={{'display' : item.title_center ? 'block' : 'none'}}>{item.title_center ? item.title_center : ''}</h5>
+                                    <h5 className="card-title card-font-2 margin-top-4" style={{'display' : item.title_bottom ? 'block' : 'none'}}>{item.title_bottom ? item.title_bottom : ''}</h5>
+                                    <div className="card-title card-font-3 margin-top-4" style={{'display' : item.price ? 'block' : 'none'}}>{item.price ? '$' + item.price + '/per course': ''}</div>
+                                    <div className="card-title card-font-3 margin-top-4" style={{'display' : item.start_date ? 'block' : 'none'}}>{item.start_date ? item.start_date + '/' + item.duration + ' days': ''}</div>
+                                    <p className="card-text">{item.description}</p>                                    
                                 </div>                                
                             </div>            
                         </div>

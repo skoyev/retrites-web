@@ -4,13 +4,16 @@ import { Link } from 'react-router-dom';
 import { itemActions } from '../../store/action';
 import { connect } from 'react-redux';
 import { withLocalize } from "react-localize-redux";
-import RetreatDetailHeader from '../../components/common/RetreatDetailHeader';
 import RetreatDetails from '../../components/public/retreat/RetreatDetails';
 import RetreatBreadcrumb from '../../components/public/retreat/RetreatBreadcrumb';
 import RetreatPhotoAlbum from '../../components/public/retreat/RetreatPhotoAlbum';
 import RetreatDetailsSummary from '../../components/public/retreat/RetreatDetailsSummary';
 import RetreatBookSection from '../../components/public/retreat/RetreatBookSection';
 import { history } from '../../helpers';
+import { Layout, Button } from 'antd';
+import Header from 'antd/lib/calendar/Header';
+import SearchHeader from '../../components/public/search/SearchHeader';
+import '../style/RetreateDetailPage.css'
 
 class RetreateDetailPage extends React.Component {
 
@@ -18,11 +21,13 @@ class RetreateDetailPage extends React.Component {
         super(props);
 
         this.handleChange = this.handleChange.bind(this);
+        this.onBack = this.onBack.bind(this);
     }  
     
     componentDidMount() {
         let {match : {params}} = this.props;
         let itemID = params.itemID;
+
         const { fetchByID } = this.props;
         if(itemID){
             fetchByID(itemID);
@@ -35,44 +40,44 @@ class RetreateDetailPage extends React.Component {
     }
 
     onBack(event){
+        let {match : {params}, location : {search}} = this.props;
+        let category = search.split('=')[1];
+
         event.preventDefault();
-        history.push('/');
+        console.log('onBack');
+        history.push('/items/' + category);
     }
 
     render() {      
-        let {match : {params}} = this.props;
-        console.log(params.itemID);
+        let {match : {params}, location : {search}} = this.props;
+        //console.log(params.itemID);
+        let category = search.split('=')[1];
 
         const { item  } = this.props;
-        //const { user, submitted } = this.state;
+        const { Header, Footer, Sider, Content } = Layout;
         
         return (
             <div>
-                <div className="row">
-                    <RetreatDetailHeader text="Header"></RetreatDetailHeader>
-                </div>                
-                <div className="row">
-                    <RetreatBreadcrumb item={item}></RetreatBreadcrumb>
-                </div>
-                <div className="row">
-                    <RetreatPhotoAlbum item={item}></RetreatPhotoAlbum>
-                </div>
-                <div className="row">
-                    <div className="col-md-8">
-                        <RetreatDetails item={item}></RetreatDetails>
-                    </div>
-                    <div className="col-md-4">
-                        <RetreatBookSection item={item}></RetreatBookSection>
-                        <RetreatDetailsSummary item={item}></RetreatDetailsSummary>
-                    </div>
-                </div>
-                <div className="row">
-                    <Translate>
-                        {({ translate }) =>
-                            <button type="button" class="btn btn-outline-info" onClick={this.onBack}>{translate('button.go-back')}</button>
+                <Layout style={{background:'none'}}>
+                    <Header className="sticky" style={{zIndex:10, backgroundColor:'#ffffff'}}>
+                        <SearchHeader title="Retriete In Mind"></SearchHeader>
+                        <Translate>
+                        {
+                            ({ translate }) =>
+                            <RetreatBreadcrumb item={item}
+                                               buttonName={translate("label.goback")}
+                                               onBack={this.onBack}>                            
+                            </RetreatBreadcrumb>
                         }
-                    </Translate>
-                </div>
+                        </Translate>
+                    </Header>                
+                    <Content className="top">
+                        <RetreatPhotoAlbum item={item}></RetreatPhotoAlbum>
+                        <RetreatDetails item={item}></RetreatDetails>
+                        <RetreatBookSection item={item}></RetreatBookSection>
+                        <RetreatDetailsSummary item={item}></RetreatDetailsSummary>                        
+                    </Content>
+                </Layout> 
             </div>
         );
     }
@@ -89,5 +94,4 @@ function mapStateToProps(state) {
     };
 }
 
-//export default withLocalize(connect(mapStateToProps, mapDispatchToProps)(RetreateDetailPage));
-export default connect(mapStateToProps, mapDispatchToProps)(RetreateDetailPage);
+export default withLocalize(connect(mapStateToProps, mapDispatchToProps)(RetreateDetailPage));

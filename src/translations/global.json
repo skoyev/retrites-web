@@ -28,7 +28,8 @@
       "mexico":["Mexico",""],
       "costarica":["Costa Rica",""],
       "peru":["Peru",""],
-      "california":["California",""]
+      "california":["California",""],
+      "goback":["Go Back",""]
     },
 
     "button": {

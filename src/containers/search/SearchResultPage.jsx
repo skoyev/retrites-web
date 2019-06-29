@@ -2,7 +2,7 @@ import React from 'react';
 import { userActions } from '../../store/action';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
-import { Translate } from "react-localize-redux";
+import { withLocalize, Translate } from "react-localize-redux";
 import { Row, Layout } from "antd";
 import { SearchHeader, SearchResultListing, ItemList } from "../../components/public";
 import { SearchBar } from "../../components/public/search";
@@ -142,4 +142,6 @@ const mapDispatchToProps = {
     ...itemActions
 };
   
-export default connect(mapStateToProps, mapDispatchToProps)(SearchResultPage);
+//export default connect(mapStateToProps, mapDispatchToProps)(SearchResultPage);
+
+export default withLocalize(connect(mapStateToProps, mapDispatchToProps)(SearchResultPage));
