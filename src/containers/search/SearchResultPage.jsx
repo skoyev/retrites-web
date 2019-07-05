@@ -9,6 +9,8 @@ import { SearchBar } from "../../components/public/search";
 import '../style/SearchResultPage.css';
 import {itemActions} from '../../store/action'
 import { constants } from 'fs';
+import globalTranslations from "../../translations/global.json";
+import { renderToStaticMarkup } from "react-dom/server";
 
 class SearchResultPage extends React.Component {
 
@@ -26,6 +28,15 @@ class SearchResultPage extends React.Component {
             fromDate: null,
             toDate: null
         }
+
+        this.props.initialize({
+            languages: [
+                {name : "English", code: "en"},
+                {name : "French", code: "fr"}
+            ],
+            translation: globalTranslations,
+            options: { renderToStaticMarkup },
+        });        
 
         this.handleMoreItems = this.handleMoreItems.bind(this);
         this.handleSearch = this.handleSearch.bind(this);

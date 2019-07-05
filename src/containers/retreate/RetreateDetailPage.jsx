@@ -10,21 +10,45 @@ import RetreatPhotoAlbum from '../../components/public/retreat/RetreatPhotoAlbum
 import RetreatDetailsSummary from '../../components/public/retreat/RetreatDetailsSummary';
 import RetreatBookSection from '../../components/public/retreat/RetreatBookSection';
 import { history } from '../../helpers';
-import { Layout, Button } from 'antd';
+import { Layout, Button, Row, Col, Modal } from 'antd';
 import Header from 'antd/lib/calendar/Header';
 import SearchHeader from '../../components/public/search/SearchHeader';
-import '../style/RetreateDetailPage.css'
+import '../style/RetreateDetailPage.css';
+import { renderToStaticMarkup } from "react-dom/server";
+import globalTranslations from "../../translations/global.json";
 
 class RetreateDetailPage extends React.Component {
 
-    constructor(props) {
+    constructor(props, state) {
         super(props);
 
+        this.state = {
+            visible: false,
+            formEmail: '',
+            formName: '',
+            formDetails: '',
+            formDescription: ''
+        };        
+
+        this.props.initialize({
+            languages: [
+                {name : "English", code: "en"},
+                {name : "French", code: "fr"}
+            ],
+            translation: globalTranslations,
+            options: { renderToStaticMarkup },
+        });   
+        
         this.handleChange = this.handleChange.bind(this);
         this.onBack = this.onBack.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
+        this.handleSubmitBookNow = this.handleSubmitBookNow.bind(this);
+        this.handleFormEmailChange = this.handleFormEmailChange.bind(this);
+        this.handleFormNameChange = this.handleFormNameChange.bind(this);
+        this.handleFormDescriptionChange = this.handleFormDescriptionChange.bind(this);
     }  
     
-    componentDidMount() {
+    componentWillMount() {
         let {match : {params}} = this.props;
         let itemID = params.itemID;
 
@@ -48,19 +72,73 @@ class RetreateDetailPage extends React.Component {
         history.push('/items/' + category);
     }
 
+    handleSearch(e){
+
+    }
+
+    handleOk = e => {
+        this.setState({
+          visible: false,
+        });
+
+        this.props.history.push(`/`);
+    };
+    
+    handleCancel = e => {
+        this.setState({
+          visible: false,
+        });
+    };    
+
+    handleSubmitBookNow(e) {
+        console.log('handleSubmitBookNow');
+        e.preventDefault();
+        const {formEmail, formName, formDescription} = this.state;
+
+        console.log(`${formEmail}, ${formName}, ${formDescription}`);
+
+        this.setState({
+            visible: true
+        });
+    }
+
+    handleFormEmailChange(e) {
+        this.setState({
+            formEmail: e.target.value
+        });
+    }
+
+    handleFormDescriptionChange(e) {
+        this.setState({
+            formDescription: e.target.value
+        });
+    }
+
+    handleFormNameChange(e) {
+        this.setState({
+            formName: e.target.value
+        });
+    }
+
     render() {      
         let {match : {params}, location : {search}} = this.props;
-        //console.log(params.itemID);
         let category = search.split('=')[1];
 
         const { item  } = this.props;
+
+        if(!item) {
+            return null;
+        }
+
         const { Header, Footer, Sider, Content } = Layout;
         
         return (
             <div>
                 <Layout style={{background:'none'}}>
                     <Header className="sticky" style={{zIndex:10, backgroundColor:'#ffffff'}}>
-                        <SearchHeader title="Retriete In Mind"></SearchHeader>
+                        <SearchHeader title="Retriete In Mind"
+                                      handleSearch={this.handleSearch}
+                        ></SearchHeader>
                         <Translate>
                         {
                             ({ translate }) =>
@@ -72,12 +150,40 @@ class RetreateDetailPage extends React.Component {
                         </Translate>
                     </Header>                
                     <Content className="top">
-                        <RetreatPhotoAlbum item={item}></RetreatPhotoAlbum>
-                        <RetreatDetails item={item}></RetreatDetails>
-                        <RetreatBookSection item={item}></RetreatBookSection>
-                        <RetreatDetailsSummary item={item}></RetreatDetailsSummary>                        
+                        <Row>
+                            <Col span={14}>
+                                <Row>
+                                    <RetreatPhotoAlbum item={item}></RetreatPhotoAlbum>
+                                </Row>                                
+                                <Row>
+                                    <RetreatDetails item={item}></RetreatDetails>
+                                </Row>
+                            </Col>
+                            <Col span={8} offset={1}>
+                                <Row style={{marginBottom: '20px'}}>
+                                    <RetreatDetailsSummary item={item}></RetreatDetailsSummary>                        
+                                </Row>
+                                <Row>
+                                    <RetreatBookSection item={item}
+                                                        handleFormEmailChange={this.handleFormEmailChange}
+                                                        handleFormNameChange={this.handleFormNameChange}                                    
+                                                        handleSubmitBookNow={this.handleSubmitBookNow}
+                                                        handleFormDescriptionChange={this.handleFormDescriptionChange}>
+                                    </RetreatBookSection>
+                                </Row>                                
+                            </Col>
+                        </Row>                        
                     </Content>
                 </Layout> 
+
+                <Modal title="Basic Modal"
+                       visible={this.state.visible}
+                       onOk={this.handleOk}
+                       onCancel={this.handleCancel}>
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+                </Modal>
             </div>
         );
     }

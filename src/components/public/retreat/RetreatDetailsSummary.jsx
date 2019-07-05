@@ -1,8 +1,11 @@
 import React from 'react';
+import { Card } from 'antd';
 
 const RetreatDetailsSummary = ({item}) => (
  <div>
-    RetreatDetailsSummary
+    <Card title={'Name:  ' + item.name }>
+      <p>{item.description}</p>
+    </Card>    
 </div>
 );
 
