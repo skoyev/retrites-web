@@ -176,13 +176,13 @@ class RetreateDetailPage extends React.Component {
                     </Content>
                 </Layout> 
 
-                <Modal title="Basic Modal"
+                <Modal title="Request Retreate Availability Details"
                        visible={this.state.visible}
                        onOk={this.handleOk}
                        onCancel={this.handleCancel}>
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
+                    <p>Thank you for booking request for the {item.name}</p>
+                    <p>We will get back to you withing 48 hours!</p>
+                    <p>Retreate Management Team.</p>
                 </Modal>
             </div>
         );

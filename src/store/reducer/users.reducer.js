@@ -48,6 +48,12 @@ export function users(state = INITIAL_STATE, action) {
               return user;
             })
           };
+
+        case userConstants.LOGIN_FAILURE:
+          return {
+            error: action.error
+          };
+
         default:
           return state
     }

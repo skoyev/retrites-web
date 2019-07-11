@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { PrivateRoute } from '../components/common/PrivateRoute';
 import { withLocalize, Translate } from "react-localize-redux";
 import { history } from '../helpers';
-import { LoginPage } from '../containers/login/LoginPage';
+import LoginPage  from '../containers/login/LoginPage';
 import HomePage from '../containers/home/HomePage';
 import RegisterPage  from '../containers/register/RegisterPage';
 import { DashboardPage } from '../containers/dashboard/DashboardPage';
@@ -26,7 +26,7 @@ class App extends React.Component {
                 <LocalizeProvider>
                     <Router history={history}>                    
                         <div>                         
-                            <PrivateRoute exact path="/" component={DashboardPage} />                                
+                            <PrivateRoute exact path="/dashboard" component={DashboardPage} />                                
                             <Route path="/home" component={HomePage} />
                             <Route path="/login" component={LoginPage} />
                             <Route path="/register" component={RegisterPage} />                        

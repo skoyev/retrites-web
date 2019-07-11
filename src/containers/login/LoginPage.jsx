@@ -1,8 +1,11 @@
 import React from 'react';
 import { Translate } from "react-localize-redux";
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { withLocalize } from "react-localize-redux";
+import {userActions} from '../../store/action'
 
-export class LoginPage extends React.Component {
+class LoginPage extends React.Component {
     constructor(props) {
         super(props);
 
@@ -13,7 +16,12 @@ export class LoginPage extends React.Component {
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
-    }    
+        this.handleChange = this.handleChange.bind(this);        
+    }  
+    
+    handleChange(event) {
+        this.setState({ [event.target.name]: event.target.value });
+    }
 
     handleSubmit(e) {
         e.preventDefault();
@@ -28,8 +36,9 @@ export class LoginPage extends React.Component {
     }
 
     render() {
-        //const { user, users } = this.props;
+        const { error } = this.props;
         const { username, password, submitted } = this.state;
+        
         return (
             <div className="container">
                 <div className="row justify-content-center align-items-center new-retreate">
@@ -61,6 +70,9 @@ export class LoginPage extends React.Component {
                                                 <Link to="/" className="btn btn-link d-inline">{translate('public.links.cancel')}</Link>}
                                         </Translate>
                                     </div>
+                                    <div className="form-group">                                            
+                                        {error}
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -70,3 +82,15 @@ export class LoginPage extends React.Component {
         )
     }
 }
+
+const mapDispatchToProps = {    
+    ...userActions
+}; 
+
+function mapStateToProps(state) {
+    return {
+      error: state.users.error
+    };
+}
+
+export default withLocalize(connect(mapStateToProps, mapDispatchToProps)(LoginPage));
