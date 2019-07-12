@@ -5,7 +5,7 @@ import { PublicHeader,
          PublicSearchSingle,
          Section, 
          ItemList} from '../../components/public';
-import Footer from '../../components/common/Footer';
+import AppFooter from '../../components/common/AppFooter';
 
 import { renderToStaticMarkup } from "react-dom/server";
 import { withLocalize, Translate } from "react-localize-redux";
@@ -125,7 +125,7 @@ class HomePage extends React.Component {
                             numItemsPerRow={3}/>
                 </div>
 
-                <Footer text="Footer Text"/>
+                <AppFooter text="Footer Text"/>
             </div>
         )
     }

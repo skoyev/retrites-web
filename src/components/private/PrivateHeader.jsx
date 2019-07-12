@@ -33,11 +33,8 @@ class PrivateHeader extends React.Component {
         const { loggingIn } = this.props;
         const { username, password, submitted } = this.state;
         return (
-            <div className="col-md-6 col-md-offset-3">
-                Private Header
-                <div className="form-group">
-                    <button className="btn btn-primary" onClick={this.handleLogout}>Logout</button>
-                </div>
+            <div className="col-md-12">
+                <button className="btn btn-primary" style={{float:'right', marginTop: 10}} onClick={this.handleLogout}>Logout</button>
             </div>
         );
     }

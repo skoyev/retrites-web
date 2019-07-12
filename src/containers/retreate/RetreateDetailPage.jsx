@@ -81,7 +81,7 @@ class RetreateDetailPage extends React.Component {
           visible: false,
         });
 
-        this.props.history.push(`/`);
+        this.props.history.push(`/home`);
     };
     
     handleCancel = e => {

@@ -35,7 +35,7 @@ function logout() {
     //return { type: userConstants.LOGOUT }; 
     return dispatch => {
         userService.logout();
-        history.push('/');
+        history.push('/home');
     }   
 }
 

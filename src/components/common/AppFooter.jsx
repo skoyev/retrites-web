@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom';
 
-const Footer = ({text}) => {
+const AppFooter = ({text}) => {
     return (
         <div className="row offset-10 footer">
             <div className="col-md-3">
@@ -42,9 +42,9 @@ const Footer = ({text}) => {
     )
 }
 
-Footer.propTypes = {
+AppFooter.propTypes = {
     text: PropTypes.string.isRequired
 }
 
 
-export default Footer;
+export default AppFooter;

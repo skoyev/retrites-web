@@ -22,10 +22,10 @@ class App extends React.Component {
 
     render() {
         return (            
-            <div>                
+            <div style={{height:'100%'}}>                                         
                 <LocalizeProvider>
                     <Router history={history}>                    
-                        <div>                         
+                        <div style={{height:'100%'}}>                         
                             <PrivateRoute exact path="/dashboard" component={DashboardPage} />                                
                             <Route path="/home" component={HomePage} />
                             <Route path="/login" component={LoginPage} />

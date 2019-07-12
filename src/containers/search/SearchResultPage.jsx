@@ -153,6 +153,4 @@ const mapDispatchToProps = {
     ...itemActions
 };
   
-//export default connect(mapStateToProps, mapDispatchToProps)(SearchResultPage);
-
 export default withLocalize(connect(mapStateToProps, mapDispatchToProps)(SearchResultPage));
