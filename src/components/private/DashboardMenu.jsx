@@ -28,7 +28,7 @@ const DashboardMenu = ({handleClickMenu}) => {
                             Amentities
                         </span>
                     }>
-                    <Menu.Item key="1">View Amentities</Menu.Item>
+                    <Menu.Item key="view-amentities" onClick={handleClickMenu}>View Amentities</Menu.Item>
                 </SubMenu>
 
                 <SubMenu
@@ -40,7 +40,7 @@ const DashboardMenu = ({handleClickMenu}) => {
                     </span>
                     }
                 >
-                    <Menu.Item key="5">View Leads</Menu.Item>
+                    <Menu.Item key="view-leads" onClick={handleClickMenu}>View Leads</Menu.Item>
                 </SubMenu>
                 <SubMenu
                     key="report"
@@ -50,7 +50,7 @@ const DashboardMenu = ({handleClickMenu}) => {
                         Reports
                     </span>
                     }>
-                    <Menu.Item key="9">Statistics/Activity</Menu.Item>
+                    <Menu.Item key="report-statistic" onClick={handleClickMenu}>Statistics/Activity</Menu.Item>
                 </SubMenu>
                 </Menu>
         </div>

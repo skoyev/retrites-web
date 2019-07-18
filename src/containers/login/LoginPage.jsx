@@ -63,12 +63,12 @@ class LoginPage extends React.Component {
                                         }
                                     </div>
 
-                                    <div className="form-group">                                            
-                                        <Translate>{({ translate }) =><button className="btn btn-primary">{translate("button.login")}</button>}</Translate>
+                                    <div className="form-group">                                                                                    
                                         <Translate>
                                             {({ translate }) =>
-                                                <Link to="/" className="btn btn-link d-inline">{translate('public.links.cancel')}</Link>}
+                                                <Link to="/home" className="btn btn-link d-inline">{translate('public.links.cancel')}</Link>}
                                         </Translate>
+                                        <Translate>{({ translate }) =><button className="btn btn-primary">{translate("button.login")}</button>}</Translate>                                        
                                     </div>
                                     <div className="form-group">                                            
                                         {error}

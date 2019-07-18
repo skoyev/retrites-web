@@ -86,8 +86,8 @@ class RegisterPage extends React.Component {
                                     }
                                 </div>
                                 <div className="form-group">
-                                    <button className="btn btn-primary">Register</button>
-                                    <Link to="/" className="btn btn-link">Cancel</Link>
+                                    <Link to="/home" className="btn btn-link">Cancel</Link>
+                                    <button className="btn btn-primary">Register</button>                                    
                                 </div>
                             </form>
                         </div>
