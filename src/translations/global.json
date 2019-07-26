@@ -37,7 +37,8 @@
       "cancel": ["Cancel","Cancel Fr"],
       "login": ["Login", "Login Fr"],
       "search": ["Search", "Search Fr"],
-      "go-back": ["Go Back", "Go Back Fr"]
+      "go-back": ["Go Back", "Go Back Fr"],
+      "item": ["Item", "Item Fr"]
     },
   
     "public": {

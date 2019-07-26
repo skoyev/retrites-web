@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types'
 import { Row, Layout, Menu, Icon, Breadcrumb } from 'antd';
+import {pageConstants} from '../../constants';
 
 const { SubMenu } = Menu;
 
@@ -28,7 +29,7 @@ const DashboardMenu = ({handleClickMenu}) => {
                             Amentities
                         </span>
                     }>
-                    <Menu.Item key="view-amentities" onClick={handleClickMenu}>View Amentities</Menu.Item>
+                    <Menu.Item key={pageConstants.AMENITY_CONTENT} onClick={handleClickMenu}>View Amentities</Menu.Item>
                 </SubMenu>
 
                 <SubMenu
@@ -40,7 +41,7 @@ const DashboardMenu = ({handleClickMenu}) => {
                     </span>
                     }
                 >
-                    <Menu.Item key="view-leads" onClick={handleClickMenu}>View Leads</Menu.Item>
+                    <Menu.Item key={pageConstants.LEADS_CONTENT} onClick={handleClickMenu}>View Leads</Menu.Item>
                 </SubMenu>
                 <SubMenu
                     key="report"
@@ -50,7 +51,7 @@ const DashboardMenu = ({handleClickMenu}) => {
                         Reports
                     </span>
                     }>
-                    <Menu.Item key="report-statistic" onClick={handleClickMenu}>Statistics/Activity</Menu.Item>
+                    <Menu.Item key={pageConstants.STATISTIC_CONTENT} onClick={handleClickMenu}>Statistics/Activity</Menu.Item>
                 </SubMenu>
                 </Menu>
         </div>

@@ -29,7 +29,7 @@ export function findByType(type, count, startFromNum, searchByName, priceFrom, p
 }
 
 export function addItemsSuccess() { 
-    history.push('/');    
+    history.push('/dashboard');    
     return { 
         type: 'ADD_ITEM_SUCCESS',
         shouldReloadItems: true
@@ -51,7 +51,7 @@ export function fetchItemsSuccess(items) {
 }
 
 /**
- * Create a new Item
+ * Create a new Item action
  * @param {*} item 
  */
 export function add(item) {
