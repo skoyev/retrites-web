@@ -55,14 +55,16 @@ class PublicHeader extends React.Component {
 
                 <div className="col-md-9"> 
                     <div className="row">
-                        <div className="col-md-7"></div>
-                        <div className="col-md-5 down-35">
+                        <div className="col-md-9"></div>
+                        <div className="col-md-3 down-35">
+                            {/*
                             <div className="d-inline-block">
                                 <Translate>
                                     {({ translate }) =>
                                         <Link to="/new-retreate" className="btn btn-link d-inline">{translate('public.links.addretreate')}</Link>}
                                 </Translate>
                             </div>
+                            */}
                             <div className="d-inline-block">
                                 <Translate>
                                     {({ translate }) =>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Translate } from "react-localize-redux";
 import { Link } from 'react-router-dom';
-import { itemActions } from '../../store/action';
+import { itemActions, leadsActions } from '../../store/action';
 import { connect } from 'react-redux';
 import { withLocalize } from "react-localize-redux";
 import RetreatDetails from '../../components/public/retreat/RetreatDetails';
@@ -46,6 +46,7 @@ class RetreateDetailPage extends React.Component {
         this.handleFormEmailChange = this.handleFormEmailChange.bind(this);
         this.handleFormNameChange = this.handleFormNameChange.bind(this);
         this.handleFormDescriptionChange = this.handleFormDescriptionChange.bind(this);
+        this.handleOk = this.handleOk.bind(this);        
     }  
     
     componentWillMount() {
@@ -79,7 +80,11 @@ class RetreateDetailPage extends React.Component {
     handleOk = e => {
         this.setState({
           visible: false,
-        });
+        });   
+
+        const {formEmail, formName, formDescription} = this.state;
+        
+        this.props.createLead(formName, formEmail, formDescription);
 
         this.props.history.push(`/home`);
     };
@@ -91,11 +96,7 @@ class RetreateDetailPage extends React.Component {
     };    
 
     handleSubmitBookNow(e) {
-        console.log('handleSubmitBookNow');
         e.preventDefault();
-        const {formEmail, formName, formDescription} = this.state;
-
-        console.log(`${formEmail}, ${formName}, ${formDescription}`);
 
         this.setState({
             visible: true
@@ -190,7 +191,8 @@ class RetreateDetailPage extends React.Component {
 } 
 
 const mapDispatchToProps = {    
-    ...itemActions
+    ...itemActions,
+    ...leadsActions
 };  
 
 function mapStateToProps(state) {

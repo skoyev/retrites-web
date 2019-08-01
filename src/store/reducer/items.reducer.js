@@ -1,7 +1,8 @@
 import {itemConstants} from '../../constants';
 
 const INITIAL_STATE = {
-  items: []
+  items: [],
+  shouldReloadItems: false
 };
 
 export function items(state = INITIAL_STATE, action) {

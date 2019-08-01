@@ -3,6 +3,8 @@ import axios from 'axios';
 
 export const itemService = {
     loadItems,
+    updateItem,
+    deleteItem,
     addItem,
     loadItemByID,
     findByType
@@ -19,6 +21,34 @@ function findByType (type, count, startFromNum, searchByName, priceFrom, priceTo
 
 function loadItems(){
     return fetch(`/items`, requestOptions);
+}
+
+function deleteItem(id) {
+    if(!id){
+        console.log('id is null')
+        return;
+    }
+
+    const requestOptions = {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }        
+    };
+
+    return fetch(`/items/${id}`, requestOptions);    
+}
+
+function updateItem(item) {
+    if(!item) {
+        console.log('Error, item is null')
+    }
+
+    const requestOptions = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(item)
+    };
+
+    return fetch(`/items`, requestOptions);    
 }
 
 function addItem(item){

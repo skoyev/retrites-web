@@ -1,7 +1,7 @@
 import { userConstants } from '../../constants';
 
 const INITIAL_STATE = {
-  users: []
+  users: []  
 };
 
 export function users(state = INITIAL_STATE, action) {

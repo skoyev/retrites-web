@@ -6,7 +6,7 @@ import { withLocalize } from "react-localize-redux";
 import { Translate } from "react-localize-redux";
 import { connect } from 'react-redux';
 
-const Aminity = ({items, handleAminityDetails}) => {
+const Aminity = ({items, handleAminityDetails, handleAminityDelete}) => {
     let numItemsPerRow = 4;
     const itemsInRow = chunk(items, numItemsPerRow);
     return (
@@ -21,7 +21,7 @@ const Aminity = ({items, handleAminityDetails}) => {
                      {items.map((item, index) => (
                         <div key={index} style={{display: 'inline-block', marginRight: 20, maxWidth: 250}}>
                             <Card title={<a href="#" onClick={()=>handleAminityDetails(item)}>{item.name}</a>}
-                                  actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="delete" />]}>
+                                  actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon onClick={()=>handleAminityDelete(item)} type="delete" />]}>
                                 <p>{item.description}</p>
                             </Card>                            
                         </div>
@@ -34,7 +34,8 @@ const Aminity = ({items, handleAminityDetails}) => {
 
 Aminity.propTypes = {    
     items: PropTypes.array.isRequired,
-    handleAminityDetails: PropTypes.func.isRequired
+    handleAminityDetails: PropTypes.func.isRequired,
+    handleAminityDelete: PropTypes.func.isRequired
 }
 
 const mapDispatchToProps = {    

@@ -135,7 +135,7 @@ function mapStateToProps(state) {
     console.log(state)
     return {
       items: state.items.items,
-      shouldReloadItems: state.items.shouldReloadItems
+      //shouldReloadItems: state.items.shouldReloadItems
     };
 }
 

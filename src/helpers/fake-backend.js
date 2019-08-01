@@ -11,6 +11,8 @@ let items = [
     {id:8, name:'name8', title: 'Title 8', description: 'Ongoing package (28 days / 27 nights) 300 Hours / 28 Days Meditation Teacher Training Rishikesh IndiaShree Mahesh Heritage ,Govt of India registered', price: 12, currency: '$', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/181425/medium/IMG_1397.jpg', location:''},
 ];
 
+let leads = [];
+
 let searchResult = {
     yoga: [
         {id:1, start_date:"2018/08/01", duration:"8", title_center: 'Center 1', title_bottom: 'Bottom 1', price: '1', picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'},
@@ -57,8 +59,65 @@ let searchResult = {
     meditation: [],
 }
 
+function updateItem(resolve, reject, url, opts) {
+    let params = JSON.parse(opts.body);
+    let id = params.id;
+    if(!id){
+        console.log('id is null');
+        resolve({ ok: false });
+    }
+    let foundItem = items.filter(c => c.id == id)[0];
+    if(foundItem){
+        foundItem.name = params.name;
+        foundItem.email = params.email;
+        foundItem.description = params.description;
+
+    }        
+    resolve({ ok: true });
+}
+
 function getItems(resolve, reject, url, opts) {
     resolve({ ok: true, items: items });
+}
+
+function getLeads(resolve, reject, url, opts) {
+    resolve({ ok: true, leads: leads });
+}
+
+function createLead(resolve, reject, url, opts) {
+    let id = leads.length > 0 ? leads.map(i => i.id).reduce((prev, curr) => prev > curr ? prev : curr) : 1;
+    let params = JSON.parse(opts.body);
+
+    let lead = {
+        id   : ++id, 
+        name : params.name, 
+        details: params.details, 
+        email: params.email};
+
+    leads.push(lead)
+
+    resolve({ ok: true });
+}
+
+function deleteLead(resolve, reject, url, opts) {
+    resolve({ ok: true });
+}
+
+function deleteItem(resolve, reject, url, opts) {
+    let id = parseInt(url.split('/')[2]);
+    if(id){
+        var item = items.filter(c => c.id === id)[0];
+        var index = items.indexOf(item);
+        
+        if (index > -1) {
+            items.splice(index, 1);
+        }        
+    
+        resolve({ ok: true });    
+    } else {
+        console.log('Error deliting item')
+        resolve({ ok: false });    
+    } 
 }
 
 function createItem(resolve, reject, url, opts){
@@ -142,9 +201,39 @@ export function configureFakeBackend() {
                     return;
                 }
 
+                // update item
+                if (url.endsWith('/items') && opts.method === 'PUT') {                    
+                    updateItem(resolve, reject, url, opts)
+                    return;
+                }
+
+                // delete item
+                if (url.startsWith('/items') && opts.method === 'DELETE') {                    
+                    deleteItem(resolve, reject, url, opts)
+                    return;
+                }
+
                 // get items
                 if (url.endsWith('/items') && opts.method === 'GET') {                    
                     getItems(resolve, reject, url, opts)
+                    return;
+                }
+
+                // get leads
+                if (url.endsWith('/leads') && opts.method === 'GET') {                    
+                    getLeads(resolve, reject, url, opts)
+                    return;
+                }
+
+                // create lead
+                if (url.endsWith('/leads') && opts.method === 'POST') {                    
+                    createLead(resolve, reject, url, opts)
+                    return;
+                }
+
+                // delete lead
+                if (url.endsWith('/leads') && opts.method === 'DELETE') {                    
+                    deleteLead(resolve, reject, url, opts)
                     return;
                 }
 

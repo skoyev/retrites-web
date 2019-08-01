@@ -2,6 +2,7 @@ import axios from "axios";
 
 export * from './user.action';
 export * from './item.action';
+export * from './leads.action';
 
 export const ROOT_URL = 'http://localhost:8080';
 

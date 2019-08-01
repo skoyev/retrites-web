@@ -8,6 +8,8 @@ export const itemActions = {
     fetch,
     fetchByID,
     add,
+    update,
+    deleteItem,
     addItemsSuccess,
     fetchItemsSuccess,
     fetchItemSuccess,
@@ -36,6 +38,13 @@ export function addItemsSuccess() {
     }     
 }
 
+export function itemsSuccess() { 
+    return { 
+        type: 'ITEM_SUCCESS',
+        shouldReloadItems: true
+    }     
+}
+
 export function fetchItemSuccess(item){
     return { 
         type: 'ITEM_FETCH_SUCCESS', 
@@ -50,7 +59,43 @@ export function fetchItemsSuccess(items) {
     } 
 }
 
-/**
+/** 
+ * Update Item action
+ * @param {*} item 
+ */
+export function update(item) {
+    return dispatch => {
+        return itemService.updateItem(item).then(res => {
+            if(res.ok){
+                dispatch(itemsSuccess())    
+            } else {
+                throw('Error while create a new item.');
+            }
+        }).catch(error => {
+            throw(error);
+        });
+    }
+}
+
+/** 
+ * Delete Item action
+ * @param {*} item 
+ */
+export function deleteItem(id) {
+    return dispatch => {
+        return itemService.deleteItem(id).then(res => {
+            if(res.ok){
+                dispatch(itemsSuccess())    
+            } else {
+                throw('Error while delete a new item.');
+            }
+        }).catch(error => {
+            throw(error);
+        });
+    }
+}
+
+/** 
  * Create a new Item action
  * @param {*} item 
  */
