@@ -68,6 +68,7 @@ class HomePage extends React.Component {
 
     componentDidMount() {
         this.props.fetch()
+            .then(() => window.scrollTo(0, 0))               
     }
 
     search = () => {

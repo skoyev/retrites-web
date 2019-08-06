@@ -29,5 +29,9 @@ function createLead(name, email, details){
 }
 
 function deleteLead(id){
+    if(!id){
+        console.log('Error. Lead id is requered');
+        return;
+    }
     return fetch(`/leads/${id}`, requestDeleteOptions);
 }

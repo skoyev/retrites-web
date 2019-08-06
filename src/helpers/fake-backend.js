@@ -100,7 +100,14 @@ function createLead(resolve, reject, url, opts) {
 }
 
 function deleteLead(resolve, reject, url, opts) {
-    resolve({ ok: true });
+    let id = parseInt(url.split('/')[2]);
+    if(id){
+        leads = leads.filter(c => c.id !== id);    
+        resolve({ ok: true });    
+    } else {
+        console.log('Error delete lead')
+        resolve({ ok: false });    
+    } 
 }
 
 function deleteItem(resolve, reject, url, opts) {
@@ -115,7 +122,7 @@ function deleteItem(resolve, reject, url, opts) {
     
         resolve({ ok: true });    
     } else {
-        console.log('Error deliting item')
+        console.log('Error delete item')
         resolve({ ok: false });    
     } 
 }
@@ -232,7 +239,7 @@ export function configureFakeBackend() {
                 }
 
                 // delete lead
-                if (url.endsWith('/leads') && opts.method === 'DELETE') {                    
+                if (url.startsWith('/leads') && opts.method === 'DELETE') {                    
                     deleteLead(resolve, reject, url, opts)
                     return;
                 }

@@ -21,10 +21,18 @@ class DashboardPage extends React.Component {
         
         this.state = {
             collapsed: false,
+
+            // Modal windows
+            createEditCustomerModalVisible: false,
             deleteItemModalVisible: false,
+            deleteLeadModalVisible: false,
+            viewLeadModalVisible: false,
+
+            lead: {},
+
             createEditItem: {},
             selectedContentName: 'dashboard',
-            createEditCustomerModalVisible: false,
+            
             menuContentCmps: [
                 //{name:'view-amentities', component: Aminity, params: {items: items, handleAminityDetails: this.handleAminityDetails, shouldUpdateChild:this.shouldUpdateChild, ref:this.child}},
                 {name:pageConstants.AMENITY_CONTENT}, {name:pageConstants.LEADS_CONTENT}, {name:pageConstants.STATISTIC_CONTENT}
@@ -44,16 +52,16 @@ class DashboardPage extends React.Component {
     }   
     
     componentDidMount() {
-        this.props.fetchLeads()
-        // load amentities
         // load leads
+        this.props.fetchLeads();
+        // load amentities        
         this.props.fetch().then( data => {
             this.aminityItems = [...this.props.items]
         });
     }    
 
     handleAminityEdit = () => {
-        
+
     }
 
     handleAminityDetails = (item) => {
@@ -64,11 +72,21 @@ class DashboardPage extends React.Component {
     }
 
     handleLeadEdit = (lead) => {
-
+        this.setState({
+            viewLeadModalVisible: true,
+            lead: lead
+        });
     }
     
-    handleLeadDelete = (id) => {
+    handleLeadDelete = (lead) => {
+        this.setState({
+            deleteLeadModalVisible: true,
+            lead: lead
+        });
+    }
 
+    handleLeadDeleteOk = () => {
+        this.setState({deleteLeadModalVisible: false});
     }
 
     onCollapse = collapsed => {
@@ -173,8 +191,40 @@ class DashboardPage extends React.Component {
         }
     }
 
+    handleLeadViewModalOk = () => {
+        this.setState({
+            viewLeadModalVisible: false,
+        });
+    }
+
+    handleLeadViewModalCancel = () => {
+        this.setState({
+            viewLeadModalVisible: false,
+        });        
+    }
+
+    handleLeadDeleteModalOk = () => {
+        this.setState({
+            deleteLeadModalVisible: false,
+        });      
+        
+        const { lead } = this.state;
+
+        if(lead){
+            this.props.deleteLead(lead.id)                
+        } else {
+            console.log('Selected lead is null');
+        }        
+    }
+
+    handleLeadDeleteModalCancel = () => {
+        this.setState({
+            deleteLeadModalVisible: false,
+        });        
+    }
+
     render() {
-        const { createEditItem } = this.state;
+        const { createEditItem, lead } = this.state;
 
         return (
             <Layout style={{height:'100%'}}>
@@ -238,7 +288,33 @@ class DashboardPage extends React.Component {
                         onOk={this.handleItemDeleteModalOk}
                         onCancel={this.handleItemDeleteModalCancel}>                    
                     <p>Would you like to delete {createEditItem.name}</p>
-                </Modal>                
+                </Modal>   
+
+                {/* Dashboard Delete Lead Modal Window */}
+                <Modal
+                        title="Delete Lead"
+                        visible={this.state.deleteLeadModalVisible}
+                        onOk={this.handleLeadDeleteModalOk}
+                        onCancel={this.handleLeadDeleteModalCancel}>                    
+                    <p>Would you like to delete item with name: <b>{lead.name}</b></p>
+                </Modal>   
+
+                {/* Dashboard View Details Lead Modal Window */}
+                <Modal
+                        title="View Lead Details"
+                        visible={this.state.viewLeadModalVisible}
+                        footer={[
+                            <Row>
+                                <Button key="cancel-button" onClick={this.handleLeadViewModalCancel} htmlType="button">
+                                    OK
+                                </Button>
+                            </Row>
+                        ]}
+>                    
+                    <p>Lead Name: <b>{lead.name}</b></p>
+                    <p>Lead Email: <b>{lead.email}</b></p>
+                    <p>Lead Details: <b>{lead.details}</b></p>
+                </Modal>   
             </Layout>
         )
     }

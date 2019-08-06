@@ -73,7 +73,8 @@ class SearchResultPage extends React.Component {
                               (priceFrom && priceFrom > 0) ? priceFrom : '',
                               (priceTo && priceTo > 0) ? priceTo : '',
                               fromDate ? fromDateFormattedDate : '',
-                              toDate ? toDateFormattedDate : '')                
+                              toDate ? toDateFormattedDate : '')
+                    .then(() => window.scrollTo(0, 0))               
 
         this.setState({totalRecordsLoaded : items.length + recordsPerPage})
     }

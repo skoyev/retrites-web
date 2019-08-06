@@ -35,7 +35,7 @@ const Leads = ({items, handleLeadDelete, handleLeadEdit}) => {
         <span style={{textAlign: 'center'}}>
           <Icon onClick={()=>handleLeadEdit(record)} type="edit" />        
           <Divider type="vertical" />
-          <Icon onClick={()=>handleLeadDelete(record.id)} type="delete" />        
+          <Icon onClick={()=>handleLeadDelete(record)} type="delete" />        
         </span>
       ),
     }
