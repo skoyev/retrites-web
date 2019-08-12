@@ -92,7 +92,10 @@ function createLead(resolve, reject, url, opts) {
         id   : ++id, 
         name : params.name, 
         details: params.details, 
-        email: params.email};
+        email: params.email,
+        status: 'New',
+        postedDate: new Date().toLocaleDateString()
+    };
 
     leads.push(lead)
 

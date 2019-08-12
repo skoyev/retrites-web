@@ -4,7 +4,7 @@ import AppFooter from '../../components/common/AppFooter';
 import { Row, Layout, Menu, Icon, Modal } from 'antd';
 import '../style/DashboardPage.css';
 import DashboardMenu from '../../components/private/DashboardMenu';
-import {Aminity, Leads, Report} from '../../components/private';
+import {Aminity, Leads, Report, Dashboard} from '../../components/private';
 import { Button, Form, Input } from 'antd';
 import { connect } from 'react-redux';
 import { withLocalize } from "react-localize-redux";
@@ -35,7 +35,7 @@ class DashboardPage extends React.Component {
             
             menuContentCmps: [
                 //{name:'view-amentities', component: Aminity, params: {items: items, handleAminityDetails: this.handleAminityDetails, shouldUpdateChild:this.shouldUpdateChild, ref:this.child}},
-                {name:pageConstants.AMENITY_CONTENT}, {name:pageConstants.LEADS_CONTENT}, {name:pageConstants.STATISTIC_CONTENT}
+                {name:pageConstants.AMENITY_CONTENT}, {name:pageConstants.LEADS_CONTENT}, {name:pageConstants.STATISTIC_CONTENT},{name:pageConstants.DASHBOARD_CONTENT}
             ]    
         }
         this.handleClickMenu = this.handleClickMenu.bind(this);
@@ -156,9 +156,13 @@ class DashboardPage extends React.Component {
                 return ([
                     <Report></Report>
                 ]);
+            case pageConstants.DASHBOARD_CONTENT:
+                return ([
+                    <Dashboard></Dashboard>
+                ]);
             default:
                 return ([
-                    <div>Dashboard</div>
+                    <Dashboard></Dashboard>
                 ]);
         }
     }
@@ -313,6 +317,7 @@ class DashboardPage extends React.Component {
 >                    
                     <p>Lead Name: <b>{lead.name}</b></p>
                     <p>Lead Email: <b>{lead.email}</b></p>
+                    <p>Posted Date: <b>{lead.postedDate}</b></p>
                     <p>Lead Details: <b>{lead.details}</b></p>
                 </Modal>   
             </Layout>

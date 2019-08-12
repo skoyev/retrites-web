@@ -16,17 +16,22 @@ const Leads = ({items, handleLeadDelete, handleLeadEdit}) => {
 
   const columns = [
     {
-      title: 'Name',
+      title: '#',      
+      render: (text,record) => items.indexOf(record) > -1 ? items.indexOf(record) + 1 : '',
+    },
+
+    {
+      title: 'Lead Name',
       dataIndex: 'name',
       render: text => <a href="javascript:;">{text}</a>,
     },
     {
-      title: 'Email',
-      dataIndex: 'email',
+      title: 'Message Date Posted',
+      dataIndex: 'postedDate',
     },
     {
-      title: 'Details',
-      dataIndex: 'details',
+      title: 'Status',
+      dataIndex: 'status',
     },
     {
       title: 'Action',

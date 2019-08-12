@@ -21,6 +21,12 @@ const DashboardMenu = ({handleClickMenu}) => {
                 defaultOpenKeys={['sub1']}
                 style={{ height: '100%', backgroundColor: 'inherit' }}>
 
+                <Menu.Item key={pageConstants.DASHBOARD_CONTENT}
+                           onClick={handleClickMenu}>
+                    <Icon type="dashboard" />
+                    Dashboard
+                </Menu.Item>                
+
                 <SubMenu
                     key="Amentities"
                     title={
@@ -53,7 +59,7 @@ const DashboardMenu = ({handleClickMenu}) => {
                     }>
                     <Menu.Item key={pageConstants.STATISTIC_CONTENT} onClick={handleClickMenu}>Statistics/Activity</Menu.Item>
                 </SubMenu>
-                </Menu>
+            </Menu>
         </div>
     )
 }
