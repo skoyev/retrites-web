@@ -4,11 +4,27 @@ import { leadsConstants } from '../../constants';
 export const leadsActions = {
     fetchLeads,
     createLead,
-    deleteLead
+    deleteLead,
+    fetchLeadSummary
 };
 
+function successLeadSummary(leadSummary){ return { type: leadsConstants.LEAD_SUMMARY_FETCH_SUCCESS, leadSummary } }
 function success(leads) { return { type: leadsConstants.LEADS_FETCH_SUCCESS, leads } }
 function failure(error) { return { type: leadsConstants.LEADS_FETCH_FAILURE, error } }
+
+export function fetchLeadSummary() {
+    return dispatch => {
+        leadsService.fetchLeadSummary()
+            .then(
+                data => { 
+                    dispatch(successLeadSummary(data.leadSummary));
+                },
+                error => {
+                    dispatch(failure(error));                    
+                }
+            );
+    };
+}
 
 export function fetchLeads() {
     return dispatch => {

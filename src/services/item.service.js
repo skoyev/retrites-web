@@ -7,7 +7,8 @@ export const itemService = {
     deleteItem,
     addItem,
     loadItemByID,
-    findByType
+    findByType,
+    fetchAmenitySummary
 };
 
 const requestOptions = {
@@ -17,6 +18,10 @@ const requestOptions = {
 
 function findByType (type, count, startFromNum, searchByName, priceFrom, priceTo, fromDate, toDate) {
     return fetch(`/items?type=${type}&count=${count}&startFromCount=${startFromNum}&name=${searchByName}&priceFrom=${priceFrom}&priceTo=${priceTo}&fromDate=${fromDate}&toDate=${toDate}`, requestOptions);
+}
+
+function fetchAmenitySummary(){
+    return fetch(`/amenity/summary`, requestOptions);
 }
 
 function loadItems(){

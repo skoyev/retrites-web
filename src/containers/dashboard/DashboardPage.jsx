@@ -8,7 +8,7 @@ import {Aminity, Leads, Report, Dashboard} from '../../components/private';
 import { Button, Form, Input } from 'antd';
 import { connect } from 'react-redux';
 import { withLocalize } from "react-localize-redux";
-import {itemActions, leadsActions} from '../../store/action'
+import {itemActions, leadsActions, reportActions} from '../../store/action'
 import TextArea from 'antd/lib/input/TextArea';
 import {pageConstants} from '../../constants';
 
@@ -55,9 +55,13 @@ class DashboardPage extends React.Component {
         // load leads
         this.props.fetchLeads();
         // load amentities        
-        this.props.fetch().then( data => {
-            this.aminityItems = [...this.props.items]
-        });
+        this.props.fetch();
+        // load dashboard total amenity summary
+        this.props.fetchAmenitySummary();
+        // load dashboard total lead summary
+        this.props.fetchLeadSummary();
+        // load dashboard total report summary
+        this.props.fetchReportSummary();
     }    
 
     handleAminityEdit = () => {
@@ -141,7 +145,7 @@ class DashboardPage extends React.Component {
 
     renderSwitchPage(){
         const { selectedContentName } = this.state;
-        const {items, leads} = this.props; 
+        const {items, leads, summaryAmenity, summaryLeads, summaryReports} = this.props; 
 
         switch(selectedContentName){
             case pageConstants.AMENITY_CONTENT:
@@ -158,7 +162,11 @@ class DashboardPage extends React.Component {
                 ]);
             case pageConstants.DASHBOARD_CONTENT:
                 return ([
-                    <Dashboard></Dashboard>
+                    <Dashboard key="dashboard"
+                               amentities={summaryAmenity}
+                               leads={summaryLeads}
+                               reports={summaryReports}>
+                    </Dashboard>
                 ]);
             default:
                 return ([
@@ -327,13 +335,17 @@ class DashboardPage extends React.Component {
 
 const mapDispatchToProps = {    
     ...itemActions,
-    ...leadsActions
+    ...leadsActions,
+    ...reportActions
 }; 
 
 function mapStateToProps(state) {
     return {
         items: [...state.items.items],
-        leads: [...state.leads.leads ? state.leads.leads : []]
+        leads: [...state.leads.leads ? state.leads.leads : []],
+        summaryReports: [...state.report.summaryReports],
+        summaryLeads: [...state.leads.summaryLeads],
+        summaryAmenity: [...state.items.summaryAmenity]
     };
 }
 

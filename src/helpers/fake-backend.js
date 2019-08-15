@@ -59,6 +59,24 @@ let searchResult = {
     meditation: [],
 }
 
+let summaryReports = [
+    {id:1, name: 'Reports By Date', value: '4'},
+    {id:2, name: 'Number of visitis', value: '39'},
+    {id:3, name: 'Last visit', value: '3/4/2019'}
+]
+
+let leadSummary = [
+    {id:1, name: 'Total Leads', value: '4'},
+    {id:2, name: 'Last Requested Leads', value: '10/10/2018'},
+    {id:3, name: 'Last Reviewed Lead', value: 'Test Lead'}
+]
+
+let amenitySummary = [
+    {id:1, name: 'Total', value: '11'},
+    {id:2, name: 'Last Updated', value: 'Test Name'},
+    {id:3, name: 'Last Created', value: 'Test Name1'}
+]
+
 function updateItem(resolve, reject, url, opts) {
     let params = JSON.parse(opts.body);
     let id = params.id;
@@ -74,6 +92,18 @@ function updateItem(resolve, reject, url, opts) {
 
     }        
     resolve({ ok: true });
+}
+
+function getReportSummary(resolve, reject, url, opts) {
+    resolve({ ok: true, summaryReports: summaryReports });
+}
+
+function getLeadsSummary(resolve, reject, url, opts) {
+    resolve({ ok: true, leadSummary: leadSummary });
+}
+
+function getAmenitySummary(resolve, reject, url, opts) {
+    resolve({ ok: true, amenitySummary: amenitySummary });
 }
 
 function getItems(resolve, reject, url, opts) {
@@ -204,6 +234,25 @@ export function configureFakeBackend() {
         return new Promise((resolve, reject) => {
             // wrap in timeout to simulate server api call
             setTimeout(() => {
+
+                // report summary
+                if (url.includes('/report/summary') && opts.method === 'GET') {                    
+                    getReportSummary(resolve, reject, url, opts)
+                    return;
+                }
+
+                // lead summary
+                if (url.includes('/leads/summary') && opts.method === 'GET') {                    
+                    getLeadsSummary(resolve, reject, url, opts)
+                    return;
+                }
+
+                // amenity summary
+                if (url.includes('/amenity/summary') && opts.method === 'GET') {                    
+                    getAmenitySummary(resolve, reject, url, opts)
+                    return;
+                }
+
                 // get item by id
                 if (url.includes('/items/') && opts.method === 'GET' 
                         && !isNaN(parseInt(url.split('/')[2])) ) {                    

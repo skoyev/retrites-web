@@ -29,7 +29,11 @@
       "costarica":["Costa Rica",""],
       "peru":["Peru",""],
       "california":["California",""],
-      "goback":["Go Back",""]
+      "spain":["Spain",""],
+      "tibet":["Tibet",""],
+      "goback":["Go Back",""],
+      "massage":["Healing Massage Therapy",""],
+      "cleansing":["Body Cleansing Program",""]
     },
 
     "button": {

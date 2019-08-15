@@ -2,7 +2,8 @@ import {itemConstants} from '../../constants';
 
 const INITIAL_STATE = {
   items: [],
-  shouldReloadItems: false
+  shouldReloadItems: false,
+  summaryAmenity: []
 };
 
 export function items(state = INITIAL_STATE, action) {
@@ -17,8 +18,14 @@ export function items(state = INITIAL_STATE, action) {
           return {
             ... state,
             item: action.item
-          };        
-        default:
+          }; 
+          
+        case itemConstants.FETCH_AMENITY_SUMMARY_SUCCESS:
+          return {
+            ... state,
+            summaryAmenity: action.amenitySummary
+          }; 
+      default:
           return state
     }
 }

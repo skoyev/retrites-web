@@ -1,7 +1,8 @@
 import {leadsConstants} from '../../constants';
 
 const INITIAL_STATE = {
-  leads: []
+  leads: [],
+  summaryLeads: []
 };
 
 export function leads(state = INITIAL_STATE, action) {
@@ -10,7 +11,12 @@ export function leads(state = INITIAL_STATE, action) {
           return {
             ... state,
             leads: action.leads
-          };             
+          };
+        case leadsConstants.LEAD_SUMMARY_FETCH_SUCCESS:
+          return {
+            ... state,
+            summaryLeads: action.leadSummary
+          };            
         default:
           return state
     }

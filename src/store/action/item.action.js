@@ -13,8 +13,19 @@ export const itemActions = {
     addItemsSuccess,
     fetchItemsSuccess,
     fetchItemSuccess,
-    findByType
+    findByType,
+    fetchAmenitySummary
 };
+
+export function fetchAmenitySummary() {
+    return dispatch => {
+        return itemService.fetchAmenitySummary().then(res => {
+            dispatch(fetchAmenitySummarySuccess(res.amenitySummary))    
+        }).catch(error => {
+            throw(error);
+        });
+    }
+}
 
 export function findByType(type, count, startFromNum, searchByName, priceFrom, priceTo, fromDate, toDate){
     return dispatch => {
@@ -56,6 +67,13 @@ export function fetchItemsSuccess(items) {
     return { 
         type: 'ITEMS_FETCH_SUCCESS', 
         items
+    } 
+}
+
+export function fetchAmenitySummarySuccess(amenitySummary) {
+    return { 
+        type: itemConstants.FETCH_AMENITY_SUMMARY_SUCCESS, 
+        amenitySummary
     } 
 }
 

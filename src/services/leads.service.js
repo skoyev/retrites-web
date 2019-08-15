@@ -1,7 +1,8 @@
 export const leadsService = {
     loadLeads,
     createLead,
-    deleteLead
+    deleteLead,
+    fetchLeadSummary
 };
 
 const requestGetOptions = {
@@ -16,6 +17,10 @@ const requestDeleteOptions = {
 
 function loadLeads(){
     return fetch(`/leads`, requestGetOptions);
+}
+
+function fetchLeadSummary(){
+    return fetch(`/leads/summary`, requestGetOptions);
 }
 
 function createLead(name, email, details){

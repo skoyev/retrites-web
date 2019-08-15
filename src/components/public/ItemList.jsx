@@ -22,7 +22,7 @@ const ItemList = ({items, className, numItemsPerRow, title, description, handleM
                         <div key={index} className={index == 0 ? 'card-no col full-width width-295' : 'card-no col offset-ssm-1 full-width width-295'}>                            
                             <div className="img-container">                                
                                 <Link to={'/item/' + item.id + '?category=' + category}>
-                                    <img className="card-img-top" style={{maxHeight:'220px', cursor:'pointer'}} src={item.picture} alt="Card image cap"></img>                                
+                                    <img className="card-img-top" style={{maxHeight:'183px', cursor:'pointer'}} src={item.picture} alt="Card image cap"></img>                                
                                 </Link>                                
                                 <div className="centered">
                                     {item.name && item.name.includes(".") ? 
