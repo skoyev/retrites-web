@@ -14,8 +14,31 @@ export const itemActions = {
     fetchItemsSuccess,
     fetchItemSuccess,
     findByType,
-    fetchAmenitySummary
+    fetchAmenitySummary,
+    fetchRetreatByCountries,
+    fetchRetreatTypes
 };
+
+export function fetchRetreatTypes() {
+    return dispatch => {
+        return itemService.fetchRetreatTypes().then(res => {
+            dispatch(fetchRetreatTypesSuccess(res.retriteTypes))    
+        }).catch(error => {
+            throw(error);
+        });
+    }
+}
+
+
+export function fetchRetreatByCountries() {
+    return dispatch => {
+        return itemService.fetchRetreatByCountries().then(res => {
+            dispatch(fetchRetreatByCountriesSuccess(res.retreatByCountries))    
+        }).catch(error => {
+            throw(error);
+        });
+    }
+}
 
 export function fetchAmenitySummary() {
     return dispatch => {
@@ -67,6 +90,21 @@ export function fetchItemsSuccess(items) {
     return { 
         type: 'ITEMS_FETCH_SUCCESS', 
         items
+    } 
+}
+
+export function fetchRetreatTypesSuccess(retriteTypes){
+    return { 
+        type: itemConstants.FETCH_RETRITE_TYPES_SUCCESS, 
+        retriteTypes
+    } 
+}
+
+
+export function fetchRetreatByCountriesSuccess(retreatByCountries){
+    return { 
+        type: itemConstants.FETCH_RETRITE_BY_COUNTRY_SUCCESS, 
+        retreatByCountries
     } 
 }
 

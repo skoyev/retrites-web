@@ -3,7 +3,9 @@ import {itemConstants} from '../../constants';
 const INITIAL_STATE = {
   items: [],
   shouldReloadItems: false,
-  summaryAmenity: []
+  summaryAmenity: [],
+  retreatByCountries: [],
+  retriteTypes: []
 };
 
 export function items(state = INITIAL_STATE, action) {
@@ -25,6 +27,17 @@ export function items(state = INITIAL_STATE, action) {
             ... state,
             summaryAmenity: action.amenitySummary
           }; 
+
+        case itemConstants.FETCH_RETRITE_BY_COUNTRY_SUCCESS:
+          return {
+            ... state,
+            retreatByCountries: action.retreatByCountries
+          }
+        case itemConstants.FETCH_RETRITE_TYPES_SUCCESS:
+          return {
+            ... state,
+            retriteTypes: action.retriteTypes
+          }
       default:
           return state
     }

@@ -8,7 +8,9 @@ export const itemService = {
     addItem,
     loadItemByID,
     findByType,
-    fetchAmenitySummary
+    fetchAmenitySummary,
+    fetchRetreatByCountries,
+    fetchRetreatTypes
 };
 
 const requestOptions = {
@@ -22,6 +24,14 @@ function findByType (type, count, startFromNum, searchByName, priceFrom, priceTo
 
 function fetchAmenitySummary(){
     return fetch(`/amenity/summary`, requestOptions);
+}
+
+function fetchRetreatTypes() {
+    return fetch(`/items/retritetypes`, requestOptions); 
+}
+
+function fetchRetreatByCountries() {
+    return fetch(`/items/bycountries`, requestOptions);
 }
 
 function loadItems(){
