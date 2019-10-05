@@ -1,9 +1,11 @@
 .slider-section {
-    background-image: url(/images/pages/yoga.jpg);
+    /*background-image: url(/images/pages/yoga.jpg);*/
+    background-image: url(https://retreat-bucket.s3-us-west-2.amazonaws.com/home/yoga.jpg);
     background-position: 0 60%;
     background-size: cover;
     height: 500px;
     margin-top: 20px;    
+    
 }
 
 .slider-section h2 {

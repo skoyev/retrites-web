@@ -31,12 +31,16 @@ export function items(state = INITIAL_STATE, action) {
         case itemConstants.FETCH_RETRITE_BY_COUNTRY_SUCCESS:
           return {
             ... state,
-            retreatByCountries: action.retreatByCountries
+            retreatByCountries: action.retreatByCountries.map(d => {
+              return {id : d.id, name : d.name, picture : JSON.parse(d.attributes).picture};
+            })
           }
         case itemConstants.FETCH_RETRITE_TYPES_SUCCESS:
           return {
             ... state,
-            retriteTypes: action.retriteTypes
+            retriteTypes: action.retriteTypes.map(d => {
+              return {id : d.id, name : `label.${d.name.toLowerCase()}`, typelink: `items/${d.name.toLowerCase()}`, picture : JSON.parse(d.attributes).picture};
+            })
           }
       default:
           return state

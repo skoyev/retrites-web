@@ -62,7 +62,9 @@
         "addretreate": ["ADD RETREATE", "ADD RETREATE FR"],
         "signup": ["SIGN UP","SIGN UP Fr"],
         "login": ["LOGIN", "LOGIN FR"],
-        "cancel": ["Cancel", "Cancel FR"]
+        "cancel": ["Cancel", "Cancel FR"],
+        "join": ["Join Our Retreat Community", "Join Our Community FR"],
+        "login_community": ["Login Into Retreat Community", "Login Into Retreat Community FR"]
       }
     }
   }

@@ -16,13 +16,26 @@ export const itemActions = {
     findByType,
     fetchAmenitySummary,
     fetchRetreatByCountries,
-    fetchRetreatTypes
+    fetchRetreatTypes,
+    fetchSearchRetreatTypes
 };
+
+export function fetchSearchRetreatTypes() {
+    return dispatch => {
+        return itemService.fetchRetreatTypes().then(res => {
+            //dispatch(fetchRetreatTypesSuccess(res.retriteTypes))    
+            dispatch(fetchRetreatTypesSuccess(res.data.data))    
+        }).catch(error => {
+            throw(error);
+        });
+    }
+}
 
 export function fetchRetreatTypes() {
     return dispatch => {
         return itemService.fetchRetreatTypes().then(res => {
-            dispatch(fetchRetreatTypesSuccess(res.retriteTypes))    
+            //dispatch(fetchRetreatTypesSuccess(res.retriteTypes))    
+            dispatch(fetchRetreatTypesSuccess(res.data.data))    
         }).catch(error => {
             throw(error);
         });
@@ -33,7 +46,8 @@ export function fetchRetreatTypes() {
 export function fetchRetreatByCountries() {
     return dispatch => {
         return itemService.fetchRetreatByCountries().then(res => {
-            dispatch(fetchRetreatByCountriesSuccess(res.retreatByCountries))    
+            //dispatch(fetchRetreatByCountriesSuccess(res.retreatByCountries))    
+            dispatch(fetchRetreatByCountriesSuccess(res.data.data))    
         }).catch(error => {
             throw(error);
         });
@@ -183,11 +197,11 @@ export function fetchByID(id){
     }
 }
 
-export function fetch() {
+export function fetch(type) {
     return dispatch => {
-        return itemService.loadItems().then(res => {
-            if(res.ok){
-                dispatch(fetchItemsSuccess(res.items))    
+        return itemService.loadItems(type).then(res => {
+            if(res.status === 200){
+                dispatch(fetchItemsSuccess(res.data.items))    
             } else {
                 throw('No data');
             }

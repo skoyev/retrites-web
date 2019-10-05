@@ -1,5 +1,10 @@
-import {userService} from './user.service'
 import axios from 'axios';
+import { configConstants } from '../constants';
+
+// SET FOR LOCAL ENV
+if(configConstants.ENVIRONMENT === configConstants.ENV_LOCAL){
+    axios.defaults.baseURL = configConstants.API_LOCAL_SERVER_URL;
+}
 
 export const itemService = {
     loadItems,
@@ -27,15 +32,18 @@ function fetchAmenitySummary(){
 }
 
 function fetchRetreatTypes() {
-    return fetch(`/items/retritetypes`, requestOptions); 
+    //return fetch(`/items/retritetypes`, requestOptions); 
+    return axios.get(`api/common/retrete-types`);
 }
 
 function fetchRetreatByCountries() {
-    return fetch(`/items/bycountries`, requestOptions);
+    //return fetch(`/items/bycountries`, requestOptions);
+    return axios.get(`api/common/countries`);
 }
 
-function loadItems(){
-    return fetch(`/items`, requestOptions);
+function loadItems(type){
+    //return fetch(`/api/item?type=${type}`, requestOptions);
+    return axios.get(`/api/item?type=${type}`);
 }
 
 function deleteItem(id) {

@@ -52,7 +52,6 @@ class SearchResultPage extends React.Component {
     }
 
     handleMoreItems() {
-        console.log('handleMoreItems')
         this.loadItems();
     }
 

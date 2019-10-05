@@ -30,6 +30,7 @@ class HomePage extends React.Component {
         });        
 
         this.state = {
+            itemType: 'retrite',
             menuItems : [
                 'public.menu.retrite',
                 'public.menu.flights',
@@ -38,6 +39,7 @@ class HomePage extends React.Component {
                 'public.menu.cruises',
                 'public.menu.groups'
             ],
+            searchTypes: ['ALL', 'Yoga', 'Meditation'],
             ourVisionDescription : 'Our Vision Description',
             retreatByTypeTitle: 'Find Retreat By Type',
             retreatByTypeDescription: 'Find Out More About Our Amazing Retreats',
@@ -51,12 +53,16 @@ class HomePage extends React.Component {
     }
 
     componentDidMount() {
-        this.props.fetch()
+        const {itemType} = this.state;
+        // fetch popular
+        this.props.fetch(itemType)
             .then(() => window.scrollTo(0, 0))               
         // fetch retreatByCountries
         this.props.fetchRetreatByCountries();
         // fetch retreatTypes
         this.props.fetchRetreatTypes();
+        // fetch search retreat Types
+        this.props.fetchSearchRetreatTypes();
     }
 
     search = () => {
@@ -70,18 +76,18 @@ class HomePage extends React.Component {
                 popularRetreatDescription,
                 retreatByCountriesTitle,
                 retreatByCountriesDescription,
-                ourVisionTitle, ourVisionDescription } = this.state;
+                ourVisionTitle, ourVisionDescription, searchTypes } = this.state;
         const { items, retreatByCountries, retreatTypes } = this.props;
         const shouldHideLoadMore = true;
-        //console.log(items);
         return (
             <div>                
                 {/* Home Header Section */}
-                <PublicHeader/>
+                <PublicHeader shouldShowAdd={true}/>
 
                 {/* Slider/Search Section */}
                 <PublicSearchSingle title="Find Retreates For Any Season"
-                                    search={this.search}/>                 
+                                    search={this.search}
+                                    types={searchTypes}/>                 
 
                 <div className="container">
                     {/* Retreat By Type Section */}
@@ -120,7 +126,6 @@ class HomePage extends React.Component {
 }
 
 function mapStateToProps(state) {
-    console.log(state)
     return {
       items: state.items.items,
       retreatByCountries: state.items.retreatByCountries,

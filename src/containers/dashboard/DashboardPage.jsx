@@ -20,6 +20,7 @@ class DashboardPage extends React.Component {
         super(props);    
         
         this.state = {
+            itemType: 'retrite',
             collapsed: false,
 
             // Modal windows
@@ -52,10 +53,11 @@ class DashboardPage extends React.Component {
     }   
     
     componentDidMount() {
+        const {itemType} = this.state;
         // load leads
         this.props.fetchLeads();
         // load amentities        
-        this.props.fetch();
+        this.props.fetch(itemType);
         // load dashboard total amenity summary
         this.props.fetchAmenitySummary();
         // load dashboard total lead summary

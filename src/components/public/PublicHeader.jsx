@@ -45,26 +45,24 @@ class PublicHeader extends React.Component {
     }    
 
     render() {
-        const { loggingIn } = this.props;
+        const { loggingIn, shouldShowAdd } = this.props;
         const { username, password, submitted, title } = this.state;
         return (
             <div className="row offset-10">
                 <div className="col-md-3 header">
-                    <h3>{title}</h3>
+                    <h3><Link to="/home">{title}</Link></h3>
                 </div>
 
                 <div className="col-md-9"> 
                     <div className="row">
-                        <div className="col-md-9"></div>
-                        <div className="col-md-3 down-35">
-                            {/*
-                            <div className="d-inline-block">
+                        <div className="col-md-8"></div>
+                        <div className="col-md-4 down-35">
+                            <div className={shouldShowAdd ? "d-inline-block" : "hiddent"}>
                                 <Translate>
                                     {({ translate }) =>
-                                        <Link to="/new-retreate" className="btn btn-link d-inline">{translate('public.links.addretreate')}</Link>}
+                                        <Link to="/add" className="btn btn-link d-inline">{translate('public.links.addretreate')}</Link>}
                                 </Translate>
                             </div>
-                            */}
                             <div className="d-inline-block">
                                 <Translate>
                                     {({ translate }) =>

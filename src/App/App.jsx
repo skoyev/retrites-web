@@ -14,6 +14,7 @@ import AddRetreatePage from '../containers/retreate/new/AddRetreatePage';
 import RetreateDetailPage from '../containers/retreate/RetreateDetailPage';
 import {SearchResultPage} from '../containers';
 import { lazy, Suspense } from "react";
+import AddNewRetreatPage from '../containers/home/add/AddNewRetreatPage';
 
 const LazyDashboardComponent = lazy(() => import('../containers/dashboard/DashboardPage'));
 
@@ -42,6 +43,7 @@ class App extends React.Component {
                             <Route path="/login" component={LoginPage} />
                             <Route path="/register" component={RegisterPage} />                        
                             <Route path="/new-retreate" component={AddRetreatePage} />
+                            <Route path="/add" component={AddNewRetreatPage} />
                             <Route path="/item/:itemID" component={RetreateDetailPage} />                        
                             <Route exact path="/items/:itemType" component={SearchResultPage} />                        
                             <Route path="/" render={ history.push('/home')} />

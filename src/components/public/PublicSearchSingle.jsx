@@ -8,22 +8,22 @@ import "antd/dist/antd.css";
 const InputGroup = Input.Group;
 const { RangePicker } = DatePicker;
 
-const menu = (
-    <Menu>
-      <Menu.Item key="1"><Icon type="user" />ALL</Menu.Item>
-      <Menu.Item key="2"><Icon type="user" />Meditation</Menu.Item>
-      <Menu.Item key="3"><Icon type="user" />123</Menu.Item>
-    </Menu>
-);
+const menu = (types) => {
+    return <Menu>
+            {types.map((type, index) => (
+                <Menu.Item key={index}><Icon type="user" />{type}</Menu.Item>
+            ))}
+          </Menu>
+};
 
-const PublicSearchSingle = ({title, search, handleTypeClick, handleMenuClick}) => (  
+const PublicSearchSingle = ({title, search, handleTypeClick, handleMenuClick, types}) => (  
     <div className="slider-section">
         <section className="search-witget" role="navigation">        
             <div className="tab-content search-witget-content"> 
                 <h3>{title}</h3>
                 <InputGroup compact>
                     <Input style={{ width: '40%', height: '35px' }} placeholder="Where would you like to go ?"/>
-                    <Dropdown.Button onClick={handleTypeClick} overlay={menu} style={{ marginLeft: '5px' }}>
+                    <Dropdown.Button onClick={handleTypeClick} overlay={menu(types)} style={{ marginLeft: '5px' }}>
                         <span style={{color: '#b1b0b0'}}>Retreat Type</span>
                     </Dropdown.Button>
                     <RangePicker style={{ width: '30%', marginLeft: '5px', height: '35px' }} />
@@ -38,6 +38,7 @@ PublicSearchSingle.propTypes = {
     title: PropTypes.string.isRequired,
     search: PropTypes.func.isRequired,
     handleTypeClick: PropTypes.func.isRequired,
+    types: PropTypes.array.isRequired
     //handleMenuClick: PropTypes.func.isRequired,
 };
    

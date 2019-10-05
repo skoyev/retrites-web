@@ -138,7 +138,7 @@ function getAmenitySummary(resolve, reject, url, opts) {
 }
 
 function getItems(resolve, reject, url, opts) {
-    resolve({ ok: true, items: items });
+    resolve({ status: 200, data: {items:items} });
 }
 
 function getLeads(resolve, reject, url, opts) {
@@ -316,7 +316,7 @@ export function configureFakeBackend() {
                 }
 
                 // get items
-                if (url.endsWith('/items') && opts.method === 'GET') {                    
+                if (url.includes('/api/item?') && opts.method === 'GET') {                    
                     getItems(resolve, reject, url, opts)
                     return;
                 }
