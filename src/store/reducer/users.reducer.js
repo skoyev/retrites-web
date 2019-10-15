@@ -1,7 +1,9 @@
 import { userConstants } from '../../constants';
 
 const INITIAL_STATE = {
-  users: []  
+  users: [],
+  shouldRedirectHomePage: false,
+  userRegisterError: ''
 };
 
 export function users(state = INITIAL_STATE, action) {
@@ -53,6 +55,20 @@ export function users(state = INITIAL_STATE, action) {
           return {
             error: action.error
           };
+
+        case userConstants.CREATE_USER_SUCCESS:
+          return {
+            ... state,
+            userRegisterError: '',
+            shouldRedirectHomePage: action.shouldRedirectHomePage
+          };          
+
+        case userConstants.CREATE_USER_FAILURE:
+            return {
+              ... state,
+              shouldRedirectHomePage: false,
+              userRegisterError: action.error
+            };          
 
         default:
           return state

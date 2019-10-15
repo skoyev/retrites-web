@@ -5,7 +5,7 @@
   "scripts": {
     "build-css": "node-sass src/ -o src/",
     "watch-css": "npm run build-css && node-sass src/ -o src/",
-    "start": "react-scripts start npm run build-css",    
+    "start": "react-scripts start npm run build-css",
     "build": "react-scripts build",
     "test": "cross-env CI=true react-scripts test --env=jsdom --testResultsProcessor='jest-junit' --verbose",
     "test:watch": "react-scripts test --env=jsdom --verbose"

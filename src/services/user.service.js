@@ -1,17 +1,27 @@
+import axios from 'axios';
+import { configConstants } from '../constants';
+
+// SET FOR LOCAL ENV
+if(configConstants.ENVIRONMENT === configConstants.ENV_LOCAL){
+    axios.defaults.baseURL = configConstants.API_LOCAL_SERVER_URL;
+}
+
 export const userService = {
     login,
     logout,
     register
 };
 
-function register(user){
+function register(user) {
+    /*
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(user)
-    };
+    };*/
 
-    return fetch(`/users/register`, requestOptions).then(handleResponse);
+    return axios.post(`/api/user`, user);
+    //return fetch(`/users/register`, requestOptions).then(handleResponse);
 }
 
 function login(username, password) {

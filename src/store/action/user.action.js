@@ -12,6 +12,9 @@ function request(user) { return { type: userConstants.LOGIN_REQUEST, user } }
 function success(user) { return { type: userConstants.LOGIN_SUCCESS, user } }
 function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
 
+function createUserSuccess(shouldRedirectHomePage) { return { type: userConstants.CREATE_USER_SUCCESS, shouldRedirectHomePage } }
+function createUserFailure(error) { return { type: userConstants.CREATE_USER_FAILURE, error } }
+
 function login(username, password) {
     return dispatch => {
         dispatch(request({ username }));
@@ -46,13 +49,11 @@ function register(user) {
         userService.register(user)
             .then(
                 user => { 
-                    dispatch(success());
-                    history.push('/home');
-                    //dispatch(alertActions.success('Registration successful'));
+                    dispatch(createUserSuccess(true));
+                    //history.push('/home');
                 },
                 error => {
-                    dispatch(failure(error));
-                    //dispatch(alertActions.error(error));
+                    dispatch(createUserFailure(error));
                 }
             );
     };

@@ -11,7 +11,6 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { withLocalize, Translate } from "react-localize-redux";
 import globalTranslations from "../../translations/global.json";
 import {connect} from "react-redux";
-import {fetch} from '../../store/action/index';
 import {itemActions} from '../../store/action/index'
 
 import '../style/HomePage.css'
