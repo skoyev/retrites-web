@@ -32,17 +32,14 @@ function fetchAmenitySummary(){
 }
 
 function fetchRetreatTypes() {
-    //return fetch(`/items/retritetypes`, requestOptions); 
     return axios.get(`api/common/retrete-types`);
 }
 
 function fetchRetreatByCountries() {
-    //return fetch(`/items/bycountries`, requestOptions);
     return axios.get(`api/common/countries`);
 }
 
 function loadItems(type){
-    //return fetch(`/api/item?type=${type}`, requestOptions);
     return axios.get(`/api/item?type=${type}`);
 }
 

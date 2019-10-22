@@ -5,6 +5,7 @@ import { PublicHeader,
          PublicSearchSingle,
          Section, 
          ItemList} from '../../components/public';
+import {CategoryList} from '../../components/common'
 import AppFooter from '../../components/common/AppFooter';
 
 import { renderToStaticMarkup } from "react-dom/server";
@@ -68,6 +69,10 @@ class HomePage extends React.Component {
         console.log('Data');
     }
 
+    handleSearchTypeClick = (e) => {
+        console.log(e);
+    }
+
     render() {
         const { retreatByTypeTitle,
                 retreatByTypeDescription,
@@ -86,21 +91,21 @@ class HomePage extends React.Component {
                 {/* Slider/Search Section */}
                 <PublicSearchSingle title="Find Retreates For Any Season"
                                     search={this.search}
+                                    handleTypeClick={this.handleSearchTypeClick}
                                     types={searchTypes}/>                 
 
                 <div className="container">
-                    {/* Retreat By Type Section */}
-                    <ItemList className="margin-top-bottom-50" 
-                            items={retreatTypes}
-                            title={retreatByTypeTitle}
-                            description={retreatByTypeDescription}
-                            shouldHideLoadMore={shouldHideLoadMore} 
-                            numItemsPerRow={4}/>
+                    {/* Types Section */}
+                    <CategoryList className="margin-top-bottom-50" 
+                                  items={retreatTypes}
+                                  title={retreatByTypeTitle}
+                                  numItemsPerRow={4}
+                                  description={retreatByTypeDescription}/>
 
                     {/* Our Vision Section */}
                     <Section description={ourVisionDescription} title={ourVisionTitle}/>
 
-                    {/* Popular Retreats */}
+                    {/* Popular Destination (Retrites) */}
                     <ItemList className="margin-top-bottom-50" 
                             items={items}
                             title={popularRetreatTitle}

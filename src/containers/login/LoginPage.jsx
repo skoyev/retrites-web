@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withLocalize } from "react-localize-redux";
 import {userActions} from '../../store/action'
+import { history } from '../../helpers';
+import '../style/Base.css'
 
 class LoginPage extends React.Component {
     constructor(props) {
@@ -18,6 +20,16 @@ class LoginPage extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);        
     }  
+
+    componentDidMount() {
+        this.props.resetLogin();
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(nextProps.isLoggedIn) {            
+            history.push('/dashboard');
+        }
+    }    
     
     handleChange(event) {
         this.setState({ [event.target.name]: event.target.value });
@@ -70,8 +82,14 @@ class LoginPage extends React.Component {
                                         </Translate>
                                         <Translate>{({ translate }) =><button className="btn btn-primary">{translate("button.login")}</button>}</Translate>                                        
                                     </div>
+                                    <div className="form-group">
+                                        <Translate>
+                                            {({ translate }) =>
+                                                <Link to="/register" className="btn btn-link d-inline">{translate('public.links.signup')}</Link>}
+                                        </Translate>                         
+                                    </div>
                                     <div className="form-group">                                            
-                                        {error}
+                                        <span className="error">{error}</span>
                                     </div>
                                 </form>
                             </div>
@@ -89,7 +107,8 @@ const mapDispatchToProps = {
 
 function mapStateToProps(state) {
     return {
-      error: state.users.error
+      error: state.users.error,
+      isLoggedIn: state.users.isLoggedIn
     };
 }
 

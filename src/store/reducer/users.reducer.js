@@ -3,7 +3,9 @@ import { userConstants } from '../../constants';
 const INITIAL_STATE = {
   users: [],
   shouldRedirectHomePage: false,
-  userRegisterError: ''
+  isLoggedIn: false,
+  userRegisterError: '',
+  error: ''
 };
 
 export function users(state = INITIAL_STATE, action) {
@@ -68,7 +70,20 @@ export function users(state = INITIAL_STATE, action) {
               ... state,
               shouldRedirectHomePage: false,
               userRegisterError: action.error
-            };          
+            };  
+            
+        case userConstants.RESET_LOGIN:
+            return {
+              ... state,
+              error: ''
+            };
+
+        case userConstants.LOGIN_SUCCESS:
+            return {
+              ... state,
+              isLoggedIn: true,
+              error: ''
+            };                
 
         default:
           return state

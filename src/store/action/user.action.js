@@ -5,7 +5,8 @@ import { history } from '../../helpers';
 export const userActions = {
     login,
     logout,
-    register
+    register,
+    resetLogin
 };
 
 function request(user) { return { type: userConstants.LOGIN_REQUEST, user } }
@@ -15,6 +16,10 @@ function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
 function createUserSuccess(shouldRedirectHomePage) { return { type: userConstants.CREATE_USER_SUCCESS, shouldRedirectHomePage } }
 function createUserFailure(error) { return { type: userConstants.CREATE_USER_FAILURE, error } }
 
+function resetLogin(){
+    return { type: userConstants.RESET_LOGIN }
+}
+
 function login(username, password) {
     return dispatch => {
         dispatch(request({ username }));
@@ -23,10 +28,10 @@ function login(username, password) {
             .then(
                 user => { 
                     dispatch(success(user));
-                    history.push('/dashboard');
+                    //history.push('/dashboard');
                 },
                 error => {
-                    dispatch(failure(error));                    
+                    dispatch(failure(error.response.data.data));                    
                 }
             );
     };

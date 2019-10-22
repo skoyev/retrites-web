@@ -23,7 +23,6 @@ export const itemActions = {
 export function fetchSearchRetreatTypes() {
     return dispatch => {
         return itemService.fetchRetreatTypes().then(res => {
-            //dispatch(fetchRetreatTypesSuccess(res.retriteTypes))    
             dispatch(fetchRetreatTypesSuccess(res.data.data))    
         }).catch(error => {
             throw(error);
