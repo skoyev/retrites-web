@@ -1,16 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom';
+import { Button } from 'antd';
 import { Translate } from "react-localize-redux";
 import "./style/CategoryList.css";
-import { Button } from 'antd/lib/radio';
 import { chunk } from '../../helpers/';
 
 const style = {
     marginBottom: '20px'
 }
 
-const CaregoryList = ({items, className, numItemsPerRow, title, description}) => {
+const CaregoryList = ({items, className, numItemsPerRow, title, description, type, handleCategoryClick}) => {
     if(!numItemsPerRow || !items){
         console.log(`Error CategoryList - items or numItemsPerRow is null !!!`);
         return <div></div>;
@@ -26,14 +26,15 @@ const CaregoryList = ({items, className, numItemsPerRow, title, description}) =>
                     {items.map((item, index) => (
                         <div key={index} className={index == 0 ? 'card-no col full-width width-295' : 'card-no col offset-ssm-1 full-width width-295'}>                            
                             <div className="img-container">                                
-                                <Link to={`${item.typelink}`}>
-                                    <img className="card-img-top" style={{maxHeight:'183px', cursor:'pointer'}} src={item.picture} alt="Card image cap"></img>                                
-                                </Link>  
+                                {/*<Link to={`/items?${type}=${item.type}`}></Link>*/}
+
+                                <img onClick={() => handleCategoryClick(item.id)} className="card-img-top" style={{maxHeight:'183px', cursor:'pointer'}} src={item.picture} alt="Card image cap"></img>
+
                                 <div className="centered">
                                     {item.name && item.name.includes(".") ? 
                                         <Translate>
-                                            {({ translate }) =>
-                                                <Link to={"/" + item.typelink} className="btn btn-link d-inline fancy-text">{translate(item.name)}</Link>}
+                                            {({ translate }) =>                                                
+                                                 <Button className="link-text" type="link">{translate(item.name)}</Button>}
                                         </Translate> 
                                         :
                                         <Link to="/" className="btn btn-link d-inline fancy-text">{item.name}</Link>
@@ -59,6 +60,8 @@ CaregoryList.propTypes = {
     className: PropTypes.string,
     title: PropTypes.string,
     description: PropTypes.string,    
+    type: PropTypes.string.isRequired,  
+    handleCategoryClick: PropTypes.func.isRequired,  
     numItemsPerRow: PropTypes.number.isRequired    
 }
 

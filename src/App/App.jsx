@@ -45,7 +45,7 @@ class App extends React.Component {
                             <Route path="/new-retreate" component={AddRetreatePage} />
                             <Route path="/add" component={AddNewRetreatPage} />
                             <Route path="/item/:itemID" component={RetreateDetailPage} />                        
-                            <Route exact path="/items/:itemType" component={SearchResultPage} />                        
+                            <Route path="/items" component={SearchResultPage} />                        
                             <Route path="/" render={ history.push('/home')} />
                         </div>                    
                     </Router>                

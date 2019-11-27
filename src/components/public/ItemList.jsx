@@ -10,7 +10,7 @@ const style = {
     marginBottom: '20px'
 }
 
-const ItemList = ({items, className, numItemsPerRow, title, description, handleMoreItems, category, shouldHideLoadMore}) => {
+const ItemList = ({items, className, numItemsPerRow, title, description, handleMoreItems, shouldHideLoadMore}) => {
     let itemsInRow = chunk(items, numItemsPerRow);
     return (
         <div className={`container margin-top-bottom-50 item-list ${className}`}>

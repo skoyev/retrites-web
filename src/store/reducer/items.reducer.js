@@ -1,11 +1,12 @@
-import {itemConstants} from '../../constants';
+import {itemConstants, pageConstants} from '../../constants';
 
 const INITIAL_STATE = {
   items: [],
   shouldReloadItems: false,
   summaryAmenity: [],
   retreatByCountries: [],
-  retriteTypes: []
+  retriteTypes: [],
+  pageName: ''
 };
 
 export function items(state = INITIAL_STATE, action) {
@@ -13,36 +14,47 @@ export function items(state = INITIAL_STATE, action) {
         case itemConstants.ITEMS_FETCH_SUCCESS:
           return {
             ... state,
+            pageName: '',
             items: action.items
           };
         
         case itemConstants.ITEM_FETCH_SUCCESS:
           return {
             ... state,
+            pageName: '',
             item: action.item
           }; 
           
         case itemConstants.FETCH_AMENITY_SUMMARY_SUCCESS:
           return {
             ... state,
+            pageName: '',
             summaryAmenity: action.amenitySummary
           }; 
 
         case itemConstants.FETCH_RETRITE_BY_COUNTRY_SUCCESS:
           return {
             ... state,
+            pageName: '',
             retreatByCountries: action.retreatByCountries.map(d => {
-              return {id : d.id, name : d.name, picture : JSON.parse(d.attributes).picture};
+              return {id : d.id, name : `label.${d.name.toLowerCase()}`, type: `${d.name.toLowerCase().replace(" ", "-")}`, picture : d.picture};
             })
           }
         case itemConstants.FETCH_RETRITE_TYPES_SUCCESS:
           return {
             ... state,
+            pageName: '',
             retriteTypes: action.retriteTypes.map(d => {
-              return {id : d.id, name : `label.${d.name.toLowerCase()}`, typelink: `items/${d.name.toLowerCase()}`, picture : JSON.parse(d.attributes).picture};
+              return {id : d.id, name : `label.${d.name.toLowerCase()}`, type: `${d.name.toLowerCase().replace(" ", "-")}`, picture : d.picture};
             })
           }
-      default:
+        case pageConstants.CLEAR_ITEMS_AND_REDIRECT_PAGE:
+          return {
+            ... state,
+            items: [],
+            pageName: action.pageName
+          }
+        default:
           return state
     }
 }

@@ -1,3 +1,8 @@
 .centered {
     top: 45% !important;
 }
+.link-text span {
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+}

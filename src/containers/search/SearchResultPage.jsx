@@ -11,6 +11,7 @@ import {itemActions} from '../../store/action'
 import { constants } from 'fs';
 import globalTranslations from "../../translations/global.json";
 import { renderToStaticMarkup } from "react-dom/server";
+import { history } from '../../helpers';
 
 class SearchResultPage extends React.Component {
 
@@ -26,7 +27,11 @@ class SearchResultPage extends React.Component {
             priceFrom: 0,
             priceTo: 0,
             fromDate: null,
-            toDate: null
+            toDate: null,
+            subCategoryId: 0,
+            duration: '',
+            startDate: '',
+            name: ''
         }
 
         this.props.initialize({
@@ -45,18 +50,50 @@ class SearchResultPage extends React.Component {
         this.handlePriceFromChange = this.handlePriceFromChange.bind(this);
         this.handlePriceToChange = this.handlePriceToChange.bind(this);
         this.onDateRangeChange = this.onDateRangeChange.bind(this);        
+        this.handleBack = this.handleBack.bind(this);        
     }
 
     componentDidMount() {
-        this.loadItems()
+        const urlParams = new URLSearchParams(this.props.location.search)
+
+        const subCategoryId = urlParams.get('subCategoryId');
+        const duration  = urlParams.get('duration');
+        const startDate = urlParams.get('startDate');
+        const name      = urlParams.get('name');  
+        const countryId = urlParams.get('countryId');          
+        
+        this.setState({ subCategoryId: subCategoryId, 
+                        duration: duration, 
+                        startDate: startDate, 
+                        countryId: countryId, 
+                        name: name }, 
+                    () => this.loadItems());                
     }
 
-    handleMoreItems() {
+    handleMoreItems() {        
         this.loadItems();
     }
 
+    componentWillReceiveProps(nextProps){
+        if(nextProps.nextPageName &&
+            nextProps.nextPageName === 'home'){
+            history.push('/home');    
+        }
+    } 
+
     loadItems() {
-        const {itemType} = this.props.match.params;
+        const { items } = this.props;
+        const { subCategoryId, duration, 
+                startDate, name, countryId,
+                recordsPerPage } = this.state;
+
+        this.props.search(subCategoryId, duration, name, startDate);                        
+
+        //const urlParams = new URLSearchParams(this.props.location.search)
+        //const {category} = this.props.match.params;
+        //const subCategoryId = urlParams.get('subCategoryId');
+
+        /*
         const {recordsPerPage, searchText, priceFrom, priceTo, fromDate, toDate} = this.state
         const { items } = this.props;
 
@@ -66,7 +103,7 @@ class SearchResultPage extends React.Component {
         let toDateFormatted = toDate ? new Date(toDate) : '';
         let toDateFormattedDate = toDate ? toDateFormatted.getFullYear() + "/" + (toDateFormatted.getMonth() + 1) + "/" + toDateFormatted.getDate() : '';
 
-        this.props.findByType(itemType, 
+        this.props.findBySubCategory(subCategoryId, 
                               recordsPerPage, 
                               (searchText === '') ? items.length : 0, searchText,
                               (priceFrom && priceFrom > 0) ? priceFrom : '',
@@ -74,6 +111,7 @@ class SearchResultPage extends React.Component {
                               fromDate ? fromDateFormattedDate : '',
                               toDate ? toDateFormattedDate : '')
                     .then(() => window.scrollTo(0, 0))               
+        */
 
         this.setState({totalRecordsLoaded : items.length + recordsPerPage})
     }
@@ -87,7 +125,7 @@ class SearchResultPage extends React.Component {
         
         this.timeout = setTimeout((e)=> {
             this.setState({searchText: text});
-            console.log(this.state.searchText);
+            //console.log(this.state.searchText);
             this.loadItems();
         }, this.state.delay);          
     };
@@ -105,6 +143,11 @@ class SearchResultPage extends React.Component {
         this.setState({priceTo:event.target.value})
     }
 
+    handleBack(event) {
+        //history.push('/home');
+        this.props.clearItemsAndNavigateToPage('home')
+    }
+
     onDateRangeChange(value) {
         if(value && value.length == 2){
             this.setState({fromDate:value[0].toDate(), toDate:value[1].toDate()})
@@ -115,7 +158,6 @@ class SearchResultPage extends React.Component {
 
     render() {
         const { Header, Footer, Sider, Content } = Layout;
-        const { itemType } = this.props.match.params;
         const { items } = this.props;
         const { numItemsPerRow } = this.state;
         const shouldHideLoadMore = false;
@@ -128,11 +170,11 @@ class SearchResultPage extends React.Component {
                     <SearchBar handleSubmitSearch={this.handleSubmitSearch}
                                handlePriceFromChange={this.handlePriceFromChange}
                                handlePriceToChange={this.handlePriceToChange}
-                               onDateRangeChange={this.onDateRangeChange}/>
+                               onDateRangeChange={this.onDateRangeChange}
+                               handleBack={this.handleBack}/>
                 </Header>                
                 <Content>
                     <ItemList items={items} 
-                              category={itemType}
                               shouldHideLoadMore={shouldHideLoadMore} 
                               numItemsPerRow={numItemsPerRow}
                               handleMoreItems={this.handleMoreItems}/>
@@ -145,7 +187,8 @@ class SearchResultPage extends React.Component {
 
 function mapStateToProps(state) {
     return {
-      items: state.items.items
+      items: state.items.items,
+      nextPageName: state.items.pageName      
     };
 }
 

@@ -12,10 +12,12 @@ export const itemService = {
     deleteItem,
     addItem,
     loadItemByID,
-    findByType,
+    findBySubCategory,
     fetchAmenitySummary,
     fetchRetreatByCountries,
-    fetchRetreatTypes
+    fetchRetreatSubCategories,
+    fetchCountries,
+    search
 };
 
 const requestOptions = {
@@ -23,24 +25,34 @@ const requestOptions = {
     headers: { 'Content-Type': 'application/json' }        
 };
 
-function findByType (type, count, startFromNum, searchByName, priceFrom, priceTo, fromDate, toDate) {
-    return fetch(`/items?type=${type}&count=${count}&startFromCount=${startFromNum}&name=${searchByName}&priceFrom=${priceFrom}&priceTo=${priceTo}&fromDate=${fromDate}&toDate=${toDate}`, requestOptions);
+function search(subCategoryID, duration, name, startDate) {
+    let params = {subCategoryId:subCategoryID, duration:duration, name:name, startDate:startDate};
+    return axios.get('api/items', {params:params});
+}
+
+function fetchCountries () {
+    return axios.get('api/common/country', {});
+}
+
+function findBySubCategory (subCategoryId, count, startFromNum, searchByName, priceFrom, priceTo, fromDate, toDate) {
+    const params = {subCategoryId:subCategoryId, count:count, startFromCount:startFromNum, name:searchByName, priceFrom: priceFrom, priceTo: priceTo, fromDate: fromDate, toDate: toDate};
+    return axios.get('api/items', {params:params});
 }
 
 function fetchAmenitySummary(){
     return fetch(`/amenity/summary`, requestOptions);
 }
 
-function fetchRetreatTypes() {
-    return axios.get(`api/common/retrete-types`);
+function fetchRetreatSubCategories() {
+    return axios.get(`api/common/retreat-sub-category`);
 }
 
 function fetchRetreatByCountries() {
-    return axios.get(`api/common/countries`);
+    return axios.get(`api/common/country`);
 }
 
-function loadItems(type){
-    return axios.get(`/api/item?type=${type}`);
+function loadItems(categoryId){
+    return axios.get(`/api/items?categoryId=${categoryId}`);
 }
 
 function deleteItem(id) {

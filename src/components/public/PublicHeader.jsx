@@ -55,8 +55,8 @@ class PublicHeader extends React.Component {
 
                 <div className="col-md-9"> 
                     <div className="row">
-                        <div className="col-md-8"></div>
-                        <div className="col-md-4 down-35">
+                        <div className="col-md-7"></div>
+                        <div className="col-md-5 down-35">
                             <div className={shouldShowAdd ? "d-inline-block" : "hiddent"}>
                                 <Translate>
                                     {({ translate }) =>

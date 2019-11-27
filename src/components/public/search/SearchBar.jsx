@@ -9,7 +9,7 @@ const { SubMenu }  = Menu;
 
 const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
 
-const SearchBar = ({handleSubmitSearch, handlePriceFromChange, handlePriceToChange, onDateRangeChange}) => {
+const SearchBar = ({handleSubmitSearch, handlePriceFromChange, handlePriceToChange, onDateRangeChange, handleBack}) => {
 
     return (
         <Row style={{padding:'12px', borderTop:'1px solid #c3c2c2', borderBottom:'1px solid #c3c2c2', backgroundColor:'#ffffff'}}>
@@ -25,8 +25,11 @@ const SearchBar = ({handleSubmitSearch, handlePriceFromChange, handlePriceToChan
                     <Col span={3}>
                         <Input placeholder="Price To" defaultValue="" type="number" onChange={handlePriceToChange}/>
                     </Col>
-                    <Col span={3}>
-                        <Button htmlType="submit">Apply</Button>
+                    <Col span={2}>
+                        <Button htmlType="submit" style={{marginLeft:15}}>Apply</Button>
+                    </Col>
+                    <Col span={2}>
+                        <Button onClick={handleBack}>Back</Button>
                     </Col>
                 </Row>
             </form>
@@ -38,7 +41,8 @@ SearchBar.propTypes = {
     handleSubmitSearch: PropTypes.func.isRequired,
     handlePriceFromChange: PropTypes.func.isRequired,
     handlePriceToChange: PropTypes.func.isRequired,
-    onDateRangeChange: PropTypes.func.isRequired
+    onDateRangeChange: PropTypes.func.isRequired,
+    handleBack: PropTypes.func.isRequired
 }
 
 export default SearchBar;

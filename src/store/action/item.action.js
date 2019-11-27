@@ -1,6 +1,6 @@
 import axios from "axios";
 import { client, ROOT_URL } from './';
-import {itemConstants} from '../../constants/item.constants';
+import {itemConstants, pageConstants} from '../../constants';
 import { itemService } from '../../services';
 import { history } from '../../helpers';
 
@@ -13,16 +13,53 @@ export const itemActions = {
     addItemsSuccess,
     fetchItemsSuccess,
     fetchItemSuccess,
-    findByType,
+    findBySubCategory,
     fetchAmenitySummary,
-    fetchRetreatByCountries,
-    fetchRetreatTypes,
-    fetchSearchRetreatTypes
+    fetchRetreatByCountries,    
+    fetchSearchRetreatTypes,
+    fetchRetreatSubCategories,
+    fetchCountries,
+    search,
+    clearItemsAndNavigateToPage
 };
 
-export function fetchSearchRetreatTypes() {
+export function clearItemsAndNavigateToPage(pageName) {
+    return { 
+        type: pageConstants.CLEAR_ITEMS_AND_REDIRECT_PAGE,
+        pageName: pageName
+    }
+}
+
+/**
+ * Home Page, Search by: subCategoryID, duration, name, startDate
+ * @param {*} selectedRetreatTypeId 
+ * @param {*} selectedDuration 
+ * @param {*} selectedInputSearchBy 
+ * @param {*} selectedStartDate 
+ */
+export function search(subCategoryID, duration, name, startDate) {
     return dispatch => {
-        return itemService.fetchRetreatTypes().then(res => {
+        return itemService.search(subCategoryID, duration, name, startDate).then(res => {
+            dispatch(fetchItemsSuccess(res.data.items))    
+        }).catch(error => {
+            throw(error);
+        });
+    }
+}
+
+export function fetchCountries() {
+    return dispatch => {
+        return itemService.fetchCountries().then(res => {
+            dispatch(fetchRetreatByCountriesSuccess(res.data.data))    
+        }).catch(error => {
+            throw(error);
+        });
+    }
+}
+
+export function fetchSearchRetreatTypes(categoryId) {
+    return dispatch => {
+        return itemService.fetchRetreatTypes(categoryId).then(res => {
             dispatch(fetchRetreatTypesSuccess(res.data.data))    
         }).catch(error => {
             throw(error);
@@ -30,11 +67,14 @@ export function fetchSearchRetreatTypes() {
     }
 }
 
-export function fetchRetreatTypes() {
+export function fetchRetreatSubCategories() {
     return dispatch => {
-        return itemService.fetchRetreatTypes().then(res => {
-            //dispatch(fetchRetreatTypesSuccess(res.retriteTypes))    
-            dispatch(fetchRetreatTypesSuccess(res.data.data))    
+        return itemService.fetchRetreatSubCategories().then(res => {
+            if(res.data.data && res.data.data.length > 0 ) {
+                dispatch(fetchRetreatTypesSuccess(res.data.data[0].subCategories))    
+            } else {
+                console.log('Error fetchRetreatSubCategories')
+            }
         }).catch(error => {
             throw(error);
         });
@@ -63,11 +103,11 @@ export function fetchAmenitySummary() {
     }
 }
 
-export function findByType(type, count, startFromNum, searchByName, priceFrom, priceTo, fromDate, toDate){
+export function findBySubCategory(subCategoryId, count, startFromNum, searchByName, priceFrom, priceTo, fromDate, toDate){
     return dispatch => {
-        return itemService.findByType(type, count, startFromNum, searchByName, priceFrom, priceTo, fromDate, toDate).then(res => {
-            if(res.ok){
-                dispatch(fetchItemsSuccess(res.items))    
+        return itemService.findBySubCategory(subCategoryId, count, startFromNum, searchByName, priceFrom, priceTo, fromDate, toDate).then(res => {
+            if(res.status == 200){
+                dispatch(fetchItemsSuccess(res.data.items))    
             } else {
                 throw('No data');
             }
@@ -196,9 +236,9 @@ export function fetchByID(id){
     }
 }
 
-export function fetch(type) {
+export function fetch(categoryId) {
     return dispatch => {
-        return itemService.loadItems(type).then(res => {
+        return itemService.loadItems(categoryId).then(res => {
             if(res.status === 200){
                 dispatch(fetchItemsSuccess(res.data.items))    
             } else {
