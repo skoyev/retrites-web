@@ -25,8 +25,8 @@ const requestOptions = {
     headers: { 'Content-Type': 'application/json' }        
 };
 
-function search(subCategoryID, duration, name, startDate) {
-    let params = {subCategoryId:subCategoryID, duration:duration, name:name, startDate:startDate};
+function search(subCategoryID, duration, name, startDate, countryId) {
+    let params = {subCategoryId:subCategoryID, duration:duration, name:name, startDate:startDate, countryId:countryId};
     return axios.get('api/items', {params:params});
 }
 

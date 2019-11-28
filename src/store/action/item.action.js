@@ -37,9 +37,9 @@ export function clearItemsAndNavigateToPage(pageName) {
  * @param {*} selectedInputSearchBy 
  * @param {*} selectedStartDate 
  */
-export function search(subCategoryID, duration, name, startDate) {
+export function search(subCategoryID, duration, name, startDate, countryId) {
     return dispatch => {
-        return itemService.search(subCategoryID, duration, name, startDate).then(res => {
+        return itemService.search(subCategoryID, duration, name, startDate, countryId).then(res => {
             dispatch(fetchItemsSuccess(res.data.items))    
         }).catch(error => {
             throw(error);

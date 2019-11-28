@@ -87,7 +87,7 @@ class SearchResultPage extends React.Component {
                 startDate, name, countryId,
                 recordsPerPage } = this.state;
 
-        this.props.search(subCategoryId, duration, name, startDate);                        
+        this.props.search(subCategoryId, duration, name, startDate, countryId);                        
 
         //const urlParams = new URLSearchParams(this.props.location.search)
         //const {category} = this.props.match.params;

@@ -25,10 +25,10 @@ const CaregoryList = ({items, className, numItemsPerRow, title, description, typ
                 <div key={index} className="row" style={style}>
                     {items.map((item, index) => (
                         <div key={index} className={index == 0 ? 'card-no col full-width width-295' : 'card-no col offset-ssm-1 full-width width-295'}>                            
-                            <div className="img-container">                                
+                            <div className="img-container" onClick={() => handleCategoryClick(item.id)}>                                
                                 {/*<Link to={`/items?${type}=${item.type}`}></Link>*/}
 
-                                <img onClick={() => handleCategoryClick(item.id)} className="card-img-top" style={{maxHeight:'183px', cursor:'pointer'}} src={item.picture} alt="Card image cap"></img>
+                                <img className="card-img-top" style={{maxHeight:'183px', cursor:'pointer'}} src={item.picture} alt="Card image cap"></img>
 
                                 <div className="centered">
                                     {item.name && item.name.includes(".") ? 

@@ -52,6 +52,7 @@ class HomePage extends React.Component {
             selectedDuration: 'Duraion',
             selectedDurationValue: '',
             selectedStartDate: '',
+            selectedCountryId: 0,
             selectedInputSearchBy: '',
             selectedStartDate: '',
             ourVisionTitle: 'Our Vision',
@@ -62,6 +63,7 @@ class HomePage extends React.Component {
         this.handleInputSearchBy = this.handleInputSearchBy.bind(this);
         this.handleStartDate = this.handleStartDate.bind(this);
         this.handleRetreatCategoryClick = this.handleRetreatCategoryClick.bind(this);
+        this.handleCountrySelectClick = this.handleCountrySelectClick.bind(this);
     }
 
     componentDidMount() {
@@ -103,8 +105,9 @@ class HomePage extends React.Component {
             const {selectedSubcategoryId, 
                 selectedDurationValue,
                 selectedInputSearchBy,
-                selectedStartDate } = this.state;     
-            let param = `/items?subCategoryId=${selectedSubcategoryId}&duration=${selectedDurationValue}&name=${selectedInputSearchBy}&startDate=${selectedStartDate}`;
+                selectedStartDate, 
+                selectedCountryId } = this.state;     
+            let param = `/items?subCategoryId=${selectedSubcategoryId}&duration=${selectedDurationValue}&name=${selectedInputSearchBy}&startDate=${selectedStartDate}&countryId=${selectedCountryId}`;
             history.push(param);    
         }
     } 
@@ -112,6 +115,14 @@ class HomePage extends React.Component {
     handleRetreatCategoryClick = (id) => {        
         if(id){
             this.setState({selectedSubcategoryId: id}, () => {
+                this.props.clearItemsAndNavigateToPage('search')
+            });            
+        }
+    }
+
+    handleCountrySelectClick = (id) => {        
+        if(id){
+            this.setState({selectedCountryId: id}, () => {
                 this.props.clearItemsAndNavigateToPage('search')
             });            
         }
@@ -173,6 +184,7 @@ class HomePage extends React.Component {
                                   title={retreatByCountriesTitle}
                                   numItemsPerRow={4}
                                   type="countryId"
+                                  handleCategoryClick={this.handleCountrySelectClick}
                                   description={retreatByCountriesDescription}/>
                 </div>
 
