@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { Translate } from "react-localize-redux";
 import '../style/RegisterPage.css'
 import { history } from '../../helpers';
+import '../style/Base.css'
 
 const validEmailRegex = 
   RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
@@ -101,7 +102,7 @@ class RegisterPage extends React.Component {
         const {userRegisterError} = this.props;
         const { user, submitted, errors } = this.state;
         return (
-        <div className="container">
+        <div className="container vertical-center">
             <div className="row justify-content-center align-items-center new-retreate">
                 <div className="col-4">
                     <div className="card">

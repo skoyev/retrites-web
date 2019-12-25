@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux'
 import LanguageToggle from '../common/LanguageToggle';
 import './style/PublicHeader.css'
 import { Translate } from "react-localize-redux";
+import { Button } from 'antd';
 
 class PublicHeader extends React.Component {
 
@@ -20,6 +21,7 @@ class PublicHeader extends React.Component {
             username: '',
             password: '',
             submitted: false,
+            isLoggedInRes: this.props.isLoggedInRes,
             title: 'Retreat Your Mind'
         };
 
@@ -39,43 +41,79 @@ class PublicHeader extends React.Component {
         }
     }
 
+    componentDidUpdate(prevProps){
+        //console.log('componentDidUpdate')
+        if (this.props.isLoggedInRes !== prevProps.isLoggedInRes) {
+            this.setState({isLoggedInRes: this.props.isLoggedInRes})
+        }
+    }
+
     handleChange(e) {
         const { name, value } = e.target;
         this.setState({ [name]: value });
     }    
 
-    render() {
-        const { loggingIn, shouldShowAdd } = this.props;
-        const { username, password, submitted, title } = this.state;
+    publicHeader = () => {
         return (
-            <div className="row offset-10">
+        <React.Fragment>
+        <div className={"d-inline-block"}>
+            <Translate>
+                {({ translate }) =>
+                        <Button onClick={() => this.props.handleSubscribeClick()} type="link">{translate('public.links.subscribe')}</Button>}
+            </Translate>
+        </div>
+        <div className={"d-inline-block"}>
+            <Translate>
+                {({ translate }) =>
+                    <Link to="/add" className="btn btn-link d-inline">{translate('public.links.addretreate')}</Link>}
+            </Translate>
+        </div>
+        <div className="d-inline-block">
+            <Translate>
+                {({ translate }) =>
+                    <Link to="/login" className="btn btn-link d-inline">{translate('public.links.login')}</Link>}
+            </Translate>
+        </div>                                
+        <div className="d-inline-block">
+            <Translate>
+                {({ translate }) =>
+                    <Link to="/register" className="btn btn-link d-inline">{translate('public.links.signup')}</Link>}
+            </Translate>
+        </div>
+    </React.Fragment>
+    )}
+
+    loggedHeader = () => {
+        return (
+        <React.Fragment>
+            <div className={"d-inline-block"}>
+                <Translate>
+                    {({ translate }) =>
+                        <Link to="/dashboard" className="btn btn-link d-inline">{translate('public.links.dashboard')}</Link>}
+                </Translate>
+            </div>
+            <div className="d-inline-block">
+                <Translate>
+                    {({ translate }) =>
+                        <Button onClick={() => this.props.handleLogoutClick()} type="link">{translate('public.links.signout')}</Button>}
+                </Translate>
+            </div>
+        </React.Fragment>
+    )}
+
+    render() {        
+        const { username, password, submitted, title, isLoggedInRes } = this.state;
+        const content = isLoggedInRes ? this.loggedHeader() : this.publicHeader();
+        return (
+            <div id="main-header" className="row offset-10">
                 <div className="col-md-3 header">
                     <h3><Link to="/home">{title}</Link></h3>
                 </div>
 
                 <div className="col-md-9"> 
                     <div className="row">
-                        <div className="col-md-7"></div>
-                        <div className="col-md-5 down-35">
-                            <div className={shouldShowAdd ? "d-inline-block" : "hiddent"}>
-                                <Translate>
-                                    {({ translate }) =>
-                                        <Link to="/add" className="btn btn-link d-inline">{translate('public.links.addretreate')}</Link>}
-                                </Translate>
-                            </div>
-                            <div className="d-inline-block">
-                                <Translate>
-                                    {({ translate }) =>
-                                        <Link to="/login" className="btn btn-link d-inline">{translate('public.links.login')}</Link>}
-                                </Translate>
-                            </div>                                
-                            <div className="d-inline-block">
-                                <Translate>
-                                    {({ translate }) =>
-                                        <Link to="/register" className="btn btn-link d-inline">{translate('public.links.signup')}</Link>}
-                                </Translate>
-                            </div>
-                        </div> 
+                        <div className={isLoggedInRes ? "col-md-8" : "col-md-6"}></div>
+                        <div className={isLoggedInRes ? "col-md-4 down-35 header-right" : "col-md-6 down-35 header-right"}>{content}</div> 
                     </div>                                                       
                 </div>
 

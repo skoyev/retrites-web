@@ -10,7 +10,10 @@ const style = {
     marginBottom: '20px'
 }
 
-const ItemList = ({items, className, numItemsPerRow, title, description, handleMoreItems, shouldHideLoadMore}) => {
+{/*<Link to={"/" + item.typelink} className="btn btn-link d-inline fancy-text">{translate(item.name)}</Link>}*/}
+
+const ItemList = ({items, className, numItemsPerRow, title, description, handleMoreItems, 
+                   shouldHideLoadMore, handleItemClick}) => {
     let itemsInRow = chunk(items, numItemsPerRow);
     return (
         <div className={`container margin-top-bottom-50 item-list ${className}`}>
@@ -20,22 +23,28 @@ const ItemList = ({items, className, numItemsPerRow, title, description, handleM
                 <div key={index} className="row" style={style}>
                     {items.map((item, index) => (
                         <div key={index} className={index == 0 ? 'card-no col full-width width-295' : 'card-no col offset-ssm-1 full-width width-295'}>                            
-                            <div className="img-container">                                
+                            <div className="img-container" onClick={() => handleItemClick(item.id)}>                                
                                 {/*<Link to={'/item/' + item.id + '?category=' + category}>*/}
+                                {/*
                                 <Link to={'/item/' + item.id}>
                                     <img className="card-img-top" style={{maxHeight:'183px', cursor:'pointer'}} src={item.picture} alt="Card image cap"></img>                                
                                 </Link>                                
+                                */}
+                                <img className="card-img-top" style={{maxHeight:'183px', cursor:'pointer'}} src={item.picture} alt="Card image cap"></img>                                
+                                {/*
                                 <div className="centered">
                                     {item.name && item.name.includes(".") ? 
                                         <Translate>
-                                            {({ translate }) =>
-                                                <Link to={"/" + item.typelink} className="btn btn-link d-inline fancy-text">{translate(item.name)}</Link>}
+                                            {({ translate }) =>                                                
+                                                <Button className="link-text" type="link">{translate(item.name)}</Button>}                                                
                                         </Translate> 
                                         :
                                         <Link to="/" className="btn btn-link d-inline fancy-text">{item.name}</Link>
-                                    }                                   
+                                    } 
                                 </div>
+                                */}
                                 <div className="card-body-no">
+                                    <h5 className="card-title card-font">{item.name}</h5>
                                     <h5 className="card-title card-font" style={{'display' : item.title ? 'block' : 'none'}}>{item.title ? item.title : ''}</h5>
                                     <h5 className="card-title card-font" style={{'display' : item.title_center ? 'block' : 'none'}}>{item.title_center ? item.title_center : ''}</h5>
                                     <h5 className="card-title card-font-2 margin-top-4" style={{'display' : item.title_bottom ? 'block' : 'none'}}>{item.title_bottom ? item.title_bottom : ''}</h5>
@@ -62,6 +71,7 @@ ItemList.propTypes = {
     description: PropTypes.string,
     numItemsPerRow: PropTypes.number.isRequired,
     handleMoreItems: PropTypes.func,
+    handleItemClick: PropTypes.func.isRequired,
     //category: PropTypes.string.isRequired,
     shouldHideLoadMore: PropTypes.bool.isRequired
 }

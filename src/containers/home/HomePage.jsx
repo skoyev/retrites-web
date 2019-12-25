@@ -5,17 +5,18 @@ import { PublicHeader,
          PublicSearchSingle,
          Section, 
          ItemList} from '../../components/public';
-import {CategoryList} from '../../components/common'
+import {CategoryList, Loading, SubscriptionModal} from '../../components/common'
 import AppFooter from '../../components/common/AppFooter';
 
 import { renderToStaticMarkup } from "react-dom/server";
-import { withLocalize, Translate } from "react-localize-redux";
+import { withLocalize, Translate, getTranslate } from "react-localize-redux";
 import globalTranslations from "../../translations/global.json";
 import {connect} from "react-redux";
-import {itemActions, pageActions} from '../../store/action/index'
-import { history } from '../../helpers';
+import {itemActions, pageActions, userActions} from '../../store/action/index'
+import { history, isLoggedIn, validateEmail } from '../../helpers';
 import '../style/HomePage.css'
-
+import {pageConstants} from '../../constants';
+import { Form } from 'antd';
 class HomePage extends React.Component {
 
     constructor(props, context){
@@ -50,12 +51,21 @@ class HomePage extends React.Component {
             retreatByCountriesTitle: 'Explore our sacred world',
             retreatByCountriesDescription: '',
             selectedDuration: 'Duraion',
+            selectedCountry: 'Country',
             selectedDurationValue: '',
             selectedStartDate: '',
-            selectedCountryId: 0,
+            selectedCountryId: '',
             selectedInputSearchBy: '',
             selectedStartDate: '',
+            selectedItemId: 0,
             ourVisionTitle: 'Our Vision',
+            isLoggedInRes: this.props.isLoggedInRes,
+            shouldShowSubscriptionModal: false,
+            subscriptionName: '',
+            subscriptionEmail: '',
+            selectedCategoryList: [],
+            showSuccessMessage: false,
+            invalidEmail: false,
             ourVisionDescription: 'We believe human beings are innately wise, strong and kind. This wisdom, although not always experienced, is always present. Going on retreat is a beautiful way to reconnect to our basic sanity and health. Our aspiration at Retreat Your Mind is to inspire people to experience authentic retreats and reconnect with their innate wisdom, strength and kindness.'
         }
 
@@ -64,6 +74,11 @@ class HomePage extends React.Component {
         this.handleStartDate = this.handleStartDate.bind(this);
         this.handleRetreatCategoryClick = this.handleRetreatCategoryClick.bind(this);
         this.handleCountrySelectClick = this.handleCountrySelectClick.bind(this);
+        this.handleCountrySelectClickNoRedirect = this.handleCountrySelectClickNoRedirect.bind(this);
+        this.handleSubscribeClick = this.handleSubscribeClick.bind(this);
+        this.handleSubscriptionChange = this.handleSubscriptionChange.bind(this);
+        this.handleSubscriptionCancel = this.handleSubscriptionCancel.bind(this);
+        this.handleSubscriptionSubmit = this.handleSubscriptionSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -77,6 +92,24 @@ class HomePage extends React.Component {
 
         // fetch retreatTypes
         this.props.fetchRetreatSubCategories();
+
+        // check if user logged in
+        this.props.isLoggedIn();
+
+        this.SubscriptionWrapper = Form.create({ name: 'subscription' })( SubscriptionModal );
+    }
+
+    componentDidUpdate() {
+        let el = document.getElementById('main-header');        
+        if(el){      
+          window.addEventListener("scroll", function () {
+            if (document.documentElement.scrollTop > 50 ) {
+              el.classList.add("fixed");
+            } else {
+              el.classList.remove("fixed");
+            }           
+          }, false);
+        } 
     }
 
     search = () => {
@@ -100,32 +133,104 @@ class HomePage extends React.Component {
     }
 
     componentWillReceiveProps(nextProps){
-        if(nextProps.nextPageName &&
-            nextProps.nextPageName === 'search'){
-            const {selectedSubcategoryId, 
-                selectedDurationValue,
-                selectedInputSearchBy,
-                selectedStartDate, 
-                selectedCountryId } = this.state;     
-            let param = `/items?subCategoryId=${selectedSubcategoryId}&duration=${selectedDurationValue}&name=${selectedInputSearchBy}&startDate=${selectedStartDate}&countryId=${selectedCountryId}`;
-            history.push(param);    
+        if(nextProps.nextPageName){
+            if( nextProps.nextPageName === pageConstants.SEARCH ){
+                const {selectedSubcategoryId, 
+                    selectedDurationValue,
+                    selectedInputSearchBy,
+                    selectedStartDate, 
+                    selectedCountryId } = this.state;     
+                let param = `/items?subCategoryId=${selectedSubcategoryId}&duration=${selectedDurationValue}&name=${selectedInputSearchBy}&startDate=${selectedStartDate}&countryId=${selectedCountryId}`;
+                history.push(param);        
+            } else if( nextProps.nextPageName === pageConstants.DETAILS ) {
+                const {selectedItemId} = this.state;  
+                const encrData = btoa(`${pageConstants.HOME}`);   
+                let param = `/item/${selectedItemId}?back=${encrData}`;
+                history.push(param);        
+            }
         }
+
+        this.setState({isLoggedInRes : nextProps.isLoggedInRes})
     } 
 
     handleRetreatCategoryClick = (id) => {        
-        if(id){
-            this.setState({selectedSubcategoryId: id}, () => {
-                this.props.clearItemsAndNavigateToPage('search')
-            });            
-        }
+        this.setState({selectedSubcategoryId: id}, () => {
+            this.props.clearItemsAndNavigateToPage(pageConstants.SEARCH)
+        });            
     }
 
     handleCountrySelectClick = (id) => {        
-        if(id){
-            this.setState({selectedCountryId: id}, () => {
-                this.props.clearItemsAndNavigateToPage('search')
-            });            
+        this.setState({selectedCountryId: id}, () => {
+            this.props.clearItemsAndNavigateToPage(pageConstants.SEARCH)
+        });            
+    }
+
+    handleCountrySelectClickNoRedirect = (id) => {
+        this.setState({selectedCountryId: id.key, selectedCountry: this.props.retreatByCountries.find(c => c.id == id.key).type});
+    }
+
+    handleItemClick = (id) => {
+        this.setState({selectedItemId: id}, () => {
+            this.props.clearItemsAndNavigateToPage(pageConstants.DETAILS)
+        });            
+    }
+
+    handleLogoutClick = () => {        
+        this.props.logout();
+    }
+
+    handleSubscribeClick = () => {
+        this.setState({shouldShowSubscriptionModal:true});
+    }
+
+    handleSubscriptionChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
+    handleSubscriptionCheckboxChange = checkedList => {
+        this.setState({selectedCategoryList:checkedList})
+    }
+
+    handleSubscriptionCancel = () => {
+        this.setState({shouldShowSubscriptionModal:false, subscriptionName: '', subscriptionEmail: ''});
+    }
+
+    handleSubscriptionSubmit = (e) => {
+        const {subscriptionName, subscriptionEmail, selectedCategoryList} = this.state;
+        const {retreatTypes} = this.props;
+        if(!selectedCategoryList || selectedCategoryList.length == 0){
+            console.warn('Please select category.');
+            return
         }
+
+        const isValidEmail = validateEmail(subscriptionEmail);
+
+        if(!isValidEmail){
+            this.setState({invalidEmail: true})
+            console.warn(`Invalid email ${subscriptionEmail}`);
+            return;
+        }
+
+        const catIds = retreatTypes.filter(r => selectedCategoryList.includes(r.name)).map(r => r.id);
+        this.props.userSubscribe({email:subscriptionEmail, name:subscriptionName, catIds:catIds})
+            .then(() => {
+                this.setState({showSuccessMessage:true}, ()=> {
+                    setTimeout(_ => {
+                        this.setState({shouldShowSubscriptionModal:false, 
+                            subscriptionName: '', 
+                            subscriptionEmail: '',
+                            showSuccessMessage: false,
+                            invalidEmail: false,
+                            selectedCategoryList: []});     
+                    }, 4000)
+                })                
+            })
+    }
+
+    extractRetriteTypes = types => {
+        return types.map(t => t.name);
     }
 
     render() {
@@ -137,25 +242,40 @@ class HomePage extends React.Component {
                 retreatByCountriesDescription,
                 ourVisionTitle, ourVisionDescription,
                 searchLength, selectedSubcategory,
-                selectedDuration } = this.state;
+                selectedDuration, selectedCountry, isLoggedInRes,
+                shouldShowSubscriptionModal, subscriptionEmail, subscriptionName,
+                selectedCategoryList, showSuccessMessage, invalidEmail } = this.state;
         const { items, retreatByCountries, retreatTypes } = this.props;
         const shouldHideLoadMore = true;
-        return (
-            <div>                
-                {/* Home Header Section */}
-                <PublicHeader shouldShowAdd={true}/>
 
-                {/* Slider/Search Section */}
-                <PublicSearchSingle title="Find Retreates For Any Season"
-                                    search={this.search}
-                                    handleTypeClick={this.handleSearchTypeClick}
-                                    handleDurationClick={this.handleDurationClick}
-                                    handleInputSearchBy={this.handleInputSearchBy}
-                                    handleStartDate={this.handleStartDate}
-                                    subCategory={selectedSubcategory}
-                                    selectedDuration={selectedDuration}
-                                    types={retreatTypes}
-                                    length={searchLength}/>                 
+        if ( !items || items.length == 0 ) 
+            return <Loading text={'Loading...'}/>;
+
+        const subscriptionCategoryList = retreatTypes && retreatTypes.length > 1 ? this.extractRetriteTypes(retreatTypes) : [];
+        
+        return (
+            <React.Fragment>
+                <div className="slider-section">
+                    {/* Home Header Section */}
+                    <PublicHeader isLoggedInRes={isLoggedInRes}
+                                  handleSubscribeClick={this.handleSubscribeClick}
+                                  handleLogoutClick={this.handleLogoutClick}/>
+
+                    {/* Slider/Search Section */}
+                    <PublicSearchSingle title="Find Retreates For Any Season"
+                                        search={this.search}
+                                        handleTypeClick={this.handleSearchTypeClick}
+                                        handleDurationClick={this.handleDurationClick}
+                                        handleInputSearchBy={this.handleInputSearchBy}
+                                        handleStartDate={this.handleStartDate}
+                                        subCategory={selectedSubcategory}
+                                        selectedDuration={selectedDuration}
+                                        types={retreatTypes}
+                                        selectedCountry = {selectedCountry}
+                                        countries = {retreatByCountries}
+                                        handleCountryClick = {this.handleCountrySelectClickNoRedirect}
+                                        length={searchLength}/>                 
+                </div>
 
                 <div className="container">
                     {/* Types Section */}
@@ -176,6 +296,7 @@ class HomePage extends React.Component {
                             title={popularRetreatTitle}
                             description={popularRetreatDescription}
                             shouldHideLoadMore={shouldHideLoadMore} 
+                            handleItemClick={this.handleItemClick} 
                             numItemsPerRow={4}/>
 
                     {/* Retreat By Countries Section */}
@@ -189,7 +310,41 @@ class HomePage extends React.Component {
                 </div>
 
                 <AppFooter text="Footer Text"/>
-            </div>
+
+                {/* User Subscription */}
+                {/*
+                <SubscriptionModal title={'Subscription'}
+                                   description={'Subscibe to our best deals:'}
+                                   visible={shouldShowSubscriptionModal}
+                                   subscriptionName={subscriptionName}
+                                   subscriptionEmail={subscriptionEmail}
+                                   categoryList={subscriptionCategoryList}
+                                   selectedCategoryList={selectedCategoryList}
+                                   showSuccessMessage={showSuccessMessage}
+                                   invalidEmail={invalidEmail}
+                                   successMessage={'You have been subscribed successfully!'}
+                                   handleSubscriptionCheckboxChange={this.handleSubscriptionCheckboxChange}
+                                   handleSubscriptionCancel={this.handleSubscriptionCancel}
+                                   handleSubscriptionChange={this.handleSubscriptionChange}
+                                   handleSubscriptionSubmit={this.handleSubscriptionSubmit}/>
+                */}
+
+                <this.SubscriptionWrapper title={'Subscription'}
+                                   description={'Subscibe to our best deals:'}
+                                   visible={shouldShowSubscriptionModal}
+                                   subscriptionName={subscriptionName}
+                                   subscriptionEmail={subscriptionEmail}
+                                   categoryList={subscriptionCategoryList}
+                                   selectedCategoryList={selectedCategoryList}
+                                   showSuccessMessage={showSuccessMessage}
+                                   invalidEmail={invalidEmail}
+                                   successMessage={'You have been subscribed successfully!'}
+                                   handleSubscriptionCheckboxChange={this.handleSubscriptionCheckboxChange}
+                                   handleSubscriptionCancel={this.handleSubscriptionCancel}
+                                   handleSubscriptionChange={this.handleSubscriptionChange}
+                                   handleSubscriptionSubmit={this.handleSubscriptionSubmit}/>
+
+            </React.Fragment>
         )
     }
 }
@@ -199,13 +354,15 @@ function mapStateToProps(state) {
       items: state.items.items,
       retreatByCountries: state.items.retreatByCountries,
       retreatTypes: state.items.retriteTypes,
-      nextPageName: state.items.pageName      
+      nextPageName: state.items.pageName,
+      isLoggedInRes: state.users.isLoggedIn,
       //shouldReloadItems: state.items.shouldReloadItems
     };
 }
 
 const mapDispatchToProps = {    
-    ...itemActions
+    ...itemActions, 
+    ...userActions
 };
 
 //export default withLocalize(HomePage);

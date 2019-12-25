@@ -11,3 +11,13 @@ export const chunk = function(myItems, size) {
     }
     return [firstChunk].concat(chunk(myItems.slice(size, myItems.length), size));
 }
+
+export const validateEmail = (email) => {
+    if(!email) {
+        console.warn(`validateEmail is invalid for ${email}`)
+        return false;
+    }
+
+    var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return new RegExp(re).test(email);
+}

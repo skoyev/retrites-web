@@ -13,3 +13,9 @@
 .hiddent {
     display: none;
 }
+
+.ant-btn-link {
+    color: #007bff;
+    font-size: 1rem;
+    font-weight: 400;
+}

@@ -31,7 +31,7 @@
       "california":["California",""],
       "spain":["Spain",""],
       "tibet":["Tibet",""],
-      "goback":["Go Back",""],
+      "goback":["Back",""],
       "massage":["Healing Massage Therapy",""],
       "cleansing":["Body Cleansing Program",""]
     },
@@ -41,7 +41,7 @@
       "cancel": ["Cancel","Cancel Fr"],
       "login": ["Login", "Login Fr"],
       "search": ["Search", "Search Fr"],
-      "go-back": ["Go Back", "Go Back Fr"],
+      "go-back": ["Back", "Back Fr"],
       "item": ["Item", "Item Fr"]
     },
   
@@ -62,9 +62,12 @@
         "addretreate": ["ADD RETREATE", "ADD RETREATE FR"],
         "signup": ["SIGN UP","SIGN UP Fr"],
         "login": ["LOGIN", "LOGIN FR"],
+        "signout": ["LOGOUT", "LOGOUT FR"],
+        "dashboard": ["DASHBOARD", "DASHBOARD FR"],
         "cancel": ["Cancel", "Cancel FR"],
         "join": ["Join Our Retreat Community", "Join Our Community FR"],
-        "login_community": ["Login Into Retreat Community", "Login Into Retreat Community FR"]
+        "login_community": ["Login Into Retreat Community", "Login Into Retreat Community FR"],
+        "subscribe": ["SUBSCRIBE", "SUBSCRIBE FR"]
       }
     }
   }

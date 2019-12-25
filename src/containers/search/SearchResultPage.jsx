@@ -12,7 +12,7 @@ import { constants } from 'fs';
 import globalTranslations from "../../translations/global.json";
 import { renderToStaticMarkup } from "react-dom/server";
 import { history } from '../../helpers';
-
+import {pageConstants} from '../../constants';
 class SearchResultPage extends React.Component {
 
     constructor(props) {
@@ -51,6 +51,7 @@ class SearchResultPage extends React.Component {
         this.handlePriceToChange = this.handlePriceToChange.bind(this);
         this.onDateRangeChange = this.onDateRangeChange.bind(this);        
         this.handleBack = this.handleBack.bind(this);        
+        this.handleItemClick = this.handleItemClick.bind(this);        
     }
 
     componentDidMount() {
@@ -75,9 +76,15 @@ class SearchResultPage extends React.Component {
     }
 
     componentWillReceiveProps(nextProps){
-        if(nextProps.nextPageName &&
-            nextProps.nextPageName === 'home'){
-            history.push('/home');    
+        if(nextProps.nextPageName){
+            if( nextProps.nextPageName === pageConstants.HOME ){
+                history.push(`/${pageConstants.HOME}`);
+            } else if(nextProps.nextPageName === pageConstants.DETAILS) {
+                var urlParams = new URLSearchParams(window.location.search)
+                const {selectedItemId} = this.state;
+                const encrData = btoa(`items?${urlParams}`);
+                history.push(`/item/${selectedItemId}?back=${encrData}`);
+            }
         }
     } 
 
@@ -156,6 +163,12 @@ class SearchResultPage extends React.Component {
         }       
     }
 
+    handleItemClick = (id) => {
+        this.setState({selectedItemId: id}, () => {
+            this.props.clearItemsAndNavigateToPage(pageConstants.DETAILS)
+        });            
+    }
+
     render() {
         const { Header, Footer, Sider, Content } = Layout;
         const { items } = this.props;
@@ -177,6 +190,7 @@ class SearchResultPage extends React.Component {
                     <ItemList items={items} 
                               shouldHideLoadMore={shouldHideLoadMore} 
                               numItemsPerRow={numItemsPerRow}
+                              handleItemClick={this.handleItemClick} 
                               handleMoreItems={this.handleMoreItems}/>
                 </Content>
              </Layout>            

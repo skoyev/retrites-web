@@ -3,5 +3,8 @@ export const pageConstants = {
     LEADS_CONTENT   : 'view-leads',
     STATISTIC_CONTENT : 'report-statistic',
     DASHBOARD_CONTENT : 'dashboard',
-    CLEAR_ITEMS_AND_REDIRECT_PAGE: 'redirect-page'
+    CLEAR_ITEMS_AND_REDIRECT_PAGE: 'redirect-page',
+    SEARCH: 'search',
+    DETAILS: 'details',
+    HOME: 'home'    
 };

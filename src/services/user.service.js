@@ -9,8 +9,30 @@ if(configConstants.ENVIRONMENT === configConstants.ENV_LOCAL){
 export const userService = {
     login,
     logout,
-    register
+    register,
+    validateAuthKey,
+    userSubscribe
 };
+
+function userSubscribe(data) {
+    return axios.post(`/api/user/subscribe`, {email:data.email, name: data.name, catIds:data.catIds}, {});
+}
+
+function validateAuthKey(authKey) {
+    if(authKey){
+        const headers = {
+            'Content-Type': 'application/json',
+            'auth_key': authKey
+        }
+        return axios.post(`/api/auth/authKey`, {}, {
+            headers: headers
+        });
+    } else {
+        // TODO: add error handling
+        console.error('Call validateAuthKey is invalid for the undefined authKey')
+        return Promise.reject(`Auth key - ${authKey} is invalid to validate.`);
+    }
+}
 
 function register(user) {
     return axios.post(`/api/user`, user);
@@ -18,7 +40,10 @@ function register(user) {
 
 function login(username, password) {
     return axios.post('/api/auth/login', {username, password})
-                .then(u => localStorage.setItem('user', JSON.stringify(u)));
+                .then(u => {
+                    //sessionStorage.setItem('user', JSON.stringify(u))
+                    return u;
+                });
 }
 
 function logout() {

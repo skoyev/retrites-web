@@ -27,7 +27,8 @@ class RetreateDetailPage extends React.Component {
             formEmail: '',
             formName: '',
             formDetails: '',
-            formDescription: ''
+            formDescription: '',
+            back: 'home'
         };        
 
         this.props.initialize({
@@ -61,16 +62,21 @@ class RetreateDetailPage extends React.Component {
         }
     }
 
+    componentDidMount() {
+        const urlParams = new URLSearchParams(this.props.location.search)
+        const back = urlParams.get('back');        
+        this.setState({ back: back});                
+    }
+
     handleChange(event) {
     }
 
     onBack(event){
-        let {match : {params}, location : {search}} = this.props;
-        let category = search.split('=')[1];
-
+        let {back} = this.state;
         event.preventDefault();
-        console.log('onBack');
-        history.push('/items/' + category);
+        if(back){
+            history.push(`/${atob(back)}`);
+        }
     }
 
     handleSearch(e){

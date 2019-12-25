@@ -10,6 +10,11 @@ const INITIAL_STATE = {
 
 export function users(state = INITIAL_STATE, action) {
     switch (action.type) {
+        case userConstants.IS_LOGGED_IN:
+          return {
+            ... state,
+            isLoggedIn: action.isLoggedIn
+          };       
         case userConstants.GETALL_REQUEST:
           return {
             loading: true
@@ -86,6 +91,8 @@ export function users(state = INITIAL_STATE, action) {
             };                
 
         default:
-          return state
+          return {
+            ... state
+          }
     }
 }

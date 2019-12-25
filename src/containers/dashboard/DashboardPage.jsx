@@ -11,6 +11,7 @@ import { withLocalize } from "react-localize-redux";
 import {itemActions, leadsActions, reportActions} from '../../store/action'
 import TextArea from 'antd/lib/input/TextArea';
 import {pageConstants} from '../../constants';
+import './index.css'
 
 const { Header, Content, Sider, Footer } = Layout;
 

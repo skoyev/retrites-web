@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { userActions } from '../../store/action';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { history } from '../../helpers';
 
 class PrivateHeader extends React.Component {
 
@@ -19,22 +20,26 @@ class PrivateHeader extends React.Component {
         };
 
         this.handleLogout = this.handleLogout.bind(this);
+        this.handleHome = this.handleHome.bind(this);
     }    
 
     handleLogout = (e) => {
         e.preventDefault();
-
         this.setState({ logedOut: true });
-        const { logout } = this.props;
-        logout();
+        this.props.logout();
+    }
+
+    handleHome = (e) => {
+        history.push('/home');
     }
 
     render() {
         const { loggingIn } = this.props;
         const { username, password, submitted } = this.state;
         return (
-            <div className="col-md-12">
+            <div className="col-md-12">                
                 <button className="btn btn-primary" style={{float:'right', marginTop: 10}} onClick={this.handleLogout}>Logout</button>
+                <button className="btn btn-primary" style={{float:'right', marginTop: 10, marginRight: 10}} onClick={this.handleHome}>Home</button>
             </div>
         );
     }

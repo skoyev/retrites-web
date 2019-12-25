@@ -1,26 +1,25 @@
 import React from 'react';
-import {loadable, Loadable} from 'react-loadable';
 import { Router,Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { PrivateRoute } from '../components/common/PrivateRoute';
-import { withLocalize, Translate } from "react-localize-redux";
 import { history } from '../helpers';
-import LoginPage  from '../containers/login/LoginPage';
-import HomePage from '../containers/home/HomePage';
-import RegisterPage  from '../containers/register/RegisterPage';
 import { LocalizeProvider } from 'react-localize-redux';
 import './App.css'
-import AddRetreatePage from '../containers/retreate/new/AddRetreatePage';
-import RetreateDetailPage from '../containers/retreate/RetreateDetailPage';
-import {SearchResultPage} from '../containers';
 import { lazy, Suspense } from "react";
-import AddNewRetreatPage from '../containers/home/add/AddNewRetreatPage';
+import { Loading } from '../components/common';
 
 const LazyDashboardComponent = lazy(() => import('../containers/dashboard/DashboardPage'));
+const LazyHomeComponent = lazy(() => import('../containers/home/HomePage'));
+const LazyLogin = lazy(() => import('../containers/login/LoginPage'));
+const LazyRegisterPage = lazy(() => import('../containers/register/RegisterPage'));
+const LazyAddRetreatePage = lazy(() => import('../containers/retreate/new/AddRetreatePage'));
+const LazyAddNewRetreatPage = lazy(() => import('../containers/home/add/AddNewRetreatPage'));
+const LazyRetreateDetailPage = lazy(() => import('../containers/retreate/RetreateDetailPage'));
+const LazySearchResultPage = lazy(() => import('../containers/search/SearchResultPage'));
 
 function WaitingComponent(Component) {
     return props => (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loading text="Loading"/>}>
         <Component {...props} />
       </Suspense>
     );
@@ -39,13 +38,13 @@ class App extends React.Component {
                     <Router history={history}>                    
                         <div style={{height:'100%'}}>                         
                             <PrivateRoute exact path="/dashboard" component={WaitingComponent(LazyDashboardComponent)} />
-                            <Route path="/home" component={HomePage} />
-                            <Route path="/login" component={LoginPage} />
-                            <Route path="/register" component={RegisterPage} />                        
-                            <Route path="/new-retreate" component={AddRetreatePage} />
-                            <Route path="/add" component={AddNewRetreatPage} />
-                            <Route path="/item/:itemID" component={RetreateDetailPage} />                        
-                            <Route path="/items" component={SearchResultPage} />                        
+                            <Route path="/home" component={WaitingComponent(LazyHomeComponent)} />
+                            <Route path="/login" component={WaitingComponent(LazyLogin)} />
+                            <Route path="/register" component={WaitingComponent(LazyRegisterPage)} />                        
+                            <Route path="/new-retreate" component={WaitingComponent(LazyAddRetreatePage)} />
+                            <Route path="/add" component={WaitingComponent(LazyAddNewRetreatPage)} />
+                            <Route path="/item/:itemID" component={WaitingComponent(LazyRetreateDetailPage)} />                        
+                            <Route path="/items" component={WaitingComponent(LazySearchResultPage)} />                        
                             <Route path="/" render={ history.push('/home')} />
                         </div>                    
                     </Router>                

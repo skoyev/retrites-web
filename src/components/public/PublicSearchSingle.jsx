@@ -16,6 +16,14 @@ const menu = (types, handleDurationClick) => {
           </Menu>
 };
 
+const countryMenu = (data, handleClick) => {
+    return <Menu onClick={handleClick}>
+            {data.map((type, index) => (
+                <Menu.Item key={type.id}>{type.type}</Menu.Item>
+            ))}
+          </Menu>
+};
+
 const typeMenu = (types, handleTypeClick) => {
     return <Menu onClick={handleTypeClick}>
             {types.map((type, index) => (
@@ -36,20 +44,35 @@ const typeMenu = (types, handleTypeClick) => {
 
 const PublicSearchSingle = ({title, search, handleTypeClick, handleDurationClick, types, length, 
                              subCategory, selectedDuration, handleInputSearchBy,
-                             handleStartDate}) => (  
-    <div className="slider-section">
+                             handleStartDate, selectedCountry,
+                             handleCountryClick, countries}) => (  
+    <div className="slider-section1">
         <section className="search-witget" role="navigation">        
             <div className="tab-content search-witget-content"> 
                 <h3>{title}</h3>
                 <InputGroup compact>
-                    <Input onChange={handleInputSearchBy} style={{ width: '30%', height: '35px' }} placeholder="Where would you like to go ?"/>
+                    {/* Name item */}                    
+                    <Input onChange={handleInputSearchBy} style={{ width: '30%', height: '35px', borderRadius: '4px' }} placeholder="Where would you like to go ?"/>
+
+                    {/* Country Choice */}
+                    <Dropdown.Button overlay={countryMenu(countries, handleCountryClick)} style={{ marginLeft: '5px' }}>
+                        <span style={{color: '#b1b0b0'}}>{selectedCountry}</span>
+                    </Dropdown.Button>
+
+                    {/* Category Choice */}
                     <Dropdown.Button overlay={typeMenu(types, handleTypeClick)} style={{ marginLeft: '5px' }}>
                         <span style={{color: '#b1b0b0'}}>{subCategory}</span>
                     </Dropdown.Button>
+
+                    {/* From Date Choice */}                    
                     <DatePicker onChange={handleStartDate} placeholder="Start Date"  style={{ width: '20%', marginLeft: '5px', height: '35px' }} />
+
+                    {/* Duration Choice */}                                        
                     <Dropdown.Button placeholder="Duration" overlay={menu(length, handleDurationClick)} style={{ marginLeft: '5px' }}>
                         <span style={{color: '#b1b0b0'}}>{selectedDuration}</span>
                     </Dropdown.Button>
+
+                    {/* Search Button */}                    
                     <Button onClick={search} style={{ marginLeft: '5px', borderRadius: '5px', height: '35px' }} type="primary" icon="search">Search</Button>
                 </InputGroup>                                   
             </div>        
@@ -64,10 +87,13 @@ PublicSearchSingle.propTypes = {
     handleDurationClick: PropTypes.func.isRequired,
     handleInputSearchBy: PropTypes.func.isRequired,
     handleStartDate: PropTypes.func.isRequired,
+    handleCountryClick: PropTypes.func.isRequired,
     types: PropTypes.array.isRequired,
     length: PropTypes.array.isRequired,
-    subCategory: PropTypes.object.isRequired,
-    selectedDuration: PropTypes.object.isRequired
+    countries: PropTypes.array.isRequired,
+    subCategory: PropTypes.string.isRequired,
+    selectedCountry: PropTypes.string.isRequired,
+    selectedDuration: PropTypes.string.isRequired
 };
    
 export default PublicSearchSingle;

@@ -6,6 +6,7 @@ import { withLocalize } from "react-localize-redux";
 import {userActions} from '../../store/action'
 import { history } from '../../helpers';
 import '../style/Base.css'
+import './index.css'
 
 class LoginPage extends React.Component {
     constructor(props) {
@@ -52,7 +53,7 @@ class LoginPage extends React.Component {
         const { username, password, submitted } = this.state;
         
         return (
-            <div className="container">
+            <div className="container vertical-center">
                 <div className="row justify-content-center align-items-center new-retreate">
                     <div className="col-4">
                         <div className="card">

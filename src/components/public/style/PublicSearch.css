@@ -1,6 +1,6 @@
 .slider-section {
     /*background-image: url(/images/pages/yoga.jpg);*/
-    background-image: url(https://retreat-app.s3.us-east-2.amazonaws.com/home/yoga.jpg);
+    background-image: url(https://retreat-app.s3.us-east-2.amazonaws.com/home/home.jpg);
     background-position: 0 60%;
     background-size: cover;
     height: 500px;
@@ -13,7 +13,7 @@
 }
 
 .slider-section .search-witget{
-    width: 65%;
+    width: 80%;
     /*opacity: 0.7; */
     margin-left: auto;
     margin-right: auto;   
@@ -29,6 +29,10 @@
 .search-witget-content-tab {
     min-height: 300px;
     padding: 20px;
+}
+
+.search-witget-content h3 {
+    color: white;
 }
 
 .ant-calendar-picker-input {
