@@ -19,3 +19,7 @@
 .fixed .header-right {
     padding-top: 10px;
 }
+
+.header h3 {
+    color: #ffffff;
+}

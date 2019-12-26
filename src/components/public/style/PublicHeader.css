@@ -19,3 +19,7 @@
     font-size: 1rem;
     font-weight: 400;
 }
+
+.white a, .ant-btn-link{
+    color: #ffffff;
+}

@@ -56,25 +56,25 @@ class PublicHeader extends React.Component {
     publicHeader = () => {
         return (
         <React.Fragment>
-        <div className={"d-inline-block"}>
+        <div className={"d-inline-block white"}>
             <Translate>
                 {({ translate }) =>
                         <Button onClick={() => this.props.handleSubscribeClick()} type="link">{translate('public.links.subscribe')}</Button>}
             </Translate>
         </div>
-        <div className={"d-inline-block"}>
+        <div className={"d-inline-block white"}>
             <Translate>
                 {({ translate }) =>
                     <Link to="/add" className="btn btn-link d-inline">{translate('public.links.addretreate')}</Link>}
             </Translate>
         </div>
-        <div className="d-inline-block">
+        <div className="d-inline-block white">
             <Translate>
                 {({ translate }) =>
                     <Link to="/login" className="btn btn-link d-inline">{translate('public.links.login')}</Link>}
             </Translate>
         </div>                                
-        <div className="d-inline-block">
+        <div className="d-inline-block white">
             <Translate>
                 {({ translate }) =>
                     <Link to="/register" className="btn btn-link d-inline">{translate('public.links.signup')}</Link>}
@@ -107,7 +107,7 @@ class PublicHeader extends React.Component {
         return (
             <div id="main-header" className="row offset-10">
                 <div className="col-md-3 header">
-                    <h3><Link to="/home">{title}</Link></h3>
+                    <h3 className="white"><Link to="/home">{title}</Link></h3>
                 </div>
 
                 <div className="col-md-9"> 

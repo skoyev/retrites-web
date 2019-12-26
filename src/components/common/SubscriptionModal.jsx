@@ -1,16 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom';
 import { Button, Modal, Form, Input, Checkbox } from 'antd';
 import { Translate } from "react-localize-redux";
 import "./style/SubscriptionModal.css";
-import { chunk } from '../../helpers/';
 import CheckboxGroup from 'antd/lib/checkbox/Group';
+import ReCAPTCHA from "react-google-recaptcha";
+import { configConstants } from '../../constants';
+
+window.recaptchaRef = React.createRef();
 
 const SubscriptionModal = props => {
     const {visible, title, description, handleSubscriptionChange, handleSubscriptionSubmit, 
-        handleSubscriptionCancel, subscriptionName, subscriptionEmail, categoryList, handleSubscriptionCheckboxChange,
-        selectedCategoryList, showSuccessMessage, successMessage, invalidEmail} = props;
+        handleSubscriptionCancel, categoryList, handleSubscriptionCheckboxChange,
+        selectedCategoryList, showSuccessMessage, successMessage,
+        captchaOnChange, isCaptchaValid} = props;
 
     const formItemLayout = {
         labelCol: {
@@ -31,20 +34,27 @@ const SubscriptionModal = props => {
     const isSubscFieldTouched = isFieldTouched('subscriptionName');
     const isEmailFieldTouched = isFieldTouched('subscriptionEmail');
 
+    const isDisabledSubmit = !isSubscFieldTouched || 
+                                !isEmailFieldTouched || 
+                                    hasErrors(getFieldsError(),isFieldTouched) ||
+                                        selectedCategoryList.length == 0 ||
+                                            !isCaptchaValid;
     return (
         <Modal  visible={visible}
                 title={title}
                 onOk={this.handleOk}
-                onCancel={this.handleCancel}
+                onCancel={()=>handleSubscriptionCancel(props.form)}
                 footer={[
-                    <Button key="back" onClick={handleSubscriptionCancel}>Cancel</Button>,
-                    <Button key="submit" type="primary" disabled={!isSubscFieldTouched || !isEmailFieldTouched || hasErrors(getFieldsError(),isFieldTouched)} onClick={handleSubscriptionSubmit}>Submit</Button>
+                    <Button key="back" onClick={()=>handleSubscriptionCancel(props.form)}>Cancel</Button>,
+                    <Button key="submit" type="primary" 
+                            disabled={isDisabledSubmit} 
+                            onClick={() => handleSubscriptionSubmit(props.form)}>Submit</Button>
                 ]}>
                 <div>
                     <div style={{marginBottom: 15}}>{description}</div>
 
                     <div>
-                        <Form {...formItemLayout} onSubmit={this.handleSubscriptionSubmit}>                            
+                        <Form {...formItemLayout} onSubmit={handleSubscriptionSubmit}>                            
                             <Form.Item label="Name">           
                                 {getFieldDecorator('subscriptionName', {
                                         rules: [
@@ -52,7 +62,7 @@ const SubscriptionModal = props => {
                                             required: true,
                                             message: 'Please input your Name!',
                                         },
-                                        { min: 2, message: 'Name must be minimum 3 characters.' }
+                                        { min: 2, message: 'Name must be minimum 2 characters.' }
                                         ],
                                     })
                                 (<Input name="subscriptionName" onChange={handleSubscriptionChange}/>)}
@@ -73,16 +83,22 @@ const SubscriptionModal = props => {
                                     })
                                     (<Input name="subscriptionEmail" onChange={handleSubscriptionChange}/>)}
                             </Form.Item>
-                            {invalidEmail ? <div style={{color: '#FF5733', marginBottom: 10}}>Invalid Email</div> : ''}
                         </Form>
                     </div>
 
-                    <div>
+                    <div style={{marginBottom:20}}>
                         <CheckboxGroup
                             style={{ width: '100%' }}
                             options={categoryList}
                             value={selectedCategoryList}
                             onChange={handleSubscriptionCheckboxChange}/>
+                    </div>
+
+                    <div>                            
+                        <ReCAPTCHA
+                            ref={window.recaptchaRef}
+                            sitekey={configConstants.CAPTCHA_KEY}
+                            onChange={captchaOnChange}/>                            
                     </div>
 
                     {showSuccessMessage ? <div style={{color: '#FF5733', marginTop: 10}}>{successMessage}</div> : ''}
@@ -95,8 +111,6 @@ SubscriptionModal.propTypes = {
     visible: PropTypes.bool.isRequired,
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    subscriptionName: PropTypes.string.isRequired,
-    subscriptionEmail: PropTypes.string.isRequired,
     handleSubscriptionChange: PropTypes.func.isRequired,
     handleSubscriptionSubmit: PropTypes.func.isRequired,    
     handleSubscriptionCancel: PropTypes.func.isRequired,
@@ -105,7 +119,7 @@ SubscriptionModal.propTypes = {
     selectedCategoryList: PropTypes.array.isRequired,
     showSuccessMessage: PropTypes.bool.isRequired,
     successMessage: PropTypes.string.isRequired,
-    invalidEmail: PropTypes.bool.isRequired
+    captchaOnChange: PropTypes.func.isRequired
 }
 
 

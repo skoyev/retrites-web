@@ -17,6 +17,8 @@ import { history, isLoggedIn, validateEmail } from '../../helpers';
 import '../style/HomePage.css'
 import {pageConstants} from '../../constants';
 import { Form } from 'antd';
+import ReCAPTCHA from "react-google-recaptcha";
+
 class HomePage extends React.Component {
 
     constructor(props, context){
@@ -61,11 +63,12 @@ class HomePage extends React.Component {
             ourVisionTitle: 'Our Vision',
             isLoggedInRes: this.props.isLoggedInRes,
             shouldShowSubscriptionModal: false,
-            subscriptionName: '',
+            subscriptionName: 'sss',
             subscriptionEmail: '',
             selectedCategoryList: [],
             showSuccessMessage: false,
             invalidEmail: false,
+            isCaptchaValid: false,
             ourVisionDescription: 'We believe human beings are innately wise, strong and kind. This wisdom, although not always experienced, is always present. Going on retreat is a beautiful way to reconnect to our basic sanity and health. Our aspiration at Retreat Your Mind is to inspire people to experience authentic retreats and reconnect with their innate wisdom, strength and kindness.'
         }
 
@@ -79,6 +82,8 @@ class HomePage extends React.Component {
         this.handleSubscriptionChange = this.handleSubscriptionChange.bind(this);
         this.handleSubscriptionCancel = this.handleSubscriptionCancel.bind(this);
         this.handleSubscriptionSubmit = this.handleSubscriptionSubmit.bind(this);
+
+        this.captchaOnChange = this.captchaOnChange.bind(this);
     }
 
     componentDidMount() {
@@ -96,7 +101,7 @@ class HomePage extends React.Component {
         // check if user logged in
         this.props.isLoggedIn();
 
-        this.SubscriptionWrapper = Form.create({ name: 'subscription' })( SubscriptionModal );
+        this.SubscriptionWrapper = Form.create({ name: 'subscription' })( SubscriptionModal );        
     }
 
     componentDidUpdate() {
@@ -193,13 +198,21 @@ class HomePage extends React.Component {
         this.setState({selectedCategoryList:checkedList})
     }
 
-    handleSubscriptionCancel = () => {
+    handleSubscriptionCancel = (form) => {
+        form.resetFields();
+        window.recaptchaRef.current.reset();
         this.setState({shouldShowSubscriptionModal:false, subscriptionName: '', subscriptionEmail: ''});
     }
 
-    handleSubscriptionSubmit = (e) => {
-        const {subscriptionName, subscriptionEmail, selectedCategoryList} = this.state;
+    handleSubscriptionSubmit = (form) => {
+        const {subscriptionName, subscriptionEmail, selectedCategoryList, isCaptchaValid} = this.state;
         const {retreatTypes} = this.props;
+
+        if(!isCaptchaValid) {
+            console.log('Invalid captcha');
+            return;
+        }
+
         if(!selectedCategoryList || selectedCategoryList.length == 0){
             console.warn('Please select category.');
             return
@@ -213,11 +226,15 @@ class HomePage extends React.Component {
             return;
         }
 
+        this.setState({isCaptchaValid:false})
+
         const catIds = retreatTypes.filter(r => selectedCategoryList.includes(r.name)).map(r => r.id);
         this.props.userSubscribe({email:subscriptionEmail, name:subscriptionName, catIds:catIds})
             .then(() => {
                 this.setState({showSuccessMessage:true}, ()=> {
                     setTimeout(_ => {
+                        form.resetFields();
+                        window.recaptchaRef.current.reset();
                         this.setState({shouldShowSubscriptionModal:false, 
                             subscriptionName: '', 
                             subscriptionEmail: '',
@@ -233,6 +250,11 @@ class HomePage extends React.Component {
         return types.map(t => t.name);
     }
 
+    captchaOnChange = () => {
+        console.log('captchaOnChange');
+        this.setState({isCaptchaValid: true})
+    }
+
     render() {
         const { retreatByTypeTitle,
                 retreatByTypeDescription,
@@ -243,8 +265,8 @@ class HomePage extends React.Component {
                 ourVisionTitle, ourVisionDescription,
                 searchLength, selectedSubcategory,
                 selectedDuration, selectedCountry, isLoggedInRes,
-                shouldShowSubscriptionModal, subscriptionEmail, subscriptionName,
-                selectedCategoryList, showSuccessMessage, invalidEmail } = this.state;
+                shouldShowSubscriptionModal,
+                selectedCategoryList, showSuccessMessage, isCaptchaValid } = this.state;
         const { items, retreatByCountries, retreatTypes } = this.props;
         const shouldHideLoadMore = true;
 
@@ -312,36 +334,18 @@ class HomePage extends React.Component {
                 <AppFooter text="Footer Text"/>
 
                 {/* User Subscription */}
-                {/*
-                <SubscriptionModal title={'Subscription'}
-                                   description={'Subscibe to our best deals:'}
-                                   visible={shouldShowSubscriptionModal}
-                                   subscriptionName={subscriptionName}
-                                   subscriptionEmail={subscriptionEmail}
-                                   categoryList={subscriptionCategoryList}
-                                   selectedCategoryList={selectedCategoryList}
-                                   showSuccessMessage={showSuccessMessage}
-                                   invalidEmail={invalidEmail}
-                                   successMessage={'You have been subscribed successfully!'}
-                                   handleSubscriptionCheckboxChange={this.handleSubscriptionCheckboxChange}
-                                   handleSubscriptionCancel={this.handleSubscriptionCancel}
-                                   handleSubscriptionChange={this.handleSubscriptionChange}
-                                   handleSubscriptionSubmit={this.handleSubscriptionSubmit}/>
-                */}
-
                 <this.SubscriptionWrapper title={'Subscription'}
-                                   description={'Subscibe to our best deals:'}
+                                   description={'Subscibe To Our Best Deals:'}
+                                   captchaOnChange={this.captchaOnChange}
                                    visible={shouldShowSubscriptionModal}
-                                   subscriptionName={subscriptionName}
-                                   subscriptionEmail={subscriptionEmail}
                                    categoryList={subscriptionCategoryList}
                                    selectedCategoryList={selectedCategoryList}
                                    showSuccessMessage={showSuccessMessage}
-                                   invalidEmail={invalidEmail}
                                    successMessage={'You have been subscribed successfully!'}
                                    handleSubscriptionCheckboxChange={this.handleSubscriptionCheckboxChange}
                                    handleSubscriptionCancel={this.handleSubscriptionCancel}
                                    handleSubscriptionChange={this.handleSubscriptionChange}
+                                   isCaptchaValid={isCaptchaValid}
                                    handleSubscriptionSubmit={this.handleSubscriptionSubmit}/>
 
             </React.Fragment>
