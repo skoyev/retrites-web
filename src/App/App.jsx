@@ -16,6 +16,7 @@ const LazyAddRetreatePage = lazy(() => import('../containers/retreate/new/AddRet
 const LazyAddNewRetreatPage = lazy(() => import('../containers/home/add/AddNewRetreatPage'));
 const LazyRetreateDetailPage = lazy(() => import('../containers/retreate/RetreateDetailPage'));
 const LazySearchResultPage = lazy(() => import('../containers/search/SearchResultPage'));
+const LazyAboutPage = lazy(() => import('../containers/about/AboutPage'));
 
 function WaitingComponent(Component) {
     return props => (
@@ -45,6 +46,7 @@ class App extends React.Component {
                             <Route path="/add" component={WaitingComponent(LazyAddNewRetreatPage)} />
                             <Route path="/item/:itemID" component={WaitingComponent(LazyRetreateDetailPage)} />                        
                             <Route path="/items" component={WaitingComponent(LazySearchResultPage)} />                        
+                            <Route path="/about" component={WaitingComponent(LazyAboutPage)} />                        
                             <Route path="/" render={ history.push('/home')} />
                         </div>                    
                     </Router>                

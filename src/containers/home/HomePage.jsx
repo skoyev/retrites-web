@@ -331,7 +331,8 @@ class HomePage extends React.Component {
                                   description={retreatByCountriesDescription}/>
                 </div>
 
-                <AppFooter text="Footer Text"/>
+                <AppFooter title="@2019 Retreat In Mind Inc." 
+                           countries={retreatByCountries}/>
 
                 {/* User Subscription */}
                 <this.SubscriptionWrapper title={'Subscription'}
