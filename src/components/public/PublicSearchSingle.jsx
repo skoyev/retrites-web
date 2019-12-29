@@ -52,7 +52,7 @@ const PublicSearchSingle = ({title, search, handleTypeClick, handleDurationClick
                 <h3>{title}</h3>
                 <InputGroup compact>
                     {/* Name item */}                    
-                    <Input onChange={handleInputSearchBy} style={{ width: '30%', height: '35px', borderRadius: '4px' }} placeholder="Where would you like to go ?"/>
+                    <Input onChange={handleInputSearchBy} style={{ width: '23%', height: '35px', borderRadius: '4px' }} placeholder="Where would you like to go ?"/>
 
                     {/* Country Choice */}
                     <Dropdown.Button overlay={countryMenu(countries, handleCountryClick)} style={{ marginLeft: '5px' }}>

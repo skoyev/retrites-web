@@ -55,7 +55,6 @@ class HomePage extends React.Component {
             selectedDuration: 'Duraion',
             selectedCountry: 'Country',
             selectedDurationValue: '',
-            selectedStartDate: '',
             selectedCountryId: '',
             selectedInputSearchBy: '',
             selectedStartDate: '',
@@ -165,7 +164,8 @@ class HomePage extends React.Component {
     }
 
     handleCountrySelectClick = (id) => {        
-        this.setState({selectedCountryId: id}, () => {
+        const today = new Date().toISOString().slice(0, 10)
+        this.setState({selectedCountryId: id, selectedStartDate: today}, () => {
             this.props.clearItemsAndNavigateToPage(pageConstants.SEARCH)
         });            
     }

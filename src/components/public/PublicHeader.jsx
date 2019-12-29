@@ -107,14 +107,15 @@ class PublicHeader extends React.Component {
         return (
             <div id="main-header" className="row offset-10">
                 <div className="col-md-3 header">
-                    <h3 className="white"><Link to="/home">{title}</Link></h3>
+                    <h3 className="white"><Link to="/">{title}</Link></h3>
                 </div>
 
-                <div className="col-md-9"> 
-                    <div className="row">
+                <div className="col-md-9 down-35"> 
+                        {/*
                         <div className={isLoggedInRes ? "col-md-8" : "col-md-6"}></div>
                         <div className={isLoggedInRes ? "col-md-4 down-35 header-right" : "col-md-6 down-35 header-right"}>{content}</div> 
-                    </div>                                                       
+                        */}
+                    <div className="header-right">{content}</div> 
                 </div>
 
                 {/*

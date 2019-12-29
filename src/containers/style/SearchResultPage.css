@@ -11,3 +11,7 @@
   width: 100%;
 }
 
+.white a, .ant-btn-link {
+  color: #007bff;
+}
+

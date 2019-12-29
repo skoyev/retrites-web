@@ -68,7 +68,7 @@ class SimpleHeader extends React.Component {
         return (
             <div className="row offset-10 top-header">
                 <div className="col-md-3 header">
-                    <h3 className="white"><Link to="/home">{title}</Link></h3>
+                    <h3 className="white"><Link to="/">{title}</Link></h3>
                 </div>
 
                 <div className="col-md-9"> 

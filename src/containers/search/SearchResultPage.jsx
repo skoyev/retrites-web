@@ -52,6 +52,7 @@ class SearchResultPage extends React.Component {
         this.onDateRangeChange = this.onDateRangeChange.bind(this);        
         this.handleBack = this.handleBack.bind(this);        
         this.handleItemClick = this.handleItemClick.bind(this);        
+        this.handleLogoutClick = this.handleLogoutClick.bind(this);        
     }
 
     componentDidMount() {
@@ -169,21 +170,29 @@ class SearchResultPage extends React.Component {
         });            
     }
 
+    handleLogoutClick = () => {
+
+    }
+
     render() {
         const { Header, Footer, Sider, Content } = Layout;
-        const { items } = this.props;
-        const { numItemsPerRow } = this.state;
+        const { items, isLoggedInRes } = this.props;
+        const { numItemsPerRow, startDate } = this.state;
         const shouldHideLoadMore = false;
 
         return (
          <div className="search">
              <Layout style={{background:'none'}}>
                 <Header className="sticky" style={{zIndex:10, backgroundColor:'#ffffff'}}>
-                    <SearchHeader title="Reatreat In Mind" handleSearch={this.handleSearch}/>
+                    <SearchHeader title="Reatreat In Mind" 
+                                  handleSearch={this.handleSearch} 
+                                  isLoggedIn={isLoggedInRes}                                  
+                                  handleLogoutClick={this.handleLogoutClick}/>
                     <SearchBar handleSubmitSearch={this.handleSubmitSearch}
                                handlePriceFromChange={this.handlePriceFromChange}
                                handlePriceToChange={this.handlePriceToChange}
                                onDateRangeChange={this.onDateRangeChange}
+                               startDate={startDate}
                                handleBack={this.handleBack}/>
                 </Header>                
                 <Content>
@@ -202,7 +211,8 @@ class SearchResultPage extends React.Component {
 function mapStateToProps(state) {
     return {
       items: state.items.items,
-      nextPageName: state.items.pageName      
+      nextPageName: state.items.pageName,
+      isLoggedInRes: state.users.isLoggedIn,      
     };
 }
 
