@@ -42,3 +42,12 @@
 .ant-btn-default {
     height: 35px !important;
 }
+
+#country > *:first-child,
+#duration > *:first-child {
+    width: 100px;
+}
+
+#category > *:first-child {
+    width: 135px;
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { userActions } from '../../store/action';
+import { userActions, itemActions } from '../../store/action';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { withLocalize, Translate } from "react-localize-redux";
@@ -7,12 +7,12 @@ import { Row, Layout } from "antd";
 import { SearchHeader, SearchResultListing, ItemList } from "../../components/public";
 import { SearchBar } from "../../components/public/search";
 import '../style/SearchResultPage.css';
-import {itemActions} from '../../store/action'
 import { constants } from 'fs';
 import globalTranslations from "../../translations/global.json";
 import { renderToStaticMarkup } from "react-dom/server";
 import { history } from '../../helpers';
 import {pageConstants} from '../../constants';
+import { Loading } from '../../components/common';
 class SearchResultPage extends React.Component {
 
     constructor(props) {
@@ -53,6 +53,8 @@ class SearchResultPage extends React.Component {
         this.handleBack = this.handleBack.bind(this);        
         this.handleItemClick = this.handleItemClick.bind(this);        
         this.handleLogoutClick = this.handleLogoutClick.bind(this);        
+        this.handleCountryClick = this.handleCountryClick.bind(this);        
+        this.handleStartDateClick = this.handleStartDateClick.bind(this);        
     }
 
     componentDidMount() {
@@ -69,7 +71,10 @@ class SearchResultPage extends React.Component {
                         startDate: startDate, 
                         countryId: countryId, 
                         name: name }, 
-                    () => this.loadItems());                
+                    () => this.loadItems()); 
+
+        // get countries
+        //this.props.getCountrieFromStore();               
     }
 
     handleMoreItems() {        
@@ -174,11 +179,31 @@ class SearchResultPage extends React.Component {
 
     }
 
+    handleCountryClick = (c) => {
+        this.setState({countryId: c.key})
+    }
+
+    handleTypeClick = (t) => {
+        this.setState({subCategoryId: t.key});        
+    }
+
+    handleStartDateClick = (date, dateString) => {
+        this.setState({startDate: dateString});        
+    }
+
+    handleDurationClick = (d) => {
+        this.setState({duration: d.key});        
+    }
+
     render() {
         const { Header, Footer, Sider, Content } = Layout;
-        const { items, isLoggedInRes } = this.props;
-        const { numItemsPerRow, startDate } = this.state;
+        const { items, isLoggedInRes, retreatByCountries, retreatTypes, durations } = this.props;
+        const { numItemsPerRow, startDate, countryId, subCategoryId, duration } = this.state;
         const shouldHideLoadMore = false;
+
+        if(!retreatByCountries) {
+            return <Loading text={'Loading...'}/>;
+        }
 
         return (
          <div className="search">
@@ -186,13 +211,21 @@ class SearchResultPage extends React.Component {
                 <Header className="sticky" style={{zIndex:10, backgroundColor:'#ffffff'}}>
                     <SearchHeader title="Reatreat In Mind" 
                                   handleSearch={this.handleSearch} 
-                                  isLoggedIn={isLoggedInRes}                                  
+                                  isLoggedIn={isLoggedInRes}                                   
                                   handleLogoutClick={this.handleLogoutClick}/>
-                    <SearchBar handleSubmitSearch={this.handleSubmitSearch}
-                               handlePriceFromChange={this.handlePriceFromChange}
-                               handlePriceToChange={this.handlePriceToChange}
-                               onDateRangeChange={this.onDateRangeChange}
+
+                    <SearchBar handleSubmitSearch={this.handleSubmitSearch}                               
+                               handleCountryClick={this.handleCountryClick}                               
+                               handleTypeClick={this.handleTypeClick}                               
+                               handleStartDateClick={this.handleStartDateClick}                               
+                               handleDurationClick={this.handleDurationClick}                               
                                startDate={startDate}
+                               countries={retreatByCountries}
+                               types={retreatTypes}
+                               duration={durations}
+                               selectedCountryId={countryId}                                 
+                               selectedTypeId={subCategoryId}                                 
+                               selectedDuration={duration}                                 
                                handleBack={this.handleBack}/>
                 </Header>                
                 <Content>
@@ -212,12 +245,16 @@ function mapStateToProps(state) {
     return {
       items: state.items.items,
       nextPageName: state.items.pageName,
-      isLoggedInRes: state.users.isLoggedIn,      
+      isLoggedInRes: state.users.isLoggedIn, 
+      retreatByCountries: state.items.retreatByCountries,
+      retreatTypes: state.items.retriteTypes,  
+      durations: state.items.searchLength   
     };
 }
 
 const mapDispatchToProps = {    
-    ...itemActions
+    ...itemActions, 
+    ...userActions
 };
   
 export default withLocalize(connect(mapStateToProps, mapDispatchToProps)(SearchResultPage));

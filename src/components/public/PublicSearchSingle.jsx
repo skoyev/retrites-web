@@ -52,15 +52,15 @@ const PublicSearchSingle = ({title, search, handleTypeClick, handleDurationClick
                 <h3>{title}</h3>
                 <InputGroup compact>
                     {/* Name item */}                    
-                    <Input onChange={handleInputSearchBy} style={{ width: '23%', height: '35px', borderRadius: '4px' }} placeholder="Where would you like to go ?"/>
+                    <Input onChange={handleInputSearchBy} style={{ width: '20%', height: '35px', borderRadius: '4px' }} placeholder="Where would you like to go ?"/>
 
                     {/* Country Choice */}
-                    <Dropdown.Button overlay={countryMenu(countries, handleCountryClick)} style={{ marginLeft: '5px' }}>
+                    <Dropdown.Button id="country" overlay={countryMenu(countries, handleCountryClick)} style={{ marginLeft: '5px' }}>
                         <span style={{color: '#b1b0b0'}}>{selectedCountry}</span>
                     </Dropdown.Button>
 
                     {/* Category Choice */}
-                    <Dropdown.Button overlay={typeMenu(types, handleTypeClick)} style={{ marginLeft: '5px' }}>
+                    <Dropdown.Button id="category" overlay={typeMenu(types, handleTypeClick)} style={{ marginLeft: '5px' }}>
                         <span style={{color: '#b1b0b0'}}>{subCategory}</span>
                     </Dropdown.Button>
 
@@ -68,7 +68,7 @@ const PublicSearchSingle = ({title, search, handleTypeClick, handleDurationClick
                     <DatePicker onChange={handleStartDate} placeholder="Start Date"  style={{ width: '20%', marginLeft: '5px', height: '35px' }} />
 
                     {/* Duration Choice */}                                        
-                    <Dropdown.Button placeholder="Duration" overlay={menu(length, handleDurationClick)} style={{ marginLeft: '5px' }}>
+                    <Dropdown.Button id="duration" placeholder="Duration" overlay={menu(length, handleDurationClick)} style={{ marginLeft: '5px' }}>
                         <span style={{color: '#b1b0b0'}}>{selectedDuration}</span>
                     </Dropdown.Button>
 

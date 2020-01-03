@@ -1,4 +1,4 @@
-import {itemConstants, pageConstants} from '../../constants';
+import {itemConstants, pageConstants, commonConstants} from '../../constants';
 
 const INITIAL_STATE = {
   items: [],
@@ -6,7 +6,8 @@ const INITIAL_STATE = {
   summaryAmenity: [],
   retreatByCountries: [],
   retriteTypes: [],
-  pageName: ''
+  pageName: '',
+  searchLength: ['3', '7', '14', '14>']
 };
 
 export function items(state = INITIAL_STATE, action) {

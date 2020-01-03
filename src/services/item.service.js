@@ -8,6 +8,7 @@ if(configConstants.ENVIRONMENT === configConstants.ENV_LOCAL){
 
 export const itemService = {
     loadItems,
+    loadPopularItems,
     updateItem,
     deleteItem,
     addItem,
@@ -24,6 +25,10 @@ const requestOptions = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }        
 };
+
+function loadPopularItems(categoryId, count) {
+    return axios.get(`/api/items?categoryId=${categoryId}&popular=1&count=${count}`);
+}
 
 function search(subCategoryID, duration, name, startDate, countryId) {
     let params = {subCategoryId:subCategoryID, duration:duration, name:name, startDate:startDate, countryId:countryId};

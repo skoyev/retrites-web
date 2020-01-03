@@ -6,6 +6,7 @@ import { history } from '../../helpers';
 
 export const itemActions = {
     fetch,
+    fetchPopular,
     fetchByID,
     add,
     update,
@@ -20,8 +21,13 @@ export const itemActions = {
     fetchRetreatSubCategories,
     fetchCountries,
     search,
-    clearItemsAndNavigateToPage
+    clearItemsAndNavigateToPage,
+    getCountrieFromStore
 };
+
+export function getCountrieFromStore() {
+    return { type: pageConstants.GET_COUNTRIES}
+}
 
 export function clearItemsAndNavigateToPage(pageName) {
     return { 
@@ -227,6 +233,20 @@ export function fetchByID(id){
         return itemService.loadItemByID(id).then(res => {
             if(res.ok){
                 dispatch(fetchItemSuccess(res.item))    
+            } else {
+                throw('No data');
+            }
+        }).catch(error => {
+            throw(error);
+        });
+    }
+}
+
+export function fetchPopular(categoryId, count) {
+    return dispatch => {
+        return itemService.loadPopularItems(categoryId, count).then(res => {
+            if(res.status === 200){
+                dispatch(fetchItemsSuccess(res.data.items))    
             } else {
                 throw('No data');
             }

@@ -34,17 +34,8 @@ class HomePage extends React.Component {
 
         this.state = {
             categoryId: 2,            
-            menuItems : [
-                'public.menu.retrite',
-                'public.menu.flights',
-                'public.menu.hotels',
-                'public.menu.cars',
-                'public.menu.cruises',
-                'public.menu.groups'
-            ],  
             selectedSubcategory: 'Retreat Type',    
             selectedSubcategoryId: 0,      
-            searchLength: ['3', '7', '14', '14>'],
             ourVisionDescription : 'Our Vision Description',
             retreatByTypeTitle: 'Find Retreat By Type',
             retreatByTypeDescription: 'Find Out More About Our Amazing Retreats',
@@ -62,12 +53,13 @@ class HomePage extends React.Component {
             ourVisionTitle: 'Our Vision',
             isLoggedInRes: this.props.isLoggedInRes,
             shouldShowSubscriptionModal: false,
-            subscriptionName: 'sss',
+            subscriptionName: '',
             subscriptionEmail: '',
             selectedCategoryList: [],
             showSuccessMessage: false,
             invalidEmail: false,
             isCaptchaValid: false,
+            polularItemCount: 4,
             ourVisionDescription: 'We believe human beings are innately wise, strong and kind. This wisdom, although not always experienced, is always present. Going on retreat is a beautiful way to reconnect to our basic sanity and health. Our aspiration at Retreat Your Mind is to inspire people to experience authentic retreats and reconnect with their innate wisdom, strength and kindness.'
         }
 
@@ -86,9 +78,9 @@ class HomePage extends React.Component {
     }
 
     componentDidMount() {
-        const {categoryId} = this.state;
+        const {categoryId, polularItemCount} = this.state;
         // fetch popular
-        this.props.fetch(categoryId)
+        this.props.fetchPopular(categoryId, polularItemCount)
             .then(() => window.scrollTo(0, 0))   
 
         // fetch countries for retrites
@@ -263,11 +255,11 @@ class HomePage extends React.Component {
                 retreatByCountriesTitle,
                 retreatByCountriesDescription,
                 ourVisionTitle, ourVisionDescription,
-                searchLength, selectedSubcategory,
+                selectedSubcategory,
                 selectedDuration, selectedCountry, isLoggedInRes,
                 shouldShowSubscriptionModal,
                 selectedCategoryList, showSuccessMessage, isCaptchaValid } = this.state;
-        const { items, retreatByCountries, retreatTypes } = this.props;
+        const { items, retreatByCountries, retreatTypes, searchLength } = this.props;
         const shouldHideLoadMore = true;
 
         if ( !items || items.length == 0 ) 
@@ -360,6 +352,7 @@ function mapStateToProps(state) {
       retreatByCountries: state.items.retreatByCountries,
       retreatTypes: state.items.retriteTypes,
       nextPageName: state.items.pageName,
+      searchLength: state.items.searchLength,
       isLoggedInRes: state.users.isLoggedIn,
       //shouldReloadItems: state.items.shouldReloadItems
     };

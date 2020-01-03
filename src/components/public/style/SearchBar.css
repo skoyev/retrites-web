@@ -4,3 +4,12 @@
     border-bottom:1px solid #c3c2c2;
     background-color:#ffffff;
 }
+
+#country > *:first-child,
+#duration > *:first-child {
+    width: 100px;
+}
+
+#type > *:first-child {
+    width: 150px;
+}

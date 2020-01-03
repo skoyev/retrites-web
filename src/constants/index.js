@@ -5,3 +5,4 @@ export * from './leads.constants';
 export * from './report.constants';
 export * from './config.constants';
 export * from './page.constants';
+export * from './common.constants';
