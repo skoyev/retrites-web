@@ -43,9 +43,9 @@ export function clearItemsAndNavigateToPage(pageName) {
  * @param {*} selectedInputSearchBy 
  * @param {*} selectedStartDate 
  */
-export function search(subCategoryID, duration, name, startDate, countryId) {
+export function search(subCategoryID, duration, name, startDate, countryId, count, fromPrice, toPrice) {
     return dispatch => {
-        return itemService.search(subCategoryID, duration, name, startDate, countryId).then(res => {
+        return itemService.search(subCategoryID, duration, name, startDate, countryId, count, fromPrice, toPrice).then(res => {
             dispatch(fetchItemsSuccess(res.data.items))    
         }).catch(error => {
             throw(error);
@@ -231,11 +231,7 @@ export function add(item) {
 export function fetchByID(id){
     return dispatch => {
         return itemService.loadItemByID(id).then(res => {
-            if(res.ok){
-                dispatch(fetchItemSuccess(res.item))    
-            } else {
-                throw('No data');
-            }
+                dispatch(fetchItemSuccess(res.data.item))    
         }).catch(error => {
             throw(error);
         });

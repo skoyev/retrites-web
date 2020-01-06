@@ -48,8 +48,10 @@ class RetreateDetailPage extends React.Component {
         this.handleFormNameChange = this.handleFormNameChange.bind(this);
         this.handleFormDescriptionChange = this.handleFormDescriptionChange.bind(this);
         this.handleOk = this.handleOk.bind(this);        
+        this.handleLogoutClick = this.handleLogoutClick.bind(this);        
     }  
     
+    /**
     componentWillMount() {
         let {match : {params}} = this.props;
         let itemID = params.itemID;
@@ -61,11 +63,23 @@ class RetreateDetailPage extends React.Component {
             console.log('Item ID is null');
         }
     }
+    */
 
     componentDidMount() {
         const urlParams = new URLSearchParams(this.props.location.search)
         const back = urlParams.get('back');        
-        this.setState({ back: back});                
+        this.setState({ back: back}); 
+
+        let {match : {params}} = this.props;
+        let itemID = params.itemID;
+
+        const { fetchByID } = this.props;
+        if(itemID && (typeof parseInt(itemID) === "number")){
+            fetchByID(parseInt(itemID));
+        } else {
+            console.log('Item ID is null');
+        }
+
     }
 
     handleChange(event) {
@@ -127,14 +141,15 @@ class RetreateDetailPage extends React.Component {
         });
     }
 
-    render() {      
-        let {match : {params}, location : {search}} = this.props;
-        let category = search.split('=')[1];
+    handleLogoutClick = () => {
 
-        const { item  } = this.props;
+    }
+
+    render() {      
+        const { item, isLoggedInRes  } = this.props;
 
         if(!item) {
-            return null;
+            return <div>Item details is loading...</div>;
         }
 
         const { Header, Footer, Sider, Content } = Layout;
@@ -144,6 +159,8 @@ class RetreateDetailPage extends React.Component {
                 <Layout style={{background:'none'}}>
                     <Header className="sticky" style={{zIndex:10, backgroundColor:'#ffffff'}}>
                         <SearchHeader title="Retriete In Mind"
+                                      isLoggedIn={isLoggedInRes}
+                                      handleLogoutClick={this.handleLogoutClick}
                                       handleSearch={this.handleSearch}
                         ></SearchHeader>
                         <Translate>
@@ -202,9 +219,9 @@ const mapDispatchToProps = {
 };  
 
 function mapStateToProps(state) {
-    console.log(state)
     return {
-      item: state.items.item
+      item: state.items.item,
+      isLoggedInRes: state.users.isLoggedIn
     };
 }
 

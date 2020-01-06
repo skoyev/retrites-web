@@ -14,7 +14,7 @@ const RetreatBookSection = ({item, handleSubmitBookNow, handleFormNameChange, ha
             <Input required type="email" placeholder="Email" onChange={handleFormEmailChange}/>
         </Form.Item>
         <Form.Item label="Booking Details">
-          <TextArea required placeholder="Enter booking details" onChange={handleFormDescriptionChange} autosize={{ minRows: 6, maxRows: 10 }} />
+          <TextArea required placeholder="Enter booking details" onChange={handleFormDescriptionChange} autoSize={{ minRows: 6, maxRows: 10 }} />
         </Form.Item>
         <Form.Item>
           <Button htmlType="submit">Book Now</Button>

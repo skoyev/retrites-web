@@ -30,8 +30,9 @@ function loadPopularItems(categoryId, count) {
     return axios.get(`/api/items?categoryId=${categoryId}&popular=1&count=${count}`);
 }
 
-function search(subCategoryID, duration, name, startDate, countryId) {
-    let params = {subCategoryId:subCategoryID, duration:duration, name:name, startDate:startDate, countryId:countryId};
+function search(subCategoryID, duration, name, startDate, countryId, count, fromPrice, toPrice) {
+    let params = {subCategoryId:subCategoryID, duration:duration, name:name, startDate:startDate, 
+                  countryId:countryId, count: count, priceFrom: fromPrice, priceTo: toPrice};
     return axios.get('api/items', {params:params});
 }
 
@@ -102,5 +103,5 @@ function addItem(item){
 }
 
 function loadItemByID(id){
-    return fetch(`/items/${id}`, requestOptions);
+    return axios.get(`/api/items/${id}`);
 }

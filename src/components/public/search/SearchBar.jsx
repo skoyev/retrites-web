@@ -87,7 +87,7 @@ const MoreFiltersModal = ({isMoreFiltersModalVisible, cancelMoreFiltersModal, ap
             return;
         } 
         setError('');
-        applyMoreFilters();
+        applyMoreFilters(fromInputValue, toInputValue);
 
         // reset values
         setFromInputValue(100);
@@ -143,13 +143,17 @@ const durationMenu = (data, handleClick) => {
 const SearchBar = props => {
     const { handleBack, startDate, 
             countries, types, duration, 
-            handleCountryClick, handleTypeClick, handleStartDateClick, handleDurationClick,
+            handleCountryClick, handleTypeClick, handleStartDateClick, handleDurationClick, handleSubmitSearch,
+            moreFilterClick, 
             selectedCountryId, selectedTypeId, selectedDuration } = props;
 
     // More Filters Modal
     const [isMoreFiltersModalVisible, setIsMoreFiltersModalVisible] = useState(false);
     const handleShowHideMoreFiltersModal = (isVisible) => setIsMoreFiltersModalVisible(isVisible);
-    const applyMoreFilters = () => setIsMoreFiltersModalVisible(false);
+    const applyMoreFilters = (fromPrice, toPrice) => {
+        setIsMoreFiltersModalVisible(false);
+        moreFilterClick(fromPrice, toPrice);
+    }
 
     if(!countries || !types) {
         return <div>No Search Data Provided.</div>;
@@ -189,11 +193,9 @@ const SearchBar = props => {
                 <Col span={3}>
                     <Button onClick={() => handleShowHideMoreFiltersModal(true)}>{`More Filters...`}</Button>
                 </Col>
-                {/*
                 <Col span={2}>
-                    <Button htmlType="submit" style={{marginLeft:15}}>Apply</Button>
+                    <Button onClick={handleSubmitSearch}>Search</Button>
                 </Col>
-                */}
                 <Col span={2}>
                     <Button onClick={handleBack}>Back</Button>
                 </Col>
