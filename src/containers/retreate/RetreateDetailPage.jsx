@@ -17,6 +17,7 @@ import '../style/RetreateDetailPage.css';
 import { renderToStaticMarkup } from "react-dom/server";
 import globalTranslations from "../../translations/global.json";
 
+window.recaptchaRef = React.createRef();
 class RetreateDetailPage extends React.Component {
 
     constructor(props, state) {
@@ -28,7 +29,8 @@ class RetreateDetailPage extends React.Component {
             formName: '',
             formDetails: '',
             formDescription: '',
-            back: 'home'
+            back: 'home',
+            isCaptchaValid: false
         };        
 
         this.props.initialize({
@@ -98,6 +100,13 @@ class RetreateDetailPage extends React.Component {
     }
 
     handleOk = e => {
+        const {isCaptchaValid} = this.state;
+
+        if(!isCaptchaValid) {
+            this.setState({error: 'Captcha is invalid'})
+            return;
+        }
+
         this.setState({
           visible: false,
         });   
@@ -107,6 +116,8 @@ class RetreateDetailPage extends React.Component {
         this.props.createLead(formName, formEmail, formDescription);
 
         this.props.history.push(`/home`);
+
+        window.recaptchaRef.current.reset();
     };
     
     handleCancel = e => {
@@ -145,8 +156,13 @@ class RetreateDetailPage extends React.Component {
 
     }
 
+    captchaOnChange = () => {
+        this.setState({isCaptchaValid: true})
+    }
+
     render() {      
-        const { item, isLoggedInRes  } = this.props;
+        const { item, isLoggedInRes } = this.props;
+        const { isCaptchaValid } = this.state;
 
         if(!item) {
             return <div>Item details is loading...</div>;
@@ -193,9 +209,10 @@ class RetreateDetailPage extends React.Component {
                                                         handleFormEmailChange={this.handleFormEmailChange}
                                                         handleFormNameChange={this.handleFormNameChange}                                    
                                                         handleSubmitBookNow={this.handleSubmitBookNow}
-                                                        handleFormDescriptionChange={this.handleFormDescriptionChange}>
-                                    </RetreatBookSection>
-                                </Row>                                
+                                                        handleCaptchaOnChange={this.captchaOnChange}
+                                                        isActiveBookNow={isCaptchaValid}
+                                                        handleFormDescriptionChange={this.handleFormDescriptionChange}/>
+                                </Row>   
                             </Col>
                         </Row>                        
                     </Content>

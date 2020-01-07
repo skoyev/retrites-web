@@ -2,8 +2,13 @@ import React from 'react';
 import { Card, Button, Form, Input } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import PropTypes from 'prop-types';
+import ReCAPTCHA from "react-google-recaptcha";
+import { configConstants } from '../../../constants';
 
-const RetreatBookSection = ({item, handleSubmitBookNow, handleFormNameChange, handleFormEmailChange, handleFormDescriptionChange}) => (
+window.recaptchaRef = React.createRef();
+
+const RetreatBookSection = ({item, handleSubmitBookNow, handleFormNameChange, handleFormEmailChange, 
+                             handleFormDescriptionChange, isActiveBookNow, handleCaptchaOnChange}) => (
  <div>
     <Card title="Book Now">
       <Form onSubmit={handleSubmitBookNow} className="book-form">
@@ -17,7 +22,13 @@ const RetreatBookSection = ({item, handleSubmitBookNow, handleFormNameChange, ha
           <TextArea required placeholder="Enter booking details" onChange={handleFormDescriptionChange} autoSize={{ minRows: 6, maxRows: 10 }} />
         </Form.Item>
         <Form.Item>
-          <Button htmlType="submit">Book Now</Button>
+          <ReCAPTCHA
+              ref={window.recaptchaRef}
+              sitekey={configConstants.CAPTCHA_KEY}
+              onChange={handleCaptchaOnChange}/>                            
+        </Form.Item>
+        <Form.Item>
+          <Button disabled={!isActiveBookNow} htmlType="submit">Book Now</Button>
         </Form.Item>        
       </Form>
     </Card>

@@ -241,7 +241,6 @@ class HomePage extends React.Component {
     }
 
     captchaOnChange = () => {
-        console.log('captchaOnChange');
         this.setState({isCaptchaValid: true})
     }
 
