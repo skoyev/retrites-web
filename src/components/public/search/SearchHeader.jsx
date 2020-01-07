@@ -44,14 +44,17 @@ const publicHeader = () => (
     </React.Fragment>
 )
 
-const SearchHeader = ({title, handleNameChange, isLoggedIn, handleLogoutClick, selectedName}) => (
+const SearchHeader = ({title, handleNameChange, isLoggedIn, handleLogoutClick, selectedName, shouldShowSearchInput}) => (
  <Row>
     <Col span={5} style={{paddingTop: '15px'}}>
         <h3>{title}</h3>
     </Col>
 
     <Col span={6}>
-        <Input placeholder="Search" value={selectedName} onChange={handleNameChange}/>
+        { shouldShowSearchInput ?
+            <Input placeholder="Search" value={selectedName} onChange={handleNameChange}/>
+            : ''
+        }
     </Col>
 
     <Col span={13}>
@@ -65,7 +68,8 @@ const SearchHeader = ({title, handleNameChange, isLoggedIn, handleLogoutClick, s
 SearchHeader.propTypes = {
     isLoggedIn: PropTypes.bool.isRequired,
     title: PropTypes.string.isRequired,
-    handleLogoutClick: PropTypes.func.isRequired
+    handleLogoutClick: PropTypes.func.isRequired,
+    shouldShowSearchInput: PropTypes.bool.isRequired
 }
 
 export default SearchHeader;

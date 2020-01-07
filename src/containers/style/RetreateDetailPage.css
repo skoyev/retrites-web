@@ -8,3 +8,16 @@
 .top {
     margin-top: 40px;
 }
+
+.ant-form-item-label {
+    text-align: left !important;
+    width: inherit !important;
+}
+
+.white a, .ant-btn-link {
+    color: #007bff;
+}
+
+.ant-layout-content {
+    padding: 50px;
+}

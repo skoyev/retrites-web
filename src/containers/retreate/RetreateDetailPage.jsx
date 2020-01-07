@@ -158,7 +158,8 @@ class RetreateDetailPage extends React.Component {
             <div>
                 <Layout style={{background:'none'}}>
                     <Header className="sticky" style={{zIndex:10, backgroundColor:'#ffffff'}}>
-                        <SearchHeader title="Retriete In Mind"
+                        <SearchHeader title="Retriete Your Mind"
+                                      shouldShowSearchInput={false}
                                       isLoggedIn={isLoggedInRes}
                                       handleLogoutClick={this.handleLogoutClick}
                                       handleSearch={this.handleSearch}
@@ -183,7 +184,7 @@ class RetreateDetailPage extends React.Component {
                                     <RetreatDetails item={item}></RetreatDetails>
                                 </Row>
                             </Col>
-                            <Col span={8} offset={1}>
+                            <Col span={9} offset={1}>
                                 <Row style={{marginBottom: '20px'}}>
                                     <RetreatDetailsSummary item={item}></RetreatDetailsSummary>                        
                                 </Row>

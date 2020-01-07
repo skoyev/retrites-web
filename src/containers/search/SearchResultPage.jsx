@@ -190,7 +190,8 @@ class SearchResultPage extends React.Component {
                     <SearchHeader title="Reatreat In Mind" 
                                   handleNameChange={this.handleNameChange} 
                                   isLoggedIn={isLoggedInRes}  
-                                  selectedName={searchText}                                 
+                                  selectedName={searchText} 
+                                  shouldShowSearchInput={true}                                
                                   handleLogoutClick={this.handleLogoutClick}/>
 
                     <SearchBar handleSubmitSearch={this.handleSubmitSearch}
