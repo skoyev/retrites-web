@@ -249,7 +249,7 @@ class DashboardPage extends React.Component {
 
                 <Layout>
                     <Header style={{backgroundColor:'#c5c4c4', marginBottom:10}}>
-                        <PrivateHeader></PrivateHeader>
+                        <PrivateHeader/>
                     </Header>
 
                     <Content className="ant-layout-content-override" style={{overflowY:'scroll'}}>

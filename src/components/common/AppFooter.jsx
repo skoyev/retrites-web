@@ -18,8 +18,8 @@ const AppFooter = ({title, countries}) => {
                     <div className="col-md-3">
                         <h4 className="text-center">Top Locations</h4>
                         <ul>
-                            {countries.map(c => 
-                                <li>
+                            {countries.map((c, index) => 
+                                <li key={index}>
                                     <Translate>
                                         {({ translate }) =>                                                
                                         <Link to={`/items?subCategoryId=0&duration=&name=&startDate=&countryId=${c.id}`}>{translate(c.name)}</Link>}                                                 

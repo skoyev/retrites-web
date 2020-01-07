@@ -5,6 +5,7 @@ import { userActions } from '../../store/action';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { history } from '../../helpers';
+import { Translate } from 'react-localize-redux';
 
 class PrivateHeader extends React.Component {
 

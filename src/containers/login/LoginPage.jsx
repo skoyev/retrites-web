@@ -27,7 +27,7 @@ class LoginPage extends React.Component {
     }
 
     componentWillReceiveProps(nextProps){
-        if(nextProps.isLoggedIn) {            
+        if(nextProps.isLoggedInRes) {            
             history.push('/dashboard');
         }
     }    
@@ -109,7 +109,7 @@ const mapDispatchToProps = {
 function mapStateToProps(state) {
     return {
       error: state.users.error,
-      isLoggedIn: state.users.isLoggedIn
+      isLoggedInRes: state.users.isLoggedIn
     };
 }
 

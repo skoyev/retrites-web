@@ -91,8 +91,6 @@ class HomePage extends React.Component {
 
         // check if user logged in
         this.props.isLoggedIn();
-
-        this.SubscriptionWrapper = Form.create({ name: 'subscription' })( SubscriptionModal );        
     }
 
     componentDidUpdate() {
@@ -259,14 +257,13 @@ class HomePage extends React.Component {
                 selectedDuration, selectedCountry, isLoggedInRes,
                 shouldShowSubscriptionModal,
                 selectedCategoryList, showSuccessMessage, isCaptchaValid } = this.state;
-        const { items, retreatByCountries, retreatTypes, searchLength } = this.props;
+        const { items, retreatByCountries, retreatTypes, searchLength, SubscriptionWrapper } = this.props;
         const shouldHideLoadMore = true;
 
         if ( !items || items.length == 0 ) 
             return <Loading text={'Loading...'}/>;
 
         const subscriptionCategoryList = retreatTypes && retreatTypes.length > 1 ? this.extractRetriteTypes(retreatTypes) : [];
-        
         return (
             <React.Fragment>
                 <div className="slider-section">
@@ -327,7 +324,7 @@ class HomePage extends React.Component {
                            countries={retreatByCountries}/>
 
                 {/* User Subscription */}
-                <this.SubscriptionWrapper title={'Subscription'}
+                <SubscriptionWrapper title={'Subscription'}
                                    description={'Subscibe To Our Best Deals:'}
                                    captchaOnChange={this.captchaOnChange}
                                    visible={shouldShowSubscriptionModal}
@@ -354,6 +351,7 @@ function mapStateToProps(state) {
       nextPageName: state.items.pageName,
       searchLength: state.items.searchLength,
       isLoggedInRes: state.users.isLoggedIn,
+      SubscriptionWrapper: Form.create({ name: 'subscription' })( SubscriptionModal )
       //shouldReloadItems: state.items.shouldReloadItems
     };
 }

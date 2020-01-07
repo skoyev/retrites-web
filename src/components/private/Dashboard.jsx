@@ -23,7 +23,7 @@ const Dashboard = ({amentities, leads, reports}) => {
                           style={{textAlign:'center'}}>
                           {/*actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon onClick={()=>console.log('')} type="delete" />]}>*/}
                            {amentities.map((amentity, index) => (
-                                <Row>
+                                <Row key={index}>
                                     <Col span={15} style={{textAlign:'left'}}>              
                                         {amentity.name}
                                     </Col>
@@ -40,7 +40,7 @@ const Dashboard = ({amentities, leads, reports}) => {
                           actions={[<Icon type="setting" />, <Icon type="edit" />]} 
                           style={{textAlign:'center'}}>
                             {leads.map((lead, index) => (
-                                <Row>
+                                <Row key={index}>
                                     <Col span={15} style={{textAlign:'left'}}>              
                                         {lead.name}
                                     </Col>
@@ -57,7 +57,7 @@ const Dashboard = ({amentities, leads, reports}) => {
                           actions={[<Icon type="setting" />, <Icon type="edit" />]} 
                           style={{textAlign:'center'}}>
                             {reports.map((report, index) => (
-                                <Row>
+                                <Row key={index}>
                                     <Col span={15} style={{textAlign:'left'}}>              
                                         {report.name}
                                     </Col>
