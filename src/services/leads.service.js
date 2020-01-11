@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const leadsService = {
     loadLeads,
     createLead,
@@ -15,22 +17,16 @@ const requestDeleteOptions = {
     headers: { 'Content-Type': 'application/json' }        
 }
 
-function loadLeads(){
-    return fetch(`/leads`, requestGetOptions);
+function loadLeads(ownerId){
+    return axios.get(`/api/leads/${ownerId}`);
 }
 
 function fetchLeadSummary(){
     return fetch(`/leads/summary`, requestGetOptions);
 }
 
-function createLead(name, email, details){
-    const requestPostOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, details })
-    };
-
-    return fetch(`/leads`, requestPostOptions);
+function createLead(amenityID, name, email, details){
+    return axios.post(`/api/leads`, {amenityID, name, email, details});
 }
 
 function deleteLead(id){

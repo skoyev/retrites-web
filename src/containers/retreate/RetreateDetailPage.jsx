@@ -111,9 +111,15 @@ class RetreateDetailPage extends React.Component {
           visible: false,
         });   
 
+        const { item } = this.props;
         const {formEmail, formName, formDescription} = this.state;
+
+        if(!formName || !formEmail || !formDescription) {
+            this.setState({error: 'Some Data Inputs Are Missing.'})
+            return;
+        }
         
-        this.props.createLead(formName, formEmail, formDescription);
+        this.props.createLead(item.id, formName, formEmail, formDescription);
 
         this.props.history.push(`/home`);
 

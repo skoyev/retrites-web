@@ -26,12 +26,12 @@ export function fetchLeadSummary() {
     };
 }
 
-export function fetchLeads() {
+export function fetchLeads(ownerId) {
     return dispatch => {
-        leadsService.loadLeads()
+        leadsService.loadLeads(ownerId)
             .then(
-                data => { 
-                    dispatch(success(data.leads));
+                res => { 
+                    dispatch(success(res.data.leads));
                 },
                 error => {
                     dispatch(failure(error));                    
@@ -40,9 +40,9 @@ export function fetchLeads() {
     };
 }
 
-export function createLead(name, email, description){
+export function createLead(amenityID, name, email, description){
     return dispatch => {
-        leadsService.createLead(name, email, description)
+        leadsService.createLead(amenityID, name, email, description)
             .then(
                 data => { 
                     dispatch(success());

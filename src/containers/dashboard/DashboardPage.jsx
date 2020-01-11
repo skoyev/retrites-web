@@ -1,7 +1,7 @@
 import React from 'react';
 import PrivateHeader from '../../components/private/PrivateHeader';
 import AppFooter from '../../components/common/AppFooter';
-import { Row, Layout, Menu, Icon, Modal } from 'antd';
+import { Row, Layout, Icon, Modal } from 'antd';
 import '../style/DashboardPage.css';
 import DashboardMenu from '../../components/private/DashboardMenu';
 import {Aminity, Leads, Report, Dashboard} from '../../components/private';
@@ -12,6 +12,7 @@ import {itemActions, leadsActions, reportActions} from '../../store/action'
 import TextArea from 'antd/lib/input/TextArea';
 import {pageConstants} from '../../constants';
 import './index.css'
+import moment from 'moment';
 
 const { Header, Content, Sider, Footer } = Layout;
 
@@ -55,8 +56,9 @@ class DashboardPage extends React.Component {
     
     componentDidMount() {
         const {itemType} = this.state;
+        const {user} = this.props;
         // load leads
-        this.props.fetchLeads();
+        this.props.fetchLeads(user.id);
         // load amentities        
         this.props.fetch(itemType);
         // load dashboard total amenity summary
@@ -240,6 +242,7 @@ class DashboardPage extends React.Component {
 
     render() {
         const { createEditItem, lead } = this.state;
+        //const { TextArea } = Input;
 
         return (
             <Layout style={{height:'100%'}}>
@@ -327,9 +330,10 @@ class DashboardPage extends React.Component {
                         ]}
 >                    
                     <p>Lead Name: <b>{lead.name}</b></p>
-                    <p>Lead Email: <b>{lead.email}</b></p>
-                    <p>Posted Date: <b>{lead.postedDate}</b></p>
-                    <p>Lead Details: <b>{lead.details}</b></p>
+                    <p>Lead Email: <b>{lead.emailAddress}</b></p>
+                    <p>Message Status: <b>{lead.status}</b></p>
+                    <p>Posted Date: <b>{moment(lead.createdAt).format('MMMM Do YYYY, h:mm:ss a')}</b></p>
+                    <p>Message Details: <b>{lead.details}</b></p>
                 </Modal>   
             </Layout>
         )
@@ -344,6 +348,7 @@ const mapDispatchToProps = {
 
 function mapStateToProps(state) {
     return {
+        user : JSON.parse(sessionStorage.getItem('user')),
         items: [...state.items.items],
         leads: [...state.leads.leads ? state.leads.leads : []],
         summaryReports: [...state.report.summaryReports],

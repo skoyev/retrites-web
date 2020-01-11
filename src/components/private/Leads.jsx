@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types'
 import { Row, Table, Icon, Divider } from 'antd';
+import moment from 'moment';
   
 const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
@@ -27,7 +28,8 @@ const Leads = ({items, handleLeadDelete, handleLeadEdit}) => {
     },
     {
       title: 'Message Date Posted',
-      dataIndex: 'postedDate',
+      dataIndex: 'createdAt',
+      render: text => moment(text).format('MMMM Do YYYY, h:mm:ss a'),
     },
     {
       title: 'Status',
