@@ -1,6 +1,5 @@
 import React from 'react';
 import { Translate } from "react-localize-redux";
-import { Link } from 'react-router-dom';
 import { itemActions, leadsActions } from '../../store/action';
 import { connect } from 'react-redux';
 import { withLocalize } from "react-localize-redux";
@@ -10,8 +9,7 @@ import RetreatPhotoAlbum from '../../components/public/retreat/RetreatPhotoAlbum
 import RetreatDetailsSummary from '../../components/public/retreat/RetreatDetailsSummary';
 import RetreatBookSection from '../../components/public/retreat/RetreatBookSection';
 import { history } from '../../helpers';
-import { Layout, Button, Row, Col, Modal } from 'antd';
-import Header from 'antd/lib/calendar/Header';
+import { Layout, notification, Row, Col, Modal } from 'antd';
 import SearchHeader from '../../components/public/search/SearchHeader';
 import '../style/RetreateDetailPage.css';
 import { renderToStaticMarkup } from "react-dom/server";
@@ -42,9 +40,7 @@ class RetreateDetailPage extends React.Component {
             options: { renderToStaticMarkup },
         });   
         
-        this.handleChange = this.handleChange.bind(this);
         this.onBack = this.onBack.bind(this);
-        this.handleSearch = this.handleSearch.bind(this);
         this.handleSubmitBookNow = this.handleSubmitBookNow.bind(this);
         this.handleFormEmailChange = this.handleFormEmailChange.bind(this);
         this.handleFormNameChange = this.handleFormNameChange.bind(this);
@@ -53,19 +49,16 @@ class RetreateDetailPage extends React.Component {
         this.handleLogoutClick = this.handleLogoutClick.bind(this);        
     }  
     
-    /**
-    componentWillMount() {
-        let {match : {params}} = this.props;
-        let itemID = params.itemID;
-
-        const { fetchByID } = this.props;
-        if(itemID){
-            fetchByID(itemID);
-        } else {
-            console.log('Item ID is null');
-        }
-    }
-    */
+    openNotification = () => {
+        const {item} = this.props;
+        const args = {
+            message: 'Retreat Request',
+            description:
+                `Thank you for booking request for the ${item.name}. We will get back to you withing 48 hours!`,
+            duration: 4,
+        };
+        notification.open(args);
+    };    
 
     componentDidMount() {
         const urlParams = new URLSearchParams(this.props.location.search)
@@ -84,9 +77,6 @@ class RetreateDetailPage extends React.Component {
 
     }
 
-    handleChange(event) {
-    }
-
     onBack(event){
         let {back} = this.state;
         event.preventDefault();
@@ -95,35 +85,7 @@ class RetreateDetailPage extends React.Component {
         }
     }
 
-    handleSearch(e){
-
-    }
-
     handleOk = e => {
-        const {isCaptchaValid} = this.state;
-
-        if(!isCaptchaValid) {
-            this.setState({error: 'Captcha is invalid'})
-            return;
-        }
-
-        this.setState({
-          visible: false,
-        });   
-
-        const { item } = this.props;
-        const {formEmail, formName, formDescription} = this.state;
-
-        if(!formName || !formEmail || !formDescription) {
-            this.setState({error: 'Some Data Inputs Are Missing.'})
-            return;
-        }
-        
-        this.props.createLead(item.id, formName, formEmail, formDescription);
-
-        this.props.history.push(`/home`);
-
-        window.recaptchaRef.current.reset();
     };
     
     handleCancel = e => {
@@ -135,9 +97,36 @@ class RetreateDetailPage extends React.Component {
     handleSubmitBookNow(e) {
         e.preventDefault();
 
+        /*
         this.setState({
             visible: true
         });
+        */
+
+       const {isCaptchaValid} = this.state;
+
+       if(!isCaptchaValid) {
+           this.setState({error: 'Captcha is invalid'})
+           return;
+       }
+
+       const { item } = this.props;
+       const {formEmail, formName, formDescription} = this.state;
+
+       if(!formName || !formEmail || !formDescription) {
+           this.setState({error: 'Some Data Inputs Are Missing.'})
+           return;
+       }
+       
+       this.props.createLead(item.id, formName, formEmail, formDescription);   
+       
+       this.openNotification();
+
+       setTimeout(()=> {
+        this.props.history.push(`/home`);
+       },3000);
+
+       window.recaptchaRef.current.reset();
     }
 
     handleFormEmailChange(e) {

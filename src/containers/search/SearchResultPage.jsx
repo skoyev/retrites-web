@@ -74,7 +74,9 @@ class SearchResultPage extends React.Component {
                     () => this.loadItems()); 
 
         // get countries
-        //this.props.getCountrieFromStore();               
+        //this.props.getCountrieFromStore(); 
+        
+        setTimeout(()=>window.scrollTo(0, 0),1400);
     }
 
     handleMoreItems() {        

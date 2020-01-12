@@ -1,13 +1,10 @@
 import React from 'react';
-import { Container, Row, Col } from 'reactstrap';
-
 import { PublicHeader, 
          PublicSearchSingle,
          Section, 
          ItemList} from '../../components/public';
 import {CategoryList, Loading, SubscriptionModal} from '../../components/common'
 import AppFooter from '../../components/common/AppFooter';
-
 import { renderToStaticMarkup } from "react-dom/server";
 import { withLocalize, Translate, getTranslate } from "react-localize-redux";
 import globalTranslations from "../../translations/global.json";
@@ -16,7 +13,7 @@ import {itemActions, pageActions, userActions} from '../../store/action/index'
 import { history, isLoggedIn, validateEmail } from '../../helpers';
 import '../style/HomePage.css'
 import {pageConstants} from '../../constants';
-import { Form } from 'antd';
+import { Form, notification } from 'antd';
 import ReCAPTCHA from "react-google-recaptcha";
 
 class HomePage extends React.Component {
@@ -73,7 +70,7 @@ class HomePage extends React.Component {
         this.handleSubscriptionChange = this.handleSubscriptionChange.bind(this);
         this.handleSubscriptionCancel = this.handleSubscriptionCancel.bind(this);
         this.handleSubscriptionSubmit = this.handleSubscriptionSubmit.bind(this);
-
+        this.showNotification = this.showNotification.bind(this);
         this.captchaOnChange = this.captchaOnChange.bind(this);
     }
 
@@ -221,20 +218,26 @@ class HomePage extends React.Component {
         const catIds = retreatTypes.filter(r => selectedCategoryList.includes(r.name)).map(r => r.id);
         this.props.userSubscribe({email:subscriptionEmail, name:subscriptionName, catIds:catIds})
             .then(() => {
-                this.setState({showSuccessMessage:true}, ()=> {
-                    setTimeout(_ => {
-                        form.resetFields();
-                        window.recaptchaRef.current.reset();
-                        this.setState({shouldShowSubscriptionModal:false, 
-                            subscriptionName: '', 
-                            subscriptionEmail: '',
-                            showSuccessMessage: false,
-                            invalidEmail: false,
-                            selectedCategoryList: []});     
-                    }, 4000)
-                })                
+               form.resetFields();
+               window.recaptchaRef.current.reset();
+               this.setState({shouldShowSubscriptionModal:false, 
+                   subscriptionName: '', 
+                   subscriptionEmail: '',
+                   showSuccessMessage: false,
+                   invalidEmail: false,
+                   selectedCategoryList: []});  
+                this.showNotification();                                            
             })
     }
+
+    showNotification = () => {
+        const args = {
+            message: 'Subscription',
+            description:`You have been subscribed successfully!`,
+            duration: 4,
+        };
+        notification.open(args);
+    };    
 
     extractRetriteTypes = types => {
         return types.map(t => t.name);
