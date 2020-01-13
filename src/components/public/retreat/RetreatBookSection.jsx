@@ -8,7 +8,7 @@ import { configConstants } from '../../../constants';
 window.recaptchaRef = React.createRef();
 
 const RetreatBookSection = ({item, handleSubmitBookNow, handleFormNameChange, handleFormEmailChange, 
-                             handleFormDescriptionChange, isActiveBookNow, handleCaptchaOnChange}) => (
+                             handleFormDescriptionChange, isActiveBookNow, handleCaptchaOnChange, error}) => (
  <div>
     <Card title="Book Now">
       <Form onSubmit={handleSubmitBookNow} className="book-form">
@@ -28,8 +28,9 @@ const RetreatBookSection = ({item, handleSubmitBookNow, handleFormNameChange, ha
               onChange={handleCaptchaOnChange}/>                            
         </Form.Item>
         <Form.Item>
-          <Button disabled={!isActiveBookNow} htmlType="submit">Book Now</Button>
-        </Form.Item>        
+          <Button disabled={!isActiveBookNow} htmlType="submit">Request Details</Button>
+        </Form.Item>  
+        <Form.Item><span style={{color:'#ff4d4d'}}><b>{error}</b></span></Form.Item>      
       </Form>
     </Card>
 </div>

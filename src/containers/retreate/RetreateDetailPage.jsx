@@ -8,7 +8,7 @@ import RetreatBreadcrumb from '../../components/public/retreat/RetreatBreadcrumb
 import RetreatPhotoAlbum from '../../components/public/retreat/RetreatPhotoAlbum';
 import RetreatDetailsSummary from '../../components/public/retreat/RetreatDetailsSummary';
 import RetreatBookSection from '../../components/public/retreat/RetreatBookSection';
-import { history } from '../../helpers';
+import { history, validateEmail } from '../../helpers';
 import { Layout, notification, Row, Col, Modal } from 'antd';
 import SearchHeader from '../../components/public/search/SearchHeader';
 import '../style/RetreateDetailPage.css';
@@ -28,6 +28,7 @@ class RetreateDetailPage extends React.Component {
             formDetails: '',
             formDescription: '',
             back: 'home',
+            error: '',
             isCaptchaValid: false
         };        
 
@@ -117,6 +118,14 @@ class RetreateDetailPage extends React.Component {
            this.setState({error: 'Some Data Inputs Are Missing.'})
            return;
        }
+
+       const isValidEmail = validateEmail(formEmail);
+
+       if(!isValidEmail){
+           this.setState({error: `Invalid email ${formEmail}`})
+           console.warn(`Invalid email ${formEmail}`);
+           return;
+       }
        
        this.props.createLead(item.id, formName, formEmail, formDescription);   
        
@@ -127,6 +136,7 @@ class RetreateDetailPage extends React.Component {
        },3000);
 
        window.recaptchaRef.current.reset();
+       this.setState({error: ''});
     }
 
     handleFormEmailChange(e) {
@@ -157,7 +167,7 @@ class RetreateDetailPage extends React.Component {
 
     render() {      
         const { item, isLoggedInRes } = this.props;
-        const { isCaptchaValid } = this.state;
+        const { isCaptchaValid, error } = this.state;
 
         if(!item) {
             return <div>Item details is loading...</div>;
@@ -169,7 +179,7 @@ class RetreateDetailPage extends React.Component {
             <div>
                 <Layout style={{background:'none'}}>
                     <Header className="sticky" style={{zIndex:10, backgroundColor:'#ffffff'}}>
-                        <SearchHeader title="Retriete Your Mind"
+                        <SearchHeader title="Retreat Your Mind"
                                       shouldShowSearchInput={false}
                                       isLoggedIn={isLoggedInRes}
                                       handleLogoutClick={this.handleLogoutClick}
@@ -206,6 +216,7 @@ class RetreateDetailPage extends React.Component {
                                                         handleSubmitBookNow={this.handleSubmitBookNow}
                                                         handleCaptchaOnChange={this.captchaOnChange}
                                                         isActiveBookNow={isCaptchaValid}
+                                                        error={error}
                                                         handleFormDescriptionChange={this.handleFormDescriptionChange}/>
                                 </Row>   
                             </Col>
