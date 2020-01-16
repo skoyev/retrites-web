@@ -5,6 +5,7 @@ import { itemService } from '../../services';
 import { history } from '../../helpers';
 
 export const itemActions = {
+    fetchUserAmenities,
     fetch,
     fetchPopular,
     fetchByID,
@@ -50,6 +51,20 @@ export function search(subCategoryID, duration, name, startDate, countryId, coun
         }).catch(error => {
             throw(error);
         });
+    }
+}
+
+/**
+ * Get all user 
+ */
+export function fetchUserAmenities(userID) {
+    return dispatch => {
+        return itemService.fetchUserAmenities(userID)
+                          .then(res => {
+                            dispatch(fetchItemsSuccess(res.data.items))    
+                          }).catch(error => {
+                            throw(error);
+                          });
     }
 }
 

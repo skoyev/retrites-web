@@ -1,0 +1,19 @@
+.custom-button {
+    background-color: #9b9ea0;
+    border-color: #797d80;
+    float: right;
+    margin-top: 10px;
+}
+
+.custom-button:hover {
+    background-color: #797c7d;
+    border-color: #797d80;
+}
+
+.left-space {
+    margin-left: 10px;
+}
+
+.right-space {
+    margin-right: 10px;
+}

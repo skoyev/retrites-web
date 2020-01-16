@@ -1,20 +1,29 @@
 import React from 'react';
 import PrivateHeader from '../../components/private/PrivateHeader';
-import AppFooter from '../../components/common/AppFooter';
-import { Row, Layout, Icon, Modal } from 'antd';
+import { Row, Layout, Icon, Modal, Drawer } from 'antd';
 import '../style/DashboardPage.css';
 import DashboardMenu from '../../components/private/DashboardMenu';
 import {Aminity, Leads, Report, Dashboard} from '../../components/private';
 import { Button, Form, Input } from 'antd';
 import { connect } from 'react-redux';
 import { withLocalize } from "react-localize-redux";
-import {itemActions, leadsActions, reportActions} from '../../store/action'
+import {itemActions, leadsActions, reportActions, userActions} from '../../store/action'
 import TextArea from 'antd/lib/input/TextArea';
 import {pageConstants} from '../../constants';
 import './index.css'
 import moment from 'moment';
+import { history } from '../../helpers';
 
 const { Header, Content, Sider, Footer } = Layout;
+
+const UserSettings = props => {    
+    return (
+        <React.Fragment>
+            <div><Button type="link" onClick={props.handleHome}>Home</Button></div>
+            <div><Button type="link" onClick={props.handleLogout}>Logout</Button></div>
+        </React.Fragment>
+    )
+}
 
 class DashboardPage extends React.Component {
 
@@ -30,6 +39,8 @@ class DashboardPage extends React.Component {
             deleteItemModalVisible: false,
             deleteLeadModalVisible: false,
             viewLeadModalVisible: false,
+
+            isRightMenuVisible: false,
 
             lead: {},
 
@@ -59,8 +70,8 @@ class DashboardPage extends React.Component {
         const {user} = this.props;
         // load leads
         this.props.fetchLeads(user.id);
-        // load amentities        
-        this.props.fetch(itemType);
+        // load all user amentities        
+        this.props.fetchUserAmenities(user.id);        
         // load dashboard total amenity summary
         this.props.fetchAmenitySummary();
         // load dashboard total lead summary
@@ -240,9 +251,23 @@ class DashboardPage extends React.Component {
         });        
     }
 
+    handleRightMenuOpenClose = () => {
+        this.setState(prevState => ({isRightMenuVisible: !prevState.isRightMenuVisible}))
+    }
+
+    handleLogout = (e) => {
+        e.preventDefault();
+        this.setState({ logedOut: true });
+        this.props.logout();
+    }
+
+    handleHome = (e) => {
+        history.push('/home');
+    }
+
     render() {
         const { createEditItem, lead } = this.state;
-        //const { TextArea } = Input;
+        //const { TextArea } = Input;        
 
         return (
             <Layout style={{height:'100%'}}>
@@ -252,7 +277,7 @@ class DashboardPage extends React.Component {
 
                 <Layout>
                     <Header style={{backgroundColor:'#c5c4c4', marginBottom:10}}>
-                        <PrivateHeader/>
+                        <PrivateHeader handleMenu={this.handleRightMenuOpenClose} user={this.props.user}/>
                     </Header>
 
                     <Content className="ant-layout-content-override" style={{overflowY:'scroll'}}>
@@ -334,7 +359,17 @@ class DashboardPage extends React.Component {
                     <p>Message Status: <b>{lead.status}</b></p>
                     <p>Posted Date: <b>{moment(lead.createdAt).format('MMMM Do YYYY, h:mm:ss a')}</b></p>
                     <p>Message Details: <b>{lead.details}</b></p>
-                </Modal>   
+                </Modal> 
+
+                <Drawer title="User Settings"
+                        placement="right"
+                        closable={true}
+                        className="user-setting"
+                        onClose={this.handleRightMenuOpenClose}
+                        visible={this.state.isRightMenuVisible}>
+                    <UserSettings handleHome={this.handleHome}
+                                  handleLogout={this.handleLogout}/>
+                </Drawer>  
             </Layout>
         )
     }
@@ -343,7 +378,8 @@ class DashboardPage extends React.Component {
 const mapDispatchToProps = {    
     ...itemActions,
     ...leadsActions,
-    ...reportActions
+    ...reportActions,
+    ...userActions
 }; 
 
 function mapStateToProps(state) {

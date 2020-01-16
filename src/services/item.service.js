@@ -18,13 +18,18 @@ export const itemService = {
     fetchRetreatByCountries,
     fetchRetreatSubCategories,
     fetchCountries,
-    search
+    search,
+    fetchUserAmenities
 };
 
 const requestOptions = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }        
 };
+
+function fetchUserAmenities(userID) {
+    return axios.get(`/api/items/user/${userID}`);
+}
 
 function loadPopularItems(categoryId, count) {
     return axios.get(`/api/items?categoryId=${categoryId}&popular=1&count=${count}`);

@@ -5,7 +5,8 @@ import { userActions } from '../../store/action';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { history } from '../../helpers';
-import { Translate } from 'react-localize-redux';
+import { Icon, Row, Col } from 'antd';
+import './style/PrivateHeader.css';
 
 class PrivateHeader extends React.Component {
 
@@ -19,28 +20,17 @@ class PrivateHeader extends React.Component {
             username: '',
             logedOut: false
         };
-
-        this.handleLogout = this.handleLogout.bind(this);
-        this.handleHome = this.handleHome.bind(this);
     }    
 
-    handleLogout = (e) => {
-        e.preventDefault();
-        this.setState({ logedOut: true });
-        this.props.logout();
-    }
-
-    handleHome = (e) => {
-        history.push('/home');
-    }
-
     render() {
-        const { loggingIn } = this.props;
-        const { username, password, submitted } = this.state;
+        const { loggingIn, user } = this.props;
         return (
-            <div className="col-md-12">                
-                <button className="btn btn-primary" style={{float:'right', marginTop: 10}} onClick={this.handleLogout}>Logout</button>
-                <button className="btn btn-primary" style={{float:'right', marginTop: 10, marginRight: 10}} onClick={this.handleHome}>Home</button>
+            <div className="col-md-12"> 
+                <Row>
+                    <Col span={18}></Col>
+                    <Col span={4}><span>Welcome, {`${user.firstName} ${user.lastName}`}</span></Col>
+                    <Col span={2}><button className="btn btn-primary custom-button left-space" onClick={this.props.handleMenu}><Icon type="menu" /></button></Col>
+                </Row> 
             </div>
         );
     }
