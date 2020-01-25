@@ -8,6 +8,9 @@ import { Button, Form, Input } from 'antd';
 import { connect } from 'react-redux';
 import { withLocalize } from "react-localize-redux";
 import {itemActions, leadsActions, reportActions, userActions} from '../../store/action'
+import {getSummaryItemsSelector} from '../../store/selectors/item.selector'
+import {getSummaryLeadsSelector} from '../../store/selectors/lead.selector'
+import {getSummaryReportsSelector} from '../../store/selectors/report.selector'
 import TextArea from 'antd/lib/input/TextArea';
 import {pageConstants} from '../../constants';
 import './index.css'
@@ -63,21 +66,47 @@ class DashboardPage extends React.Component {
 
         this.handleLeadDelete = this.handleLeadDelete.bind(this);        
         this.handleLeadEdit = this.handleLeadEdit.bind(this);        
-    }   
+    } 
+    
+    loadData() {
+        const { user } = this.props;
+        const { selectedContentName } = this.state;
+
+        if(!user){
+            console.warn('User is null...')
+            return;
+        }
+        
+        switch(selectedContentName){
+            case pageConstants.AMENITY_CONTENT:
+                // load all user amentities        
+                this.props.fetchUserAmenities(user.id);   
+                break;
+            case pageConstants.LEADS_CONTENT:
+                // load leads
+                this.props.fetchLeads(user.id);
+                break;
+            case pageConstants.STATISTIC_CONTENT:
+                 // load dashboard total report summary
+                //this.props.fetchReportSummary(user.id);
+                break;
+            case pageConstants.DASHBOARD_CONTENT:
+                this.props.fetchSummary(user.id)
+                break;
+
+        }   
+    }
     
     componentDidMount() {
-        const {itemType} = this.state;
-        const {user} = this.props;
-        // load leads
-        this.props.fetchLeads(user.id);
-        // load all user amentities        
-        this.props.fetchUserAmenities(user.id);        
-        // load dashboard total amenity summary
-        this.props.fetchAmenitySummary();
-        // load dashboard total lead summary
-        this.props.fetchLeadSummary();
-        // load dashboard total report summary
-        this.props.fetchReportSummary();
+        const {user} = this.props;        
+
+        if(!user){
+            console.warn('User is null...')
+            return;
+        }
+
+        // load summary data for the dashboard (amenities, leads, reports)
+        this.props.fetchSummary(user.id)
     }    
 
     handleAminityEdit = () => {
@@ -145,7 +174,7 @@ class DashboardPage extends React.Component {
             
         if(foundCmd) {  
             //let cmp = React.createElement(foundCmd.component, foundCmd.params);
-            this.setState({selectedContentName: foundCmd.name});
+            this.setState({selectedContentName: foundCmd.name}, () => this.loadData());
             //this.setState({content: foundCmd.component});            
         } else {
             console.log('Error - component does not registered');
@@ -161,7 +190,7 @@ class DashboardPage extends React.Component {
 
     renderSwitchPage(){
         const { selectedContentName } = this.state;
-        const {items, leads, summaryAmenity, summaryLeads, summaryReports} = this.props; 
+        const {items, leads, summaryItem, summaryLeads, summaryReports} = this.props; 
 
         switch(selectedContentName){
             case pageConstants.AMENITY_CONTENT:
@@ -179,7 +208,7 @@ class DashboardPage extends React.Component {
             case pageConstants.DASHBOARD_CONTENT:
                 return ([
                     <Dashboard key="dashboard"
-                               amentities={summaryAmenity}
+                               amentities={summaryItem}
                                leads={summaryLeads}
                                reports={summaryReports}>
                     </Dashboard>
@@ -387,9 +416,9 @@ function mapStateToProps(state) {
         user : JSON.parse(sessionStorage.getItem('user')),
         items: [...state.items.items],
         leads: [...state.leads.leads ? state.leads.leads : []],
-        summaryReports: [...state.report.summaryReports],
-        summaryLeads: [...state.leads.summaryLeads],
-        summaryAmenity: [...state.items.summaryAmenity]
+        summaryReports: state.summary.reportSummary,
+        summaryLeads: state.summary.leadSummary,
+        summaryItem: state.summary.itemSummary
     };
 }
 

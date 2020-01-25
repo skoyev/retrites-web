@@ -1,4 +1,4 @@
-import {leadsConstants} from '../../constants';
+import {leadsConstants, itemConstants} from '../../constants';
 
 const INITIAL_STATE = {
   leads: [],
@@ -7,7 +7,8 @@ const INITIAL_STATE = {
 
 export function leads(state = INITIAL_STATE, action) {
     switch (action.type) {
-        case leadsConstants.LEADS_FETCH_SUCCESS:
+        case leadsConstants.LEADS_FETCH_SUCCESS 
+              || itemConstants.SUMMARY_FETCH_SUCCESS:
           return {
             ... state,
             leads: action.leads

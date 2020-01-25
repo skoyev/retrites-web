@@ -5,6 +5,7 @@ import { itemService } from '../../services';
 import { history } from '../../helpers';
 
 export const itemActions = {
+    fetchSummary,
     fetchUserAmenities,
     fetch,
     fetchPopular,
@@ -34,6 +35,14 @@ export function clearItemsAndNavigateToPage(pageName) {
     return { 
         type: pageConstants.CLEAR_ITEMS_AND_REDIRECT_PAGE,
         pageName: pageName
+    }
+}
+
+export function fetchSummary(userID) {
+    return dispatch => {
+        return itemService.fetchSummary(userID)
+                          .then(res => dispatch(fetchSummarySuccess(res.data.summary)))
+                          .catch(error => {throw (error)})
     }
 }
 
@@ -164,6 +173,13 @@ export function fetchItemsSuccess(items) {
     return { 
         type: 'ITEMS_FETCH_SUCCESS', 
         items
+    } 
+}
+
+export function fetchSummarySuccess(summary) {
+    return { 
+        type: itemConstants.SUMMARY_FETCH_SUCCESS, 
+        summary
     } 
 }
 

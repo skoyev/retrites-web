@@ -19,13 +19,18 @@ export const itemService = {
     fetchRetreatSubCategories,
     fetchCountries,
     search,
-    fetchUserAmenities
+    fetchUserAmenities,
+    fetchSummary
 };
 
 const requestOptions = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }        
 };
+
+function fetchSummary(userID) {
+    return axios.get(`/api/items/summary/owner/${userID}`);
+}
 
 function fetchUserAmenities(userID) {
     return axios.get(`/api/items/user/${userID}`);

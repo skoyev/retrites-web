@@ -22,7 +22,7 @@ const Dashboard = ({amentities, leads, reports}) => {
                           actions={[<Icon type="setting" />, <Icon type="edit" />]} 
                           style={{textAlign:'center'}}>
                           {/*actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon onClick={()=>console.log('')} type="delete" />]}>*/}
-                           {amentities.map((amentity, index) => (
+                           {amentities && amentities.map((amentity, index) => (
                                 <Row key={index}>
                                     <Col span={15} style={{textAlign:'left'}}>              
                                         {amentity.name}
@@ -39,7 +39,7 @@ const Dashboard = ({amentities, leads, reports}) => {
                     <Card title="Leads" 
                           actions={[<Icon type="setting" />, <Icon type="edit" />]} 
                           style={{textAlign:'center'}}>
-                            {leads.map((lead, index) => (
+                            {leads && leads.map((lead, index) => (
                                 <Row key={index}>
                                     <Col span={15} style={{textAlign:'left'}}>              
                                         {lead.name}
@@ -56,7 +56,7 @@ const Dashboard = ({amentities, leads, reports}) => {
                     <Card title="Reports"
                           actions={[<Icon type="setting" />, <Icon type="edit" />]} 
                           style={{textAlign:'center'}}>
-                            {reports.map((report, index) => (
+                            {reports && reports.map((report, index) => (
                                 <Row key={index}>
                                     <Col span={15} style={{textAlign:'left'}}>              
                                         {report.name}

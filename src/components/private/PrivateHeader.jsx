@@ -28,7 +28,7 @@ class PrivateHeader extends React.Component {
             <div className="col-md-12"> 
                 <Row>
                     <Col span={18}></Col>
-                    <Col span={4}><span>Welcome, {`${user.firstName} ${user.lastName}`}</span></Col>
+                    <Col span={4}>{user && <span>Welcome, {`${user.firstName} ${user.lastName}`}</span>}</Col>
                     <Col span={2}><button className="btn btn-primary custom-button left-space" onClick={this.props.handleMenu}><Icon type="menu" /></button></Col>
                 </Row> 
             </div>
