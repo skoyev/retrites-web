@@ -1,17 +1,17 @@
 import React from 'react';
 import PrivateHeader from '../../components/private/PrivateHeader';
-import { Row, Layout, Icon, Modal, Drawer } from 'antd';
+import { Row, Layout, Icon, Modal, Drawer, Steps } from 'antd';
 import '../style/DashboardPage.css';
 import DashboardMenu from '../../components/private/DashboardMenu';
 import {Aminity, Leads, Report, Dashboard} from '../../components/private';
+import AmenityWizard from '../../components/private/wizard';
+import Step1Item from '../../components/private/wizard/steps/step1';
+import Step2Item from '../../components/private/wizard/steps/step2';
+import Step3Item from '../../components/private/wizard/steps/step3';
 import { Button, Form, Input } from 'antd';
 import { connect } from 'react-redux';
 import { withLocalize } from "react-localize-redux";
 import {itemActions, leadsActions, reportActions, userActions} from '../../store/action'
-import {getSummaryItemsSelector} from '../../store/selectors/item.selector'
-import {getSummaryLeadsSelector} from '../../store/selectors/lead.selector'
-import {getSummaryReportsSelector} from '../../store/selectors/report.selector'
-import TextArea from 'antd/lib/input/TextArea';
 import {pageConstants} from '../../constants';
 import './index.css'
 import moment from 'moment';
@@ -36,7 +36,7 @@ class DashboardPage extends React.Component {
         this.state = {
             itemType: 'retrite',
             collapsed: false,
-
+            createItemWizardStep: 0,
             // Modal windows
             createEditCustomerModalVisible: false,
             deleteItemModalVisible: false,
@@ -44,8 +44,48 @@ class DashboardPage extends React.Component {
             viewLeadModalVisible: false,
 
             isRightMenuVisible: false,
-
+            selectedCategory: '',
+            selectedSubCategory: '',
             lead: {},
+
+            createItemSteps: [
+                {
+                    title: 'Details',
+                    content: React.createElement(
+                                Form.create({ name: 'step1Item' })( Step1Item ), 
+                                {
+                                    handleItemChange: this.handleCreateItemChange,
+                                    handleCategoryClick: this.handleCreateItemDropdownChange,
+                                    handleSubCategoryClick: this.handleCreateItemDropdownChange,
+                                    categories: ['Cat1'],
+                                    subCategories: ['SubCat1']
+                                }),
+                },
+                {
+                    title: 'Address',
+                    content: React.createElement(
+                        Form.create({ name: 'step2Item' })( Step2Item ), 
+                        {
+                            handleItemChange: this.handleCreateItemChange
+                        }),
+                },
+                {
+                    title: 'Teachers',
+                    content: <Step3Item/>,
+                },
+                {
+                    title: 'Payment',
+                    content: <Step3Item/>,
+                },
+                {
+                    title: 'Schedule',
+                    content: <Step3Item/>,
+                },
+                {
+                    title: 'Photo',
+                    content: <Step3Item/>,
+                }
+            ],
 
             createEditItem: {},
             selectedContentName: 'dashboard',
@@ -66,7 +106,16 @@ class DashboardPage extends React.Component {
 
         this.handleLeadDelete = this.handleLeadDelete.bind(this);        
         this.handleLeadEdit = this.handleLeadEdit.bind(this);        
+        this.handleCreateItemNext = this.handleCreateItemNext.bind(this);        
     } 
+
+    handleCreateItemChange = (e) => {
+        this.setState({[e.target.name]:[e.target.value]})
+    }
+
+    handleCreateItemDropdownChange = (e) => {
+        this.setState({[e.item.props.name]:e.item.props.data[e.key]})
+    }
     
     loadData() {
         const { user } = this.props;
@@ -195,27 +244,32 @@ class DashboardPage extends React.Component {
         switch(selectedContentName){
             case pageConstants.AMENITY_CONTENT:
                 return ([
-                    <Aminity items={items} handleAminityDetails={this.handleAminityDetails} handleAminityDelete={this.handleAminityDelete} ref={this.child}></Aminity>
+                    <Aminity items={items} 
+                             numItemsPerRow={6}
+                             handleAminityDetails={this.handleAminityDetails} 
+                             handleAminityDelete={this.handleAminityDelete} 
+                             ref={this.child}/>
                 ]);
             case pageConstants.LEADS_CONTENT:
                 return ([
-                    <Leads items={leads} handleLeadDelete={this.handleLeadDelete} handleLeadEdit={this.handleLeadEdit}></Leads>
+                    <Leads items={leads} 
+                           handleLeadDelete={this.handleLeadDelete} 
+                           handleLeadEdit={this.handleLeadEdit}/>
                 ]);
             case pageConstants.STATISTIC_CONTENT:
                 return ([
-                    <Report></Report>
+                    <Report/>
                 ]);
             case pageConstants.DASHBOARD_CONTENT:
                 return ([
                     <Dashboard key="dashboard"
                                amentities={summaryItem}
                                leads={summaryLeads}
-                               reports={summaryReports}>
-                    </Dashboard>
+                               reports={summaryReports}/>
                 ]);
             default:
                 return ([
-                    <Dashboard></Dashboard>
+                    <Dashboard/>
                 ]);
         }
     }
@@ -242,7 +296,7 @@ class DashboardPage extends React.Component {
 
         if(createEditItem){
             this.props.deleteItem(createEditItem.id)
-                .then(() => this.props.fetchLeads());
+                .then(() => this.props.fetchUserAmenities(this.props.user.id))
         } else {
             console.log('Selected item id is null');
         }
@@ -294,8 +348,30 @@ class DashboardPage extends React.Component {
         history.push('/home');
     }
 
+    handleCreateItemNext = () => {
+        this.setState((prevState, props) => ({
+            createItemWizardStep: prevState.createItemWizardStep + 1
+        }));        
+    }
+
+    handleCreateItemPrevious = () => {
+        this.setState((prevState, props) => ({
+            createItemWizardStep: prevState.createItemWizardStep - 1
+        }));        
+    }
+
+    handleCreateItemCancel = () => {
+        this.setState({createEditItemModalVisible: false, createItemWizardStep: 0})
+    }
+
+    handleCreateItemDone = () => {
+        const{itemName, itemDescription, itemPrice, selectedCategory, selectedSubCategory} = this.state;
+        this.setState({createEditItemModalVisible: false, createItemWizardStep: 0})
+        console.log(itemName, itemDescription, itemPrice, selectedCategory, selectedSubCategory);
+    }
+
     render() {
-        const { createEditItem, lead } = this.state;
+        const { createEditItem, lead, createItemWizardStep, createItemSteps } = this.state;
         //const { TextArea } = Input;        
 
         return (
@@ -314,44 +390,25 @@ class DashboardPage extends React.Component {
                     </Content>
 
                     <Footer style={{backgroundColor:'#c5c4c4', marginTop:10}}>
-                        Retriete Copyrights 2019.
+                        Retriete Copyrights 2020.
                     </Footer>
                 </Layout>
 
-                {/* Dashboard Create/Update Aminity Modal Window */}
-                <Modal
-                        title={(createEditItem && createEditItem.name) ? "Modify Retreat" : "Create Retreat"}
+                {/* Create  Amenity Wizard */}
+                {createItemSteps &&
+                    <Modal title={(createEditItem && createEditItem.name) ? "Modify Retreat" : "Create Retreat"}
                         visible={this.state.createEditItemModalVisible}
-                        //onOk={this.handleItemCreateUpdateModalOk}
-                        //onCancel={this.handleItemCreateUpdateModalCancel}
+                        width={950}
                         footer={[
-                            <Row>
-                                <Button key="cancel-button" onClick={this.handleItemCreateUpdateModalCancel} htmlType="button">
-                                    Cancel
-                                </Button>
-                                <Button key="save-button" onClick={this.handleItemCreateUpdateModalOk} htmlType="submit">
-                                    Save
-                                </Button>
-                            </Row>
-                        ]}>
-                    <p>{createEditItem ? createEditItem.name : ''}</p>
-
-                    <Form id="itemForm" onSubmit={this.handleSubmitItem} className="item-form">
-                        <Form.Item label="Retreat Name">
-                            <Input type="text" name="name" required value={createEditItem.name} placeholder="Name" onChange={this.handleItemChange}/>                                        
-                        </Form.Item>
-
-                        <Form.Item label="Your Email">
-                            <Input required name="email" value={createEditItem.email} placeholder="Email" onChange={this.handleItemChange}/>
-                        </Form.Item>
-
-                        <Form.Item label="Retreat Description">
-                            <TextArea required name="description" value={createEditItem.description} placeholder="Enter booking description" onChange={this.handleItemChange} autosize={{ minRows: 6, maxRows: 10 }} />
-                        </Form.Item>
-
-                    </Form>
-
-                </Modal>                
+                                <Button key="cancel" onClick={this.handleCreateItemCancel}>Cancel</Button>,
+                                <Button style={createItemWizardStep == 0 ? {display:'none'} : {}} key="back" onClick={this.handleCreateItemPrevious}>Previous</Button>,
+                                <Button style={createItemWizardStep == (createItemSteps.length - 1) ? {display:'none'} : {}} key="next" type="primary" onClick={this.handleCreateItemNext}>Next</Button>,
+                                <Button style={createItemWizardStep == (createItemSteps.length - 1) ? {} : {display:'none'}} key="done" type="primary" onClick={this.handleCreateItemDone}>Done</Button>
+                            ]}> 
+                            <AmenityWizard step={createItemWizardStep} 
+                                        steps={createItemSteps}/>
+                    </Modal>
+                }
 
                 {/* Dashboard Delete Aminity Modal Window */}
                 <Modal

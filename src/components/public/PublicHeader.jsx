@@ -107,7 +107,7 @@ class PublicHeader extends React.Component {
         return (
             <div id="main-header" className="row offset-10">
                 <div className="col-md-3 header">
-                    <h3 className="white"><Link to="/">{title}</Link></h3>
+                    <h3 className="white"><Link to="/"><img id="logo" src={'/images/rymlogo-main.png'}/></Link></h3>
                 </div>
 
                 <div className="col-md-9 down-35"> 

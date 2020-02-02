@@ -55,6 +55,13 @@ export function items(state = INITIAL_STATE, action) {
             items: [],
             pageName: action.pageName
           }
+
+        case itemConstants.DELETE_ITEM_SUCCESS: 
+          return {
+            ... state,
+            items: state.items.filter(i => i.id !== action.id)
+          }
+
         default:
           return state
     }

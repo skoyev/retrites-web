@@ -1,8 +1,6 @@
-import axios from "axios";
-import { client, ROOT_URL } from './';
 import {itemConstants, pageConstants} from '../../constants';
 import { itemService } from '../../services';
-import { history } from '../../helpers';
+import { history, getAuthKey } from '../../helpers';
 
 export const itemActions = {
     fetchSummary,
@@ -205,6 +203,15 @@ export function fetchAmenitySummarySuccess(amenitySummary) {
     } 
 }
 
+function deleteItemsSuccess(id){
+    return { 
+        type: itemConstants.DELETE_ITEM_SUCCESS, 
+        id
+    } 
+}
+
+/**-------------------------------------------------------------------------------------------------- */
+
 /** 
  * Update Item action
  * @param {*} item 
@@ -229,15 +236,17 @@ export function update(item) {
  */
 export function deleteItem(id) {
     return dispatch => {
-        return itemService.deleteItem(id).then(res => {
-            if(res.ok){
-                dispatch(itemsSuccess())    
-            } else {
-                throw('Error while delete a new item.');
-            }
-        }).catch(error => {
-            throw(error);
-        });
+        let authKey = getAuthKey();
+        return itemService.deleteItem(id, authKey)
+                          .then(res => {
+                              if(res.status === 200){
+                                dispatch(deleteItemsSuccess(id));
+                              } else {
+                                  console.error(res);
+                              }
+                        }).catch(error => {
+                            throw(error);
+                        });
     }
 }
 

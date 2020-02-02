@@ -9,15 +9,16 @@
     opacity: 0.8;
     margin: 0;
     box-shadow: 0 5px 20px -10px #000;
-    height: 50px;   
+    height: 90px;  
+    transition: all .3s ease; 
 }
 
 .fixed .header {
-    padding-top: 10px;
+    padding: 0px;
 }
 
 .fixed .header-right {
-    padding-top: 10px;
+    padding-top: 30px;
 }
 
 .header h3 {

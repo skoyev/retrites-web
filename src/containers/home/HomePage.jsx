@@ -92,12 +92,15 @@ class HomePage extends React.Component {
 
     componentDidUpdate() {
         let el = document.getElementById('main-header');        
+        let el2 = document.getElementsByClassName('slider-section1')[0];        
         if(el){      
           window.addEventListener("scroll", function () {
             if (document.documentElement.scrollTop > 50 ) {
               el.classList.add("fixed");
+              el2.classList.add("top-space");
             } else {
               el.classList.remove("fixed");
+              el2.classList.remove("top-space");
             }           
           }, false);
         } 

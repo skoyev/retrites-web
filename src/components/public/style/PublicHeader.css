@@ -3,7 +3,7 @@
 }
 
 .header {
-    padding-top: 30px;
+    background-image: url('/images/rymlogo-main.png');
 }
 
 .down-35 {
@@ -29,7 +29,7 @@
 }
 
 .fixed .header {
-    padding-top: 0px;
+    padding-left: 30px; 
 }
 
 .fixed .down-35 {
@@ -39,4 +39,14 @@
 .fixed .white a, 
 .fixed .ant-btn-link {
     color: #007bff;
+}
+
+.fixed #logo {
+    width: 90px;
+    transition: all .3s ease
+}
+
+#logo{
+    width: 200px;
+    transition: all .3s ease
 }

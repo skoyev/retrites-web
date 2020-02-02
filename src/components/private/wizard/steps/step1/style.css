@@ -1,0 +1,20 @@
+.subcategory .ant-form-item-label {
+    width: 22% !important;
+}
+
+.description .ant-form-item-label {
+    width: 22% !important;
+}
+
+.category .ant-form-item-label {
+    width: 19% !important;
+}
+
+.step1-content {
+    margin-top: 40px; 
+}
+
+#step1Item_itemCategory > *:first-child, 
+#step1Item_itemSubCategory > *:first-child {
+    min-width: 150px;
+}

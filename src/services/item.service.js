@@ -71,18 +71,18 @@ function loadItems(categoryId){
     return axios.get(`/api/items?categoryId=${categoryId}`);
 }
 
-function deleteItem(id) {
-    if(!id){
-        console.log('id is null')
+function deleteItem(id, authKey) {
+    if(!id || !authKey){
+        console.log('id/authKey is null')
         return;
     }
 
-    const requestOptions = {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' }        
-    };
+    const headers = {
+        'Content-Type': 'application/json',
+        'auth_key': authKey
+    }
 
-    return fetch(`/items/${id}`, requestOptions);    
+    return axios.delete(`/api/items/${id}`,{headers:headers});
 }
 
 function updateItem(item) {
