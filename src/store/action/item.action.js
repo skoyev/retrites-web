@@ -8,9 +8,11 @@ export const itemActions = {
     fetch,
     fetchPopular,
     fetchByID,
-    add,
-    update,
+
+    createItem,
+    updateItem,
     deleteItem,
+
     addItemsSuccess,
     fetchItemsSuccess,
     fetchItemSuccess,
@@ -145,11 +147,10 @@ export function findBySubCategory(subCategoryId, count, startFromNum, searchByNa
     }
 }
 
-export function addItemsSuccess() { 
-    history.push('/dashboard');    
+export function addItemsSuccess(item) { 
     return { 
-        type: 'ADD_ITEM_SUCCESS',
-        shouldReloadItems: true
+        type: itemConstants.ADD_ITEM_SUCCESS,
+        item: item
     }     
 }
 
@@ -210,26 +211,21 @@ function deleteItemsSuccess(id){
     } 
 }
 
-/**-------------------------------------------------------------------------------------------------- */
-
-/** 
- * Update Item action
- * @param {*} item 
- */
-export function update(item) {
-    return dispatch => {
-        return itemService.updateItem(item).then(res => {
-            if(res.ok){
-                dispatch(itemsSuccess())    
-            } else {
-                throw('Error while create a new item.');
-            }
-        }).catch(error => {
-            throw(error);
-        });
-    }
+function deleteItemsFail(error){
+    return { 
+        type: itemConstants.DELETE_ITEM_FAIL, 
+        error
+    } 
 }
 
+function updateItemsSuccess(item){
+    return { 
+        type: itemConstants.UPDATE_ITEM_SUCCESS, 
+        item
+    } 
+}
+
+/**-----------------------------  ITEM ACTIONS  --------------------------------------------------- */
 /** 
  * Delete Item action
  * @param {*} item 
@@ -245,7 +241,8 @@ export function deleteItem(id) {
                                   console.error(res);
                               }
                         }).catch(error => {
-                            throw(error);
+                            log.error(error);
+                            dispatch(deleteItemsFail(error));
                         });
     }
 }
@@ -254,13 +251,34 @@ export function deleteItem(id) {
  * Create a new Item action
  * @param {*} item 
  */
-export function add(item) {
+export function createItem(item) {
     return dispatch => {
-        return itemService.addItem(item).then(res => {
-            if(res.ok){
-                dispatch(addItemsSuccess())    
+        let authKey = getAuthKey();
+        return itemService.addItem(item, authKey).then(res => {
+            if(res.status === 200 || res.status === 201){
+                dispatch(addItemsSuccess(item))    
             } else {
                 throw('Error while create a new item.');
+            }
+        }).catch(error => {
+            throw(error);
+            dispatch(addItemsFail(erro));    
+        });
+    }
+}
+
+/** 
+ * Update an existing item action
+ * @param {*} item 
+ */
+export function updateItem(item) {
+    return dispatch => {
+        let authKey = getAuthKey();
+        return itemService.updateItem(item, authKey).then(res => {
+            if(res.status === 200){
+                dispatch(updateItemsSuccess(item))    
+            } else {
+                throw('Error while update item.');
             }
         }).catch(error => {
             throw(error);

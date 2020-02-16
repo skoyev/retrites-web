@@ -41,7 +41,7 @@ class PublicSearch extends React.Component {
                 <nav className="nav nav-tabs" role="tablist">
                     {menuItems.map((item, index) =>                
                         <Translate>{({ translate }) =>
-                            <li className="nav-item">
+                            <li className="nav-item" key={index}>
                                 <a className={`nav-link ${this.state.clickedItemName == item ? 'active' : ''}`} key={index} 
                                                         role="tab" 
                                                         data-toggle="tab"
@@ -59,6 +59,7 @@ class PublicSearch extends React.Component {
                 <div className="tab-content search-witget-content">
                     {menuItems.map((item, index) =>  
                         <div role="tabpanel" 
+                            key={index}
                             className={`tab-pane search-witget-content-tab fade in ${this.state.clickedItemName == item ? 'active show' : ''}`} 
                             id={`${item}`}>                            
                             {SEARCH_WITGET_COMPONENTS[item.split('.').join('')]}

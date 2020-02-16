@@ -19,11 +19,10 @@ const formItemLayout = {
 
 const Step2Item = props => {    
     const { getFieldDecorator, getFieldsError, isFieldTouched } = props.form;
-    const { handleItemChange, title } = props;
+    const { handleItemChange } = props;
     return (
         <React.Fragment>
             <Row>
-                <h4>{title}</h4>
                 <Form {...formItemLayout}>
                     <Form.Item label="Country">           
                         {getFieldDecorator('country', {
@@ -45,7 +44,6 @@ const Step2Item = props => {
 
 Step2Item.propTypes = {  
     handleItemChange: PropTypes.func.isRequired,
-    title: PropTypes.string.isRequired
 };
 
 const mapDispatchToProps = {    

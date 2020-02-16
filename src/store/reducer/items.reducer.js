@@ -62,6 +62,12 @@ export function items(state = INITIAL_STATE, action) {
             items: state.items.filter(i => i.id !== action.id)
           }
 
+        case itemConstants.ADD_ITEM_SUCCESS:
+          return {
+            ... state,
+            items: [ ... state.items, action.item ]
+          }
+
         default:
           return state
     }

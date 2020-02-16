@@ -85,31 +85,26 @@ function deleteItem(id, authKey) {
     return axios.delete(`/api/items/${id}`,{headers:headers});
 }
 
-function updateItem(item) {
-    if(!item) {
-        console.log('Error, item is null')
+function updateItem(item, authKey) {
+    if(!item || !authKey)
+        return Promise.reject(`Auth key or item is invalid.`);
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'auth_key': authKey
     }
-
-    const requestOptions = {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(item)
-    };
-
-    return fetch(`/items`, requestOptions);    
+    return axios.put(`/api/items`, item, {headers: headers});
 }
 
-function addItem(item){
-    if(!item)
-        return;
+function addItem(item, authKey){
+    if(!item || !authKey)
+        return Promise.reject(`Auth key or item is invalid.`);
 
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(item)
-    };
-
-    return fetch(`/items`, requestOptions);    
+    const headers = {
+        'Content-Type': 'application/json',
+        'auth_key': authKey
+    }
+    return axios.post(`/api/items`, item, {headers: headers});
 }
 
 function loadItemByID(id){

@@ -11,7 +11,7 @@ import Step3Item from '../../components/private/wizard/steps/step3';
 import { Button, Form, Input } from 'antd';
 import { connect } from 'react-redux';
 import { withLocalize } from "react-localize-redux";
-import {itemActions, leadsActions, reportActions, userActions} from '../../store/action'
+import {itemActions, leadsActions, reportActions, userActions, commonActions} from '../../store/action'
 import {pageConstants} from '../../constants';
 import './index.css'
 import moment from 'moment';
@@ -31,7 +31,9 @@ const UserSettings = props => {
 class DashboardPage extends React.Component {
 
     constructor(props, context){
-        super(props);    
+        super(props); 
+        
+        //this.step1ItemRef = React.createRef();
         
         this.state = {
             itemType: 'retrite',
@@ -57,8 +59,9 @@ class DashboardPage extends React.Component {
                                     handleItemChange: this.handleCreateItemChange,
                                     handleCategoryClick: this.handleCreateItemDropdownChange,
                                     handleSubCategoryClick: this.handleCreateItemDropdownChange,
-                                    categories: ['Cat1'],
-                                    subCategories: ['SubCat1']
+                                    //categories: [],
+                                    //subCategories: ['SubCat1'],
+                                    //ref: this.step1ItemRef
                                 }),
                 },
                 {
@@ -102,7 +105,6 @@ class DashboardPage extends React.Component {
         this.handleItemDeleteModalCancel = this.handleItemDeleteModalCancel.bind(this);        
 
         this.handleAminityDelete = this.handleAminityDelete.bind(this);        
-        this.handleAminityEdit = this.handleAminityEdit.bind(this);        
 
         this.handleLeadDelete = this.handleLeadDelete.bind(this);        
         this.handleLeadEdit = this.handleLeadEdit.bind(this);        
@@ -110,7 +112,7 @@ class DashboardPage extends React.Component {
     } 
 
     handleCreateItemChange = (e) => {
-        this.setState({[e.target.name]:[e.target.value]})
+        this.setState({[e.target.name]:e.target.value})
     }
 
     handleCreateItemDropdownChange = (e) => {
@@ -158,15 +160,15 @@ class DashboardPage extends React.Component {
         this.props.fetchSummary(user.id)
     }    
 
-    handleAminityEdit = () => {
-
-    }
-
     handleAminityDetails = (item) => {
         this.setState({
             createEditItemModalVisible: true,
-            createEditItem: item
+            createEditItem: item,
+            selectedCategory: item.category ? item.category.name : '',
+            selectedSubCategory: item.subCategory ? item.subCategory.name : ''
         })
+
+        this.props.addIntoStoreSelectedItem(item);
     }
 
     handleLeadEdit = (lead) => {
@@ -190,32 +192,7 @@ class DashboardPage extends React.Component {
     onCollapse = collapsed => {
         this.setState({ collapsed });
     };
-
-    handleItemCreateUpdateModalCancel = e => {
-        // clear modal window data
-        this.setState({
-            createEditItemModalVisible: false,
-            createEditItem: {}
-        });
-    };   
     
-    handleItemCreateUpdateModalOk = e => {
-        // clear modal window data
-        this.setState({
-            createEditItemModalVisible: false,
-            createEditItem: {}
-        });
-
-        const { createEditItem } = this.state;
-        const { add, update, fetch } = this.props;
-        
-        if (!createEditItem.id) {
-            add(createEditItem).then(() => fetch());
-        } else {
-            update(createEditItem).then(() => fetch());
-        }    
-    };       
-
     handleClickMenu = (e) => {
         let foundCmd = this.state.menuContentCmps.find(
             c => (e.key.length > 1 && c.name.trim() === e.key.trim())
@@ -231,7 +208,6 @@ class DashboardPage extends React.Component {
     }
 
     handleItemChange = (event) => {
-        //this.setState({ [event.target.name]: event.target.value });
         let {createEditItem} = this.state;
         createEditItem[[event.target.name]] = event.target.value;
         this.setState({createEditItem:createEditItem})
@@ -365,13 +341,33 @@ class DashboardPage extends React.Component {
     }
 
     handleCreateItemDone = () => {
-        const{itemName, itemDescription, itemPrice, selectedCategory, selectedSubCategory} = this.state;
+        const{itemName, itemDescription, itemPrice, selectedCategory, 
+              selectedSubCategory, itemTitle, createEditItem} = this.state;
         this.setState({createEditItemModalVisible: false, createItemWizardStep: 0})
-        console.log(itemName, itemDescription, itemPrice, selectedCategory, selectedSubCategory);
+
+        if( !itemName || !itemDescription || !itemTitle ||
+                !selectedCategory || !selectedSubCategory ){
+            console.warn('Create a new Item error...');
+            this.setState({createItemError: 'Validation error'})
+            return;
+        }
+
+        const item = {id:createEditItem.id, name:itemName, description: itemDescription, price: 10, title: itemTitle, 
+                      subCategoryId: 2, categoryId: 2, countryId: 1, 
+                      userId: 3, address: 'jkjkjkj', currency: 'USD', duration: 2, 
+                      metaData: '{}', startDate: '2019-08-03', locationName: 'Toronto', 
+                      allActivities: "{'startFromDate':'2019-12-03'}", 
+                      picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'};
+
+        if(createEditItem.id && createEditItem.id > 0){
+            this.props.updateItem(item);
+        } else {
+            this.props.createItem(item);
+        }
     }
 
     render() {
-        const { createEditItem, lead, createItemWizardStep, createItemSteps } = this.state;
+        const { createEditItem, lead, createItemWizardStep, createItemSteps: createItemTotalSteps } = this.state;
         //const { TextArea } = Input;        
 
         return (
@@ -395,18 +391,19 @@ class DashboardPage extends React.Component {
                 </Layout>
 
                 {/* Create  Amenity Wizard */}
-                {createItemSteps &&
+                {createItemTotalSteps &&
                     <Modal title={(createEditItem && createEditItem.name) ? "Modify Retreat" : "Create Retreat"}
                         visible={this.state.createEditItemModalVisible}
                         width={950}
+                        onCancel={this.handleCreateItemCancel}
                         footer={[
                                 <Button key="cancel" onClick={this.handleCreateItemCancel}>Cancel</Button>,
                                 <Button style={createItemWizardStep == 0 ? {display:'none'} : {}} key="back" onClick={this.handleCreateItemPrevious}>Previous</Button>,
-                                <Button style={createItemWizardStep == (createItemSteps.length - 1) ? {display:'none'} : {}} key="next" type="primary" onClick={this.handleCreateItemNext}>Next</Button>,
-                                <Button style={createItemWizardStep == (createItemSteps.length - 1) ? {} : {display:'none'}} key="done" type="primary" onClick={this.handleCreateItemDone}>Done</Button>
+                                <Button style={createItemWizardStep == (createItemTotalSteps.length - 1) ? {display:'none'} : {}} key="next" type="primary" onClick={this.handleCreateItemNext}>Next</Button>,
+                                <Button style={createItemWizardStep == (createItemTotalSteps.length - 1) ? {} : {display:'none'}} key="done" type="primary" onClick={this.handleCreateItemDone}>Done</Button>
                             ]}> 
                             <AmenityWizard step={createItemWizardStep} 
-                                        steps={createItemSteps}/>
+                                           steps={createItemTotalSteps}/>
                     </Modal>
                 }
 
@@ -465,7 +462,8 @@ const mapDispatchToProps = {
     ...itemActions,
     ...leadsActions,
     ...reportActions,
-    ...userActions
+    ...userActions,
+    ...commonActions
 }; 
 
 function mapStateToProps(state) {

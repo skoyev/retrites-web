@@ -4,6 +4,7 @@ import { Row, Input, Form, InputNumber, Col, Menu, Icon, Dropdown } from 'antd';
 import { withLocalize } from "react-localize-redux";
 import { Translate } from "react-localize-redux";
 import { connect } from 'react-redux';
+import {commonActions} from '../../../../../store/action'
 import './style.css';
 
 const formItemLayout = {
@@ -20,100 +21,147 @@ const formItemLayout = {
 const menu = (data, handleMenuClick, name) => {
     return (
         <Menu onClick={handleMenuClick}>
-            {data.map((d, index) => <Menu.Item data={data} name={name} key={index}>{d}</Menu.Item>)}            
+            {data.map((d, index) => <Menu.Item data={data} name={name} key={index} id={d.id}>{d.name}</Menu.Item>)}            
         </Menu>  
     )
 }
 
 const { TextArea } = Input;
 
-const Step1Item = props => {    
-    const { getFieldDecorator, getFieldsError, isFieldTouched } = props.form;
-    const { handleItemChange, handleCategoryClick, handleSubCategoryClick, 
-            categories, subCategories } = props;
+class Step1Item extends React.Component {
 
-    const [selectedCategory, setSelectedCategory] = useState('');
-    const onSetSelectedCategory = (value) => {
-        setSelectedCategory(value.item.props.data[value.key]), handleCategoryClick(value)
-    };
-        
-    const [selectedSubCategory, setSelectedSubCategory] = useState('');
-    const onSetSelectedSubCategory = (value) => {
-        setSelectedSubCategory(value.item.props.data[value.key]), handleSubCategoryClick(value)
-    };
+    constructor(props, context){
+        super(props); 
+        this.state = {
+            selectedCategory: this.props.selectedItem && this.props.selectedItem.category 
+                                ? this.props.selectedItem.category.name : '',
+            selectedSubCategory: this.props.selectedItem && this.props.selectedItem.subCategory 
+                                ? this.props.selectedItem.subCategory.name : ''
+        }
+    }
 
-    return (
-        <React.Fragment>
-            <Row className="step1-content">
-                <Col span={12}>
-                    <Form {...formItemLayout}>
-                        <Form.Item label="Name">           
-                            {getFieldDecorator('itemName', {
-                                    rules: [
-                                    {
-                                        required: true,
-                                        message: 'Please input Retreat Name!',
-                                    },
-                                    { min: 4, message: 'Name must be minimum 4 characters.' }
-                                    ],
-                                })
-                            (<Input name="itemName" onChange={handleItemChange}/>)}
-                        </Form.Item>
-                        <Form.Item label="Title">           
-                            {getFieldDecorator('itemTitle', {
-                                    rules: [
-                                    {
-                                        required: true,
-                                        message: 'Please input Retreat Title!',
-                                    },
-                                    { min: 4, message: 'Title must be minimum 4 characters.' }
-                                    ],
-                                })
-                            (<Input name="itemTitle" onChange={handleItemChange}/>)}
-                        </Form.Item>
-                        <Form.Item label="Category" className="category">           
-                                {getFieldDecorator('itemCategory', {
+    componentDidMount() {
+        this.props.fetchCategories();
+        this.props.fetchSubCategories();
+    }
+
+    onSetSelectedCategory = (e) => {
+        const{categories} = this.props;
+        this.setState({selectedCategory : categories.filter(s => s.id === e.item.props.id)[0].name})
+        this.props.handleCategoryClick(e);
+    }
+
+    onSetSelectedSubCategory = (e) => {
+        const{subCategories} = this.props;
+        this.setState({selectedSubCategory : subCategories.filter(s => s.id === e.item.props.id)[0].name})
+        this.props.handleSubCategoryClick(e);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.selectedItem !== this.props.selectedItem){
+            this.setState({ selectedCategory : nextProps.selectedItem && nextProps.selectedItem.category 
+                                                ? nextProps.selectedItem.category.name : '', 
+                            selectedSubCategory : nextProps.selectedItem && nextProps.selectedItem.subCategory 
+                                                ? nextProps.selectedItem.subCategory.name : ''})
+        }
+    }
+
+    render() {
+        const { getFieldDecorator, getFieldsError, isFieldTouched } = this.props.form;
+        const { handleItemChange, handleCategoryClick, handleSubCategoryClick, 
+                categories, subCategories, selectedItem } = this.props;
+        const {selectedCategory, selectedSubCategory} = this.state;
+
+        //console.log(selectedItem);
+
+        /*
+        const [selectedCategory, setSelectedCategory] = useState('');
+        const onSetSelectedCategory = (value) => {
+            setSelectedCategory(value.item.props.data[value.key]), handleCategoryClick(value)
+        };
+            
+        const [selectedSubCategory, setSelectedSubCategory] = useState('');
+        const onSetSelectedSubCategory = (value) => {
+            setSelectedSubCategory(value.item.props.data[value.key]), handleSubCategoryClick(value)
+        };
+        */
+
+        return (
+            <React.Fragment>
+                <Row className="step1-content">
+                    <Col span={12}>
+                        <Form {...formItemLayout}>
+                            <Form.Item label="Name">           
+                                {getFieldDecorator('itemName', {
+                                        initialValue: selectedItem ? selectedItem.name : '',
                                         rules: [
                                         {
-                                            required: true
-                                        }
+                                            required: true,
+                                            message: 'Please input Retreat Name!',
+                                        },
+                                        { min: 4, message: 'Name must be minimum 4 characters.' }
                                         ],
                                     })
-                            (<Dropdown.Button className="itemCategory-btn" name="itemCategory" overlay={menu(categories, onSetSelectedCategory, 'selectedCategory')}>{selectedCategory && selectedCategory.length > 0 ? selectedCategory : 'Select Item Category'}</Dropdown.Button>)}
-                        </Form.Item>
-                    </Form>
-                </Col>
-
-                <Col span={12}>
-                    <Form {...formItemLayout}>
-                        <Form.Item label="Description" className="description">           
-                            {getFieldDecorator('itemDescription', {
-                                    rules: [
-                                    {
-                                        required: true,
-                                        message: 'Please input Retreat Description!',
-                                    },
-                                    { min: 10, message: 'Description must be minimum 10 characters.' }
-                                    ],
-                                })
-                            (<TextArea rows={5} name="itemDescription" onChange={handleItemChange} />)}
-                        </Form.Item>
-
-                        <Form.Item label="SubCategory" className="subcategory">           
-                                {getFieldDecorator('itemSubCategory', {
+                                (<Input name="itemName" onChange={handleItemChange}/>)}
+                            </Form.Item>
+                            <Form.Item label="Title">           
+                                {getFieldDecorator('itemTitle', {
+                                        initialValue: selectedItem ? selectedItem.title : '',
                                         rules: [
                                         {
-                                            required: true
-                                        }
+                                            required: true,
+                                            message: 'Please input Retreat Title!',
+                                        },
+                                        { min: 4, message: 'Title must be minimum 4 characters.' }
                                         ],
                                     })
-                                (<Dropdown.Button name="itemSubCategory" overlay={menu(subCategories, onSetSelectedSubCategory, 'selectedSubCategory')}>{selectedSubCategory && selectedSubCategory.length > 0 ? selectedSubCategory : 'Select Subcategory'}</Dropdown.Button>)}
-                        </Form.Item>
-                    </Form>
-                </Col>
-            </Row>
-        </React.Fragment>
-    )
+                                (<Input name="itemTitle" onChange={handleItemChange}/>)}
+                            </Form.Item>
+                            <Form.Item label="Category" className="category">           
+                                    {getFieldDecorator('itemCategory', {
+                                            rules: [
+                                            {
+                                                required: true
+                                            }
+                                            ],
+                                        })
+                                (<Dropdown.Button className="itemCategory-btn" name="itemCategory" overlay={menu(categories, this.onSetSelectedCategory, 'selectedCategory')}>{selectedCategory && selectedCategory.length > 0 ? selectedCategory : 'Select Item Category'}</Dropdown.Button>)}
+                            </Form.Item>
+                        </Form>
+                    </Col>
+
+                    <Col span={12}>
+                        <Form {...formItemLayout}>
+                            <Form.Item label="Description" className="description">           
+                                {getFieldDecorator('itemDescription', {
+                                        initialValue: selectedItem ? selectedItem.description : '',
+                                        rules: [
+                                        {
+                                            required: true,
+                                            message: 'Please input Retreat Description!',
+                                        },
+                                        { min: 10, message: 'Description must be minimum 10 characters.' }
+                                        ],
+                                    })
+                                (<TextArea rows={5} name="itemDescription" onChange={handleItemChange} />)}
+                            </Form.Item>
+
+                            <Form.Item label="SubCategory" className="subcategory">           
+                                    {getFieldDecorator('itemSubCategory', {
+                                            rules: [
+                                            {
+                                                required: true
+                                            }
+                                            ],
+                                        })
+                                    (<Dropdown.Button name="itemSubCategory" overlay={menu(subCategories, this.onSetSelectedSubCategory, 'selectedSubCategory')}>{selectedSubCategory && selectedSubCategory.length > 0 ? selectedSubCategory : 'Select Subcategory'}</Dropdown.Button>)}
+                            </Form.Item>
+                        </Form>
+                    </Col>
+                </Row>
+            </React.Fragment>
+        )
+    }
 }
 
 Step1Item.propTypes = {  
@@ -124,7 +172,17 @@ Step1Item.propTypes = {
     subCategories: PropTypes.array.isRequired
 };
 
-const mapDispatchToProps = {    
+const mapDispatchToProps = {  
+    ...commonActions  
 }; 
 
-export default withLocalize(connect(null, mapDispatchToProps)(Step1Item));
+function mapStateToProps(state) {
+    return {
+        user : JSON.parse(sessionStorage.getItem('user')),
+        categories: [...state.common.categories],
+        subCategories: [...state.common.subCategories],
+        selectedItem: state.common.selectedItem
+    };
+}
+
+export default withLocalize(connect(mapStateToProps, mapDispatchToProps)(Step1Item));

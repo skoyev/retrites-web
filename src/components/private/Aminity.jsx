@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 const Aminity = ({items, handleAminityDetails, handleAminityDelete, numItemsPerRow}) => {
     const itemsInRow = chunk(items, numItemsPerRow);
     return (
-        <div>
+        <React.Fragment>
             <Row style={{marginBottom: 20}}>
                 <div>
                     <Translate>{({ translate }) =><button onClick={()=>handleAminityDetails({})} className="btn btn-primary">+{translate("button.item")}</button>}</Translate>                                        
@@ -20,14 +20,14 @@ const Aminity = ({items, handleAminityDetails, handleAminityDelete, numItemsPerR
                      {items.map((item, index) => (
                         <div key={index} style={{display: 'inline-block', marginRight: 20, maxWidth: 250, minWidth: 135}}>
                             <Card title={<a href="#" onClick={()=>handleAminityDetails(item)}>{item.name}</a>}
-                                  actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon onClick={()=>handleAminityDelete(item)} type="delete" />]}>
+                                  actions={[<Icon type="setting" />, <Icon onClick={()=>handleAminityDetails(item)} type="edit" />, <Icon onClick={()=>handleAminityDelete(item)} type="delete" />]}>
                                 <p>{item.description}</p>
                             </Card>                            
                         </div>
                      ))}
                 </Row>
             ))}
-        </div>
+        </React.Fragment>
     )
 }
 
