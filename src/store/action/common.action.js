@@ -3,6 +3,7 @@ import { commonConstants } from '../../constants';
 
 export const commonActions = {
     fetchCategories,
+    fetchCountries,
     fetchSubCategories,
     addIntoStoreSelectedItem
 };
@@ -20,6 +21,20 @@ function fetchCategories() {
             .then(
                 res => { 
                     dispatch(success(commonConstants.FETCH_CATEGORIES_SUCCESS, res.data.data));
+                },
+                error => {
+                    dispatch(failure(error));                    
+                }
+            );
+    };
+}
+
+function fetchCountries() {
+    return dispatch => {
+        commonService.getAllCountries()
+            .then(
+                res => { 
+                    dispatch(success(commonConstants.FETCH_COUNTRIES_SUCCESS, res.data.data));
                 },
                 error => {
                     dispatch(failure(error));                    

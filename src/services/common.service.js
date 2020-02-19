@@ -4,7 +4,8 @@ const URL = '/api/common';
 
 export const commonService = {
     getAllSubcategories,
-    getAllCategories
+    getAllCategories,
+    getAllCountries
 };
 
 function getAllSubcategories(){
@@ -15,3 +16,6 @@ function getAllCategories(){
     return axios.get(`${URL}/category`);
 }
 
+function getAllCountries() {
+    return axios.get(`${URL}/country`);
+}

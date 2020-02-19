@@ -93,7 +93,7 @@ function updateItem(item, authKey) {
         'Content-Type': 'application/json',
         'auth_key': authKey
     }
-    return axios.put(`/api/items`, item, {headers: headers});
+    return axios.put(`/api/items/${item.id}`, item, {headers: headers});
 }
 
 function addItem(item, authKey){

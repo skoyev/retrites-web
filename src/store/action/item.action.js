@@ -241,7 +241,7 @@ export function deleteItem(id) {
                                   console.error(res);
                               }
                         }).catch(error => {
-                            log.error(error);
+                            console.error(error);
                             dispatch(deleteItemsFail(error));
                         });
     }
@@ -262,7 +262,7 @@ export function createItem(item) {
             }
         }).catch(error => {
             throw(error);
-            dispatch(addItemsFail(erro));    
+            //dispatch(addItemsFail(erro));    
         });
     }
 }

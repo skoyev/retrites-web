@@ -49,6 +49,7 @@ class DashboardPage extends React.Component {
             selectedCategory: '',
             selectedSubCategory: '',
             lead: {},
+            createUpdaItem: {},
 
             createItemSteps: [
                 {
@@ -59,9 +60,6 @@ class DashboardPage extends React.Component {
                                     handleItemChange: this.handleCreateItemChange,
                                     handleCategoryClick: this.handleCreateItemDropdownChange,
                                     handleSubCategoryClick: this.handleCreateItemDropdownChange,
-                                    //categories: [],
-                                    //subCategories: ['SubCat1'],
-                                    //ref: this.step1ItemRef
                                 }),
                 },
                 {
@@ -69,7 +67,8 @@ class DashboardPage extends React.Component {
                     content: React.createElement(
                         Form.create({ name: 'step2Item' })( Step2Item ), 
                         {
-                            handleItemChange: this.handleCreateItemChange
+                            handleItemChange: this.handleCreateItemChange,
+                            handleCountryClick: this.handleCreateItemDropdownChange
                         }),
                 },
                 {
@@ -109,6 +108,7 @@ class DashboardPage extends React.Component {
         this.handleLeadDelete = this.handleLeadDelete.bind(this);        
         this.handleLeadEdit = this.handleLeadEdit.bind(this);        
         this.handleCreateItemNext = this.handleCreateItemNext.bind(this);        
+        this.handleCreateItemDone = this.handleCreateItemDone.bind(this);        
     } 
 
     handleCreateItemChange = (e) => {
@@ -164,8 +164,12 @@ class DashboardPage extends React.Component {
         this.setState({
             createEditItemModalVisible: true,
             createEditItem: item,
-            selectedCategory: item.category ? item.category.name : '',
-            selectedSubCategory: item.subCategory ? item.subCategory.name : ''
+            itemDescription: item.description,
+            itemName: item.name,
+            itemTitle: item.title,
+            selectedCountry: item.country ? item.country : '',
+            selectedCategory: item.category ? item.category : '',
+            selectedSubCategory: item.subCategory ? item.subCategory : ''
         })
 
         this.props.addIntoStoreSelectedItem(item);
@@ -342,19 +346,25 @@ class DashboardPage extends React.Component {
 
     handleCreateItemDone = () => {
         const{itemName, itemDescription, itemPrice, selectedCategory, 
-              selectedSubCategory, itemTitle, createEditItem} = this.state;
+              selectedSubCategory, itemTitle, createEditItem, selectedCountry,
+              itemAddress} = this.state;
         this.setState({createEditItemModalVisible: false, createItemWizardStep: 0})
 
         if( !itemName || !itemDescription || !itemTitle ||
-                !selectedCategory || !selectedSubCategory ){
+                !selectedCategory || !selectedSubCategory || !itemAddress){
             console.warn('Create a new Item error...');
             this.setState({createItemError: 'Validation error'})
             return;
         }
 
-        const item = {id:createEditItem.id, name:itemName, description: itemDescription, price: 10, title: itemTitle, 
-                      subCategoryId: 2, categoryId: 2, countryId: 1, 
-                      userId: 3, address: 'jkjkjkj', currency: 'USD', duration: 2, 
+        const item = {id:createEditItem ? createEditItem.id : 0, 
+                      name:itemName, description: itemDescription, 
+                      price: 10, title: itemTitle, subCategoryId: selectedSubCategory.id, 
+                      categoryId: selectedCategory.id, countryId: selectedCountry.id,
+                      country: selectedCountry, 
+                      subCategory: selectedSubCategory, category: selectedCategory,
+                      userId: this.props.user.id, address: itemAddress, 
+                      currency: 'USD', duration: 2, 
                       metaData: '{}', startDate: '2019-08-03', locationName: 'Toronto', 
                       allActivities: "{'startFromDate':'2019-12-03'}", 
                       picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'};
@@ -473,7 +483,9 @@ function mapStateToProps(state) {
         leads: [...state.leads.leads ? state.leads.leads : []],
         summaryReports: state.summary.reportSummary,
         summaryLeads: state.summary.leadSummary,
-        summaryItem: state.summary.itemSummary
+        summaryItem: state.summary.itemSummary,
+        categories: [...state.common.categories],
+        subCategories: [...state.common.subCategories]
     };
 }
 

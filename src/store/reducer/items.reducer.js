@@ -68,7 +68,19 @@ export function items(state = INITIAL_STATE, action) {
             items: [ ... state.items, action.item ]
           }
 
-        default:
+        case itemConstants.UPDATE_ITEM_SUCCESS:
+            return {
+              ... state,
+              items: state.items.map(i => i.id === action.item.id ? 
+                        {...i, name: action.item.name, title: action.item.title, 
+                            description: action.item.description, 
+                            category: action.item.category,
+                            country: action.item.country,
+                            address: action.item.address,
+                            subCategory: action.item.subCategory}
+                        : i)
+            }
+            default:
           return state
     }
 }
