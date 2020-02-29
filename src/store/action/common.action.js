@@ -5,7 +5,9 @@ export const commonActions = {
     fetchCategories,
     fetchCountries,
     fetchSubCategories,
-    addIntoStoreSelectedItem
+    addIntoStoreSelectedItem,
+    setSelectedItemField,
+    setIsStep1Valid
 };
 
 function success(type, data) { return { type: type, data } }
@@ -13,6 +15,10 @@ function failure(type, error) { return { type: type, error } }
 
 function addIntoStoreSelectedItem(item){
     return {type: commonConstants.ADD_SELECTED_ITEM_INTO_STORE, item}
+}
+
+function setIsStep1Valid(isValid){
+    return {type: commonConstants.IS_STEP1_VALID, isValid}
 }
 
 function fetchCategories() {
@@ -55,4 +61,8 @@ function fetchSubCategories() {
                 }
             );
     };
+}
+
+function setSelectedItemField(fieldName, fieldValue){
+    return {type: commonConstants.SET_SELECTED_ITEM_FIELD, fieldName, fieldValue}
 }

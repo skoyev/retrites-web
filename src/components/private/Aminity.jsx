@@ -18,7 +18,7 @@ const Aminity = ({items, handleAminityDetails, handleAminityDelete, numItemsPerR
             {itemsInRow.map((items, index) => ( 
                 <Row key={index} style={{marginBottom: 20}}>
                      {items.map((item, index) => (
-                        <div key={index} style={{display: 'inline-block', marginRight: 20, maxWidth: 250, minWidth: 135}}>
+                        <div key={`row-${index}`} style={{display: 'inline-block', marginRight: 20, maxWidth: 250, minWidth: 135}}>
                             <Card title={<a href="#" onClick={()=>handleAminityDetails(item)}>{item.name}</a>}
                                   actions={[<Icon type="setting" />, <Icon onClick={()=>handleAminityDetails(item)} type="edit" />, <Icon onClick={()=>handleAminityDelete(item)} type="delete" />]}>
                                 <p>{item.description}</p>

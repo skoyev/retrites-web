@@ -32,59 +32,75 @@ class Step1Item extends React.Component {
 
     constructor(props, context){
         super(props); 
-        this.state = {
-            selectedCategory: this.props.selectedItem && this.props.selectedItem.category 
-                                ? this.props.selectedItem.category.name : '',
-            selectedSubCategory: this.props.selectedItem && this.props.selectedItem.subCategory 
-                                ? this.props.selectedItem.subCategory.name : ''
-        }
     }
 
     componentDidMount() {
         this.props.fetchCategories();
-        this.props.fetchSubCategories();
+        this.props.fetchSubCategories();   
+        this.props.onRef(this);     
     }
 
-    onSetSelectedCategory = (e) => {
-        const{categories} = this.props;
-        this.setState({selectedCategory : categories.filter(s => s.id === e.item.props.id)[0].name})
-        this.props.handleCategoryClick(e);
+    cancel = () => {
+        this.props.form.setFieldsValue({itemName: ''})
+        this.props.form.setFieldsValue({itemTitle: ''})
+        this.props.form.setFieldsValue({itemDescription: ''})
     }
 
-    onSetSelectedSubCategory = (e) => {
-        const{subCategories} = this.props;
-        this.setState({selectedSubCategory : subCategories.filter(s => s.id === e.item.props.id)[0].name})
-        this.props.handleSubCategoryClick(e);
-    }
+    handleItemChange = e => {  
+        let name  = '';
+        let value = '';
 
-    componentWillReceiveProps(nextProps) {
-        if(nextProps.selectedItem !== this.props.selectedItem){
-            this.setState({ selectedCategory : nextProps.selectedItem && nextProps.selectedItem.category 
-                                                ? nextProps.selectedItem.category.name : '', 
-                            selectedSubCategory : nextProps.selectedItem && nextProps.selectedItem.subCategory 
-                                                ? nextProps.selectedItem.subCategory.name : ''})
+        if(e.target){ 
+            name  = e.target.name;     
+            value = e.target.value;     
+        } else if(e.item && e.item.props) {
+            name  = e.item.props.name;     
+            value = e.item.props.data;     
+        }
+
+        if(name.length > 0 && value){
+            this.props.setSelectedItemField(name, value);            
         }
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.selectedItem.name !== prevProps.selectedItem.name ||
+                this.props.selectedItem.title !== prevProps.selectedItem.title ||
+                this.props.selectedItem.category !== prevProps.selectedItem.category ||
+                    this.props.selectedItem.description !== prevProps.selectedItem.description) {
+            const { getFieldsError, isFieldTouched, getFieldDecorator } = this.props.form;
+
+            // check name error validation
+            let hasNameErrors = !( (isFieldTouched('itemName') === true || this.props.selectedItem.name) 
+                                        && getFieldsError().itemName === undefined);
+            // check title error validation
+            let hasTitleErrors = !( (isFieldTouched('itemTitle') === true || this.props.selectedItem.title) 
+                                        && getFieldsError().itemTitle === undefined);
+
+            // check description error validation
+            let hasDescriptionErrors = !( (isFieldTouched('itemDescription') === true || this.props.selectedItem.description) 
+                                        && getFieldsError().itemDescription === undefined);
+
+            // check category error validation
+            let hasCategoryErrors = !(isFieldTouched('itemCategory') === true || this.props.selectedItem.category);
+
+            this.props.setIsStep1Valid(!hasNameErrors && !hasTitleErrors && !hasDescriptionErrors && !hasCategoryErrors);            
+        }
+    }    
+
     render() {
         const { getFieldDecorator, getFieldsError, isFieldTouched } = this.props.form;
-        const { handleItemChange, handleCategoryClick, handleSubCategoryClick, 
-                categories, subCategories, selectedItem } = this.props;
-        const {selectedCategory, selectedSubCategory} = this.state;
-
-        //console.log(selectedItem);
+        const { categories, subCategories, selectedItem } = this.props;
 
         /*
-        const [selectedCategory, setSelectedCategory] = useState('');
-        const onSetSelectedCategory = (value) => {
-            setSelectedCategory(value.item.props.data[value.key]), handleCategoryClick(value)
-        };
-            
-        const [selectedSubCategory, setSelectedSubCategory] = useState('');
-        const onSetSelectedSubCategory = (value) => {
-            setSelectedSubCategory(value.item.props.data[value.key]), handleSubCategoryClick(value)
-        };
-        */
+        const pageObj = { name: '', title: '', category: '', description: '', subCategory: {}, category: {} };
+        const [pageState, setPageState] = useState(pageObj);
+
+        const handleItemChange = e => {   
+            const { name, value } = e.target;     
+            setPageState(prevState => ({...prevState, [name]: value}));
+        }
+        */   
 
         return (
             <React.Fragment>
@@ -102,7 +118,7 @@ class Step1Item extends React.Component {
                                         { min: 4, message: 'Name must be minimum 4 characters.' }
                                         ],
                                     })
-                                (<Input name="itemName" onChange={handleItemChange}/>)}
+                                (<Input name="name" onChange={this.handleItemChange}/>)}
                             </Form.Item>
                             <Form.Item label="Title">           
                                 {getFieldDecorator('itemTitle', {
@@ -115,7 +131,7 @@ class Step1Item extends React.Component {
                                         { min: 4, message: 'Title must be minimum 4 characters.' }
                                         ],
                                     })
-                                (<Input name="itemTitle" onChange={handleItemChange}/>)}
+                                (<Input name="title" onChange={this.handleItemChange}/>)}
                             </Form.Item>
                             <Form.Item label="Category" className="category">           
                                     {getFieldDecorator('itemCategory', {
@@ -125,7 +141,7 @@ class Step1Item extends React.Component {
                                             }
                                             ],
                                         })
-                                (<Dropdown.Button className="itemCategory-btn" name="itemCategory" overlay={menu(categories, this.onSetSelectedCategory, 'selectedCategory')}>{selectedCategory && selectedCategory.length > 0 ? selectedCategory : 'Select Item Category'}</Dropdown.Button>)}
+                                (<Dropdown.Button className="itemCategory-btn" name="category" overlay={menu(categories, this.handleItemChange, 'category')}>{selectedItem && selectedItem.category ? selectedItem.category.name : 'Select Item Category'}</Dropdown.Button>)}
                             </Form.Item>
                         </Form>
                     </Col>
@@ -143,7 +159,7 @@ class Step1Item extends React.Component {
                                         { min: 10, message: 'Description must be minimum 10 characters.' }
                                         ],
                                     })
-                                (<TextArea rows={5} name="itemDescription" onChange={handleItemChange} />)}
+                                (<TextArea rows={5} name="description" onChange={this.handleItemChange} />)}
                             </Form.Item>
 
                             <Form.Item label="SubCategory" className="subcategory">           
@@ -154,7 +170,7 @@ class Step1Item extends React.Component {
                                             }
                                             ],
                                         })
-                                    (<Dropdown.Button name="itemSubCategory" overlay={menu(subCategories, this.onSetSelectedSubCategory, 'selectedSubCategory')}>{selectedSubCategory && selectedSubCategory.length > 0 ? selectedSubCategory : 'Select Subcategory'}</Dropdown.Button>)}
+                                    (<Dropdown.Button name="subCategory" overlay={menu(subCategories, this.handleItemChange, 'subCategory')}>{selectedItem && selectedItem.subCategory ? selectedItem.subCategory.name : 'Select Item Sub Category'}</Dropdown.Button>)}
                             </Form.Item>
                         </Form>
                     </Col>
@@ -165,11 +181,6 @@ class Step1Item extends React.Component {
 }
 
 Step1Item.propTypes = {  
-    handleItemChange: PropTypes.func.isRequired,
-    handleCategoryClick: PropTypes.func.isRequired,
-    handleSubCategoryClick: PropTypes.func.isRequired,
-    categories: PropTypes.array.isRequired,
-    subCategories: PropTypes.array.isRequired
 };
 
 const mapDispatchToProps = {  

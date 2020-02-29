@@ -6,15 +6,14 @@ import { PublicHeader,
 import {CategoryList, Loading, SubscriptionModal} from '../../components/common'
 import AppFooter from '../../components/common/AppFooter';
 import { renderToStaticMarkup } from "react-dom/server";
-import { withLocalize, Translate, getTranslate } from "react-localize-redux";
+import { withLocalize } from "react-localize-redux";
 import globalTranslations from "../../translations/global.json";
 import {connect} from "react-redux";
-import {itemActions, pageActions, userActions} from '../../store/action/index'
-import { history, isLoggedIn, validateEmail } from '../../helpers';
+import {itemActions, userActions} from '../../store/action/index'
+import { history, validateEmail } from '../../helpers';
 import '../style/HomePage.css'
 import {pageConstants} from '../../constants';
 import { Form, notification } from 'antd';
-import ReCAPTCHA from "react-google-recaptcha";
 
 class HomePage extends React.Component {
 
@@ -33,7 +32,6 @@ class HomePage extends React.Component {
             categoryId: 2,            
             selectedSubcategory: 'Retreat Type',    
             selectedSubcategoryId: 0,      
-            ourVisionDescription : 'Our Vision Description',
             retreatByTypeTitle: 'Find Retreat By Type',
             retreatByTypeDescription: 'Find Out More About Our Amazing Retreats',
             popularRetreatTitle: 'Our Popular Destinations',
@@ -161,7 +159,7 @@ class HomePage extends React.Component {
     }
 
     handleCountrySelectClickNoRedirect = (id) => {
-        this.setState({selectedCountryId: id.key, selectedCountry: this.props.retreatByCountries.find(c => c.id == id.key).type});
+        this.setState({selectedCountryId: id.key, selectedCountry: this.props.retreatByCountries.find(c => c.id === id.key).type});
     }
 
     handleItemClick = (id) => {
@@ -203,7 +201,7 @@ class HomePage extends React.Component {
             return;
         }
 
-        if(!selectedCategoryList || selectedCategoryList.length == 0){
+        if(!selectedCategoryList || selectedCategoryList.length === 0){
             console.warn('Please select category.');
             return
         }
@@ -265,7 +263,7 @@ class HomePage extends React.Component {
         const { items, retreatByCountries, retreatTypes, searchLength, SubscriptionWrapper } = this.props;
         const shouldHideLoadMore = true;
 
-        if ( !items || items.length == 0 ) 
+        if ( !items || items.length === 0 ) 
             return <Loading text={'Loading...'}/>;
 
         const subscriptionCategoryList = retreatTypes && retreatTypes.length > 1 ? this.extractRetriteTypes(retreatTypes) : [];

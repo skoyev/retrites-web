@@ -64,7 +64,7 @@ export function search(subCategoryID, duration, name, startDate, countryId, coun
 }
 
 /**
- * Get all user 
+ * Get all user amenities.
  */
 export function fetchUserAmenities(userID) {
     return dispatch => {
@@ -251,12 +251,17 @@ export function deleteItem(id) {
  * Create a new Item action
  * @param {*} item 
  */
-export function createItem(item) {
+export function createItem(item, userId) {
     return dispatch => {
         let authKey = getAuthKey();
         return itemService.addItem(item, authKey).then(res => {
             if(res.status === 200 || res.status === 201){
-                dispatch(addItemsSuccess(item))    
+                if(userId){
+                    // refresh items
+                    dispatch(fetchUserAmenities(userId))
+                } else {
+                    dispatch(addItemsSuccess(item))    
+                }
             } else {
                 throw('Error while create a new item.');
             }

@@ -27,60 +27,113 @@ const menu = (data, handleMenuClick, name) => {
     )
 }
 
-const Step2Item = props => {    
-    const { getFieldDecorator, getFieldsError, isFieldTouched } = props.form;
-    const { handleItemChange, countries, fetchCountries, handleCountryClick, selectedItem } = props;
+class Step2Item extends React.Component {
 
-    useEffect(()=> fetchCountries(), []);
+    constructor(props) {
+        super(props); 
+    }
 
-    const [selectedCountry, setSelectedCountry] = useState(selectedItem ? selectedItem.country : {});
-    const onSetSelectedCountry = (value) => {
-        setSelectedCountry(value.item.props.data[value.key]), handleCountryClick(value)
-    };
+    componentDidMount() {
+        this.props.fetchCountries();
+        this.props.onRef(this);     
+    }
 
-    return (
-        <React.Fragment>
-            <Row className="step2-content">
-                <Col span={12}>
-                    <Form {...formItemLayout}>
-                        <Form.Item label="Country" className="country">           
-                                {getFieldDecorator('itemCountry', {
+    cancel = () => {
+        this.props.form.setFieldsValue({itemAddress: ''})
+    }
+
+    handleItemChange = e => {   
+        let name  = '';
+        let value = '';
+
+        if(e.target){ 
+            name  = e.target.name;     
+            value = e.target.value;     
+        } else if(e.item && e.item.props) {
+            name  = e.item.props.name;     
+            value = e.item.props.data;     
+        }
+
+        if(name.length > 0 && value){
+            this.props.setSelectedItemField(name, value);
+        }
+    }
+
+//const Step2Item = props => {    
+    //const { getFieldDecorator, getFieldsError, isFieldTouched } = props.form;
+    //const { countries, fetchCountries, selectedItem, setSelectedItemField } = props;
+
+    /*
+    useEffect(()=> {
+        fetchCountries();
+        this.props.onRef(this);     
+    }, []);
+
+
+    const handleItemChange = e => {   
+        let name  = '';
+        let value = '';
+
+        if(e.target){ 
+            name  = e.target.name;     
+            value = e.target.value;     
+        } else if(e.item && e.item.props) {
+            name  = e.item.props.name;     
+            value = e.item.props.data;     
+        }
+
+        if(name.length > 0 && value){
+            setSelectedItemField(name, value);
+        }
+    }
+    */
+
+    render() {
+        const { getFieldDecorator, getFieldsError, isFieldTouched } = this.props.form;
+        const { countries, selectedItem, setSelectedItemField } = this.props;
+
+        return (
+            <React.Fragment>
+                <Row className="step2-content">
+                    <Col span={12}>
+                        <Form {...formItemLayout}>
+                            <Form.Item label="Country" className="country">           
+                                    {getFieldDecorator('itemCountry', {
+                                            rules: [
+                                            {
+                                                required: true
+                                            }
+                                            ],
+                                        })
+                                (<Dropdown.Button className="itemCountry-btn" 
+                                                name="country" 
+                                                overlay={menu(countries, this.handleItemChange, 'country')}>
+                                    {selectedItem && selectedItem.country ? selectedItem.country.name : 'Select Country'}
+                                </Dropdown.Button>)}
+                            </Form.Item>
+
+                            <Form.Item label="Address">           
+                                {getFieldDecorator('itemAddress', {
+                                        initialValue: selectedItem ? selectedItem.address : '',
                                         rules: [
                                         {
-                                            required: true
-                                        }
+                                            required: true,
+                                            message: 'Please input address!',
+                                        },
+                                        { min: 4, message: 'Address must be minimum 4 characters.' }
                                         ],
                                     })
-                            (<Dropdown.Button className="itemCountry-btn" 
-                                              name="itemCountry" 
-                                              overlay={menu(countries, onSetSelectedCountry, 'selectedCountry')}>
-                                {selectedCountry && selectedCountry.name ? selectedCountry.name : 'Select Country'}
-                            </Dropdown.Button>)}
-                        </Form.Item>
-
-                        <Form.Item label="Address">           
-                            {getFieldDecorator('itemAddress', {
-                                    initialValue: selectedItem ? selectedItem.address : '',
-                                    rules: [
-                                    {
-                                        required: true,
-                                        message: 'Please input address!',
-                                    },
-                                    { min: 4, message: 'Address must be minimum 4 characters.' }
-                                    ],
-                                })
-                            (<Input name="itemAddress" onChange={handleItemChange}/>)}
-                        </Form.Item>
-                    </Form>
-                </Col>
-            </Row>
-        </React.Fragment>
-    )
+                                (<Input name="address" onChange={this.handleItemChange}/>)}
+                            </Form.Item>
+                        </Form>
+                    </Col>
+                </Row>
+            </React.Fragment>
+        )
+    }
 }
 
 Step2Item.propTypes = {  
-    handleItemChange: PropTypes.func.isRequired,
-    handleCountryClick: PropTypes.func.isRequired
 };
 
 const mapDispatchToProps = {   

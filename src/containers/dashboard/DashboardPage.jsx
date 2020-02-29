@@ -44,6 +44,7 @@ class DashboardPage extends React.Component {
             deleteItemModalVisible: false,
             deleteLeadModalVisible: false,
             viewLeadModalVisible: false,
+            isValidNext: false,
 
             isRightMenuVisible: false,
             selectedCategory: '',
@@ -57,35 +58,40 @@ class DashboardPage extends React.Component {
                     content: React.createElement(
                                 Form.create({ name: 'step1Item' })( Step1Item ), 
                                 {
-                                    handleItemChange: this.handleCreateItemChange,
-                                    handleCategoryClick: this.handleCreateItemDropdownChange,
-                                    handleSubCategoryClick: this.handleCreateItemDropdownChange,
-                                }),
+                                    onRef:ref => (this.step1Item = ref)
+                                })
                 },
                 {
                     title: 'Address',
                     content: React.createElement(
                         Form.create({ name: 'step2Item' })( Step2Item ), 
                         {
-                            handleItemChange: this.handleCreateItemChange,
-                            handleCountryClick: this.handleCreateItemDropdownChange
+                            onRef:ref => (this.step2Item = ref)
                         }),
                 },
                 {
-                    title: 'Teachers',
-                    content: <Step3Item/>,
+                    title: 'Documents',
+                    content: React.createElement(
+                        Form.create({ name: 'step3Item' })( Step3Item ), 
+                        {
+                            onRef:ref => (this.step3Item = ref)
+                        })
+                },
+                {
+                    title: 'Facilitators',
+                    content: <div>Facilitators</div>,
                 },
                 {
                     title: 'Payment',
-                    content: <Step3Item/>,
+                    content: <div>Payment</div>,
                 },
                 {
                     title: 'Schedule',
-                    content: <Step3Item/>,
+                    content: <div>Schedule</div>,
                 },
                 {
                     title: 'Photo',
-                    content: <Step3Item/>,
+                    content: <div>Photo</div>,
                 }
             ],
 
@@ -109,15 +115,13 @@ class DashboardPage extends React.Component {
         this.handleLeadEdit = this.handleLeadEdit.bind(this);        
         this.handleCreateItemNext = this.handleCreateItemNext.bind(this);        
         this.handleCreateItemDone = this.handleCreateItemDone.bind(this);        
+        this.handleCreateItemCancel = this.handleCreateItemCancel.bind(this);        
     } 
 
     handleCreateItemChange = (e) => {
         this.setState({[e.target.name]:e.target.value})
     }
 
-    handleCreateItemDropdownChange = (e) => {
-        this.setState({[e.item.props.name]:e.item.props.data[e.key]})
-    }
     
     loadData() {
         const { user } = this.props;
@@ -147,6 +151,13 @@ class DashboardPage extends React.Component {
 
         }   
     }
+
+    componentDidUpdate(prevProps) {
+        // step 1 validator
+        if (this.props.isStep1Valid !== prevProps.isStep1Valid && this.state.createItemWizardStep == 0){ 
+            this.setState({isValidNext : this.props.isStep1Valid})
+        }
+    }
     
     componentDidMount() {
         const {user} = this.props;        
@@ -163,13 +174,6 @@ class DashboardPage extends React.Component {
     handleAminityDetails = (item) => {
         this.setState({
             createEditItemModalVisible: true,
-            createEditItem: item,
-            itemDescription: item.description,
-            itemName: item.name,
-            itemTitle: item.title,
-            selectedCountry: item.country ? item.country : '',
-            selectedCategory: item.category ? item.category : '',
-            selectedSubCategory: item.subCategory ? item.subCategory : ''
         })
 
         this.props.addIntoStoreSelectedItem(item);
@@ -331,7 +335,9 @@ class DashboardPage extends React.Component {
     handleCreateItemNext = () => {
         this.setState((prevState, props) => ({
             createItemWizardStep: prevState.createItemWizardStep + 1
-        }));        
+        }));   
+        
+        // save into store temp data
     }
 
     handleCreateItemPrevious = () => {
@@ -341,43 +347,65 @@ class DashboardPage extends React.Component {
     }
 
     handleCreateItemCancel = () => {
-        this.setState({createEditItemModalVisible: false, createItemWizardStep: 0})
+        this.setState({createEditItemModalVisible: false, 
+                       createItemWizardStep: 0, 
+                       isValidNext: false})
+        // clear all steps in store
+        this.props.addIntoStoreSelectedItem({});
+
+        // clear steps
+        if(this.step1Item){
+            this.step1Item.cancel();
+        }
+
+        if(this.step2Item){
+            this.step2Item.cancel();
+        }
+
+        if(this.step3Item){
+            this.step3Item.cancel();
+        }
     }
 
     handleCreateItemDone = () => {
-        const{itemName, itemDescription, itemPrice, selectedCategory, 
-              selectedSubCategory, itemTitle, createEditItem, selectedCountry,
-              itemAddress} = this.state;
+        const {user, selectedItem} = this.props;
+
         this.setState({createEditItemModalVisible: false, createItemWizardStep: 0})
 
-        if( !itemName || !itemDescription || !itemTitle ||
-                !selectedCategory || !selectedSubCategory || !itemAddress){
+        if( !selectedItem.name || !selectedItem.description || !selectedItem.title){
             console.warn('Create a new Item error...');
             this.setState({createItemError: 'Validation error'})
             return;
         }
 
-        const item = {id:createEditItem ? createEditItem.id : 0, 
-                      name:itemName, description: itemDescription, 
-                      price: 10, title: itemTitle, subCategoryId: selectedSubCategory.id, 
-                      categoryId: selectedCategory.id, countryId: selectedCountry.id,
-                      country: selectedCountry, 
-                      subCategory: selectedSubCategory, category: selectedCategory,
-                      userId: this.props.user.id, address: itemAddress, 
+        const item = {id:selectedItem.id ? selectedItem.id : 0, 
+                      name:selectedItem.name, description: selectedItem.description, 
+                      price: 10, title: selectedItem.title, subCategoryId: selectedItem.subCategory.id, 
+                      categoryId: selectedItem.category.id, 
+                      countryId: selectedItem.country.id, country: selectedItem.country,     // country
+                      docName: selectedItem.docName, docPicture: selectedItem.docPicture,    // documents 
+                      facilitators:[{name: '', typeId: 1, picture: '', description: ''}],    // fascilitators
+                      subCategory: selectedItem.subCategory, category: selectedItem.category,
+                      userId: this.props.user.id, address: selectedItem.address, 
                       currency: 'USD', duration: 2, 
                       metaData: '{}', startDate: '2019-08-03', locationName: 'Toronto', 
                       allActivities: "{'startFromDate':'2019-12-03'}", 
                       picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'};
 
-        if(createEditItem.id && createEditItem.id > 0){
+        if(selectedItem.id && selectedItem.id > 0){
             this.props.updateItem(item);
         } else {
-            this.props.createItem(item);
+            this.props.createItem(item, user.id);
         }
+
+        // clear all steps in store
+        this.props.addIntoStoreSelectedItem({});
+
+        this.setState({isValidNext: false})
     }
 
     render() {
-        const { createEditItem, lead, createItemWizardStep, createItemSteps: createItemTotalSteps } = this.state;
+        const { createEditItem, lead, createItemWizardStep, createItemSteps: createItemTotalSteps, isValidNext } = this.state;
         //const { TextArea } = Input;        
 
         return (
@@ -409,7 +437,7 @@ class DashboardPage extends React.Component {
                         footer={[
                                 <Button key="cancel" onClick={this.handleCreateItemCancel}>Cancel</Button>,
                                 <Button style={createItemWizardStep == 0 ? {display:'none'} : {}} key="back" onClick={this.handleCreateItemPrevious}>Previous</Button>,
-                                <Button style={createItemWizardStep == (createItemTotalSteps.length - 1) ? {display:'none'} : {}} key="next" type="primary" onClick={this.handleCreateItemNext}>Next</Button>,
+                                <Button disabled={!isValidNext} style={createItemWizardStep == (createItemTotalSteps.length - 1) ? {display:'none'} : {}} key="next" type="primary" onClick={this.handleCreateItemNext}>Next</Button>,
                                 <Button style={createItemWizardStep == (createItemTotalSteps.length - 1) ? {} : {display:'none'}} key="done" type="primary" onClick={this.handleCreateItemDone}>Done</Button>
                             ]}> 
                             <AmenityWizard step={createItemWizardStep} 
@@ -485,7 +513,9 @@ function mapStateToProps(state) {
         summaryLeads: state.summary.leadSummary,
         summaryItem: state.summary.itemSummary,
         categories: [...state.common.categories],
-        subCategories: [...state.common.subCategories]
+        subCategories: [...state.common.subCategories],
+        selectedItem: state.common.selectedItem,
+        isStep1Valid: state.common.isStep1Valid
     };
 }
 
