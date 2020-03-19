@@ -10,7 +10,7 @@ export function summary(state = INITIAL_STATE, action) {
     switch (action.type) {
         case itemConstants.SUMMARY_FETCH_SUCCESS:
           return {
-            ... state,
+            ...state,
             reportSummary: action.summary.reportSummary,
             itemSummary: action.summary.itemSummary,
             leadSummary: action.summary.leadSummary

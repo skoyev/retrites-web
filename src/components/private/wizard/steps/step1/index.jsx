@@ -32,12 +32,14 @@ class Step1Item extends React.Component {
 
     constructor(props, context){
         super(props); 
+        this.checkIsStepValid = this.checkIsStepValid.bind(this);
     }
 
     componentDidMount() {
         this.props.fetchCategories();
         this.props.fetchSubCategories();   
-        this.props.onRef(this);     
+        this.props.onRef(this);  
+        this.checkIsStepValid();                           
     }
 
     cancel = () => {
@@ -55,7 +57,7 @@ class Step1Item extends React.Component {
             value = e.target.value;     
         } else if(e.item && e.item.props) {
             name  = e.item.props.name;     
-            value = e.item.props.data;     
+            value = e.item.props.data.find(v => v.id === e.item.props.id);     
         }
 
         if(name.length > 0 && value){
@@ -68,25 +70,33 @@ class Step1Item extends React.Component {
                 this.props.selectedItem.title !== prevProps.selectedItem.title ||
                 this.props.selectedItem.category !== prevProps.selectedItem.category ||
                     this.props.selectedItem.description !== prevProps.selectedItem.description) {
-            const { getFieldsError, isFieldTouched, getFieldDecorator } = this.props.form;
-
-            // check name error validation
-            let hasNameErrors = !( (isFieldTouched('itemName') === true || this.props.selectedItem.name) 
-                                        && getFieldsError().itemName === undefined);
-            // check title error validation
-            let hasTitleErrors = !( (isFieldTouched('itemTitle') === true || this.props.selectedItem.title) 
-                                        && getFieldsError().itemTitle === undefined);
-
-            // check description error validation
-            let hasDescriptionErrors = !( (isFieldTouched('itemDescription') === true || this.props.selectedItem.description) 
-                                        && getFieldsError().itemDescription === undefined);
-
-            // check category error validation
-            let hasCategoryErrors = !(isFieldTouched('itemCategory') === true || this.props.selectedItem.category);
-
-            this.props.setIsStep1Valid(!hasNameErrors && !hasTitleErrors && !hasDescriptionErrors && !hasCategoryErrors);            
+            const { selectedItem } = this.props;
+            this.checkIsStepValid();                        
+            this.props.form.setFieldsValue({itemName: selectedItem ? selectedItem.name : ''})
+            this.props.form.setFieldsValue({itemTitle: selectedItem ? selectedItem.title : ''})
+            this.props.form.setFieldsValue({itemDescription: selectedItem ? selectedItem.description : ''})    
         }
-    }    
+    }  
+    
+    checkIsStepValid = () => {
+        const { getFieldsError, isFieldTouched, getFieldDecorator } = this.props.form;
+
+        // check name error validation
+        let hasNameErrors = !( (isFieldTouched('itemName') === true || this.props.selectedItem.name) 
+                                    && getFieldsError().itemName === undefined);
+        // check title error validation
+        let hasTitleErrors = !( (isFieldTouched('itemTitle') === true || this.props.selectedItem.title) 
+                                    && getFieldsError().itemTitle === undefined);
+
+        // check description error validation
+        let hasDescriptionErrors = !( (isFieldTouched('itemDescription') === true || this.props.selectedItem.description) 
+                                    && getFieldsError().itemDescription === undefined);
+
+        // check category error validation
+        let hasCategoryErrors = !(isFieldTouched('itemCategory') === true || this.props.selectedItem.category);
+
+        this.props.setIsNextStepValid(!hasNameErrors && !hasTitleErrors && !hasDescriptionErrors && !hasCategoryErrors);            
+    }
 
     render() {
         const { getFieldDecorator, getFieldsError, isFieldTouched } = this.props.form;

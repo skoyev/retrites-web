@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types'
-import { Row, Col, Form, Input } from 'antd';
+import { Row, Col, Form, Input, Upload, Button,  } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
 import { withLocalize } from "react-localize-redux";
 import { Translate } from "react-localize-redux";
 import { connect } from 'react-redux';
@@ -22,10 +23,32 @@ class Step3Item extends React.Component {
 
     constructor(props, context){
         super(props); 
+        this.state = {
+            fileList: [],
+            uploading: false,
+            docPictureSelected: false
+        }
+        this.handleItemChange = this.handleItemChange.bind(this);
     }
 
     componentDidMount() {
-        this.props.onRef(this);     
+        this.props.onRef(this);  
+        this.setState({document: this.props.selectedItem.document ? this.props.selectedItem.document : {}})   
+        this.props.setIsNextStepValid(this.props.selectedItem.document && this.props.selectedItem.document.name); 
+    }
+
+    checkIsStepValid = (document) => {
+        const { getFieldsError, isFieldTouched, getFieldDecorator } = this.props.form;
+
+        // check document name error validation
+        let hasNameErrors = !( (isFieldTouched('name') === true && document.name.length > 4 && getFieldsError().name === undefined));
+
+        // check document details error validation
+        let hasDetailsErrors = !( (isFieldTouched('details') === true && document.details.length >= 4 && getFieldsError().details === undefined));
+
+        this.props.setIsNextStepValid(!hasNameErrors && 
+                                        !hasDetailsErrors && 
+                                            this.state.docPictureSelected);            
     }
 
     cancel = () => {
@@ -41,14 +64,60 @@ class Step3Item extends React.Component {
             value = e.target.value;     
         } 
 
+        const {document} = this.props.selectedItem;
+
+        document[name] = value;
+
+        this.setState({document:document})
+
         if(name.length > 0 && value){
-            this.props.setSelectedItemField(name, value);
+            this.props.setSelectedItemField('document', document);
         }
+
+        this.checkIsStepValid(document);
+    }
+
+    handleUpload = () => {
     }
 
     render() {
         const { getFieldDecorator, getFieldsError, isFieldTouched } = this.props.form;
         const { selectedItem } = this.props;
+        const { uploading, fileList } = this.state;
+
+        const props = {
+            onRemove: file => {
+              const {document} = this.props.selectedItem;
+              document.picture = undefined;
+        
+              this.setState(state => {
+                const index = state.fileList.indexOf(file);
+                const newFileList = state.fileList.slice();
+                newFileList.splice(index, 1);
+                return {
+                  fileList: newFileList,
+                  docPictureSelected: false
+                };
+              }, () => this.checkIsStepValid(this.props.selectedItem.document));
+            },
+            beforeUpload: file => {
+                const isValidType = file.type.includes("png") || file.type.includes("jpeg") || file.type.includes("gif")
+                if(isValidType) {
+                    const {document} = this.props.selectedItem;
+                    document.picture = file;
+      
+                    this.setState(state => ({
+                        fileList: [...state.fileList, file],
+                        docPictureSelected: true
+                    }), () => this.checkIsStepValid(this.props.selectedItem.document));
+                }    
+                
+                return false;
+                
+            },
+            fileList,
+        }; 
+        const pic = selectedItem.document.picture;
 
         return (
             <React.Fragment>
@@ -56,8 +125,8 @@ class Step3Item extends React.Component {
                     <Col span={12}>
                         <Form {...formItemLayout}>
                             <Form.Item label="Name">           
-                                {getFieldDecorator('docName', {
-                                        initialValue: selectedItem ? selectedItem.docName : '',
+                                {getFieldDecorator('name', {
+                                        initialValue: selectedItem && selectedItem.document ? selectedItem.document.name : '',
                                         rules: [
                                         {
                                             required: true,
@@ -66,24 +135,44 @@ class Step3Item extends React.Component {
                                         { min: 4, message: 'Name must be minimum 4 characters.' }
                                         ],
                                     })
-                                (<Input name="docName" onChange={this.handleItemChange}/>)}
+                                (<Input name="name" onChange={this.handleItemChange}/>)}
                             </Form.Item>
 
-                            <Form.Item label="Picture">           
-                                {getFieldDecorator('docPicture', {
-                                        initialValue: selectedItem ? selectedItem.docPicture : '',
-                                        rules: [
+                            <Form.Item label="Details">           
+                                {getFieldDecorator('details', {
+                                    initialValue: selectedItem && selectedItem.document ? selectedItem.document.details : '',
+                                    rules: [
                                         {
                                             required: true,
-                                            message: 'Please input picture name!',
+                                            message: 'Please input document details!',
                                         },
-                                        { min: 4, message: 'Picture must be minimum 4 characters.' }
-                                        ],
+                                        { min: 4, message: 'Details must be minimum 4 characters.' }
+                                    ],
                                     })
-                                (<Input name="docPicture" onChange={this.handleItemChange}/>)}
-                            </Form.Item>
-                            
+                                (<Input name="details" onChange={this.handleItemChange}/>)}
+                            </Form.Item>                                                        
                         </Form>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item label="Document Picture" className="ant-form-item-required">
+                            { selectedItem.document &&
+                            <Row>
+                                <Col span={12}>
+                                    <img src={pic instanceof File ? window.URL.createObjectURL(pic) : pic} style={{width:'60%'}}/>
+                                </Col>
+                            </Row>
+                            }
+                            <Row>
+                                <Col span={12}>
+
+                                    <Upload {...props}>
+                                        <Button>
+                                            <UploadOutlined /> <label>Select Picture File (jpeg, gif, png)</label>
+                                        </Button>
+                                    </Upload>
+                                </Col>
+                            </Row>
+                        </Form.Item>
                     </Col>
                 </Row>
             </React.Fragment>

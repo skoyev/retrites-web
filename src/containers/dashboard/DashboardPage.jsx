@@ -8,6 +8,10 @@ import AmenityWizard from '../../components/private/wizard';
 import Step1Item from '../../components/private/wizard/steps/step1';
 import Step2Item from '../../components/private/wizard/steps/step2';
 import Step3Item from '../../components/private/wizard/steps/step3';
+import Step4Item from '../../components/private/wizard/steps/step4';
+import Step5Item from '../../components/private/wizard/steps/step5';
+import Step6Item from '../../components/private/wizard/steps/step6';
+import Step7Item from '../../components/private/wizard/steps/step7';
 import { Button, Form, Input } from 'antd';
 import { connect } from 'react-redux';
 import { withLocalize } from "react-localize-redux";
@@ -79,19 +83,35 @@ class DashboardPage extends React.Component {
                 },
                 {
                     title: 'Facilitators',
-                    content: <div>Facilitators</div>,
+                    content: React.createElement(
+                        Form.create({ name: 'step4Item' })( Step4Item ), 
+                        {
+                            onRef:ref => (this.step4Item = ref)
+                        })
                 },
                 {
                     title: 'Payment',
-                    content: <div>Payment</div>,
+                    content: React.createElement(
+                        Form.create({ name: 'step5Item' })( Step5Item ), 
+                        {
+                            onRef:ref => (this.step5Item = ref)
+                        })
                 },
                 {
                     title: 'Schedule',
-                    content: <div>Schedule</div>,
+                    content: React.createElement(
+                        Form.create({ name: 'step6Item' })( Step6Item ), 
+                        {
+                            onRef:ref => (this.step6Item = ref)
+                        })
                 },
                 {
                     title: 'Photo',
-                    content: <div>Photo</div>,
+                    content: React.createElement(
+                        Form.create({ name: 'step7Item' })( Step7Item ), 
+                        {
+                            onRef:ref => (this.step7Item = ref)
+                        })
                 }
             ],
 
@@ -153,9 +173,9 @@ class DashboardPage extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        // step 1 validator
-        if (this.props.isStep1Valid !== prevProps.isStep1Valid && this.state.createItemWizardStep == 0){ 
-            this.setState({isValidNext : this.props.isStep1Valid})
+        // step validator
+        if (this.props.isNextStepValid !== prevProps.isNextStepValid){ 
+            this.setState({isValidNext : this.props.isNextStepValid})
         }
     }
     
@@ -217,7 +237,7 @@ class DashboardPage extends React.Component {
 
     handleItemChange = (event) => {
         let {createEditItem} = this.state;
-        createEditItem[[event.target.name]] = event.target.value;
+        createEditItem[event.target.name] = event.target.value;
         this.setState({createEditItem:createEditItem})
     }
 
@@ -365,6 +385,23 @@ class DashboardPage extends React.Component {
         if(this.step3Item){
             this.step3Item.cancel();
         }
+
+        if(this.step4Item){
+            this.step4Item.cancel();
+        }
+
+        if(this.step5Item){
+            this.step5Item.cancel();
+        }
+
+        if(this.step6Item){
+            this.step6Item.cancel();
+        }
+
+        if(this.step7Item){
+            this.step7Item.cancel();
+        }
+
     }
 
     handleCreateItemDone = () => {
@@ -378,24 +415,52 @@ class DashboardPage extends React.Component {
             return;
         }
 
+        /*
         const item = {id:selectedItem.id ? selectedItem.id : 0, 
                       name:selectedItem.name, description: selectedItem.description, 
-                      price: 10, title: selectedItem.title, subCategoryId: selectedItem.subCategory.id, 
+                      price: selectedItem.price, title: selectedItem.title, subCategoryId: selectedItem.subCategory.id, 
                       categoryId: selectedItem.category.id, 
                       countryId: selectedItem.country.id, country: selectedItem.country,     // country
-                      docName: selectedItem.docName, docPicture: selectedItem.docPicture,    // documents 
-                      facilitators:[{name: '', typeId: 1, picture: '', description: ''}],    // fascilitators
+                      docName: selectedItem.docName, docPicture: selectedItem.docPicture, docDetails: selectedItem.docDetails,   // documents 
+                      //facilitators:[{name: '', typeId: 1, picture: '', description: ''}],    // fascilitators
+                      facilitators: selectedItem.fascilitators,    // fascilitators
                       subCategory: selectedItem.subCategory, category: selectedItem.category,
                       userId: this.props.user.id, address: selectedItem.address, 
-                      currency: 'USD', duration: 2, 
-                      metaData: '{}', startDate: '2019-08-03', locationName: 'Toronto', 
+                      currency: selectedItem.currency, duration: selectedItem.duration, 
+                      metaData: '{}', startDate: selectedItem.startDate, city: selectedItem.city, 
                       allActivities: "{'startFromDate':'2019-12-03'}", 
-                      picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'};
+                      picture: selectedItem.picture};
+                      //picture: 'https://s3.us-west-2.amazonaws.com/prod.retreat.guru/images/142873/medium/24993175_690266684496339_7094769312054478290_n.jpg'};
+        */
+
+        const itemFormData = new FormData();
+        itemFormData.append('id', selectedItem.id ? selectedItem.id : 0);
+        itemFormData.append('name', selectedItem.name);
+        itemFormData.append('description', selectedItem.description);
+        itemFormData.append('price', selectedItem.price);
+        itemFormData.append('title', selectedItem.title);
+        itemFormData.append('subCategoryId', selectedItem.subCategory.id);
+        itemFormData.append('categoryId', selectedItem.category.id);
+        itemFormData.append('countryId', selectedItem.country.id);
+        itemFormData.append('document', JSON.stringify(selectedItem.document));
+        itemFormData.append('docPicture', selectedItem.document.picture);
+        if(selectedItem.facilitators && selectedItem.facilitators.length > 0){
+            itemFormData.append('fascilitatorPicture', selectedItem.facilitators[0].picture);
+        }
+        itemFormData.append('facilitators', JSON.stringify(selectedItem.facilitators));
+        itemFormData.append('userId', this.props.user.id);
+        itemFormData.append('currency', selectedItem.currency);
+        itemFormData.append('duration', selectedItem.duration);
+        itemFormData.append('startDate', selectedItem.startDate);
+        itemFormData.append('city', selectedItem.city);
+        itemFormData.append('picture', selectedItem.picture);
+        itemFormData.append('address', selectedItem.address);
+        itemFormData.append('metaData', '{}');
 
         if(selectedItem.id && selectedItem.id > 0){
-            this.props.updateItem(item);
+            this.props.updateItem(itemFormData);
         } else {
-            this.props.createItem(item, user.id);
+            this.props.createItem(itemFormData, user.id);
         }
 
         // clear all steps in store
@@ -407,6 +472,7 @@ class DashboardPage extends React.Component {
     render() {
         const { createEditItem, lead, createItemWizardStep, createItemSteps: createItemTotalSteps, isValidNext } = this.state;
         //const { TextArea } = Input;        
+        const {selectedItem} = this.props;
 
         return (
             <Layout style={{height:'100%'}}>
@@ -430,7 +496,7 @@ class DashboardPage extends React.Component {
 
                 {/* Create  Amenity Wizard */}
                 {createItemTotalSteps &&
-                    <Modal title={(createEditItem && createEditItem.name) ? "Modify Retreat" : "Create Retreat"}
+                    <Modal title={(selectedItem && selectedItem.id) ? "Modify Retreat" : "Create Retreat"}
                         visible={this.state.createEditItemModalVisible}
                         width={950}
                         onCancel={this.handleCreateItemCancel}
@@ -515,7 +581,7 @@ function mapStateToProps(state) {
         categories: [...state.common.categories],
         subCategories: [...state.common.subCategories],
         selectedItem: state.common.selectedItem,
-        isStep1Valid: state.common.isStep1Valid
+        isNextStepValid: state.common.isNextStepValid
     };
 }
 

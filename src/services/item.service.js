@@ -93,7 +93,7 @@ function updateItem(item, authKey) {
         'Content-Type': 'application/json',
         'auth_key': authKey
     }
-    return axios.put(`/api/items/${item.id}`, item, {headers: headers});
+    return axios.put(`/api/items/${item.get('id')}`, item, {headers: headers});
 }
 
 function addItem(item, authKey){
@@ -101,7 +101,8 @@ function addItem(item, authKey){
         return Promise.reject(`Auth key or item is invalid.`);
 
     const headers = {
-        'Content-Type': 'application/json',
+        //'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         'auth_key': authKey
     }
     return axios.post(`/api/items`, item, {headers: headers});

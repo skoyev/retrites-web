@@ -12,7 +12,7 @@ export function users(state = INITIAL_STATE, action) {
     switch (action.type) {
         case userConstants.IS_LOGGED_IN:
           return {
-            ... state,
+            ...state,
             isLoggedIn: action.isLoggedIn
           };       
         case userConstants.GETALL_REQUEST:
@@ -65,34 +65,34 @@ export function users(state = INITIAL_STATE, action) {
 
         case userConstants.CREATE_USER_SUCCESS:
           return {
-            ... state,
+            ...state,
             userRegisterError: '',
             shouldRedirectHomePage: action.shouldRedirectHomePage
           };          
 
         case userConstants.CREATE_USER_FAILURE:
             return {
-              ... state,
+              ...state,
               shouldRedirectHomePage: false,
               userRegisterError: action.error
             };  
             
         case userConstants.RESET_LOGIN:
             return {
-              ... state,
+              ...state,
               error: ''
             };
 
         case userConstants.LOGIN_SUCCESS:
             return {
-              ... state,
+              ...state,
               isLoggedIn: true,
               error: ''
             };                
 
         default:
           return {
-            ... state
+            ...state
           }
     }
 }

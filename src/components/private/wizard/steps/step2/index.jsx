@@ -35,7 +35,8 @@ class Step2Item extends React.Component {
 
     componentDidMount() {
         this.props.fetchCountries();
-        this.props.onRef(this);     
+        this.props.onRef(this);    
+        this.props.setIsNextStepValid(this.props.selectedItem.country); 
     }
 
     cancel = () => {
@@ -51,7 +52,7 @@ class Step2Item extends React.Component {
             value = e.target.value;     
         } else if(e.item && e.item.props) {
             name  = e.item.props.name;     
-            value = e.item.props.data;     
+            value = e.item.props.data.find(v => v.id === e.item.props.id);     
         }
 
         if(name.length > 0 && value){
@@ -59,9 +60,34 @@ class Step2Item extends React.Component {
         }
     }
 
-//const Step2Item = props => {    
-    //const { getFieldDecorator, getFieldsError, isFieldTouched } = props.form;
-    //const { countries, fetchCountries, selectedItem, setSelectedItemField } = props;
+    componentDidUpdate(prevProps) {
+        if (this.props.selectedItem.country !== prevProps.selectedItem.country ||
+                this.props.selectedItem.city !== prevProps.selectedItem.city ||
+                    this.props.selectedItem.address !== prevProps.selectedItem.address) {
+            const { selectedItem } = this.props;
+            this.checkIsStepValid();                        
+            this.props.form.setFieldsValue({itemCountry: selectedItem ? selectedItem.country : ''})
+            this.props.form.setFieldsValue({city: selectedItem ? selectedItem.city : ''})
+            this.props.form.setFieldsValue({itemAddress: selectedItem ? selectedItem.address : ''})    
+        }
+    }
+    
+    checkIsStepValid = () => {
+        const { getFieldsError, isFieldTouched, getFieldDecorator } = this.props.form;
+
+        // check itemCountry error validation
+        let hasCountryErrors = !( (isFieldTouched('itemCountry') === true || this.props.selectedItem.country) 
+                                    && getFieldsError().itemCountry === undefined);
+        // check city error validation
+        let hasCityErrors = !( (isFieldTouched('city') === true || this.props.selectedItem.city) 
+                                    && getFieldsError().city === undefined);
+
+        // check address error validation
+        let hasAddressErrors = !( (isFieldTouched('itemAddress') === true || this.props.selectedItem.address) 
+                                    && getFieldsError().itemAddress === undefined);
+
+        this.props.setIsNextStepValid(!hasCountryErrors && !hasCityErrors && !hasAddressErrors);            
+    }
 
     /*
     useEffect(()=> {
@@ -70,22 +96,6 @@ class Step2Item extends React.Component {
     }, []);
 
 
-    const handleItemChange = e => {   
-        let name  = '';
-        let value = '';
-
-        if(e.target){ 
-            name  = e.target.name;     
-            value = e.target.value;     
-        } else if(e.item && e.item.props) {
-            name  = e.item.props.name;     
-            value = e.item.props.data;     
-        }
-
-        if(name.length > 0 && value){
-            setSelectedItemField(name, value);
-        }
-    }
     */
 
     render() {
@@ -110,6 +120,20 @@ class Step2Item extends React.Component {
                                                 overlay={menu(countries, this.handleItemChange, 'country')}>
                                     {selectedItem && selectedItem.country ? selectedItem.country.name : 'Select Country'}
                                 </Dropdown.Button>)}
+                            </Form.Item>
+
+                            <Form.Item label="City">           
+                                {getFieldDecorator('city', {
+                                        initialValue: selectedItem ? selectedItem.city : '',
+                                        rules: [
+                                        {
+                                            required: true,
+                                            message: 'Please input city!',
+                                        },
+                                        { min: 4, message: 'City must be minimum 4 characters.' }
+                                        ],
+                                    })
+                                (<Input name="city" onChange={this.handleItemChange}/>)}
                             </Form.Item>
 
                             <Form.Item label="Address">           

@@ -7,9 +7,11 @@ import { PublicHeader } from '../../../components/public';
 
 class AddNewRetreatPage extends React.Component {
 
+    /*
     constructor(props) {
         super(props);
     }
+    */
         
     render() {
         return (

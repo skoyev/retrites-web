@@ -4,49 +4,55 @@ const INITIAL_STATE = {
   categories: [],
   countries: [],
   subCategories: [],
-  selectedItem: {},
-  isStep1Valid: false
+  selectedItem: {document:{}, facilitators: [{}]},
+  isNextStepValid: false,
+  fascilitatorTypes: []
 };
 
 export function common(state = INITIAL_STATE, action) {
     switch (action.type) {
         case commonConstants.FETCH_CATEGORIES_SUCCESS:
             return {
-                ... state,
+                ...state,
                 categories: [...action.data]
             };             
         case commonConstants.FETCH_SUB_CATEGORIES_SUCCESS:
             return {
-                ... state,
+                ...state,
                 subCategories: [...action.data]
             }; 
         case commonConstants.FETCH_COUNTRIES_SUCCESS:
             return {
-                ... state,
+                ...state,
                 countries: [...action.data]
             }; 
+        case commonConstants.FETCH_FASCILITATOR_TYPES_SUCCESS:
+            return {
+                ...state,
+                fascilitatorTypes: [...action.data],
+            }
         case commonConstants.ADD_SELECTED_ITEM_INTO_STORE:
             return {
-                ... state,
+                ...state,
                 selectedItem: action.item,
             }
         case commonConstants.ADD_SELECTED_ITEM_INTO_STORE:
             return {
-                ... state,
+                ...state,
                 selectedItem: action.item,
             }
-
-        case commonConstants.IS_STEP1_VALID:
+        case commonConstants.IS_NEXT_STEP_VALID:
             return {
-                ... state,
-                isStep1Valid: action.isValid,
+                ...state,
+                isNextStepValid: action.isValid,
             }
         case commonConstants.SET_SELECTED_ITEM_FIELD:
                 return {
-                    ... state,
+                    ...state,
                     selectedItem: {
                         ... state.selectedItem,
-                        [action.fieldName] : Array.isArray( action.fieldValue ) ? action.fieldValue[0] : action.fieldValue
+                        //[action.fieldName] : Array.isArray( action.fieldValue ) ? action.fieldValue[0] : action.fieldValue
+                        [action.fieldName] : action.fieldValue
                     }
                 }
         default:

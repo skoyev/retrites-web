@@ -10,12 +10,12 @@ export function leads(state = INITIAL_STATE, action) {
         case leadsConstants.LEADS_FETCH_SUCCESS 
               || itemConstants.SUMMARY_FETCH_SUCCESS:
           return {
-            ... state,
+            ...state,
             leads: action.leads
           };
         case leadsConstants.LEAD_SUMMARY_FETCH_SUCCESS:
           return {
-            ... state,
+            ...state,
             summaryLeads: action.leadSummary
           };            
         default:

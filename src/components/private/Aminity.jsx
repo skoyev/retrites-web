@@ -5,14 +5,15 @@ import { chunk } from '../../helpers/';
 import { withLocalize } from "react-localize-redux";
 import { Translate } from "react-localize-redux";
 import { connect } from 'react-redux';
+import { commonActions } from '../../store/action';
 
-const Aminity = ({items, handleAminityDetails, handleAminityDelete, numItemsPerRow}) => {
+const Aminity = ({items, handleAminityDetails, handleAminityDelete, numItemsPerRow, selectedItem}) => {
     const itemsInRow = chunk(items, numItemsPerRow);
     return (
         <React.Fragment>
             <Row style={{marginBottom: 20}}>
                 <div>
-                    <Translate>{({ translate }) =><button onClick={()=>handleAminityDetails({})} className="btn btn-primary">+{translate("button.item")}</button>}</Translate>                                        
+                    <Translate>{({ translate }) =><button onClick={()=>handleAminityDetails(selectedItem)} className="btn btn-primary">+{translate("button.item")}</button>}</Translate>                                        
                 </div>
             </Row>
             {itemsInRow.map((items, index) => ( 
@@ -38,13 +39,14 @@ Aminity.propTypes = {
     numItemsPerRow: PropTypes.number.isRequired
 }
 
-const mapDispatchToProps = {    
+const mapDispatchToProps = { 
+    ...commonActions   
 }; 
 
-/*
 function mapStateToProps(state) {
+    return {
+        selectedItem: state.common.selectedItem
+    };
 }
-*/
 
-
-export default withLocalize(connect(null, mapDispatchToProps)(Aminity));
+export default withLocalize(connect(mapStateToProps, mapDispatchToProps)(Aminity));

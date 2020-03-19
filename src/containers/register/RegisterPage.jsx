@@ -8,7 +8,7 @@ import { history } from '../../helpers';
 import '../style/Base.css'
 
 const validEmailRegex = 
-  RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
+  RegExp(/^(([^<>()[\].,;:\s@"]+(.[^<>()[].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+.)+[^<>()[\].,;:\s@"]{2,})$/i);
 
 class RegisterPage extends React.Component {
 

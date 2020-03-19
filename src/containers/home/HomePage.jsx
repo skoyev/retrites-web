@@ -263,8 +263,10 @@ class HomePage extends React.Component {
         const { items, retreatByCountries, retreatTypes, searchLength, SubscriptionWrapper } = this.props;
         const shouldHideLoadMore = true;
 
-        if ( !items || items.length === 0 ) 
+        if ( !items || items.length === 0 ) {
+            console.warn('There is no items has been found. Please check items collection!!!')
             return <Loading text={'Loading...'}/>;
+        }
 
         const subscriptionCategoryList = retreatTypes && retreatTypes.length > 1 ? this.extractRetriteTypes(retreatTypes) : [];
         return (

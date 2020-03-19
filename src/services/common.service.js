@@ -5,7 +5,8 @@ const URL = '/api/common';
 export const commonService = {
     getAllSubcategories,
     getAllCategories,
-    getAllCountries
+    getAllCountries,
+    getFacilitatorTypes
 };
 
 function getAllSubcategories(){
@@ -18,4 +19,8 @@ function getAllCategories(){
 
 function getAllCountries() {
     return axios.get(`${URL}/country`);
+}
+
+function getFacilitatorTypes() {
+    return axios.get(`${URL}/facilitator-types`);
 }

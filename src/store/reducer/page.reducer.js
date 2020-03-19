@@ -10,7 +10,7 @@ export function page(state = INITIAL_STATE, action) {
     switch (action.type) {
       case pageConstants.REDIRECT_PAGE:
         return {
-          ... state,
+          ...state,
           hasNextPage: true,
           nextPage: action.pageName
         };
