@@ -73,11 +73,20 @@ export function items(state = INITIAL_STATE, action) {
             return {
               ...state,
               items: state.items.map(i => 
-                            i.id === action.item.get('id') ? 
+                            i.id == action.item.get('id') ? 
                             {...i, 
                               name:  action.item.get('name'), 
                               title: action.item.get('title'), 
-                              description: action.item.get('description')
+                              description: action.item.get('description'),
+                              price: action.item.get('price'),
+                              facilitators: JSON.parse(action.item.get('facilitators')),
+                              document: JSON.parse(action.item.get('document')),
+                              currency: action.item.get('currency'),
+                              duration: action.item.get('duration'),
+                              startDate: action.item.get('startDate'),
+                              city: action.item.get('city'),
+                              picture: action.item.get('picture'),
+                              address: action.item.get('address')
                             }
                         : i)
             }

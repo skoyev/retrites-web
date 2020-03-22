@@ -504,7 +504,7 @@ class DashboardPage extends React.Component {
                                 <Button key="cancel" onClick={this.handleCreateItemCancel}>Cancel</Button>,
                                 <Button style={createItemWizardStep == 0 ? {display:'none'} : {}} key="back" onClick={this.handleCreateItemPrevious}>Previous</Button>,
                                 <Button disabled={!isValidNext} style={createItemWizardStep == (createItemTotalSteps.length - 1) ? {display:'none'} : {}} key="next" type="primary" onClick={this.handleCreateItemNext}>Next</Button>,
-                                <Button style={createItemWizardStep == (createItemTotalSteps.length - 1) ? {} : {display:'none'}} key="done" type="primary" onClick={this.handleCreateItemDone}>Done</Button>
+                                <Button style={createItemWizardStep == (createItemTotalSteps.length - 1) ? {} : {display:'none'}} disabled={!isValidNext} key="done" type="primary" onClick={this.handleCreateItemDone}>Done</Button>
                             ]}> 
                             <AmenityWizard step={createItemWizardStep} 
                                            steps={createItemTotalSteps}/>

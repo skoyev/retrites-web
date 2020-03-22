@@ -34,11 +34,9 @@ class Step4Item extends React.Component {
     constructor(props, context){
         super(props); 
         this.state = {
-            //facilitators: [{}],
             index: 0,
             fileList: [],
-            uploading: false,
-            pictureSelected: false
+            uploading: false
         }
         this.handleItemChange = this.handleItemChange.bind(this);
     }
@@ -47,11 +45,13 @@ class Step4Item extends React.Component {
         this.props.onRef(this);  
         this.props.fetchFacilitatorTypes();   
         const {selectedItem} = this.props;
-        this.setState({facilitators: selectedItem && selectedItem.facilitators ? 
-            selectedItem.facilitators : []});
-        this.props.setIsNextStepValid(this.props.selectedItem.facilitators && 
-                                        this.props.selectedItem.facilitators.length > 0 &&
-                                            this.props.selectedItem.facilitators[0].name);             
+        this.setState({
+                facilitators: selectedItem && selectedItem.facilitators ? selectedItem.facilitators : []}, 
+            () => {
+                const {index} = this.state;
+                const {facilitators} = this.props.selectedItem;        
+                this.checkIsStepValid(facilitators[index])
+            });
     }
 
     cancel = () => {
@@ -95,7 +95,7 @@ class Step4Item extends React.Component {
         this.props.setIsNextStepValid(!hasNameErrors && 
                                         !hasDescriptionErrors && 
                                             !hasTypeErrors &&
-                                                this.state.pictureSelected);            
+                                                ((this.state.fileList && this.state.fileList.length > 0) || facilitator.picture));            
     }
 
     /*
@@ -138,8 +138,7 @@ class Step4Item extends React.Component {
                 const newFileList = state.fileList.slice();
                 newFileList.splice(index, 1);
                 return {
-                  fileList: newFileList,                  
-                  pictureSelected: false
+                  fileList: newFileList
                 };
               }, () => this.checkIsStepValid(facilitators[index]));
             },
@@ -152,8 +151,7 @@ class Step4Item extends React.Component {
                     facilitators[index]['picture'] = file;        
                     this.props.setSelectedItemField('facilitators', facilitators);
                     this.setState(state => ({
-                        fileList: [...state.fileList, file],
-                        pictureSelected: true
+                        fileList: [...state.fileList, file]
                     }), () => this.checkIsStepValid(facilitators[index]));
                 }
 
@@ -200,6 +198,19 @@ class Step4Item extends React.Component {
                                         selectedItem.facilitators[index].type.name : 'Select Type'}
                                 </Dropdown.Button>)}
                             </Form.Item>
+
+                            <Form.Item label="Picture" className="description">
+                                <Row>
+                                    <Col span={12}>
+                                        <Upload {...props}>
+                                            <Button>
+                                                <UploadOutlined /> Select File (jpeg, gif, png)
+                                            </Button>
+                                        </Upload>
+                                    </Col>
+                                </Row>
+                            </Form.Item>
+
                         </Form>
                     </Col>
 
@@ -230,18 +241,6 @@ class Step4Item extends React.Component {
                                     </Row>
                                 </Form.Item>
                             }
-
-                            <Form.Item label="Picture" className="description">
-                                <Row>
-                                    <Col span={12}>
-                                        <Upload {...props}>
-                                            <Button>
-                                                <UploadOutlined /> Select File (jpeg, gif, png)
-                                            </Button>
-                                        </Upload>
-                                    </Col>
-                                </Row>
-                            </Form.Item>
                         </Form>
                     </Col>
                 </Row>

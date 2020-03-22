@@ -1,10 +1,11 @@
 import {commonConstants} from '../../constants';
+import moment from 'moment';
 
 const INITIAL_STATE = {
   categories: [],
   countries: [],
   subCategories: [],
-  selectedItem: {document:{}, facilitators: [{}]},
+  selectedItem: {document:{}, facilitators: [{}], startDate: moment()},
   isNextStepValid: false,
   fascilitatorTypes: []
 };

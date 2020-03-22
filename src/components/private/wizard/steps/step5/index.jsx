@@ -35,6 +35,7 @@ class Step5Item extends React.Component {
 
     componentDidMount() {
         this.props.onRef(this);  
+        this.checkIsStepValid();
     }
 
     cancel = () => {
@@ -54,6 +55,25 @@ class Step5Item extends React.Component {
         } 
 
         this.props.setSelectedItemField(name, value);
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.selectedItem.currency !== prevProps.selectedItem.currency ||
+                this.props.selectedItem.price !== prevProps.selectedItem.price){
+            this.checkIsStepValid(); 
+        }
+    }
+
+    checkIsStepValid = () => {
+        const {selectedItem} = this.props;
+
+        // check currency error validation
+        let hasCurrencyErrors = !selectedItem.currency;
+
+        // check price error validation
+        let hasPriceErrors = !selectedItem.price;
+
+        this.props.setIsNextStepValid(!hasCurrencyErrors && !hasPriceErrors);            
     }
 
     render() {
@@ -87,7 +107,7 @@ class Step5Item extends React.Component {
                                         }
                                         ],
                                     })
-                                (<InputNumber name="price" min={2} max={5} onChange={(e) => this.handleItemChange({target:{name:'price', value:e}})}/>)}$
+                                (<InputNumber name="price" onChange={(e) => this.handleItemChange({target:{name:'price', value:e}})}/>)}$
                             </Form.Item>
                         </Form>
                     </Col>

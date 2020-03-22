@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Form, Menu, DatePicker, InputNumber } from 'antd';
+import { Row, Col, Form, DatePicker, InputNumber, Input } from 'antd';
 import { withLocalize } from "react-localize-redux";
 import { Translate } from "react-localize-redux";
 import { connect } from 'react-redux';
@@ -28,9 +28,30 @@ class Step6Item extends React.Component {
 
     componentDidMount() {
         this.props.onRef(this);  
+        this.checkIsStepValid();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.selectedItem.startDate !== prevProps.selectedItem.startDate ||
+                this.props.selectedItem.duration !== prevProps.selectedItem.duration){
+            this.checkIsStepValid(); 
+        }
+    }
+
+    checkIsStepValid = () => {
+        const {selectedItem} = this.props;
+
+        // check startDate error validation
+        let hasStartDateErrors = !selectedItem.startDate;
+
+        // check duration error validation
+        let hasDurationErrors = !selectedItem.duration;
+
+        this.props.setIsNextStepValid(!hasStartDateErrors && !hasDurationErrors);            
     }
 
     cancel = () => {
+        this.props.form.setFieldsValue({startDate: ''})
         this.props.form.setFieldsValue({duration: ''})
     }
 
@@ -58,7 +79,7 @@ class Step6Item extends React.Component {
                             <Form.Item label="Start Date">           
                                 <DatePicker name="startDate" 
                                             onChange={(e, value) => this.handleItemChange({target:{name:'startDate', value:value}})} 
-                                            defaultValue={moment(selectedItem.startDate, 'YYYY-MM-DD')}
+                                            defaultValue={selectedItem.startDate ? moment(selectedItem.startDate, 'YYYY-MM-DD') : moment()}
                                             placeholder="Start Date"  
                                             style={{ marginLeft: '5px' }} />
                             </Form.Item>
@@ -73,7 +94,20 @@ class Step6Item extends React.Component {
                                         }
                                         ],
                                     })
-                                (<InputNumber name="duration" style={{width:100}} min={1} max={5} onChange={(e) => this.handleItemChange({target:{name:'duration', value:e}})}/>)}
+                                (<InputNumber name="duration" style={{width:100}} onChange={(e) => this.handleItemChange({target:{name:'duration', value:e}})}/>)}
+                            </Form.Item>
+
+                            <Form.Item label="Frequency:">           
+                                {getFieldDecorator('frequency', {
+                                        initialValue: selectedItem ? selectedItem.frequency : '',
+                                        rules: [
+                                        {
+                                            //required: true,
+                                            //message: 'Please input duration!',
+                                        }
+                                        ],
+                                    })
+                                (<Input name="frequency" style={{width:200}} onChange={this.handleItemChange}/>)}
                             </Form.Item>
                         </Form>
                     </Col>

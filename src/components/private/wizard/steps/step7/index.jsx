@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, Col, Form, Upload, message, Button } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined, CloseOutlined } from '@ant-design/icons';
 import { withLocalize } from "react-localize-redux";
 import { Translate } from "react-localize-redux";
 import { connect } from 'react-redux';
@@ -30,6 +30,11 @@ class Step7Item extends React.Component {
 
     componentDidMount() {
         this.props.onRef(this);  
+        this.props.setIsNextStepValid(this.props.selectedItem.picture);            
+    }
+
+    checkIsStepValid = () => {
+        this.props.setIsNextStepValid(this.state.fileList && this.state.fileList.length > 0);            
     }
 
     cancel = () => {
@@ -55,7 +60,7 @@ class Step7Item extends React.Component {
 
         const props = {
             onRemove: file => {
-              this.props.setSelectedItemField('picture', {});
+              this.props.setSelectedItemField('picture', undefined);
               this.setState(state => {
                 const index = state.fileList.indexOf(file);
                 const newFileList = state.fileList.slice();
@@ -63,13 +68,17 @@ class Step7Item extends React.Component {
                 return {
                   fileList: newFileList,
                 };
-              });
+              }, () => this.checkIsStepValid());
             },
-            beforeUpload: file => {        
-                this.props.setSelectedItemField('picture', file);
-                this.setState(state => ({
-                    fileList: [...state.fileList, file],
-                }));
+            beforeUpload: file => {  
+                const isValidType = file.type.includes("png") || file.type.includes("jpeg") || file.type.includes("gif")
+
+                if(isValidType) {
+                    this.props.setSelectedItemField('picture', file);
+                    this.setState(state => ({
+                        fileList: [...state.fileList, file],
+                    }), () => this.checkIsStepValid());
+                }
 
                 return false;
             },
@@ -84,7 +93,7 @@ class Step7Item extends React.Component {
                             <Form.Item label="Picture">           
                                 <Upload {...props}>
                                     <Button>
-                                        <UploadOutlined /> Select Picture File
+                                        <UploadOutlined /> Select Picture File (jpeg, gif, png)
                                     </Button>
                                 </Upload>
                             </Form.Item>
@@ -92,8 +101,9 @@ class Step7Item extends React.Component {
                         { selectedItem.picture &&
                             <Col span={12}>
                                 <Form.Item label="Existing Picture">           
-                                    <img src={selectedItem.picture} style={{width: '150px'}}/>
+                                    <img src={selectedItem.picture instanceof File ? window.URL.createObjectURL(selectedItem.picture) : selectedItem.picture} style={{width:'60%'}}/>
                                 </Form.Item>
+                                <CloseOutlined />
                             </Col>
                         }
                     </Row>
