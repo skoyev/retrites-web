@@ -6,7 +6,7 @@ export const itemActions = {
     fetchSummary,
     fetchUserAmenities,
     fetch,
-    fetchPopular,
+    fetchPopularRedirectLoginIfNoData,
     fetchByID,
 
     createItem,
@@ -301,11 +301,15 @@ export function fetchByID(id){
     }
 }
 
-export function fetchPopular(categoryId, count) {
+export function fetchPopularRedirectLoginIfNoData(categoryId, count) {
     return dispatch => {
         return itemService.loadPopularItems(categoryId, count).then(res => {
             if(res.status === 200){
-                dispatch(fetchItemsSuccess(res.data.items))    
+                if(res.data.items.length > 0) {
+                    dispatch(fetchItemsSuccess(res.data.items))    
+                } else {
+                    dispatch(clearItemsAndNavigateToPage(pageConstants.LOGIN))
+                }
             } else {
                 throw('No data');
             }

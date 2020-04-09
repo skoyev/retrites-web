@@ -5,7 +5,7 @@ const INITIAL_STATE = {
   categories: [],
   countries: [],
   subCategories: [],
-  selectedItem: {document:{}, facilitators: [{}], startDate: moment()},
+  selectedItem: {document:{}, facilitators: [{}], events:[{from: moment().format('YYYY-MM-DD'), to: moment().add(1,'days').format('YYYY-MM-DD')}]},
   isNextStepValid: false,
   fascilitatorTypes: []
 };

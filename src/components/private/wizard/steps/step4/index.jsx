@@ -199,7 +199,7 @@ class Step4Item extends React.Component {
                                 </Dropdown.Button>)}
                             </Form.Item>
 
-                            <Form.Item label="Picture" className="description">
+                            <Form.Item label="Picture">
                                 <Row>
                                     <Col span={12}>
                                         <Upload {...props}>

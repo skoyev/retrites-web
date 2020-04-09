@@ -23,6 +23,12 @@ export const itemService = {
     fetchSummary
 };
 
+const ITEM_STATUS = {
+    CREATED: 'Created',
+    PUBLISHED: 'Published',
+    REJECTED: 'Rejected'
+};
+
 const requestOptions = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }        
@@ -37,12 +43,13 @@ function fetchUserAmenities(userID) {
 }
 
 function loadPopularItems(categoryId, count) {
-    return axios.get(`/api/items?categoryId=${categoryId}&popular=1&count=${count}`);
+    return axios.get(`/api/items?categoryId=${categoryId}&popular=1&count=${count}&status=${ITEM_STATUS.PUBLISHED}`);
 }
 
 function search(subCategoryID, duration, name, startDate, countryId, count, fromPrice, toPrice) {
     let params = {subCategoryId:subCategoryID, duration:duration, name:name, startDate:startDate, 
-                  countryId:countryId, count: count, priceFrom: fromPrice, priceTo: toPrice};
+                  countryId:countryId, count: count, priceFrom: fromPrice, priceTo: toPrice,
+                  status: ITEM_STATUS.PUBLISHED};
     return axios.get('api/items', {params:params});
 }
 
@@ -51,7 +58,9 @@ function fetchCountries () {
 }
 
 function findBySubCategory (subCategoryId, count, startFromNum, searchByName, priceFrom, priceTo, fromDate, toDate) {
-    const params = {subCategoryId:subCategoryId, count:count, startFromCount:startFromNum, name:searchByName, priceFrom: priceFrom, priceTo: priceTo, fromDate: fromDate, toDate: toDate};
+    const params = {subCategoryId:subCategoryId, count:count, startFromCount:startFromNum, name:searchByName, 
+                    priceFrom: priceFrom, priceTo: priceTo, fromDate: fromDate, toDate: toDate,
+                    status: ITEM_STATUS.PUBLISHED};
     return axios.get('api/items', {params:params});
 }
 

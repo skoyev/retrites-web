@@ -75,7 +75,7 @@ class HomePage extends React.Component {
     componentDidMount() {
         const {categoryId, polularItemCount} = this.state;
         // fetch popular
-        this.props.fetchPopular(categoryId, polularItemCount)
+        this.props.fetchPopularRedirectLoginIfNoData(categoryId, polularItemCount)
             .then(() => window.scrollTo(0, 0))   
 
         // fetch countries for retrites
@@ -139,6 +139,8 @@ class HomePage extends React.Component {
                 const encrData = btoa(`${pageConstants.HOME}`);   
                 let param = `/item/${selectedItemId}?back=${encrData}`;
                 history.push(param);        
+            } else if (nextProps.nextPageName === pageConstants.LOGIN) {
+                history.push('/login');        
             }
         }
 

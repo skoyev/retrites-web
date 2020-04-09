@@ -10,7 +10,6 @@ import Step2Item from '../../components/private/wizard/steps/step2';
 import Step3Item from '../../components/private/wizard/steps/step3';
 import Step4Item from '../../components/private/wizard/steps/step4';
 import Step5Item from '../../components/private/wizard/steps/step5';
-import Step6Item from '../../components/private/wizard/steps/step6';
 import Step7Item from '../../components/private/wizard/steps/step7';
 import { Button, Form, Input } from 'antd';
 import { connect } from 'react-redux';
@@ -90,19 +89,11 @@ class DashboardPage extends React.Component {
                         })
                 },
                 {
-                    title: 'Payment',
+                    title: 'Schedule',
                     content: React.createElement(
                         Form.create({ name: 'step5Item' })( Step5Item ), 
                         {
                             onRef:ref => (this.step5Item = ref)
-                        })
-                },
-                {
-                    title: 'Schedule',
-                    content: React.createElement(
-                        Form.create({ name: 'step6Item' })( Step6Item ), 
-                        {
-                            onRef:ref => (this.step6Item = ref)
                         })
                 },
                 {
@@ -437,7 +428,6 @@ class DashboardPage extends React.Component {
         itemFormData.append('id', selectedItem.id ? selectedItem.id : 0);
         itemFormData.append('name', selectedItem.name);
         itemFormData.append('description', selectedItem.description);
-        itemFormData.append('price', selectedItem.price);
         itemFormData.append('title', selectedItem.title);
         itemFormData.append('subCategoryId', selectedItem.subCategory.id);
         itemFormData.append('categoryId', selectedItem.category.id);
@@ -449,9 +439,7 @@ class DashboardPage extends React.Component {
         }
         itemFormData.append('facilitators', JSON.stringify(selectedItem.facilitators));
         itemFormData.append('userId', this.props.user.id);
-        itemFormData.append('currency', selectedItem.currency);
-        itemFormData.append('duration', selectedItem.duration);
-        itemFormData.append('startDate', selectedItem.startDate);
+        itemFormData.append('events', JSON.stringify(selectedItem.events));
         itemFormData.append('city', selectedItem.city);
         itemFormData.append('picture', selectedItem.picture);
         itemFormData.append('address', selectedItem.address);

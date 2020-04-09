@@ -6,5 +6,6 @@ export const pageConstants = {
     CLEAR_ITEMS_AND_REDIRECT_PAGE: 'redirect-page',
     SEARCH: 'search',
     DETAILS: 'details',
-    HOME: 'home'    
+    HOME: 'home',
+    LOGIN: 'login'
 };

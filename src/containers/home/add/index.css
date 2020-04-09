@@ -1,0 +1,142 @@
+.main-content {
+    padding: 10px 25px 10px
+}
+
+.gray {
+    background-color: #f7f7f7; 
+}
+
+.lead {
+    text-align: center;
+}
+
+.lead h2 {
+    margin: 20px 0;
+    font-size: 32px;
+    letter-spacing: -1px;
+    font-weight: 500;
+    color: #003448;
+    text-align: center;
+}
+
+.lead p {
+    color: #555;
+    margin: 0 auto;
+    max-width: 1100px;
+    padding: 0 15px;
+    font: 400 20px/28px Circular,Helvetica,Roboto,Arial,sans-serif;
+    font-size: 22px;
+    line-height: 34px;
+}
+
+.container {
+    margin: auto;
+}
+
+@media (min-width: 1200px){
+    .container {
+        width: 1170px;
+    }
+}
+
+#logo {
+    width: 80px;
+}
+
+.section1 {
+    background-image: url(https://retreat-app.s3.us-east-2.amazonaws.com/add/meditation1.jpg);
+    background-position: 0 60%;
+    background-size: cover;
+    height: 500px;
+    margin-top: 20px;    
+    
+}
+
+.section1 .main,
+.section2 .main {
+    width: 70%;
+    margin-left: auto;    
+    margin-right: auto;    
+}
+
+.section1 .main h1 {
+    color: #ffffff;
+}
+
+.gray {
+    background-color: #e8e6e6 ;
+}
+
+.bottom-form h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    line-height: 49px;
+    font-family: Open Sans,sans-serif;
+    font-weight: 700;
+    color: #4e83a2;    
+}
+
+.space-top {
+    margin-top: 50px;
+}
+
+.section1 .main h1,
+.section2 .main h1 {    
+    text-align: center;
+    font-size: 2.5rem;
+    line-height: 49px;
+    font-family: Open Sans,sans-serif;
+    font-weight: 700;
+}
+
+.section2 .main h1 {
+    color: #599a67
+}
+
+.section1 .main .content,
+.section2 .main .content {
+    width: 85%;
+    margin: auto;
+    text-align: center;
+    color: #87898c;
+    font-size: 1.5rem;
+    line-height: 40px;
+    font-family: Open Sans,sans-serif;
+    font-weight: 500;
+}
+
+.section1 .main .register,
+.section2 .main .register {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+}
+
+.section1 .main .register .custom,
+.section2 .main .register .custom {
+    background: #faaf40;
+}
+
+.section1 .main .register .custom a,
+.section2 .main .register .custom a {
+    color: white;
+    font-weight: 500;
+    font-family: Open Sans,sans-serif;
+}
+
+.section2 {
+    background-image: url(https://retreat-app.s3.us-east-2.amazonaws.com/add/wellness-retreat.jpg);
+    background-position: 0 60%;
+    background-size: cover;
+    height: 500px;    
+}
+
+.bottom-form {
+    width: 50%;
+    margin: auto;
+}
+
+.contact-form {
+    padding: 0px 50px;
+}

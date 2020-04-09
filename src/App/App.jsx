@@ -12,7 +12,7 @@ const LazyDashboardComponent = lazy(() => import('../containers/dashboard/Dashbo
 const LazyHomeComponent = lazy(() => import('../containers/home/HomePage'));
 const LazyLogin = lazy(() => import('../containers/login/LoginPage'));
 const LazyRegisterPage = lazy(() => import('../containers/register/RegisterPage'));
-const LazyAddRetreatePage = lazy(() => import('../containers/retreate/new/AddRetreatePage'));
+//const LazyAddRetreatePage = lazy(() => import('../containers/retreate/new/AddRetreatePage'));
 const LazyAddNewRetreatPage = lazy(() => import('../containers/home/add/AddNewRetreatPage'));
 const LazyRetreateDetailPage = lazy(() => import('../containers/retreate/RetreateDetailPage'));
 const LazySearchResultPage = lazy(() => import('../containers/search/SearchResultPage'));
@@ -42,7 +42,7 @@ class App extends React.Component {
                             <Route path="/home" component={WaitingComponent(LazyHomeComponent)} />
                             <Route path="/login" component={WaitingComponent(LazyLogin)} />
                             <Route path="/register" component={WaitingComponent(LazyRegisterPage)} />                        
-                            <Route path="/new-retreate" component={WaitingComponent(LazyAddRetreatePage)} />
+                            {/*<Route path="/new-retreate" component={WaitingComponent(LazyAddRetreatePage)} />*/}
                             <Route path="/add" component={WaitingComponent(LazyAddNewRetreatPage)} />
                             <Route path="/item/:itemID" component={WaitingComponent(LazyRetreateDetailPage)} />                        
                             <Route path="/items" component={WaitingComponent(LazySearchResultPage)} />                        

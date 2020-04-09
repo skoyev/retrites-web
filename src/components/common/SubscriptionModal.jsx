@@ -28,7 +28,11 @@ const SubscriptionModal = props => {
 
     const hasErrors = function(fieldsError) {
         return Object.keys(fieldsError).some(field => fieldsError[field]);
-      }
+    }
+
+    const handleOk = function(value){
+
+    }
 
     const { getFieldDecorator, getFieldsError, isFieldTouched } = props.form;
     const isSubscFieldTouched = isFieldTouched('subscriptionName');
@@ -42,7 +46,7 @@ const SubscriptionModal = props => {
     return (
         <Modal  visible={visible}
                 title={title}
-                onOk={this.handleOk}
+                onOk={handleOk}
                 onCancel={()=>handleSubscriptionCancel(props.form)}
                 footer={[
                     <Button key="back" onClick={()=>handleSubscriptionCancel(props.form)}>Cancel</Button>,

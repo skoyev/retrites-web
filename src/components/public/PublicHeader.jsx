@@ -8,6 +8,8 @@ import LanguageToggle from '../common/LanguageToggle';
 import './style/PublicHeader.css'
 import { Translate } from "react-localize-redux";
 import { Button } from 'antd';
+import {withRouter} from 'react-router-dom';
+import { commonConstants } from '../../constants';
 
 class PublicHeader extends React.Component {
 
@@ -55,32 +57,32 @@ class PublicHeader extends React.Component {
 
     publicHeader = () => {
         return (
-        <React.Fragment>
-        <div className={"d-inline-block white"}>
-            <Translate>
-                {({ translate }) =>
-                        <Button onClick={() => this.props.handleSubscribeClick()} type="link">{translate('public.links.subscribe')}</Button>}
-            </Translate>
-        </div>
-        <div className={"d-inline-block white"}>
-            <Translate>
-                {({ translate }) =>
-                    <Link to="/add" className="btn btn-link d-inline">{translate('public.links.addretreate')}</Link>}
-            </Translate>
-        </div>
-        <div className="d-inline-block white">
-            <Translate>
-                {({ translate }) =>
-                    <Link to="/login" className="btn btn-link d-inline">{translate('public.links.login')}</Link>}
-            </Translate>
-        </div>                                
-        <div className="d-inline-block white">
-            <Translate>
-                {({ translate }) =>
-                    <Link to="/register" className="btn btn-link d-inline">{translate('public.links.signup')}</Link>}
-            </Translate>
-        </div>
-    </React.Fragment>
+            <React.Fragment>
+                <div className={"d-inline-block white"}>
+                    <Translate>
+                        {({ translate }) =>
+                                <Button onClick={() => this.props.handleSubscribeClick()} type="link">{translate('public.links.subscribe')}</Button>}
+                    </Translate>
+                </div>
+                <div className={"d-inline-block white"}>
+                    <Translate>
+                        {({ translate }) =>
+                            <Link to={commonConstants.ADD_PAGE_LINK} className="btn btn-link d-inline">{translate('public.links.addretreate')}</Link>}
+                    </Translate>
+                </div>
+                <div className="d-inline-block white">
+                    <Translate>
+                        {({ translate }) =>
+                            <Link to={commonConstants.LOGIN_PAGE_LINK} className="btn btn-link d-inline">{translate('public.links.login')}</Link>}
+                    </Translate>
+                </div>                                
+                <div className="d-inline-block white">
+                    <Translate>
+                        {({ translate }) =>
+                            <Link to={commonConstants.REGISTER_PAGE_LINK} className="btn btn-link d-inline">{translate('public.links.signup')}</Link>}
+                    </Translate>
+                </div>
+            </React.Fragment>
     )}
 
     loggedHeader = () => {
@@ -89,7 +91,7 @@ class PublicHeader extends React.Component {
             <div className={"d-inline-block"}>
                 <Translate>
                     {({ translate }) =>
-                        <Link to="/dashboard" className="btn btn-link d-inline">{translate('public.links.dashboard')}</Link>}
+                        <Link to={commonConstants.DASHBOARD_PAGE_LINK} className="btn btn-link d-inline">{translate('public.links.dashboard')}</Link>}
                 </Translate>
             </div>
             <div className="d-inline-block">
@@ -101,13 +103,42 @@ class PublicHeader extends React.Component {
         </React.Fragment>
     )}
 
+    publicAddHeader = () => 
+        <React.Fragment>
+            <div className="d-inline-block white">
+                <Translate>
+                    {({ translate }) =>
+                        <Link to={commonConstants.LOGIN_PAGE_LINK} className="btn btn-link d-inline">{translate('public.links.login')}</Link>}
+                </Translate>
+            </div>                                
+            <div className="d-inline-block white">
+                <Translate>
+                    {({ translate }) =>
+                        <Link to={commonConstants.REGISTER_PAGE_LINK} className="btn btn-link d-inline">{translate('public.links.signup')}</Link>}
+                </Translate>
+            </div>
+        </React.Fragment>
+    
+
+    getContent = (isLoggedInRes) => {
+        const loc = this.props.location.pathname;
+        let content = this.publicHeader();
+        if(isLoggedInRes){
+            content = this.loggedHeader()
+        } else if (loc && loc.includes("add")) {
+            content = this.publicAddHeader();
+        } 
+
+        return content;
+    }
+
     render() {        
         const { username, password, submitted, title, isLoggedInRes } = this.state;
-        const content = isLoggedInRes ? this.loggedHeader() : this.publicHeader();
+        const content = this.getContent(isLoggedInRes);
         return (
-            <div id="main-header" className="row offset-10">
+            <div id="main-header" className="row">
                 <div className="col-md-3 header">
-                    <h3 className="white"><Link to="/"><img id="logo" src={'/images/rymlogo-main.png'}/></Link></h3>
+                    <h3 className="white"><Link to={commonConstants.HOME_PAGE_LINK}><img id="logo" src={'/images/rymlogo-main.png'}/></Link></h3>
                 </div>
 
                 <div className="col-md-9 down-35"> 
@@ -132,4 +163,4 @@ const mapDispatchToProps = {
     ...userActions
 };  
   
-export default connect(null, mapDispatchToProps)(PublicHeader);
+export default connect(null, mapDispatchToProps)(withRouter(PublicHeader));
