@@ -1,6 +1,6 @@
 import { userConstants } from '../../constants';
 import { userService } from '../../services';
-import { history, hasAuthKey, getAuthKey } from '../../helpers';
+import { history, hasAuthKey, getAuthKey, resetAuthKey } from '../../helpers';
 
 export const userActions = {
     login,
@@ -39,10 +39,14 @@ function isLoggedIn() {
             userService.validateAuthKey(getAuthKey())
                        .then(
                             res => {
+                                if(!res.data.data){
+                                    resetAuthKey();    
+                                }
                                 dispatch( isLoggedInResult(res) )
                             },
                             error => {
                                 console.log(`Error - ${error}`)
+                                resetAuthKey();
                                 dispatch( isLoggedInResult(false) )
                             })
         } else {

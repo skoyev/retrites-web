@@ -44,7 +44,7 @@ class Step3Item extends React.Component {
         let hasNameErrors = !( (isFieldTouched('name') === true && document.name.length > 4 && getFieldsError().name === undefined));
 
         // check document details error validation
-        let hasDetailsErrors = !( (isFieldTouched('details') === true && document.details.length >= 4 && getFieldsError().details === undefined));
+        let hasDetailsErrors = !( document && document.details && document.details.length >= 4 && getFieldsError().details === undefined );
 
         this.props.setIsNextStepValid(!hasNameErrors && 
                                         !hasDetailsErrors && 
@@ -117,7 +117,7 @@ class Step3Item extends React.Component {
             },
             fileList,
         }; 
-        const pic = selectedItem.document.picture;
+        const pic = selectedItem.document ? selectedItem.document.picture : "";
 
         return (
             <React.Fragment>

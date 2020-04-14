@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const RetreatPhotoAlbum = ({item}) => (
- <div style={{paddingBottom:'20px', borderBottom: '1px solid #c3c1c1'}}>
+ <div className="image" style={{paddingBottom:'20px'}}>
     <img src={item ? item.picture : ''}/>
 </div>
 );

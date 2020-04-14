@@ -195,7 +195,7 @@ class RetreateDetailPage extends React.Component {
                         }
                         </Translate>
                     </Header>                
-                    <Content className="top">
+                    <Content className="detail-content">
                         <Row>
                             <Col span={14}>
                                 <Row>

@@ -21,3 +21,19 @@
 .ant-layout-content {
     /*padding: 50px;*/
 }
+
+.image img{
+    max-height: 300px;
+}
+
+.detail-content {
+    padding: 150px 50px;    
+}
+
+.ant-tabs-tab {
+    margin-right: 8px !important;
+}
+
+.line-height{
+    line-height: 50px;
+}

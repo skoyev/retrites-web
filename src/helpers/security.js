@@ -8,3 +8,7 @@ export const hasAuthKey = () => {
 export const getAuthKey = () => {
     return hasAuthKey() ? sessionStorage.getItem(AUTH_KEY) : undefined;
 }
+
+export const resetAuthKey = () => {
+    sessionStorage.removeItem(AUTH_KEY);
+}

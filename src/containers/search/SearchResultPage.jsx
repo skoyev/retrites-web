@@ -211,7 +211,7 @@ class SearchResultPage extends React.Component {
                                selectedDuration={duration}                                 
                                handleBack={this.handleBack}/>
                 </Header>                
-                <Content>
+                <Content className="search-result-content">
                     <ItemList items={items} 
                               shouldHideLoadMore={shouldHideLoadMore} 
                               numItemsPerRow={numItemsPerRow}

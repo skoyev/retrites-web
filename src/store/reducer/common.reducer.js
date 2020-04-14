@@ -4,8 +4,8 @@ import moment from 'moment';
 const INITIAL_STATE = {
   categories: [],
   countries: [],
-  subCategories: [],
-  selectedItem: {document:{}, facilitators: [{}], events:[{from: moment().format('YYYY-MM-DD'), to: moment().add(1,'days').format('YYYY-MM-DD')}]},
+  subCategories: [],  
+  selectedItem: {accomodation: {}, document:{}, facilitators: [{}], events:[{duration:1, from: moment().format('YYYY-MM-DD'), to: moment().add(1,'days').format('YYYY-MM-DD')}]},
   isNextStepValid: false,
   fascilitatorTypes: []
 };

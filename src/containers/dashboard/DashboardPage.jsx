@@ -10,6 +10,7 @@ import Step2Item from '../../components/private/wizard/steps/step2';
 import Step3Item from '../../components/private/wizard/steps/step3';
 import Step4Item from '../../components/private/wizard/steps/step4';
 import Step5Item from '../../components/private/wizard/steps/step5';
+import Step6Item from '../../components/private/wizard/steps/step6';
 import Step7Item from '../../components/private/wizard/steps/step7';
 import { Button, Form, Input } from 'antd';
 import { connect } from 'react-redux';
@@ -94,6 +95,14 @@ class DashboardPage extends React.Component {
                         Form.create({ name: 'step5Item' })( Step5Item ), 
                         {
                             onRef:ref => (this.step5Item = ref)
+                        })
+                },
+                {
+                    title: 'Accomodation',
+                    content: React.createElement(
+                        Form.create({ name: 'step6Item' })( Step6Item ), 
+                        {
+                            onRef:ref => (this.step6Item = ref)
                         })
                 },
                 {
@@ -438,6 +447,8 @@ class DashboardPage extends React.Component {
             itemFormData.append('fascilitatorPicture', selectedItem.facilitators[0].picture);
         }
         itemFormData.append('facilitators', JSON.stringify(selectedItem.facilitators));
+        itemFormData.append('accomodation', JSON.stringify(selectedItem.accomodation));
+        itemFormData.append('accPicture', selectedItem.accomodation.picture);
         itemFormData.append('userId', this.props.user.id);
         itemFormData.append('events', JSON.stringify(selectedItem.events));
         itemFormData.append('city', selectedItem.city);
@@ -486,7 +497,7 @@ class DashboardPage extends React.Component {
                 {createItemTotalSteps &&
                     <Modal title={(selectedItem && selectedItem.id) ? "Modify Retreat" : "Create Retreat"}
                         visible={this.state.createEditItemModalVisible}
-                        width={950}
+                        width={1150}
                         onCancel={this.handleCreateItemCancel}
                         footer={[
                                 <Button key="cancel" onClick={this.handleCreateItemCancel}>Cancel</Button>,
