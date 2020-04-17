@@ -25,8 +25,8 @@ function fetchLeadSummary(){
     return fetch(`/leads/summary`, requestGetOptions);
 }
 
-function createLead(amenityID, name, email, details){
-    return axios.post(`/api/leads`, {amenityID, name, email, details});
+function createLead(itemId, name, email, details){
+    return axios.post(`/api/leads`, {itemId, name, email, details});
 }
 
 function deleteLead(id){

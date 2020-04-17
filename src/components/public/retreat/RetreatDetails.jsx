@@ -71,7 +71,16 @@ const RetreatDetails = ({item}) => (
         </TabPane>
 
         <TabPane tab="Accomodation" key="5">
-            Accomodation
+            <Row>
+                <Col span={4}>Description:</Col>
+                <Col span={10}>{item.accomodation.details}</Col>
+            </Row>
+            <Row>
+                <Col span={4}>Picture:</Col>
+                <Col span={10}>
+                    {item.accomodation.picture && <img src={item.accomodation.picture} style={{width:'60%'}}/>}
+                </Col>
+            </Row>
         </TabPane>
     </Tabs>
 </Row>
