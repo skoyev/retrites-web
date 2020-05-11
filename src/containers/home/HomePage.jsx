@@ -29,7 +29,6 @@ class HomePage extends React.Component {
         });        
 
         this.state = {
-            categoryId: 2,            
             selectedSubcategory: 'Retreat Type',    
             selectedSubcategoryId: 0,      
             retreatByTypeTitle: 'Find Retreat By Type',
@@ -73,9 +72,9 @@ class HomePage extends React.Component {
     }
 
     componentDidMount() {
-        const {categoryId, polularItemCount} = this.state;
+        const {polularItemCount} = this.state;
         // fetch popular
-        this.props.fetchPopularRedirectLoginIfNoData(categoryId, polularItemCount)
+        this.props.fetchPopularRedirectLoginIfNoData(polularItemCount)
             .then(() => window.scrollTo(0, 0))   
 
         // fetch countries for retrites

@@ -4,6 +4,7 @@ import { history, getAuthKey } from '../../helpers';
 
 export const itemActions = {
     fetchSummary,
+    fetchItemsByNameStatus,
     fetchUserAmenities,
     fetch,
     fetchPopularRedirectLoginIfNoData,
@@ -60,6 +61,22 @@ export function search(subCategoryID, duration, name, startDate, countryId, coun
         }).catch(error => {
             throw(error);
         });
+    }
+}
+
+/**
+ * Fetch items by name, status
+ * @param {*} name 
+ * @param {*} status 
+ */
+export function fetchItemsByNameStatus(name, status) {
+    return dispatch => {
+        return itemService.fetchItemsByNameStatus(name, status)
+                          .then(res => {
+                            dispatch(fetchItemsSuccess(res.data.items))    
+                          }).catch(error => {
+                            throw(error);
+                          });
     }
 }
 
@@ -301,9 +318,9 @@ export function fetchByID(id){
     }
 }
 
-export function fetchPopularRedirectLoginIfNoData(categoryId, count) {
+export function fetchPopularRedirectLoginIfNoData(count) {
     return dispatch => {
-        return itemService.loadPopularItems(categoryId, count).then(res => {
+        return itemService.loadPopularItems(count).then(res => {
             if(res.status === 200){
                 if(res.data.items.length > 0) {
                     dispatch(fetchItemsSuccess(res.data.items))    

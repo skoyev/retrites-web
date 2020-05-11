@@ -11,8 +11,14 @@ export const userService = {
     logout,
     register,
     validateAuthKey,
-    userSubscribe
+    userSubscribe,
+    isUserEmailAlreadyRegistered
 };
+
+function isUserEmailAlreadyRegistered(email){
+    let params = {email:email};
+    return axios.get(`/api/user/check-email`, {params:params});
+}
 
 function userSubscribe(data) {
     return axios.post(`/api/user/subscribe`, {email:data.email, name: data.name, catIds:data.catIds}, {});
@@ -38,8 +44,8 @@ function register(user) {
     return axios.post(`/api/user`, user);
 }
 
-function login(username, password) {
-    return axios.post('/api/auth/login', {username, password})
+function login(email, password, activateCode) {
+    return axios.post('/api/auth/login', {email, password, activateCode})
                 .then(u => {
                     //sessionStorage.setItem('user', JSON.stringify(u))
                     return u;

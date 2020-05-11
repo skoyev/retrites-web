@@ -7,7 +7,9 @@ const INITIAL_STATE = {
   subCategories: [],  
   selectedItem: {accomodation: {}, document:{}, facilitators: [{}], events:[{duration:1, from: moment().format('YYYY-MM-DD'), to: moment().add(1,'days').format('YYYY-MM-DD')}]},
   isNextStepValid: false,
-  fascilitatorTypes: []
+  fascilitatorTypes: [],
+  itemTypes: [],
+  leadStates: [{id:0, name:'ALL'}]
 };
 
 export function common(state = INITIAL_STATE, action) {
@@ -47,6 +49,12 @@ export function common(state = INITIAL_STATE, action) {
                 ...state,
                 isNextStepValid: action.isValid,
             }
+        case commonConstants.FETCH_ITEM_TYPES_SUCCESS:
+            action.data.splice(0, 0, {'id':0, 'name':'ALL'});
+            return {
+                ...state,
+                itemTypes: [... action.data],
+            }    
         case commonConstants.SET_SELECTED_ITEM_FIELD:
                 return {
                     ...state,

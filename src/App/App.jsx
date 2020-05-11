@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router,Route } from 'react-router-dom';
+import { Router,Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { PrivateRoute } from '../components/common/PrivateRoute';
 import { history } from '../helpers';
@@ -7,6 +7,7 @@ import { LocalizeProvider } from 'react-localize-redux';
 import './App.css'
 import { lazy, Suspense } from "react";
 import { Loading } from '../components/common';
+import "antd/dist/antd.css";
 
 const LazyDashboardComponent = lazy(() => import('../containers/dashboard/DashboardPage'));
 const LazyHomeComponent = lazy(() => import('../containers/home/HomePage'));
@@ -38,16 +39,17 @@ class App extends React.Component {
                 <LocalizeProvider>
                     <Router history={history}>                    
                         <div style={{height:'100%'}}>                         
-                            <PrivateRoute exact path="/dashboard" component={WaitingComponent(LazyDashboardComponent)} />
-                            <Route path="/home" component={WaitingComponent(LazyHomeComponent)} />
-                            <Route path="/login" component={WaitingComponent(LazyLogin)} />
-                            <Route path="/register" component={WaitingComponent(LazyRegisterPage)} />                        
-                            {/*<Route path="/new-retreate" component={WaitingComponent(LazyAddRetreatePage)} />*/}
-                            <Route path="/add" component={WaitingComponent(LazyAddNewRetreatPage)} />
-                            <Route path="/item/:itemID" component={WaitingComponent(LazyRetreateDetailPage)} />                        
-                            <Route path="/items" component={WaitingComponent(LazySearchResultPage)} />                        
-                            <Route path="/about" component={WaitingComponent(LazyAboutPage)} />                        
-                            <Route path="/" render={ history.push('/home')} />
+                                <PrivateRoute exact path="/dashboard" component={WaitingComponent(LazyDashboardComponent)} />
+                                <Route path="/home" exact component={WaitingComponent(LazyHomeComponent)} />
+                                <Route path="/login" component={WaitingComponent(LazyLogin)} />
+                                <Route path="/register" component={WaitingComponent(LazyRegisterPage)} />                        
+                                {/*<Route path="/new-retreate" component={WaitingComponent(LazyAddRetreatePage)} />*/}
+                                <Route path="/add" component={WaitingComponent(LazyAddNewRetreatPage)} />
+                                <Route path="/item/:itemID" component={WaitingComponent(LazyRetreateDetailPage)} />                        
+                                <Route path="/items" component={WaitingComponent(LazySearchResultPage)} />                        
+                                <Route path="/about" component={WaitingComponent(LazyAboutPage)} />                        
+                                {/*<Route path="/" render={ history.push('/home')} />*/}
+                                {/*<Redirect from={'/'} to={'/home'} />*/}
                         </div>                    
                     </Router>                
                 </LocalizeProvider>

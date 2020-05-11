@@ -20,19 +20,25 @@ export const itemService = {
     fetchCountries,
     search,
     fetchUserAmenities,
-    fetchSummary
+    fetchSummary,
+    fetchItemsByNameStatus
 };
 
 const ITEM_STATUS = {
-    CREATED: 'Created',
-    PUBLISHED: 'Published',
-    REJECTED: 'Rejected'
+    CREATED: 1,
+    PUBLISHED: 2,
+    REJECTED: 3
 };
 
 const requestOptions = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }        
 };
+
+function fetchItemsByNameStatus(name, statusID) {
+    let params = {status:statusID, name:name};
+    return axios.get('api/items', {params:params});
+}
 
 function fetchSummary(userID) {
     return axios.get(`/api/items/summary/owner/${userID}`);
@@ -42,8 +48,8 @@ function fetchUserAmenities(userID) {
     return axios.get(`/api/items/user/${userID}`);
 }
 
-function loadPopularItems(categoryId, count) {
-    return axios.get(`/api/items?categoryId=${categoryId}&popular=1&count=${count}&status=${ITEM_STATUS.PUBLISHED}`);
+function loadPopularItems(count) {
+    return axios.get(`/api/items?popular=1&count=${count}&status=${ITEM_STATUS.PUBLISHED}`);
 }
 
 function search(subCategoryID, duration, name, startDate, countryId, count, fromPrice, toPrice) {
@@ -88,7 +94,7 @@ function deleteItem(id, authKey) {
 
     const headers = {
         'Content-Type': 'application/json',
-        'auth_key': authKey
+        'x-auth-key': authKey
     }
 
     return axios.delete(`/api/items/${id}`,{headers:headers});
@@ -100,7 +106,7 @@ function updateItem(item, authKey) {
 
     const headers = {
         'Content-Type': 'application/json',
-        'auth_key': authKey
+        'x-auth-key': authKey
     }
     return axios.put(`/api/items/${item.get('id')}`, item, {headers: headers});
 }
@@ -112,7 +118,7 @@ function addItem(item, authKey){
     const headers = {
         //'Content-Type': 'application/json',
         'Content-Type': 'multipart/form-data',
-        'auth_key': authKey
+        'x-auth-key': authKey
     }
     return axios.post(`/api/items`, item, {headers: headers});
 }

@@ -1,4 +1,5 @@
-const AUTH_KEY = 'auth_key';
+export const AUTH_KEY = 'x-auth-key';
+export const USER_KEY = 'user';
 
 export const hasAuthKey = () => {
     const auth_key = sessionStorage.getItem(AUTH_KEY);
@@ -9,6 +10,16 @@ export const getAuthKey = () => {
     return hasAuthKey() ? sessionStorage.getItem(AUTH_KEY) : undefined;
 }
 
+export const setSessionData = (key, value) => {
+    sessionStorage.setItem(key, value);
+}
+
 export const resetAuthKey = () => {
     sessionStorage.removeItem(AUTH_KEY);
+}
+
+export const removeSessionAttribute = (key) => {
+    if(key){
+        sessionStorage.removeItem(key);
+    }
 }

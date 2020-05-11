@@ -7,21 +7,23 @@ export const commonService = {
     getAllCategories,
     getAllCountries,
     getFacilitatorTypes,
-    sendEmail
+    sendEmail,
+    fetchItemTypes
 };
 
-function sendEmail(amenityID, description) {
-    if(!amenityID || !description ){
+function fetchItemTypes() {
+    return axios.get(`${URL}/item-status`);
+}
+
+function sendEmail(itemId, details, name, email) {
+    if(!details ){
         console.error(`Wrong send email params`)
         return
     }
 
-    const headers = {
-        'Content-Type': 'application/json',
-        'auth_key': getAuthKey()
-    }
+    const headers = {'Content-Type': 'application/json'}
 
-    return axios.post(`/api/common/email`, {itemId:amenityID, content:description}, {headers: headers});
+    return axios.post(`/api/common/email`, {itemId, details, name, from: email}, {headers: headers});
 }
 
 function getAllSubcategories(){

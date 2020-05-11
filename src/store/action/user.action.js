@@ -1,6 +1,7 @@
 import { userConstants } from '../../constants';
 import { userService } from '../../services';
-import { history, hasAuthKey, getAuthKey, resetAuthKey } from '../../helpers';
+import { history, hasAuthKey, getAuthKey, resetAuthKey, setSessionData, 
+         AUTH_KEY, USER_KEY, removeSessionAttribute } from '../../helpers';
 
 export const userActions = {
     login,
@@ -8,7 +9,8 @@ export const userActions = {
     register,
     resetLogin,
     isLoggedIn,
-    userSubscribe
+    userSubscribe,
+    isUserEmailAlreadyRegistered
 };
 
 function request(user) { return { type: userConstants.LOGIN_REQUEST, user } }
@@ -18,6 +20,7 @@ function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
 
 function createUserSuccess(shouldRedirectHomePage) { return { type: userConstants.CREATE_USER_SUCCESS, shouldRedirectHomePage } }
 function createUserFailure(error) { return { type: userConstants.CREATE_USER_FAILURE, error } }
+function isUserEmailAlreadyRegisteredResult(result) { return { type: userConstants.IS_USER_ALREADY_REGISTERED, result } }
 
 function isLoggedInResult(isLoggedIn) { return { type: userConstants.IS_LOGGED_IN, isLoggedIn } }
 
@@ -28,6 +31,19 @@ function resetLogin(){
 function userSubscribe(data) {
     return dispatch => {
         return userService.userSubscribe(data).then(_=>dispatch(success_()));
+    }
+}
+
+/**
+ * Check is email already exist/taken
+ * @param {*} email 
+ */
+function isUserEmailAlreadyRegistered(email) {
+    return dispatch => {
+        userService.isUserEmailAlreadyRegistered(email)
+                   .then( res   => dispatch( isUserEmailAlreadyRegisteredResult(res.data.data) ),
+                          error => dispatch( isUserEmailAlreadyRegisteredResult(false) )
+                        )
     }
 }
 
@@ -55,15 +71,19 @@ function isLoggedIn() {
     }
 }
 
-function login(username, password) {    
+function login(email, password, activateCode) {    
     return dispatch => {
-        dispatch(request({ username }));
+        dispatch(request({ email }));
 
-        userService.login(username, password)
+        userService.login(email, password, activateCode)
             .then(
                 data => { 
-                    sessionStorage.setItem('user', JSON.stringify(data.data.data.user))
-                    sessionStorage.setItem('auth_key', data.data.data.auth_key)
+                    setSessionData(AUTH_KEY, data.data.data['x-auth-key'])
+                    setSessionData(USER_KEY, JSON.stringify(data.data.data.user))
+
+                    //sessionStorage.setItem('user', JSON.stringify(data.data.data.user))
+                    //sessionStorage.setItem('auth_key', data.data.data['x-auth-key'])
+
                     dispatch(success(data));
                 },
                 error => {
@@ -79,8 +99,12 @@ function logout() {
     //return { type: userConstants.LOGOUT }; 
     return dispatch => {
         userService.logout();
-        sessionStorage.removeItem('user');
-        sessionStorage.removeItem('auth_key');
+
+        removeSessionAttribute(AUTH_KEY);
+        removeSessionAttribute(USER_KEY);
+
+        //sessionStorage.removeItem('user');
+        //sessionStorage.removeItem('auth_key');
 
         const hasKey = hasAuthKey();
         dispatch( isLoggedInResult(hasKey) )

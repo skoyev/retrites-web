@@ -1,14 +1,18 @@
 import React from 'react';
-import { itemActions, userActions } from '../../../store/action';
+import { itemActions, userActions, commonActions } from '../../../store/action';
 import { connect } from 'react-redux'
 import { Translate } from "react-localize-redux";
 import { PublicHeader } from '../../../components/public';
-import { Row, Form, Input, Button } from 'antd';
+import { Row, Form, Input, Button, notification } from 'antd';
 import AppFooter from '../../../components/common/AppFooter';
 import './index.css';
 import JoinUs from '../../../components/common/join/JoinCommunity';
 import { commonConstants } from '../../../constants';
 import {withRouter, Link} from 'react-router-dom';
+import ReCAPTCHA from "react-google-recaptcha";
+import { configConstants } from '../../../constants';
+import { validateEmail } from '../../../helpers';
+
 
 const layout = {
     labelCol: { span: 8 },
@@ -16,24 +20,64 @@ const layout = {
   };
 
 const { TextArea } = Input;  
+
+window.recaptchaRef = React.createRef();
 class AddNewRetreatPage extends React.Component {
 
-    /*
     constructor(props) {
         super(props);
+        this.state = {
+            isCaptchaValid: false,
+            details: '',
+            name: '',
+            email: '',
+            isValid: false,
+            error: ''
+        }
     }
-    */
 
-    onFinish = values => {
-        console.log('Success:', values);
-    };
+    handleCaptchaOnChange = () => {
+        this.setState({isCaptchaValid: true}, () => this.validate())    
+    }
 
-    onFinishFailed = errorInfo => {
-     console.log('Failed:', errorInfo);
+    submitRequest = () => {
+        let {details, name, email} = this.state;
+        this.props.sendEmail(undefined,details, name, email);  
+        this.openNotification();
+
+        setTimeout(()=> {
+            this.props.history.push(`/home`);
+        },5000);
+    
+        window.recaptchaRef.current.reset();
+        this.setState({error: ''});    
+    }
+
+    handleChange = (e) => {
+        this.setState({[e.target.name] : e.target.value}, () => this.validate())        
+    }
+
+    validate = () => {
+        const {isCaptchaValid, name, email, details} = this.state;
+        let isValidEmail = validateEmail(email);
+        let isValid = isCaptchaValid && name.length > 0 && isValidEmail && details.length > 0;
+        this.setState({isValid:isValid})
+    }
+
+    openNotification = () => {
+        const args = {
+            message: 'Retreat Request',
+            description:
+                `Thank you for your request. We will get back to you withing 24 hours!`,
+            duration: 4,
+        };
+        notification.open(args);
     };    
-        
+
     render() {
         const { retreatByCountries } = this.props;        
+        const { isValid } = this.state;        
+
         return (            
         <React.Fragment>
             <Row className="section1">
@@ -75,27 +119,36 @@ class AddNewRetreatPage extends React.Component {
                     <h1>How Can We Help You</h1>
                     <Form
                         layout="vertical"
-                        className="contact-form"                        
-                        onFinish={this.onFinish}
-                        onFinishFailed={this.onFinishFailed}>
+                        className="contact-form">                       
                             <Form.Item label="Name"
                                        name="name"
                                        rules={[{ required: true, message: 'Please input your name!' }]}>
-                                <Input />
+                                <Input required name="name" onChange={this.handleChange}/>
                             </Form.Item>                
                             <Form.Item label="Email"
                                        name="email"
                                        rules={[{ required: true, message: 'Please input your email!' }]}>
-                                <Input />
+                                <Input required name="email" type="email" onChange={this.handleChange}/>
                             </Form.Item>                
                             <Form.Item label="Details"
                                        name="details"
                                        rules={[{ required: true, message: 'Please input your details!' }]}>
-                                <TextArea rows={5} name="details" />
+                                <TextArea required rows={5} name="details" onChange={this.handleChange}/>
                             </Form.Item>                
 
                             <Form.Item>
-                                <Button type="primary" htmlType="submit">Submit</Button>
+
+                            <Form.Item>
+                                <ReCAPTCHA
+                                    ref={window.recaptchaRef}
+                                    sitekey={configConstants.CAPTCHA_KEY}
+                                    onChange={this.handleCaptchaOnChange}/>                            
+                                </Form.Item>
+
+                            </Form.Item>
+
+                            <Form.Item>                                
+                                <Button disabled={isValid ? '' : 'disabled'} style={{float:'right'}} type="primary" onClick={this.submitRequest} htmlType="submit">Submit</Button>
                             </Form.Item>                            
                     </Form>
                 </div>
@@ -114,8 +167,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {    
-    ...itemActions, 
-    ...userActions
+    ...commonActions
 };
   
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AddNewRetreatPage));

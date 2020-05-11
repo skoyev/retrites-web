@@ -1,3 +1,11 @@
 .help-block, .error {
     color: #FF5733; 
   }
+
+#type > *:first-child {
+    width: 90%;
+}
+
+#type {
+  width: 100%;
+}

@@ -7,13 +7,24 @@ import {userActions} from '../../store/action'
 import { history } from '../../helpers';
 import '../style/Base.css'
 import './index.css'
+import { renderToStaticMarkup } from "react-dom/server";
+import globalTranslations from "../../translations/global.json";
 
 class LoginPage extends React.Component {
-    constructor(props) {
-        super(props);
+    
+    constructor(props, context) {
+        super(props, context);        
+        this.props.initialize({
+            languages: [
+                {name : "English", code: "en"},
+                {name : "French", code: "fr"}
+            ],
+            translation: globalTranslations,
+            options: { renderToStaticMarkup },
+        });        
 
         this.state = {
-            username: '',
+            email: '',
             password: '',
             submitted: false
         };
@@ -40,31 +51,32 @@ class LoginPage extends React.Component {
         e.preventDefault();
 
         this.setState({ submitted: true });
-        const { username, password } = this.state;
+        const { email, password } = this.state;
         const { login } = this.props;
-        if (username && password) {
-            //dispatch(userActions.login(username, password));
-            login(username, password);
+        const activateValues = this.props.location.search.split('activateCode=');
+
+        if (email && password) {
+            login(email, password, activateValues.length == 2 ? activateValues[1] : "");
         }
     }
 
     render() {
         const { error } = this.props;
-        const { username, password, submitted } = this.state;
+        const { email, password, submitted } = this.state;
         
         return (
-            <div className="container vertical-center">
-                <div className="row justify-content-center align-items-center new-retreate">
+            <div className="container center">                
+                <div className="row vertical justify-content-center align-items-center new-retreate">
                     <div className="col-4">
                         <div className="card">
                             <div className="card-body">
                                 <Translate>{({ translate }) =><h2>{translate("header.login")}</h2>}</Translate>
                                 <form name="form" onSubmit={this.handleSubmit}>
-                                    <div className={'form-group' + (submitted && !username ? ' has-error' : '')}>
-                                        <label htmlFor="username">Username</label>
-                                        <input type="text" className="form-control" name="username" value={username} onChange={this.handleChange} />
-                                        {submitted && !username &&
-                                            <div className="help-block">Username is required</div>
+                                    <div className={'form-group' + (submitted && !email ? ' has-error' : '')}>
+                                        <label htmlFor="email">Email</label>
+                                        <input type="email" className="form-control" name="email" value={email} onChange={this.handleChange} />
+                                        {submitted && !email &&
+                                            <div className="help-block">Email is required</div>
                                         }
                                     </div>
 

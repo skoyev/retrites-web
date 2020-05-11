@@ -25,7 +25,7 @@ const RetreatDetails = ({item}) => (
         <TabPane tab="Facilitators" key="3">
             {
                 item.facilitators.map(f => 
-                    <React.Fragment>
+                    <React.Fragment key={`${f.name}`}>
                         <Row>
                             <Col span={4}>Name:</Col>
                             <Col span={12}>{f.name}</Col>
@@ -36,7 +36,7 @@ const RetreatDetails = ({item}) => (
                         </Row>
                         <Row>
                             <Col span={4}>Photo:</Col>
-                            <Col span={16}><img src={f.picture}/></Col>
+                            <Col span={16}><img src={f.picture} width="200"/></Col>
                         </Row>
                     </React.Fragment>
                 )

@@ -249,6 +249,7 @@ class DashboardPage extends React.Component {
             case pageConstants.AMENITY_CONTENT:
                 return ([
                     <Aminity items={items} 
+                             key="aminity"
                              numItemsPerRow={6}
                              handleAminityDetails={this.handleAminityDetails} 
                              handleAminityDelete={this.handleAminityDelete} 
@@ -257,6 +258,7 @@ class DashboardPage extends React.Component {
             case pageConstants.LEADS_CONTENT:
                 return ([
                     <Leads items={leads} 
+                           key="leads"
                            handleLeadDelete={this.handleLeadDelete} 
                            handleLeadEdit={this.handleLeadEdit}/>
                 ]);
@@ -531,6 +533,7 @@ class DashboardPage extends React.Component {
                 {/* Dashboard View Details Lead Modal Window */}
                 <Modal
                         title="View Lead Details"
+                        key="leadsDetailsModal"
                         visible={this.state.viewLeadModalVisible}
                         footer={[
                             <Row>

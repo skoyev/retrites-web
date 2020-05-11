@@ -5,12 +5,18 @@ const INITIAL_STATE = {
   shouldRedirectHomePage: false,
   isLoggedIn: false,
   userRegisterError: '',
-  error: ''
+  error: '',
+  isUserAlreadyRegisteredEmail: false
 };
 
 export function users(state = INITIAL_STATE, action) {
     switch (action.type) {
-        case userConstants.IS_LOGGED_IN:
+      case userConstants.IS_USER_ALREADY_REGISTERED:
+        return {
+          ...state,
+          isUserAlreadyRegisteredEmail: action.result
+        };       
+      case userConstants.IS_LOGGED_IN:
           return {
             ...state,
             isLoggedIn: action.isLoggedIn

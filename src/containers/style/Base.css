@@ -9,3 +9,15 @@
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
   }
+
+  .center {
+    margin: auto;
+  }
+
+  .vertical {
+    position: relative;
+    top: 20%;
+    -webkit-transform: translateY(20%);
+    -ms-transform: translateY(20%);
+    transform: translateY(20%);
+  }

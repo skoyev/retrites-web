@@ -6,9 +6,11 @@ export const commonActions = {
     fetchCountries,
     fetchFacilitatorTypes,
     fetchSubCategories,
+    fetchItemTypes,
     addIntoStoreSelectedItem,
     setSelectedItemField,
-    setIsNextStepValid
+    setIsNextStepValid,
+    sendEmail
 };
 
 function success(type, data) { return { type: type, data } }
@@ -20,6 +22,36 @@ function addIntoStoreSelectedItem(item){
 
 function setIsNextStepValid(isValid){
     return {type: commonConstants.IS_NEXT_STEP_VALID, isValid}
+}
+
+function fetchItemTypes(){
+    return dispatch => {
+        commonService.fetchItemTypes()
+            .then(
+                res => { 
+                    dispatch(success(commonConstants.FETCH_ITEM_TYPES_SUCCESS, res.data.data));
+                },
+                error => {
+                    console.error(`There was an error while fetching item types - ${error}`)
+                    dispatch(failure(error));                    
+                }
+            );
+    };
+}
+
+function sendEmail(itemId, details, name, email) {
+    return dispatch => {
+        commonService.sendEmail(itemId, details, name, email)
+            .then(
+                res => { 
+                    dispatch(success(commonConstants.SEND_EMAIL_SUCCESS));
+                },
+                error => {
+                    console.error(`There was an error while sending an email - ${error}`)
+                    dispatch(failure(error));                    
+                }
+            );
+    };
 }
 
 function fetchFacilitatorTypes() {

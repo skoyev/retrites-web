@@ -6,7 +6,7 @@
     "header": {
       "newretrite": ["Add New Retreate","Add New Retreate Fr"],
       "login": ["Login", "Login Fr"],
-      "newuser": ["New User", "New User Fr"]
+      "newuser": ["Register New User", "Register New User Fr"]
     },
 
     "label": {
@@ -33,7 +33,9 @@
       "tibet":["Tibet",""],
       "goback":["Back",""],
       "massage":["Healing Massage Therapy",""],
-      "cleansing":["Body Cleansing Program",""]
+      "cleansing":["Body Cleansing Program",""],
+      "type":["Type", "Type Fr"],
+      "leadname": ["Lead Name", "Lead Name Fr"]
     },
 
     "button": {
@@ -42,7 +44,16 @@
       "login": ["Login", "Login Fr"],
       "search": ["Search", "Search Fr"],
       "go-back": ["Back", "Back Fr"],
-      "item": ["Item", "Item Fr"]
+      "item": ["Item", "Item Fr"],
+      "more": ["Load More", "Load More Fr"]
+    },
+
+    "dashboard": {
+      "total": ["Total", "Total Fr"],
+      "last_created_date": ["Last Created Date", "last_created_date fr"],
+      "last_requested_date": ["Last Requested Date", "last_requested_date fr"],
+      "total_visits": ["Total Visits", "total_visits fr"],
+      "last_visit_date": ["Last Visit Date", "last_visit_date fr"]
     },
   
     "public": {

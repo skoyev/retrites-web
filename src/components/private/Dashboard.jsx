@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types'
 import { Row, Col, Card, Icon } from 'antd';
 import { DatePicker } from 'antd';
+import { Translate } from "react-localize-redux";
 
 const { RangePicker } = DatePicker;
 
@@ -25,7 +26,7 @@ const Dashboard = ({amentities, leads, reports}) => {
                            {amentities && amentities.map((amentity, index) => (
                                 <Row key={index}>
                                     <Col span={15} style={{textAlign:'left'}}>              
-                                        {amentity.name}
+                                        <Translate>{({ translate }) =><span style={{fontWeight:'bold'}}>{translate(`dashboard.${amentity.name}`)}</span>}</Translate>
                                     </Col>
                                     <Col span={8}>              
                                         {amentity.value}
@@ -42,7 +43,7 @@ const Dashboard = ({amentities, leads, reports}) => {
                             {leads && leads.map((lead, index) => (
                                 <Row key={index}>
                                     <Col span={15} style={{textAlign:'left'}}>              
-                                        {lead.name}
+                                        <Translate>{({ translate }) =><span style={{fontWeight:'bold'}}>{translate(`dashboard.${lead.name}`)}</span>}</Translate>
                                     </Col>
                                     <Col span={8}>              
                                         {lead.value}
@@ -58,8 +59,8 @@ const Dashboard = ({amentities, leads, reports}) => {
                           style={{textAlign:'center'}}>
                             {reports && reports.map((report, index) => (
                                 <Row key={index}>
-                                    <Col span={15} style={{textAlign:'left'}}>              
-                                        {report.name}
+                                    <Col span={15} style={{textAlign:'left'}}>    
+                                        <Translate>{({ translate }) =><span style={{fontWeight:'bold'}}>{translate(`dashboard.${report.name}`)}</span>}</Translate>          
                                     </Col>
                                     <Col span={8}>              
                                         {report.value}

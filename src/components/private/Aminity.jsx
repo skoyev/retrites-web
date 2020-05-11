@@ -1,20 +1,71 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types'
-import { Row, Card, Icon } from 'antd';
+import { Row, Card, Icon, Input, Col, Menu, Dropdown } from 'antd';
 import { chunk } from '../../helpers/';
 import { withLocalize } from "react-localize-redux";
 import { Translate } from "react-localize-redux";
 import { connect } from 'react-redux';
-import { commonActions } from '../../store/action';
+import { commonActions, itemActions } from '../../store/action';
+import './style/Aminity.css'
+//import debounce from 'lodash.debounce';
 
-const Aminity = ({items, handleAminityDetails, handleAminityDelete, numItemsPerRow, selectedItem}) => {
+const typeMenu = (data, handleMenuClick, name) => {
+    return (
+        <Menu onClick={handleMenuClick}>
+            {data.map((d, index) => <Menu.Item data={data} name={name} key={index} id={d.id}>{d.name}</Menu.Item>)}            
+        </Menu>  
+    )
+}
+
+const WAIT_INTERVAL = 1500;
+
+const Aminity = props => {
+
+    let timer;
+    const {items, handleAminityDetails, handleAminityDelete, numItemsPerRow} = props;
+
+    let onChangeDebounced = () => {
+        props.fetchItemsByNameStatus(selectedItem, selectedType.id);
+    };
+                      
+    useEffect(()=> {
+        props.fetchItemTypes();
+        //this.props.onRef(this);   
+    }, []);
+
+    const [selectedItem, setSelectedItem] = useState('');
+    const [selectedType, setSelectedType] = useState({});   
+
+    useEffect(() => {
+        clearTimeout(timer);
+        timer = setTimeout(onChangeDebounced, WAIT_INTERVAL);
+    }, [selectedItem, selectedType]);    
+
     const itemsInRow = chunk(items, numItemsPerRow);
+    const {types} = props;
+
     return (
         <React.Fragment>
-            <Row style={{marginBottom: 20}}>
-                <div>
-                    <Translate>{({ translate }) =><button onClick={()=>handleAminityDetails(selectedItem)} className="btn btn-primary">+{translate("button.item")}</button>}</Translate>                                        
-                </div>
+            <Row className="search-row">
+                <Row>
+                    <Col span={2} className="label">
+                        <Translate>{({ translate }) => <span>{translate("label.name")}</span>}</Translate>                                        
+                    </Col>
+                    <Col span={4}>                        
+                        <Input onChange={(v) => setSelectedItem(v.target.value)}/>
+                    </Col>
+                    <Col span={2} className="label">
+                        <Translate>{({ translate }) => <span>{translate("label.type")}</span>}</Translate>                                        
+                    </Col>
+                    <Col span={4}>                        
+                        <Dropdown.Button id="type" overlay={typeMenu(types, (v) => setSelectedType(v.item.props.data[v.key]))}>
+                            <span>{selectedType.name}</span>
+                        </Dropdown.Button>
+                    </Col>
+                    <Col span={4}>
+                        <Translate>{({ translate }) =><button onClick={()=>handleAminityDetails(selectedItem)} className="btn btn-primary">{translate("button.item")}</button>}</Translate>                                        
+                    </Col>                    
+                </Row>
             </Row>
             {itemsInRow.map((items, index) => ( 
                 <Row key={index} style={{marginBottom: 20}}>
@@ -40,12 +91,14 @@ Aminity.propTypes = {
 }
 
 const mapDispatchToProps = { 
-    ...commonActions   
+    ...commonActions,
+    ...itemActions
 }; 
 
 function mapStateToProps(state) {
     return {
-        selectedItem: state.common.selectedItem
+        selectedItem: state.common.selectedItem,
+        types: state.common.itemTypes
     };
 }
 

@@ -1,0 +1,15 @@
+.search-row {
+    border-bottom: 1px solid #dedcdc;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+.label {
+    line-height: 2.4;
+    text-align: center;
+    font-weight: bold;
+}
+
+#type > *:first-child {
+    min-width: 120px;
+}
