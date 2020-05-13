@@ -1,6 +1,6 @@
 import React from 'react';
 import { Translate } from "react-localize-redux";
-import { itemActions, leadsActions } from '../../store/action';
+import { itemActions, leadsActions, userActions } from '../../store/action';
 import { connect } from 'react-redux';
 import { withLocalize } from "react-localize-redux";
 import RetreatDetails from '../../components/public/retreat/RetreatDetails';
@@ -76,6 +76,8 @@ class RetreateDetailPage extends React.Component {
             console.log('Item ID is null');
         }
 
+        // check if user logged in
+        this.props.isLoggedIn();
     }
 
     onBack(event){
@@ -211,12 +213,14 @@ class RetreateDetailPage extends React.Component {
                                 </Row>
                                 <Row>
                                     <RetreatBookSection item={item}
+                                                        isLoggedInRes={this.props.isLoggedInRes}
                                                         handleFormEmailChange={this.handleFormEmailChange}
                                                         handleFormNameChange={this.handleFormNameChange}                                    
                                                         handleSubmitBookNow={this.handleSubmitBookNow}
                                                         handleCaptchaOnChange={this.captchaOnChange}
                                                         isActiveBookNow={isCaptchaValid}
                                                         error={error}
+                                                        generalMessage="Please Login in order to submit your request."
                                                         handleFormDescriptionChange={this.handleFormDescriptionChange}/>
                                 </Row>   
                             </Col>
@@ -239,7 +243,8 @@ class RetreateDetailPage extends React.Component {
 
 const mapDispatchToProps = {    
     ...itemActions,
-    ...leadsActions
+    ...leadsActions,
+    ...userActions
 };  
 
 function mapStateToProps(state) {

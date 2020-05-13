@@ -39,6 +39,7 @@
     },
 
     "button": {
+      "submit": ["Submit","Submit Fr"],
       "create": ["Create","Create Fr"],
       "cancel": ["Cancel","Cancel Fr"],
       "login": ["Login", "Login Fr"],

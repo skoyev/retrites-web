@@ -20,6 +20,8 @@ import {pageConstants} from '../../constants';
 import './index.css'
 import moment from 'moment';
 import { history } from '../../helpers';
+import { renderToStaticMarkup } from "react-dom/server";
+import globalTranslations from "../../translations/global.json";
 
 const { Header, Content, Sider, Footer } = Layout;
 
@@ -36,6 +38,15 @@ class DashboardPage extends React.Component {
 
     constructor(props, context){
         super(props); 
+
+        this.props.initialize({
+            languages: [
+                {name : "English", code: "en"},
+                {name : "French", code: "fr"}
+            ],
+            translation: globalTranslations,
+            options: { renderToStaticMarkup },
+        });        
         
         //this.step1ItemRef = React.createRef();
         

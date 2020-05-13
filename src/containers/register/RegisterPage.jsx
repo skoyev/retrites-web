@@ -1,9 +1,10 @@
 import React from 'react';
 import { userActions, itemActions } from '../../store/action';
-import { Link } from 'react-router-dom';
-import { Menu, Dropdown } from 'antd';
+import { Link, withRouter } from 'react-router-dom';
+import { Menu, Dropdown, Button } from 'antd';
 import { connect } from 'react-redux'
 import { Translate } from "react-localize-redux";
+import { SimpleHeader } from '../../components/public';
 import '../style/RegisterPage.css'
 import { history } from '../../helpers';
 import '../style/Base.css'
@@ -72,9 +73,11 @@ class RegisterPage extends React.Component {
     }
 
     componentWillReceiveProps(nextProps){
+        /*
         if(nextProps.shouldRedirectHomePage) {            
             history.push('/home');
         }
+        */
     }    
 
     handleChange(event) {
@@ -151,6 +154,7 @@ class RegisterPage extends React.Component {
             user.password = AES.encrypt(user.password, commonConstants.SECRET_PASSPHRASE).toString();
             window.recaptchaRef.current.reset();
             register(user);
+            history.push('/home');
         }
     }   
     
@@ -185,7 +189,8 @@ class RegisterPage extends React.Component {
 
         return (
         <React.Fragment>
-            <div className="container center" style={{marginBottom: 25}}>
+            <SimpleHeader/>
+            <div className="container center" style={{marginTop: 25}}>
                 <div className="row justify-content-center align-items-center new-retreate">
                     <div className="col-4">
                         <div className="card">
@@ -250,9 +255,14 @@ class RegisterPage extends React.Component {
                                             sitekey={configConstants.CAPTCHA_KEY}
                                             onChange={this.handleCaptchaOnChange}/>                            
                                     </div>
-                                    <div className="form-group">                                    
-                                        <Link to="/home" className="btn btn-link">Cancel</Link>
-                                        <button className="btn" disabled={disabled}>Submit</button>                                    
+                                    <div className="form-group"> 
+                                        <Translate>
+                                            {({ translate }) =>
+                                                <Button className="d-inline" onClick={() => this.props.history.push(`/home`)} style={{marginRight:20}}>{translate('public.links.cancel')}</Button>}
+                                        </Translate>
+                                        <Translate>{({ translate }) =>
+                                                <Button htmlType="submit" disabled={disabled}>{translate("button.submit")}</Button>}
+                                        </Translate>                                                                                                              
                                     </div>
                                     {userRegisterError && userRegisterError.response && 
                                         <div className="form-group">
@@ -265,10 +275,6 @@ class RegisterPage extends React.Component {
                     </div>
                 </div>
             </div>
-
-            <AppFooter  title="@2020 Retreat Your Mind Inc." 
-                        countries={retreatByCountries}/>
-
         </React.Fragment>
         )
     }
@@ -289,4 +295,4 @@ const mapDispatchToProps = {
     ...itemActions
 };  
   
-export default withLocalize(connect(mapStateToProps, mapDispatchToProps)(RegisterPage));
+export default withLocalize(connect(mapStateToProps, mapDispatchToProps)(withRouter(RegisterPage)));

@@ -57,13 +57,13 @@ const Aminity = props => {
                     <Col span={2} className="label">
                         <Translate>{({ translate }) => <span>{translate("label.type")}</span>}</Translate>                                        
                     </Col>
-                    <Col span={4}>                        
+                    <Col span={4} span={4}>                        
                         <Dropdown.Button id="type" overlay={typeMenu(types, (v) => setSelectedType(v.item.props.data[v.key]))}>
                             <span>{selectedType.name}</span>
                         </Dropdown.Button>
                     </Col>
                     <Col span={4}>
-                        <Translate>{({ translate }) =><button onClick={()=>handleAminityDetails(selectedItem)} className="btn btn-primary">{translate("button.item")}</button>}</Translate>                                        
+                        <Translate>{({ translate }) =><button onClick={()=>handleAminityDetails(props.selectedItem)} className="btn btn-primary">{translate("button.item")}</button>}</Translate>                                        
                     </Col>                    
                 </Row>
             </Row>

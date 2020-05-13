@@ -1,6 +1,6 @@
 import React from 'react';
 import { Translate } from "react-localize-redux";
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withLocalize } from "react-localize-redux";
 import {userActions} from '../../store/action'
@@ -9,6 +9,8 @@ import '../style/Base.css'
 import './index.css'
 import { renderToStaticMarkup } from "react-dom/server";
 import globalTranslations from "../../translations/global.json";
+import { Button } from 'antd';
+import { SimpleHeader } from '../../components/public';
 
 class LoginPage extends React.Component {
     
@@ -63,53 +65,56 @@ class LoginPage extends React.Component {
     render() {
         const { error } = this.props;
         const { email, password, submitted } = this.state;
-        
+
         return (
-            <div className="container center">                
-                <div className="row vertical justify-content-center align-items-center new-retreate">
-                    <div className="col-4">
-                        <div className="card">
-                            <div className="card-body">
-                                <Translate>{({ translate }) =><h2>{translate("header.login")}</h2>}</Translate>
-                                <form name="form" onSubmit={this.handleSubmit}>
-                                    <div className={'form-group' + (submitted && !email ? ' has-error' : '')}>
-                                        <label htmlFor="email">Email</label>
-                                        <input type="email" className="form-control" name="email" value={email} onChange={this.handleChange} />
-                                        {submitted && !email &&
-                                            <div className="help-block">Email is required</div>
-                                        }
-                                    </div>
+            <React.Fragment>
+                <SimpleHeader/>
+                <div className="container center" style={{marginTop: 25}}>
+                    <div className="row vertical justify-content-center align-items-center new-retreate">
+                        <div className="col-4">
+                            <div className="card">
+                                <div className="card-body">
+                                    <Translate>{({ translate }) =><h2>{translate("header.login")}</h2>}</Translate>
+                                    <form name="form" onSubmit={this.handleSubmit}>
+                                        <div className={'form-group' + (submitted && !email ? ' has-error' : '')}>
+                                            <label htmlFor="email">Email</label>
+                                            <input type="email" className="form-control" name="email" value={email} onChange={this.handleChange} />
+                                            {submitted && !email &&
+                                                <div className="help-block">Email is required</div>
+                                            }
+                                        </div>
 
-                                    <div className={'form-group' + (submitted && !password ? ' has-error' : '')}>
-                                        <label htmlFor="password">Password</label>
-                                        <input type="password" className="form-control" name="password" value={password} onChange={this.handleChange} />
-                                        {submitted && !password &&
-                                            <div className="help-block">Password is required</div>
-                                        }
-                                    </div>
+                                        <div className={'form-group' + (submitted && !password ? ' has-error' : '')}>
+                                            <label htmlFor="password">Password</label>
+                                            <input type="password" className="form-control" name="password" value={password} onChange={this.handleChange} />
+                                            {submitted && !password &&
+                                                <div className="help-block">Password is required</div>
+                                            }
+                                        </div>
 
-                                    <div className="form-group">                                                                                    
-                                        <Translate>
-                                            {({ translate }) =>
-                                                <Link to="/home" className="btn btn-link d-inline">{translate('public.links.cancel')}</Link>}
-                                        </Translate>
-                                        <Translate>{({ translate }) =><button className="btn btn-primary">{translate("button.login")}</button>}</Translate>                                        
-                                    </div>
-                                    <div className="form-group">
-                                        <Translate>
-                                            {({ translate }) =>
-                                                <Link to="/register" className="btn btn-link d-inline">{translate('public.links.signup')}</Link>}
-                                        </Translate>                         
-                                    </div>
-                                    <div className="form-group">                                            
-                                        <span className="error">{error}</span>
-                                    </div>
-                                </form>
+                                        <div className="form-group">                                                                                    
+                                            <Translate>
+                                                {({ translate }) =>
+                                                    <Button className="d-inline" onClick={() => this.props.history.push(`/home`)} style={{marginRight:20}}>{translate('public.links.cancel')}</Button>}
+                                            </Translate>
+                                            <Translate>{({ translate }) =><Button htmlType="submit">{translate("button.login")}</Button>}</Translate>                                        
+                                        </div>
+                                        <div className="form-group">
+                                            <Translate>
+                                                {({ translate }) =>
+                                                    <Link to="/register" className="btn btn-link d-inline">{translate('public.links.signup')}</Link>}
+                                            </Translate>                         
+                                        </div>
+                                        <div className="form-group">                                            
+                                            <span className="error">{error}</span>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </React.Fragment>
         )
     }
 }
@@ -125,4 +130,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default withLocalize(connect(mapStateToProps, mapDispatchToProps)(LoginPage));
+export default withLocalize(connect(mapStateToProps, mapDispatchToProps)(withRouter(LoginPage)));

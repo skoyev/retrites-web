@@ -28,7 +28,7 @@ function validateAuthKey(authKey) {
     if(authKey){
         const headers = {
             'Content-Type': 'application/json',
-            'auth_key': authKey
+            'x-auth-key': authKey
         }
         return axios.post(`/api/auth/authKey`, {}, {
             headers: headers

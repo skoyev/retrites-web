@@ -23,6 +23,7 @@ class SimpleHeader extends React.Component {
     publicHeader = () => {
         return (
         <React.Fragment>
+            {/*
             <div className={"d-inline-block white"}>
                 <Translate>
                     {({ translate }) =>
@@ -40,25 +41,7 @@ class SimpleHeader extends React.Component {
                     {({ translate }) =>
                         <Link to="/register" className="btn btn-link d-inline">{translate('public.links.signup')}</Link>}
                 </Translate>
-            </div>
-        </React.Fragment>
-    )}
-
-    loggedHeader = () => {
-        return (
-        <React.Fragment>
-            <div className={"d-inline-block"}>
-                <Translate>
-                    {({ translate }) =>
-                        <Link to="/dashboard" className="btn btn-link d-inline">{translate('public.links.dashboard')}</Link>}
-                </Translate>
-            </div>
-            <div className="d-inline-block">
-                <Translate>
-                    {({ translate }) =>
-                        <Button onClick={() => this.props.handleLogoutClick()} type="link">{translate('public.links.signout')}</Button>}
-                </Translate>
-            </div>
+            </div> */}
         </React.Fragment>
     )}
 

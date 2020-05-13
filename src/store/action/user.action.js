@@ -58,7 +58,7 @@ function isLoggedIn() {
                                 if(!res.data.data){
                                     resetAuthKey();    
                                 }
-                                dispatch( isLoggedInResult(res) )
+                                dispatch( isLoggedInResult(res.data.data) )
                             },
                             error => {
                                 console.log(`Error - ${error}`)
