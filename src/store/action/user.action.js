@@ -1,4 +1,4 @@
-import { userConstants } from '../../constants';
+import { userConstants, commonConstants } from '../../constants';
 import { userService } from '../../services';
 import { history, hasAuthKey, getAuthKey, resetAuthKey, setSessionData, 
          AUTH_KEY, USER_KEY, removeSessionAttribute } from '../../helpers';
@@ -15,6 +15,7 @@ export const userActions = {
 
 function request(user) { return { type: userConstants.LOGIN_REQUEST, user } }
 function success(user) { return { type: userConstants.LOGIN_SUCCESS, user } }
+function loading(isLoading) { return { type: commonConstants.IS_LOADING_SUCCESS, isLoading } }
 function success_() { return { type: userConstants.SUCCESS } }
 function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
 
@@ -73,6 +74,7 @@ function isLoggedIn() {
 
 function login(email, password, activateCode) {    
     return dispatch => {
+        dispatch(loading(true));
         dispatch(request({ email }));
 
         userService.login(email, password, activateCode)
@@ -85,9 +87,11 @@ function login(email, password, activateCode) {
                     //sessionStorage.setItem('auth_key', data.data.data['x-auth-key'])
 
                     dispatch(success(data));
+                    dispatch(loading(false));
                 },
                 error => {
                     dispatch(failure(error.response.data.data));                    
+                    dispatch(loading(false));
                 }
             );
     };

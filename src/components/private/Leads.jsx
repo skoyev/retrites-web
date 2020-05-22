@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types'
-import { Row, Table, Icon, Divider, Col, Input, Dropdown, Menu } from 'antd';
+import { Row, Table, Divider, Col, Input, Dropdown, Menu, Icon } from 'antd';
+//import Icon from '@ant-design/icons';
 import moment from 'moment';
 import { Translate } from "react-localize-redux";
 import { connect } from 'react-redux';

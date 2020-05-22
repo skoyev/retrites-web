@@ -5,8 +5,9 @@ import { userActions } from '../../store/action';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { history } from '../../helpers';
-import { Icon, Row, Col } from 'antd';
+import { Row, Col, Icon } from 'antd';
 import './style/PrivateHeader.css';
+//import Icon from '@ant-design/icons';
 
 class PrivateHeader extends React.Component {
 
@@ -28,7 +29,7 @@ class PrivateHeader extends React.Component {
             <div className="col-md-12"> 
                 <Row>
                     <Col span={16}></Col>
-                    <Col span={6}>{user && <span>Welcome, {`${user.firstName} ${user.lastName}`}</span>}</Col>
+                    <Col span={6} className="right">{user && <span>Welcome, {`${user.firstName} ${user.lastName}`}</span>}</Col>
                     <Col span={2}><button className="btn btn-primary custom-button left-space" onClick={this.props.handleMenu}><Icon type="menu" /></button></Col>
                 </Row> 
             </div>

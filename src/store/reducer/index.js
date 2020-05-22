@@ -7,6 +7,7 @@ import { report } from "./report.reducer";
 import { page }  from "./page.reducer";
 import { summary }  from "./summary.reducer";
 import { common }  from "./common.reducer";
+import { message }  from "./message.reducer";
 
 const rootReducer = combineReducers({
   users,
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
   report,
   page,
   summary,
-  common
+  common,
+  message
 });
 
 export default rootReducer;

@@ -9,11 +9,18 @@ const INITIAL_STATE = {
   isNextStepValid: false,
   fascilitatorTypes: [],
   itemTypes: [],
-  leadStates: [{id:0, name:'ALL'}]
+  leadStates: [{id:0, name:'ALL'}],
+  isLoading: false,
+  messageStates: [{id: 1, name: 'All'}, {id: 2, name: 'Unread'}]
 };
 
 export function common(state = INITIAL_STATE, action) {
     switch (action.type) {
+        case commonConstants.IS_LOADING_SUCCESS:
+            return {
+                ...state,
+                isLoading: action.isLoading
+            };             
         case commonConstants.FETCH_CATEGORIES_SUCCESS:
             return {
                 ...state,

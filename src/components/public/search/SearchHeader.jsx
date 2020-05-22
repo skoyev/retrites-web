@@ -15,7 +15,8 @@ const loggedInHeader = (handleLogoutClick) => (
         <div className="d-inline-block">
             <Translate>
                 {({ translate }) =>
-                    <Button onClick={handleLogoutClick} type="link">{translate('public.links.signout')}</Button>}
+                    <Link to="/home" onClick={handleLogoutClick} className="btn btn-link d-inline">{translate('public.links.signout')}</Link>
+                }
             </Translate>
         </div>
     </React.Fragment>

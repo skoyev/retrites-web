@@ -3,7 +3,7 @@ import PrivateHeader from '../../components/private/PrivateHeader';
 import { Row, Layout, Icon, Modal, Drawer, Steps } from 'antd';
 import '../style/DashboardPage.css';
 import DashboardMenu from '../../components/private/DashboardMenu';
-import {Aminity, Leads, Report, Dashboard} from '../../components/private';
+import {Aminity, Leads, Report, Dashboard, Message, MessageDetails} from '../../components/private';
 import AmenityWizard from '../../components/private/wizard';
 import Step1Item from '../../components/private/wizard/steps/step1';
 import Step2Item from '../../components/private/wizard/steps/step2';
@@ -54,6 +54,8 @@ class DashboardPage extends React.Component {
             itemType: 'retrite',
             collapsed: false,
             createItemWizardStep: 0,
+            messageId: 0,
+            messagePageNum: 0,
             // Modal windows
             createEditCustomerModalVisible: false,
             deleteItemModalVisible: false,
@@ -131,7 +133,7 @@ class DashboardPage extends React.Component {
             
             menuContentCmps: [
                 //{name:'view-amentities', component: Aminity, params: {items: items, handleAminityDetails: this.handleAminityDetails, shouldUpdateChild:this.shouldUpdateChild, ref:this.child}},
-                {name:pageConstants.AMENITY_CONTENT}, {name:pageConstants.LEADS_CONTENT}, {name:pageConstants.STATISTIC_CONTENT},{name:pageConstants.DASHBOARD_CONTENT}
+                {name: pageConstants.MESSAGE_CONTENT}, {name:pageConstants.AMENITY_CONTENT}, {name:pageConstants.LEADS_CONTENT}, {name:pageConstants.STATISTIC_CONTENT},{name:pageConstants.DASHBOARD_CONTENT}
             ]    
         }
         this.handleClickMenu = this.handleClickMenu.bind(this);
@@ -156,7 +158,7 @@ class DashboardPage extends React.Component {
     
     loadData() {
         const { user } = this.props;
-        const { selectedContentName } = this.state;
+        const { selectedContentName, messageId } = this.state;
 
         if(!user){
             console.warn('User is null...')
@@ -164,6 +166,10 @@ class DashboardPage extends React.Component {
         }
         
         switch(selectedContentName){
+            case pageConstants.MESSAGE_DETAILS_CONTENT:
+                // load user mesages        
+                //this.props.fetchUserAmenities(user.id);   
+                break;
             case pageConstants.AMENITY_CONTENT:
                 // load all user amentities        
                 this.props.fetchUserAmenities(user.id);   
@@ -234,7 +240,7 @@ class DashboardPage extends React.Component {
     
     handleClickMenu = (e) => {
         let foundCmd = this.state.menuContentCmps.find(
-            c => (e.key.length > 1 && c.name.trim() === e.key.trim())
+            c => (e.length > 1 && c.name.trim() === e.trim())
         );
             
         if(foundCmd) {  
@@ -252,11 +258,32 @@ class DashboardPage extends React.Component {
         this.setState({createEditItem:createEditItem})
     }
 
+    handleViewMessage = (val) => {
+        this.setState({selectedContentName: pageConstants.MESSAGE_DETAILS_CONTENT, messageId: val.id, pageNum: val.pageNum})
+    }
+
+    backToMessageFromDetails = () => {
+        this.setState({selectedContentName: pageConstants.MESSAGE_CONTENT})
+    }
+
     renderSwitchPage(){
-        const { selectedContentName } = this.state;
-        const {items, leads, summaryItem, summaryLeads, summaryReports} = this.props; 
+        const { selectedContentName, messageId, pageNum } = this.state;
+        const {items, leads, summaryItem, summaryLeads, summaryReports, user} = this.props; 
 
         switch(selectedContentName){
+            case pageConstants.MESSAGE_DETAILS_CONTENT:
+                return ([
+                    <MessageDetails 
+                             backToMessageFromDetails={this.backToMessageFromDetails}
+                             key="message-details"/>
+                ]);
+            case pageConstants.MESSAGE_CONTENT:
+                return ([
+                    <Message ref={this.child} 
+                             handleViewMessage={this.handleViewMessage}
+                             messagePageNum={pageNum}
+                             key="message"/>
+                ]);
             case pageConstants.AMENITY_CONTENT:
                 return ([
                     <Aminity items={items} 
@@ -275,7 +302,7 @@ class DashboardPage extends React.Component {
                 ]);
             case pageConstants.STATISTIC_CONTENT:
                 return ([
-                    <Report/>
+                    <Report key="report"/>
                 ]);
             case pageConstants.DASHBOARD_CONTENT:
                 return ([
@@ -286,7 +313,7 @@ class DashboardPage extends React.Component {
                 ]);
             default:
                 return ([
-                    <Dashboard/>
+                    <Dashboard key="dashboard-default"/>
                 ]);
         }
     }
@@ -484,12 +511,12 @@ class DashboardPage extends React.Component {
     render() {
         const { createEditItem, lead, createItemWizardStep, createItemSteps: createItemTotalSteps, isValidNext } = this.state;
         //const { TextArea } = Input;        
-        const {selectedItem} = this.props;
+        const {selectedItem, user} = this.props;
 
         return (
             <Layout style={{height:'100%'}}>
                 <Sider style={{marginRight: 5}}>
-                    <DashboardMenu handleClickMenu = {this.handleClickMenu}/>
+                    <DashboardMenu handleClickMenu = {this.handleClickMenu} user={user}/>
                 </Sider>
 
                 <Layout>
@@ -498,7 +525,7 @@ class DashboardPage extends React.Component {
                     </Header>
 
                     <Content className="ant-layout-content-override" style={{overflowY:'scroll'}}>
-                        {this.renderSwitchPage()}
+                        {user && this.renderSwitchPage()}
                     </Content>
 
                     <Footer style={{backgroundColor:'#c5c4c4', marginTop:10}}>

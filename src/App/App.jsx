@@ -39,7 +39,7 @@ class App extends React.Component {
                 <LocalizeProvider>
                     <Router history={history}>                    
                         <div style={{height:'100%'}}>                         
-                                <PrivateRoute exact path="/dashboard" component={WaitingComponent(LazyDashboardComponent)} />
+                                <PrivateRoute path="/dashboard" component={WaitingComponent(LazyDashboardComponent)} />
                                 <Route path="/home" exact component={WaitingComponent(LazyHomeComponent)} />
                                 <Route path="/login" component={WaitingComponent(LazyLogin)} />
                                 <Route path="/register" component={WaitingComponent(LazyRegisterPage)} />                        

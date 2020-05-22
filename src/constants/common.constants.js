@@ -9,6 +9,7 @@ export const commonConstants = {
     FETCH_FASCILITATOR_TYPES_SUCCESS: 'FETCH_FASCILITATOR_TYPES_SUCCESS',
     SEND_EMAIL_SUCCESS: 'SEND_EMAIL_SUCCESS',
     FETCH_ITEM_TYPES_SUCCESS: 'FETCH_ITEM_TYPES_SUCCESS',
+    IS_LOADING_SUCCESS: 'IS_LOADING_SUCCESS',
     
     ADD: 'ADD',
     SIGN_UP: 'SIGN_UP',
@@ -21,5 +22,12 @@ export const commonConstants = {
     ITEMS_PAGE_LINK: '/items',
     ABOUT_PAGE_LINK: '/about',
     DASHBOARD_PAGE_LINK: '/dashboard',
-    SECRET_PASSPHRASE: 'love'
+    SECRET_PASSPHRASE: 'love',
+
+    PUBLIC_USER_ROLE: 'public',
+    OWNER_USER_ROLE: 'owner',
+    PUBLIC_USER_ROLE_MENU: [{name: 'Dashboard', type: 'dashboard', index: 'view-dashboard'}, {name: 'Messages', type: 'user', index: 'view-messages'}],
+    OWNER_USER_ROLE_MENU: [{name: 'Dashboard', type: 'dashboard', index: 'view-dashboard'}, {name: 'Amentities', type: 'laptop', index: 'view-amentities'}, {name: 'Messages', type: 'user', index: 'view-messages'}, {name: 'Statistics/Activity', type: 'notification', index: 'view-report'}],
+    ADMIN_USER_ROLE_MENU: [{name: 'Users', type: 'user', index: 'view-users'}, {name: 'Items', type: 'laptop', index: 'view-items'}],
+    USER_ROLES: [{id:1, name:'Search And Attend Event(s)', role: 'public'}, {id:2, name:'Host Event(s)', role: 'owner'}]
 };

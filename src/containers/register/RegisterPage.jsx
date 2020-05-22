@@ -12,7 +12,6 @@ import { withLocalize } from "react-localize-redux";
 import ReCAPTCHA from "react-google-recaptcha";
 import { configConstants, commonConstants } from '../../constants';
 import AES from 'crypto-js/aes';
-import AppFooter from '../../components/common/AppFooter';
 import { renderToStaticMarkup } from "react-dom/server";
 import globalTranslations from "../../translations/global.json";
 
@@ -282,7 +281,7 @@ class RegisterPage extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        types: [{id:1, name:'Host Event(s)'}, {id:2, name:'Search And Attend Event(s)'}],
+        types: commonConstants.USER_ROLES,
         userRegisterError: state.users.userRegisterError,
         shouldRedirectHomePage: state.users.shouldRedirectHomePage,
         isUserAlreadyRegisteredEmail: state.users.isUserAlreadyRegisteredEmail,

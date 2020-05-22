@@ -1,4 +1,4 @@
-import {itemConstants, pageConstants} from '../../constants';
+import {itemConstants, pageConstants, commonConstants} from '../../constants';
 import { itemService } from '../../services';
 import { history, getAuthKey } from '../../helpers';
 
@@ -28,6 +28,8 @@ export const itemActions = {
     getCountrieFromStore
 };
 
+function loading(isLoading) { return { type: commonConstants.IS_LOADING_SUCCESS, isLoading } }
+
 export function getCountrieFromStore() {
     return { type: pageConstants.GET_COUNTRIES}
 }
@@ -56,7 +58,9 @@ export function fetchSummary(userID) {
  */
 export function search(subCategoryID, duration, name, startDate, countryId, count, fromPrice, toPrice) {
     return dispatch => {
+        dispatch(loading(true));
         return itemService.search(subCategoryID, duration, name, startDate, countryId, count, fromPrice, toPrice).then(res => {
+            dispatch(loading(false));
             dispatch(fetchItemsSuccess(res.data.items))    
         }).catch(error => {
             throw(error);
@@ -71,10 +75,13 @@ export function search(subCategoryID, duration, name, startDate, countryId, coun
  */
 export function fetchItemsByNameStatus(name, status) {
     return dispatch => {
+        dispatch(loading(true));
         return itemService.fetchItemsByNameStatus(name, status)
                           .then(res => {
                             dispatch(fetchItemsSuccess(res.data.items))    
+                            dispatch(loading(false));
                           }).catch(error => {
+                            dispatch(loading(false));
                             throw(error);
                           });
     }
@@ -85,10 +92,13 @@ export function fetchItemsByNameStatus(name, status) {
  */
 export function fetchUserAmenities(userID) {
     return dispatch => {
+        dispatch(loading(true));
         return itemService.fetchUserAmenities(userID)
                           .then(res => {
+                            dispatch(loading(false));
                             dispatch(fetchItemsSuccess(res.data.items))    
                           }).catch(error => {
+                            dispatch(loading(false));
                             throw(error);
                           });
     }
@@ -106,6 +116,7 @@ export function fetchCountries() {
 
 export function fetchSearchRetreatTypes(categoryId) {
     return dispatch => {
+        dispatch(loading(true));
         return itemService.fetchRetreatTypes(categoryId).then(res => {
             dispatch(fetchRetreatTypesSuccess(res.data.data))    
         }).catch(error => {
@@ -131,8 +142,10 @@ export function fetchRetreatSubCategories() {
 
 export function fetchRetreatByCountries() {
     return dispatch => {
+        dispatch(loading(true));
         return itemService.fetchRetreatByCountries().then(res => {
             //dispatch(fetchRetreatByCountriesSuccess(res.retreatByCountries))    
+            dispatch(loading(false));
             dispatch(fetchRetreatByCountriesSuccess(res.data.data))    
         }).catch(error => {
             throw(error);
@@ -142,7 +155,9 @@ export function fetchRetreatByCountries() {
 
 export function fetchAmenitySummary() {
     return dispatch => {
+        dispatch(loading(true));
         return itemService.fetchAmenitySummary().then(res => {
+            dispatch(loading(false));
             dispatch(fetchAmenitySummarySuccess(res.amenitySummary))    
         }).catch(error => {
             throw(error);
@@ -250,6 +265,7 @@ function updateItemsSuccess(item){
 export function deleteItem(id) {
     return dispatch => {
         let authKey = getAuthKey();
+        dispatch(loading(true));
         return itemService.deleteItem(id, authKey)
                           .then(res => {
                               if(res.status === 200){
@@ -257,9 +273,11 @@ export function deleteItem(id) {
                               } else {
                                   console.error(res);
                               }
+                              dispatch(loading(false));
                         }).catch(error => {
                             console.error(error);
                             dispatch(deleteItemsFail(error));
+                            dispatch(loading(false));
                         });
     }
 }
@@ -271,6 +289,7 @@ export function deleteItem(id) {
 export function createItem(item, userId) {
     return dispatch => {
         let authKey = getAuthKey();
+        dispatch(loading(true));
         return itemService.addItem(item, authKey).then(res => {
             if(res.status === 200 || res.status === 201){
                 if(userId){
@@ -278,13 +297,15 @@ export function createItem(item, userId) {
                     dispatch(fetchUserAmenities(userId))
                 } else {
                     dispatch(addItemsSuccess(item))    
-                }
+                }                
             } else {
                 throw('Error while create a new item.');
             }
+            dispatch(loading(false));
         }).catch(error => {
             throw(error);
-            //dispatch(addItemsFail(erro));    
+            //dispatch(addItemsFail(erro));  
+            dispatch(loading(false));  
         });
     }
 }
@@ -296,21 +317,26 @@ export function createItem(item, userId) {
 export function updateItem(item) {
     return dispatch => {
         let authKey = getAuthKey();
+        dispatch(loading(true));
         return itemService.updateItem(item, authKey).then(res => {
             if(res.status === 200){
                 dispatch(updateItemsSuccess(item))    
             } else {
                 throw('Error while update item.');
             }
+            dispatch(loading(false));
         }).catch(error => {
             throw(error);
+            dispatch(loading(false));
         });
     }
 }
 
 export function fetchByID(id){
     return dispatch => {
+        dispatch(loading(true));
         return itemService.loadItemByID(id).then(res => {
+                dispatch(loading(false));
                 dispatch(fetchItemSuccess(res.data.item))    
         }).catch(error => {
             throw(error);
@@ -320,6 +346,7 @@ export function fetchByID(id){
 
 export function fetchPopularRedirectLoginIfNoData(count) {
     return dispatch => {
+        dispatch(loading(true));
         return itemService.loadPopularItems(count).then(res => {
             if(res.status === 200){
                 if(res.data.items.length > 0) {
@@ -330,6 +357,7 @@ export function fetchPopularRedirectLoginIfNoData(count) {
             } else {
                 throw('No data');
             }
+            dispatch(loading(false));
         }).catch(error => {
             throw(error);
         });
@@ -338,12 +366,14 @@ export function fetchPopularRedirectLoginIfNoData(count) {
 
 export function fetch(categoryId) {
     return dispatch => {
+        dispatch(loading(true));
         return itemService.loadItems(categoryId).then(res => {
             if(res.status === 200){
                 dispatch(fetchItemsSuccess(res.data.items))    
             } else {
                 throw('No data');
             }
+            dispatch(loading(false));
         }).catch(error => {
             throw(error);
         });

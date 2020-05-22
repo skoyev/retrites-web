@@ -10,7 +10,9 @@
     },
 
     "label": {
+      "back": ["Back", "Back Fr"],
       "name": ["Name", "Name Fr"],
+      "status": ["Status", "Status Fr"],
       "details": ["Details", "Details Fr"],
       "description": ["Description", "Description Fr"],
       "price": ["Price", "price Fr"],
@@ -71,15 +73,16 @@
         "slider1": ["Host Retreats? Find participants on Retreat Guru", "Host Retreats? Find participants on Retreat Guru Fr"]
       },
       "links": {
-        "addretreate": ["ADD RETREATE", "ADD RETREATE FR"],
-        "signup": ["SIGN UP","SIGN UP Fr"],
-        "login": ["LOGIN", "LOGIN FR"],
-        "signout": ["LOGOUT", "LOGOUT FR"],
-        "dashboard": ["DASHBOARD", "DASHBOARD FR"],
+        "addretreate": ["Add Retreat", "ADD RETREATE FR"],
+        "signup": ["Sign Up","Sign Up Fr"],
+        "login": ["Login", "Login FR"],
+        "signout": ["Logout", "Logout FR"],
+        "dashboard": ["Dashboard", "Dashboard FR"],
         "cancel": ["Cancel", "Cancel FR"],
         "join": ["Join Our Retreat Community", "Join Our Community FR"],
         "login_community": ["Login Into Retreat Community", "Login Into Retreat Community FR"],
-        "subscribe": ["SUBSCRIBE", "SUBSCRIBE FR"]
+        "subscribe": ["SUBSCRIBE", "SUBSCRIBE FR"],
+        "forgot": ["Forgot Password", "Forgot Password FR"]
       }
     }
   }

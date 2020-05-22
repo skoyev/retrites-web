@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types'
-import { Row, Card, Icon, Input, Col, Menu, Dropdown } from 'antd';
+import { Row, Card, Input, Col, Menu, Dropdown, Icon } from 'antd';
+//import Icon from '@ant-design/icons';
 import { chunk } from '../../helpers/';
 import { withLocalize } from "react-localize-redux";
 import { Translate } from "react-localize-redux";
 import { connect } from 'react-redux';
 import { commonActions, itemActions } from '../../store/action';
+import { Loader } from '../common';
 import './style/Aminity.css'
 //import debounce from 'lodash.debounce';
 
@@ -42,7 +44,7 @@ const Aminity = props => {
     }, [selectedItem, selectedType]);    
 
     const itemsInRow = chunk(items, numItemsPerRow);
-    const {types} = props;
+    const {types, isLoading} = props;
 
     return (
         <React.Fragment>
@@ -79,6 +81,9 @@ const Aminity = props => {
                      ))}
                 </Row>
             ))}
+            {
+                isLoading && <Loader text=""/>
+            }
         </React.Fragment>
     )
 }
@@ -98,7 +103,8 @@ const mapDispatchToProps = {
 function mapStateToProps(state) {
     return {
         selectedItem: state.common.selectedItem,
-        types: state.common.itemTypes
+        types: state.common.itemTypes,
+        isLoading: state.common.isLoading
     };
 }
 

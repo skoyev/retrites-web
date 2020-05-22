@@ -78,6 +78,8 @@ class RetreateDetailPage extends React.Component {
 
         // check if user logged in
         this.props.isLoggedIn();
+
+        window.scrollTo(0, 0);
     }
 
     onBack(event){
@@ -159,8 +161,10 @@ class RetreateDetailPage extends React.Component {
         });
     }
 
-    handleLogoutClick = () => {
-
+    handleLogoutClick = (e) => {
+        this.props.logout();
+        e.preventDefault();
+        //console.log('handleLogoutClick');
     }
 
     captchaOnChange = () => {

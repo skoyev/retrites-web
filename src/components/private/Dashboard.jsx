@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types'
-import { Row, Col, Card, Icon } from 'antd';
-import { DatePicker } from 'antd';
+import { Row, Col, Card, DatePicker, Icon } from 'antd';
+//import Icon from '@ant-design/icons';
 import { Translate } from "react-localize-redux";
 
 const { RangePicker } = DatePicker;
@@ -75,9 +75,6 @@ const Dashboard = ({amentities, leads, reports}) => {
 }
 
 Dashboard.propTypes = {  
-    amentities: PropTypes.array.isRequired,  
-    leads: PropTypes.array.isRequired,  
-    reports: PropTypes.array.isRequired,  
 }
 
 export default Dashboard;

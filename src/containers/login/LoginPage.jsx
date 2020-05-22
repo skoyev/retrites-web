@@ -3,14 +3,15 @@ import { Translate } from "react-localize-redux";
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withLocalize } from "react-localize-redux";
-import {userActions} from '../../store/action'
+import {userActions, commonActions} from '../../store/action'
 import { history } from '../../helpers';
 import '../style/Base.css'
 import './index.css'
 import { renderToStaticMarkup } from "react-dom/server";
 import globalTranslations from "../../translations/global.json";
-import { Button } from 'antd';
+import { Button, Row, Col } from 'antd';
 import { SimpleHeader } from '../../components/public';
+import loader from '../../assets/images/loader.gif';
 
 class LoginPage extends React.Component {
     
@@ -63,7 +64,7 @@ class LoginPage extends React.Component {
     }
 
     render() {
-        const { error } = this.props;
+        const { error, isLoading } = this.props;
         const { email, password, submitted } = this.state;
 
         return (
@@ -93,16 +94,37 @@ class LoginPage extends React.Component {
                                         </div>
 
                                         <div className="form-group">                                                                                    
-                                            <Translate>
-                                                {({ translate }) =>
-                                                    <Button className="d-inline" onClick={() => this.props.history.push(`/home`)} style={{marginRight:20}}>{translate('public.links.cancel')}</Button>}
-                                            </Translate>
-                                            <Translate>{({ translate }) =><Button htmlType="submit">{translate("button.login")}</Button>}</Translate>                                        
+                                            <Row>
+                                                <Col span={6}>
+                                                    <Translate>
+                                                        {({ translate }) =>
+                                                            <Button className="d-inline" onClick={() => this.props.history.push(`/home`)} style={{marginRight:20}}>{translate('public.links.cancel')}</Button>}
+                                                    </Translate>
+                                                </Col>
+
+                                                <Col span={6}>
+                                                    <Translate>{({ translate }) =>
+                                                        <Button htmlType="submit">{translate("button.login")}</Button>}
+                                                    </Translate>                                        
+                                                </Col>
+
+                                                { isLoading 
+                                                    &&                                                    
+                                                    <Col span={4}>
+                                                        <img src={loader} style={{width:60, marginTop:-15, marginLeft: -20}}/>
+                                                    </Col>
+                                                }
+                                            </Row>
                                         </div>
+
                                         <div className="form-group">
                                             <Translate>
                                                 {({ translate }) =>
                                                     <Link to="/register" className="btn btn-link d-inline">{translate('public.links.signup')}</Link>}
+                                            </Translate>                         
+                                            <Translate>
+                                                {({ translate }) =>
+                                                    <Link to="/forgot" className="btn btn-link d-inline">{translate('public.links.forgot')}</Link>}
                                             </Translate>                         
                                         </div>
                                         <div className="form-group">                                            
@@ -120,13 +142,15 @@ class LoginPage extends React.Component {
 }
 
 const mapDispatchToProps = {    
-    ...userActions
+    ...userActions,
+    ...commonActions,
 }; 
 
 function mapStateToProps(state) {
     return {
       error: state.users.error,
-      isLoggedInRes: state.users.isLoggedIn
+      isLoggedInRes: state.users.isLoggedIn,
+      isLoading: state.common.isLoading
     };
 }
 
