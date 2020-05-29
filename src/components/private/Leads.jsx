@@ -5,7 +5,6 @@ import { Row, Table, Divider, Col, Input, Dropdown, Menu, Icon } from 'antd';
 import moment from 'moment';
 import { Translate } from "react-localize-redux";
 import { connect } from 'react-redux';
-import { leadsActions } from '../../store/action';
 import { withLocalize } from "react-localize-redux";
 import './style/Leads.css'
   
@@ -116,13 +115,12 @@ Leads.propTypes = {
 }
 
 const mapDispatchToProps = { 
-  ...leadsActions
 }; 
 
 function mapStateToProps(state) {
   return {
       //selectedItem: state.common.selectedItem,
-      states: state.common.leadStates
+      states: []
   };
 }
 

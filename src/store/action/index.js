@@ -2,7 +2,6 @@ import axios from "axios";
 
 export * from './user.action';
 export * from './item.action';
-export * from './leads.action';
 export * from './report.action.js';
 export * from './page.action.js';
 export * from './common.action.js';

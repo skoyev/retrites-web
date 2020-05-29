@@ -1,6 +1,6 @@
 import React from 'react';
 import { Translate } from "react-localize-redux";
-import { itemActions, leadsActions, userActions } from '../../store/action';
+import { itemActions, userActions } from '../../store/action';
 import { connect } from 'react-redux';
 import { withLocalize } from "react-localize-redux";
 import RetreatDetails from '../../components/public/retreat/RetreatDetails';
@@ -247,7 +247,6 @@ class RetreateDetailPage extends React.Component {
 
 const mapDispatchToProps = {    
     ...itemActions,
-    ...leadsActions,
     ...userActions
 };  
 

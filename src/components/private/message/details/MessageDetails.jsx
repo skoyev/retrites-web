@@ -35,7 +35,7 @@ const MessageDetails = props => {
     ];
 
     useEffect(()=> {
-        //props.fetchItemTypes();
+        props.fetchMessagesByGroupID(props.messageGroupId);
     }, []);
 
     const footerSection = () => 
@@ -56,7 +56,7 @@ const MessageDetails = props => {
     const headerSection = () => 
       <Row>
         <Col span={24} className="center">
-            <span>Communication Details With: Vasya</span>
+            <span>Communication Details With: <b>{props.recipient}</b></span>
         </Col>
       </Row>
 
@@ -95,15 +95,7 @@ const mapDispatchToProps = {
 function mapStateToProps(state) {
   return {
       states  : state.common.messageStates,
-      messageDetails: [
-        {id:1, from: '', to: '', date: '', content: 'Test1'},
-        {id:2, from: '', to: '', date: '', content: 'Test2'},
-        {id:3, from: '', to: '', date: '', content: 'Test3'},
-        {id:4, from: '', to: '', date: '', content: 'Test4'},
-        {id:5, from: '', to: '', date: '', content: 'Test5'},
-        {id:6, from: '', to: '', date: '', content: 'Test6'},
-        {id:7, from: '', to: '', date: '', content: 'Test7'}
-      ]
+      messageDetails: state.message.messages
   };
 }
 

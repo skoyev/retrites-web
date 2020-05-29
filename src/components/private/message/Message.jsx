@@ -24,7 +24,7 @@ const rowSelection = {
   
 const Message = props => {
     let timer;  
-    const {states, messages, handleViewMessage, messagePageNum} = props;  
+    const {states, messageGroups, handleViewMessage, messagePageNum} = props;  
 
     const [name, setName] = useState('');
     const [selectedState, setSelectedState] = useState({});   
@@ -35,17 +35,13 @@ const Message = props => {
 
     const columns = [
       {
-        title: 'Name',
-        dataIndex: 'name',
-        render: text => <a>{text}</a>,
+        title: 'Recipient Name',
+        dataIndex: 'recipient',
+        render: recipient => <a>{`${recipient.firstName} ${recipient.lastName}`}</a>,
       },
       {
-        title: 'Age',
-        dataIndex: 'age',
-      },
-      {
-        title: 'Address',
-        dataIndex: 'address',
+        title: 'Created Date',
+        dataIndex: 'createdAt',
       },
       {
         title: 'Action',
@@ -53,7 +49,7 @@ const Message = props => {
         render: (text, record) => (
           <Row>
             <Col span={6}>
-              <Button key={record.id} type="link" onClick={() => handleViewMessage({id:record.id, pageNum:pageNum})}>View</Button>
+              <Button key={record.id} type="link" onClick={() => handleViewMessage({id:record.id, pageNum:pageNum, recipient:`${record.recipient.firstName} ${record.recipient.lastName}`})}>View</Button>
             </Col>
             <Col span={6}>
               <Button key={record.id} type="link" onClick={() => handleDeleteMessage()}>Delete</Button>
@@ -68,7 +64,7 @@ const Message = props => {
     };
                       
     useEffect(()=> {
-        //props.fetchItemTypes();
+        props.fetchMessageGroups();
     }, []);
 
     useEffect(() => {
@@ -102,7 +98,7 @@ const Message = props => {
                      rowKey="id"
                      onChange={(page, pageSize) => {setPageNum(page.current)}}
                      pagination={{defaultPageSize:5, hideOnSinglePage: true, simple: true, defaultCurrent:messagePageNum}}
-                     dataSource={messages} />
+                     dataSource={messageGroups} />
             </Row>
         </Fragment>
     )
@@ -119,7 +115,7 @@ const mapDispatchToProps = {
 function mapStateToProps(state) {
   return {
       states  : state.common.messageStates,
-      messages: state.message.messages
+      messageGroups: state.message.messageGroups
   };
 }
 

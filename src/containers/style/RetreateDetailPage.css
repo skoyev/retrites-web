@@ -14,7 +14,7 @@
     width: inherit !important;
 }
 
-.white a, .ant-btn-link {
+.white a, .white .ant-btn-link {
     color: #007bff;
 }
 

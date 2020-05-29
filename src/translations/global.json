@@ -81,7 +81,7 @@
         "cancel": ["Cancel", "Cancel FR"],
         "join": ["Join Our Retreat Community", "Join Our Community FR"],
         "login_community": ["Login Into Retreat Community", "Login Into Retreat Community FR"],
-        "subscribe": ["SUBSCRIBE", "SUBSCRIBE FR"],
+        "subscribe": ["Subscribe", "SUBSCRIBE FR"],
         "forgot": ["Forgot Password", "Forgot Password FR"]
       }
     }

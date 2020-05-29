@@ -15,7 +15,7 @@ import Step7Item from '../../components/private/wizard/steps/step7';
 import { Button, Form, Input } from 'antd';
 import { connect } from 'react-redux';
 import { withLocalize } from "react-localize-redux";
-import {itemActions, leadsActions, reportActions, userActions, commonActions} from '../../store/action'
+import {itemActions, reportActions, userActions, commonActions} from '../../store/action'
 import {pageConstants} from '../../constants';
 import './index.css'
 import moment from 'moment';
@@ -259,7 +259,12 @@ class DashboardPage extends React.Component {
     }
 
     handleViewMessage = (val) => {
-        this.setState({selectedContentName: pageConstants.MESSAGE_DETAILS_CONTENT, messageId: val.id, pageNum: val.pageNum})
+        this.setState({
+            selectedContentName: pageConstants.MESSAGE_DETAILS_CONTENT, 
+            messageId: val.id, 
+            pageNum: val.pageNum,
+            messageRecipient: val.recipient
+        })
     }
 
     backToMessageFromDetails = () => {
@@ -267,13 +272,15 @@ class DashboardPage extends React.Component {
     }
 
     renderSwitchPage(){
-        const { selectedContentName, messageId, pageNum } = this.state;
+        const { selectedContentName, messageId, pageNum, messageRecipient } = this.state;
         const {items, leads, summaryItem, summaryLeads, summaryReports, user} = this.props; 
 
         switch(selectedContentName){
             case pageConstants.MESSAGE_DETAILS_CONTENT:
                 return ([
                     <MessageDetails 
+                             recipient={messageRecipient}
+                             messageGroupId={messageId}
                              backToMessageFromDetails={this.backToMessageFromDetails}
                              key="message-details"/>
                 ]);
@@ -604,7 +611,6 @@ class DashboardPage extends React.Component {
 
 const mapDispatchToProps = {    
     ...itemActions,
-    ...leadsActions,
     ...reportActions,
     ...userActions,
     ...commonActions
@@ -614,7 +620,7 @@ function mapStateToProps(state) {
     return {
         user : JSON.parse(sessionStorage.getItem('user')),
         items: [...state.items.items],
-        leads: [...state.leads.leads ? state.leads.leads : []],
+        leads: [],
         summaryReports: state.summary.reportSummary,
         summaryLeads: state.summary.leadSummary,
         summaryItem: state.summary.itemSummary,
