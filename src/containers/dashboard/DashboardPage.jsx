@@ -194,6 +194,10 @@ class DashboardPage extends React.Component {
         if (this.props.isNextStepValid !== prevProps.isNextStepValid){ 
             this.setState({isValidNext : this.props.isNextStepValid})
         }
+
+        if(!this.props.isValidToken) {
+            history.push('/home');
+        }
     }
     
     componentDidMount() {
@@ -205,7 +209,9 @@ class DashboardPage extends React.Component {
         }
 
         // load summary data for the dashboard (amenities, leads, reports)
-        this.props.fetchSummary(user.id)
+        this.props.fetchSummary(user.id);
+
+        this.props.isLoggedIn();
     }    
 
     handleAminityDetails = (item) => {
@@ -263,7 +269,8 @@ class DashboardPage extends React.Component {
             selectedContentName: pageConstants.MESSAGE_DETAILS_CONTENT, 
             messageId: val.id, 
             pageNum: val.pageNum,
-            messageRecipient: val.recipient
+            messageRecipient: val.recipient,
+            itemID: val.itemID
         })
     }
 
@@ -272,7 +279,7 @@ class DashboardPage extends React.Component {
     }
 
     renderSwitchPage(){
-        const { selectedContentName, messageId, pageNum, messageRecipient } = this.state;
+        const { selectedContentName, messageId, pageNum, messageRecipient, itemID } = this.state;
         const {items, leads, summaryItem, summaryLeads, summaryReports, user} = this.props; 
 
         switch(selectedContentName){
@@ -281,6 +288,7 @@ class DashboardPage extends React.Component {
                     <MessageDetails 
                              recipient={messageRecipient}
                              messageGroupId={messageId}
+                             itemID={itemID}
                              backToMessageFromDetails={this.backToMessageFromDetails}
                              key="message-details"/>
                 ]);
@@ -627,7 +635,8 @@ function mapStateToProps(state) {
         categories: [...state.common.categories],
         subCategories: [...state.common.subCategories],
         selectedItem: state.common.selectedItem,
-        isNextStepValid: state.common.isNextStepValid
+        isNextStepValid: state.common.isNextStepValid,
+        isValidToken : state.users.isLoggedIn
     };
 }
 

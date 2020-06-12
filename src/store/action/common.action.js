@@ -10,7 +10,9 @@ export const commonActions = {
     addIntoStoreSelectedItem,
     setSelectedItemField,
     setIsNextStepValid,
-    sendEmail
+    sendEmail,
+    forgotPassword,
+    resetPassword
 };
 
 function success(type, data) { return { type: type, data } }
@@ -37,6 +39,36 @@ function fetchItemTypes(){
                 }
             );
     };
+}
+
+/**
+ * Reset Password action.
+ */
+function resetPassword(email, password, activateCode) {
+    return dispatch => {
+        commonService.resetPassword(email, password, activateCode)
+                     .then(
+                         res   => dispatch(success(commonConstants.RESET_PASSWORD_SUCCESS)),
+                         error => dispatch(failure(commonConstants.RESET_PASSWORD_FAILURE))
+                     );                     
+    }
+}
+
+/**
+ * Forgot user password.
+ */
+function forgotPassword(email) {
+    if(!email){        
+        return dispatch => dispatch(failure(commonConstants.FORGOT_PASSWORD_FAILURE))
+    }
+
+    return dispatch => {
+        commonService.forgotPassword(email)
+                     .then(
+                         res   => dispatch(success(commonConstants.FORGOT_PASSWORD_SUCCESS)),
+                         error => dispatch(failure(commonConstants.FORGOT_PASSWORD_FAILURE))
+                     );                     
+    }
 }
 
 function sendEmail(itemId, details, name, email) {

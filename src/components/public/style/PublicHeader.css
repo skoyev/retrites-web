@@ -20,7 +20,7 @@
     font-weight: 400;
 }
 
-.white a, .ant-btn-link{
+.white a, .white .ant-btn-link{
     color: #ffffff;
 }
 

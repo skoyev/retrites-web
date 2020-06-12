@@ -6,7 +6,9 @@
     "header": {
       "newretrite": ["Add New Retreate","Add New Retreate Fr"],
       "login": ["Login", "Login Fr"],
-      "newuser": ["Register New User", "Register New User Fr"]
+      "newuser": ["Register New User", "Register New User Fr"],
+      "forgot": ["Forgot Password", "Forgot Password Fr"],
+      "forgot-confirm": ["Forgot Password Confirm", "Forgot Password Confirm Fr"]
     },
 
     "label": {

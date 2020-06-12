@@ -1,6 +1,6 @@
 import React from 'react';
 import { Translate } from "react-localize-redux";
-import { itemActions, userActions } from '../../store/action';
+import { itemActions, userActions, messageActions } from '../../store/action';
 import { connect } from 'react-redux';
 import { withLocalize } from "react-localize-redux";
 import RetreatDetails from '../../components/public/retreat/RetreatDetails';
@@ -23,8 +23,6 @@ class RetreateDetailPage extends React.Component {
 
         this.state = {
             visible: false,
-            formEmail: '',
-            formName: '',
             formDetails: '',
             formDescription: '',
             back: 'home',
@@ -43,8 +41,6 @@ class RetreateDetailPage extends React.Component {
         
         this.onBack = this.onBack.bind(this);
         this.handleSubmitBookNow = this.handleSubmitBookNow.bind(this);
-        this.handleFormEmailChange = this.handleFormEmailChange.bind(this);
-        this.handleFormNameChange = this.handleFormNameChange.bind(this);
         this.handleFormDescriptionChange = this.handleFormDescriptionChange.bind(this);
         this.handleOk = this.handleOk.bind(this);        
         this.handleLogoutClick = this.handleLogoutClick.bind(this);        
@@ -116,22 +112,14 @@ class RetreateDetailPage extends React.Component {
        }
 
        const { item } = this.props;
-       const {formEmail, formName, formDescription} = this.state;
+       const {formDescription} = this.state;
 
-       if(!formName || !formEmail || !formDescription) {
+       if(!formDescription) {
            this.setState({error: 'Some Data Inputs Are Missing.'})
            return;
        }
-
-       const isValidEmail = validateEmail(formEmail);
-
-       if(!isValidEmail){
-           this.setState({error: `Invalid email ${formEmail}`})
-           console.warn(`Invalid email ${formEmail}`);
-           return;
-       }
        
-       this.props.createLead(item.id, formName, formEmail, formDescription);   
+       this.props.createMessageGroupAndMessage(item.id, formDescription);   
        
        this.openNotification();
 
@@ -143,21 +131,9 @@ class RetreateDetailPage extends React.Component {
        this.setState({error: ''});
     }
 
-    handleFormEmailChange(e) {
-        this.setState({
-            formEmail: e.target.value
-        });
-    }
-
     handleFormDescriptionChange(e) {
         this.setState({
             formDescription: e.target.value
-        });
-    }
-
-    handleFormNameChange(e) {
-        this.setState({
-            formName: e.target.value
         });
     }
 
@@ -172,7 +148,7 @@ class RetreateDetailPage extends React.Component {
     }
 
     render() {      
-        const { item, isLoggedInRes } = this.props;
+        const { item, isLoggedInRes, user } = this.props;
         const { isCaptchaValid, error } = this.state;
 
         if(!item) {
@@ -215,18 +191,22 @@ class RetreateDetailPage extends React.Component {
                                 <Row style={{marginBottom: '20px'}}>
                                     <RetreatDetailsSummary item={item}></RetreatDetailsSummary>                        
                                 </Row>
-                                <Row>
-                                    <RetreatBookSection item={item}
-                                                        isLoggedInRes={this.props.isLoggedInRes}
-                                                        handleFormEmailChange={this.handleFormEmailChange}
-                                                        handleFormNameChange={this.handleFormNameChange}                                    
-                                                        handleSubmitBookNow={this.handleSubmitBookNow}
-                                                        handleCaptchaOnChange={this.captchaOnChange}
-                                                        isActiveBookNow={isCaptchaValid}
-                                                        error={error}
-                                                        generalMessage="Please Login in order to submit your request."
-                                                        handleFormDescriptionChange={this.handleFormDescriptionChange}/>
-                                </Row>   
+                                {
+                                    user 
+                                        &&
+                                    (user.roleId == 1)
+                                        &&
+                                    <Row>
+                                        <RetreatBookSection item={item}
+                                                            isLoggedInRes={this.props.isLoggedInRes}
+                                                            handleSubmitBookNow={this.handleSubmitBookNow}
+                                                            handleCaptchaOnChange={this.captchaOnChange}
+                                                            isActiveBookNow={isCaptchaValid}
+                                                            error={error}
+                                                            generalMessage="Please Login in order to submit your request."
+                                                            handleFormDescriptionChange={this.handleFormDescriptionChange}/>
+                                    </Row> 
+                                }  
                             </Col>
                         </Row>                        
                     </Content>
@@ -237,7 +217,8 @@ class RetreateDetailPage extends React.Component {
                        onOk={this.handleOk}
                        onCancel={this.handleCancel}>
                     <p>Thank you for booking request for the {item.name}</p>
-                    <p>We will get back to you withing 48 hours!</p>
+                    <p>We will get back to you shortly!</p>
+                    <p>Please Login and check under Messages our response/communication!</p>
                     <p>Retreate Management Team.</p>
                 </Modal>
             </div>
@@ -247,12 +228,14 @@ class RetreateDetailPage extends React.Component {
 
 const mapDispatchToProps = {    
     ...itemActions,
-    ...userActions
+    ...userActions,
+    ...messageActions
 };  
 
 function mapStateToProps(state) {
     return {
-      item: state.items.item,
+      user : JSON.parse(sessionStorage.getItem('user')),  
+      item : state.items.item,
       isLoggedInRes: state.users.isLoggedIn
     };
 }

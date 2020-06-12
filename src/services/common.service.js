@@ -8,8 +8,30 @@ export const commonService = {
     getAllCountries,
     getFacilitatorTypes,
     sendEmail,
-    fetchItemTypes
+    fetchItemTypes,
+    forgotPassword,
+    resetPassword
 };
+
+/**
+ * Reset password
+ */
+function resetPassword(email, password, activateCode) {
+    const headers = {
+        'Content-Type': 'application/json'
+    }
+
+    return axios.post(`${URL}/reset-password`, {email, password, activateCode}, {headers:headers});    
+}
+
+function forgotPassword(email) {
+
+    const headers = {
+        'Content-Type': 'application/json'
+    }
+
+    return axios.post(`${URL}/forgot-password`, {email}, {headers:headers});    
+}
 
 function fetchItemTypes() {
     return axios.get(`${URL}/item-status`);

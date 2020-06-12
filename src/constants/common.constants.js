@@ -24,10 +24,21 @@ export const commonConstants = {
     DASHBOARD_PAGE_LINK: '/dashboard',
     SECRET_PASSPHRASE: 'love',
 
+    STATUS_CREATED: 201,
+
+    START_LOADING: true,
+    END_LOADING: false,
+
     PUBLIC_USER_ROLE: 'public',
     OWNER_USER_ROLE: 'owner',
     PUBLIC_USER_ROLE_MENU: [{name: 'Dashboard', type: 'dashboard', index: 'view-dashboard'}, {name: 'Messages', type: 'user', index: 'view-messages'}],
     OWNER_USER_ROLE_MENU: [{name: 'Dashboard', type: 'dashboard', index: 'view-dashboard'}, {name: 'Amentities', type: 'laptop', index: 'view-amentities'}, {name: 'Messages', type: 'user', index: 'view-messages'}, {name: 'Statistics/Activity', type: 'notification', index: 'view-report'}],
     ADMIN_USER_ROLE_MENU: [{name: 'Users', type: 'user', index: 'view-users'}, {name: 'Items', type: 'laptop', index: 'view-items'}],
-    USER_ROLES: [{id:1, name:'Search And Attend Event(s)', role: 'public'}, {id:2, name:'Host Event(s)', role: 'owner'}]
+    USER_ROLES: [{id:1, name:'Search And Attend Event(s)', role: 'public'}, {id:2, name:'Host Event(s)', role: 'owner'}],
+
+    FORGOT_PASSWORD_SUCCESS: 'FORGOT_PASSWORD_SUCCESS',
+    FORGOT_PASSWORD_FAILURE: 'FORGOT_PASSWORD_FAILURE',
+
+    RESET_PASSWORD_SUCCESS: 'RESET_PASSWORD_SUCCESS',
+    RESET_PASSWORD_FAILURE: 'RESET_PASSWORD_FAILURE'
 };

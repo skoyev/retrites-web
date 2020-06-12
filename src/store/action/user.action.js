@@ -52,6 +52,7 @@ function isLoggedIn() {
     return dispatch => {
         const hasKey = hasAuthKey();
         if(hasKey){
+            dispatch(loading(true));
             // check if key is valid
             userService.validateAuthKey(getAuthKey())
                        .then(
@@ -60,11 +61,13 @@ function isLoggedIn() {
                                     resetAuthKey();    
                                 }
                                 dispatch( isLoggedInResult(res.data.data) )
+                                dispatch(loading(false));
                             },
                             error => {
                                 console.log(`Error - ${error}`)
                                 resetAuthKey();
                                 dispatch( isLoggedInResult(false) )
+                                dispatch(loading(false));
                             })
         } else {
             dispatch( isLoggedInResult(hasKey) )

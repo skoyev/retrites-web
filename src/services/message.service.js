@@ -4,8 +4,48 @@ const URL = '/api';
 
 export const messageService = {
     fetchMessageGroups,
-    fetchMessagesByGroupID
+    fetchMessagesByGroupID,
+    createMessage,
+    createMessageGroup,
 };
+
+/**
+ * Create message group
+ */
+function createMessageGroup(itemID) {
+    let authKey = getAuthKey();
+
+    if(!authKey || !itemID){
+        console.log('authKey or itemID is null')
+        return;
+    }
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'x-auth-key'  : authKey
+    }
+
+    return axios.post(`${URL}/message/group`, {itemID}, {headers:headers});    
+}
+
+/**
+ * Create a new message.
+ */
+function createMessage(message, msgGroupID) {
+    let authKey = getAuthKey();
+
+    if(!authKey){
+        console.log('authKey is null')
+        return;
+    }
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'x-auth-key'  : authKey
+    }
+
+    return axios.post(`${URL}/message/group/${msgGroupID}`, {content:message}, {headers:headers});    
+}
 
 /**
  * Fetch messages by msg group id

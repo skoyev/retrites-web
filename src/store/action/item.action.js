@@ -58,9 +58,9 @@ export function fetchSummary(userID) {
  */
 export function search(subCategoryID, duration, name, startDate, countryId, count, fromPrice, toPrice) {
     return dispatch => {
-        dispatch(loading(true));
-        return itemService.search(subCategoryID, duration, name, startDate, countryId, count, fromPrice, toPrice).then(res => {
-            dispatch(loading(false));
+        dispatch(loading(commonConstants.START_LOADING));
+        return itemService.search(subCategoryID, duration, name, startDate, countryId, count, fromPrice, toPrice).then(res => {            
+            dispatch(loading(commonConstants.END_LOADING));
             dispatch(fetchItemsSuccess(res.data.items))    
         }).catch(error => {
             throw(error);
@@ -75,13 +75,13 @@ export function search(subCategoryID, duration, name, startDate, countryId, coun
  */
 export function fetchItemsByNameStatus(name, status) {
     return dispatch => {
-        dispatch(loading(true));
+        dispatch(loading(commonConstants.START_LOADING));
         return itemService.fetchItemsByNameStatus(name, status)
                           .then(res => {
                             dispatch(fetchItemsSuccess(res.data.items))    
-                            dispatch(loading(false));
+                            dispatch(loading(commonConstants.END_LOADING));
                           }).catch(error => {
-                            dispatch(loading(false));
+                            dispatch(loading(commonConstants.END_LOADING));
                             throw(error);
                           });
     }
@@ -92,13 +92,13 @@ export function fetchItemsByNameStatus(name, status) {
  */
 export function fetchUserAmenities(userID) {
     return dispatch => {
-        dispatch(loading(true));
+        dispatch(loading(commonConstants.START_LOADING));
         return itemService.fetchUserAmenities(userID)
                           .then(res => {
-                            dispatch(loading(false));
+                            dispatch(loading(commonConstants.END_LOADING));
                             dispatch(fetchItemsSuccess(res.data.items))    
                           }).catch(error => {
-                            dispatch(loading(false));
+                            dispatch(loading(commonConstants.END_LOADING));
                             throw(error);
                           });
     }
@@ -116,7 +116,7 @@ export function fetchCountries() {
 
 export function fetchSearchRetreatTypes(categoryId) {
     return dispatch => {
-        dispatch(loading(true));
+        dispatch(loading(commonConstants.START_LOADING));
         return itemService.fetchRetreatTypes(categoryId).then(res => {
             dispatch(fetchRetreatTypesSuccess(res.data.data))    
         }).catch(error => {
@@ -142,10 +142,10 @@ export function fetchRetreatSubCategories() {
 
 export function fetchRetreatByCountries() {
     return dispatch => {
-        dispatch(loading(true));
+        dispatch(loading(commonConstants.START_LOADING));
         return itemService.fetchRetreatByCountries().then(res => {
             //dispatch(fetchRetreatByCountriesSuccess(res.retreatByCountries))    
-            dispatch(loading(false));
+            dispatch(loading(commonConstants.END_LOADING));
             dispatch(fetchRetreatByCountriesSuccess(res.data.data))    
         }).catch(error => {
             throw(error);
@@ -155,9 +155,9 @@ export function fetchRetreatByCountries() {
 
 export function fetchAmenitySummary() {
     return dispatch => {
-        dispatch(loading(true));
+        dispatch(loading(commonConstants.START_LOADING));
         return itemService.fetchAmenitySummary().then(res => {
-            dispatch(loading(false));
+            dispatch(loading(commonConstants.END_LOADING));
             dispatch(fetchAmenitySummarySuccess(res.amenitySummary))    
         }).catch(error => {
             throw(error);
@@ -265,7 +265,7 @@ function updateItemsSuccess(item){
 export function deleteItem(id) {
     return dispatch => {
         let authKey = getAuthKey();
-        dispatch(loading(true));
+        dispatch(loading(commonConstants.START_LOADING));
         return itemService.deleteItem(id, authKey)
                           .then(res => {
                               if(res.status === 200){
@@ -273,11 +273,11 @@ export function deleteItem(id) {
                               } else {
                                   console.error(res);
                               }
-                              dispatch(loading(false));
+                              dispatch(loading(commonConstants.END_LOADING));
                         }).catch(error => {
                             console.error(error);
                             dispatch(deleteItemsFail(error));
-                            dispatch(loading(false));
+                            dispatch(loading(commonConstants.END_LOADING));
                         });
     }
 }
@@ -289,7 +289,7 @@ export function deleteItem(id) {
 export function createItem(item, userId) {
     return dispatch => {
         let authKey = getAuthKey();
-        dispatch(loading(true));
+        dispatch(loading(commonConstants.START_LOADING));
         return itemService.addItem(item, authKey).then(res => {
             if(res.status === 200 || res.status === 201){
                 if(userId){
@@ -301,11 +301,11 @@ export function createItem(item, userId) {
             } else {
                 throw('Error while create a new item.');
             }
-            dispatch(loading(false));
+            dispatch(loading(commonConstants.END_LOADING));
         }).catch(error => {
             throw(error);
             //dispatch(addItemsFail(erro));  
-            dispatch(loading(false));  
+            dispatch(loading(commonConstants.END_LOADING));  
         });
     }
 }
@@ -317,26 +317,26 @@ export function createItem(item, userId) {
 export function updateItem(item) {
     return dispatch => {
         let authKey = getAuthKey();
-        dispatch(loading(true));
+        dispatch(loading(commonConstants.START_LOADING));
         return itemService.updateItem(item, authKey).then(res => {
             if(res.status === 200){
                 dispatch(updateItemsSuccess(item))    
             } else {
                 throw('Error while update item.');
             }
-            dispatch(loading(false));
+            dispatch(loading(commonConstants.END_LOADING));
         }).catch(error => {
             throw(error);
-            dispatch(loading(false));
+            dispatch(loading(commonConstants.END_LOADING));
         });
     }
 }
 
 export function fetchByID(id){
     return dispatch => {
-        dispatch(loading(true));
+        dispatch(loading(commonConstants.START_LOADING));
         return itemService.loadItemByID(id).then(res => {
-                dispatch(loading(false));
+                dispatch(loading(commonConstants.END_LOADING));
                 dispatch(fetchItemSuccess(res.data.item))    
         }).catch(error => {
             throw(error);
@@ -346,7 +346,7 @@ export function fetchByID(id){
 
 export function fetchPopularRedirectLoginIfNoData(count) {
     return dispatch => {
-        dispatch(loading(true));
+        dispatch(loading(commonConstants.START_LOADING));
         return itemService.loadPopularItems(count).then(res => {
             if(res.status === 200){
                 if(res.data.items.length > 0) {
@@ -357,7 +357,7 @@ export function fetchPopularRedirectLoginIfNoData(count) {
             } else {
                 throw('No data');
             }
-            dispatch(loading(false));
+            dispatch(loading(commonConstants.END_LOADING));
         }).catch(error => {
             throw(error);
         });
@@ -366,14 +366,14 @@ export function fetchPopularRedirectLoginIfNoData(count) {
 
 export function fetch(categoryId) {
     return dispatch => {
-        dispatch(loading(true));
+        dispatch(loading(commonConstants.START_LOADING));
         return itemService.loadItems(categoryId).then(res => {
             if(res.status === 200){
                 dispatch(fetchItemsSuccess(res.data.items))    
             } else {
                 throw('No data');
             }
-            dispatch(loading(false));
+            dispatch(loading(commonConstants.END_LOADING));
         }).catch(error => {
             throw(error);
         });

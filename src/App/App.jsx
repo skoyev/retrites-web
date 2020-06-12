@@ -13,11 +13,13 @@ const LazyDashboardComponent = lazy(() => import('../containers/dashboard/Dashbo
 const LazyHomeComponent = lazy(() => import('../containers/home/HomePage'));
 const LazyLogin = lazy(() => import('../containers/login/LoginPage'));
 const LazyRegisterPage = lazy(() => import('../containers/register/RegisterPage'));
+const LazyForgotPasswordPage = lazy(() => import('../containers/forgot-password/ForgotPasswordPage'));
 //const LazyAddRetreatePage = lazy(() => import('../containers/retreate/new/AddRetreatePage'));
 const LazyAddNewRetreatPage = lazy(() => import('../containers/home/add/AddNewRetreatPage'));
 const LazyRetreateDetailPage = lazy(() => import('../containers/retreate/RetreateDetailPage'));
 const LazySearchResultPage = lazy(() => import('../containers/search/SearchResultPage'));
 const LazyAboutPage = lazy(() => import('../containers/about/AboutPage'));
+const LazyResetPasswordPage = lazy(() => import('../containers/forgot-password-callback/ForgotPasswordCallbackPage'));
 
 function WaitingComponent(Component) {
     return props => (
@@ -48,6 +50,8 @@ class App extends React.Component {
                                 <Route path="/item/:itemID" component={WaitingComponent(LazyRetreateDetailPage)} />                        
                                 <Route path="/items" component={WaitingComponent(LazySearchResultPage)} />                        
                                 <Route path="/about" component={WaitingComponent(LazyAboutPage)} />                        
+                                <Route path="/forgot" component={WaitingComponent(LazyForgotPasswordPage)} />                        
+                                <Route path="/reset-password" component={WaitingComponent(LazyResetPasswordPage)} />                        
                                 {/*<Route path="/" render={ history.push('/home')} />*/}
                                 {/*<Redirect from={'/'} to={'/home'} />*/}
                         </div>                    

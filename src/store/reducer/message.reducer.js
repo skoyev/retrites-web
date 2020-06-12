@@ -13,6 +13,12 @@ export function message(state = INITIAL_STATE, action) {
           messageGroups: action.data.messageGroups
         }; 
 
+      case messageConstants.CREATE_MESSAGE_SUCCESS:
+          return {
+            ...state,
+            messages: [...state.messages, action.messages ]
+          }; 
+  
       case messageConstants.FETCH_MESSAGES_SUCCESS:
         return {
           ...state,

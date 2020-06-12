@@ -8,6 +8,10 @@
     text-align: center !important;
 }
 
+.left {
+    text-align: left !important;
+}
+
 .wide {
     width: 100%;
 }

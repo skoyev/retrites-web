@@ -24,7 +24,7 @@ const rowSelection = {
   
 const Message = props => {
     let timer;  
-    const {states, messageGroups, handleViewMessage, messagePageNum} = props;  
+    const {states, messageGroups, handleViewMessage, messagePageNum, user} = props;  
 
     const [name, setName] = useState('');
     const [selectedState, setSelectedState] = useState({});   
@@ -33,11 +33,18 @@ const Message = props => {
     const handleDeleteMessage = (e) => {
     }
 
+    const getRecipientName = (record) => {
+      return user.firstName == record.recipient.firstName && 
+              user.lastName == record.recipient.lastName ? 
+                `${record.owner.firstName} ${record.owner.lastName}` :
+                `${record.recipient.firstName} ${record.recipient.lastName}`;
+    }
+
     const columns = [
       {
         title: 'Recipient Name',
-        dataIndex: 'recipient',
-        render: recipient => <a>{`${recipient.firstName} ${recipient.lastName}`}</a>,
+        dataIndex: '',
+        render: record => <a>{getRecipientName(record)}</a>,
       },
       {
         title: 'Created Date',
@@ -49,7 +56,7 @@ const Message = props => {
         render: (text, record) => (
           <Row>
             <Col span={6}>
-              <Button key={record.id} type="link" onClick={() => handleViewMessage({id:record.id, pageNum:pageNum, recipient:`${record.recipient.firstName} ${record.recipient.lastName}`})}>View</Button>
+              <Button key={record.id} type="link" onClick={() => handleViewMessage({id:record.id, pageNum:pageNum, recipient:getRecipientName(record), itemID: record.item.id})}>View</Button>
             </Col>
             <Col span={6}>
               <Button key={record.id} type="link" onClick={() => handleDeleteMessage()}>Delete</Button>
@@ -96,6 +103,7 @@ const Message = props => {
                      columns={columns} 
                      key="messages"
                      rowKey="id"
+                     className="message"
                      onChange={(page, pageSize) => {setPageNum(page.current)}}
                      pagination={{defaultPageSize:5, hideOnSinglePage: true, simple: true, defaultCurrent:messagePageNum}}
                      dataSource={messageGroups} />
@@ -115,7 +123,8 @@ const mapDispatchToProps = {
 function mapStateToProps(state) {
   return {
       states  : state.common.messageStates,
-      messageGroups: state.message.messageGroups
+      messageGroups: state.message.messageGroups,
+      user : JSON.parse(sessionStorage.getItem('user'))
   };
 }
 
