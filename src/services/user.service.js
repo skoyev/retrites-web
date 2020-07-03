@@ -30,9 +30,7 @@ function validateAuthKey(authKey) {
             'Content-Type': 'application/json',
             'x-auth-key': authKey
         }
-        return axios.post(`/api/auth/authKey`, {}, {
-            headers: headers
-        });
+        return axios.post(`/api/auth/authKey`, {}, { headers: headers });
     } else {
         // TODO: add error handling
         console.error('Call validateAuthKey is invalid for the undefined authKey')

@@ -51,10 +51,12 @@ function isUserEmailAlreadyRegistered(email) {
 function isLoggedIn() {
     return dispatch => {
         const hasKey = hasAuthKey();
+        console.log(hasKey)
         if(hasKey){
             dispatch(loading(true));
             // check if key is valid
-            userService.validateAuthKey(getAuthKey())
+            return new Promise( (resolve, reject) => {
+                userService.validateAuthKey(getAuthKey())
                        .then(
                             res => {
                                 if(!res.data.data){
@@ -62,15 +64,19 @@ function isLoggedIn() {
                                 }
                                 dispatch( isLoggedInResult(res.data.data) )
                                 dispatch(loading(false));
+                                resolve(res.data.data);
                             },
                             error => {
                                 console.log(`Error - ${error}`)
                                 resetAuthKey();
                                 dispatch( isLoggedInResult(false) )
                                 dispatch(loading(false));
+                                reject();
                             })
+            });
         } else {
             dispatch( isLoggedInResult(hasKey) )
+            return Promise.reject(new Error('Failed token')).then(() => console.log(''), () => console.log(''));
         }        
     }
 }

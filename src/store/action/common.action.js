@@ -1,5 +1,6 @@
 import { commonService } from '../../services';
 import { commonConstants } from '../../constants';
+import { loadStripe } from '@stripe/stripe-js';
 
 export const commonActions = {
     fetchCategories,
@@ -12,11 +13,19 @@ export const commonActions = {
     setIsNextStepValid,
     sendEmail,
     forgotPassword,
-    resetPassword
+    resetPassword,
+    setIsValidBillingForm,
+    setBillingForm,
+    loadRemoteStripe,
+    fetchBillingProducts
 };
 
 function success(type, data) { return { type: type, data } }
 function failure(type, error) { return { type: type, error } }
+
+function setBillingForm(billingForm){
+    return {type: commonConstants.SET_BILLING_FORM, billingForm}
+}
 
 function addIntoStoreSelectedItem(item){
     return {type: commonConstants.ADD_SELECTED_ITEM_INTO_STORE, item}
@@ -24,6 +33,26 @@ function addIntoStoreSelectedItem(item){
 
 function setIsNextStepValid(isValid){
     return {type: commonConstants.IS_NEXT_STEP_VALID, isValid}
+}
+
+function setIsValidBillingForm(isValid) {
+    return {type: commonConstants.IS_VALID_BILLING_FORM, isValid}
+}
+
+function fetchBillingProducts() {
+    return dispatch => {
+        commonService.fetchBillingProducts()
+                     .then(res  => dispatch(success(commonConstants.FETCH_BILLING_PRODUCTS, res.data.data)))
+                     .catch(err => console.log(err))
+    }
+}
+
+function loadRemoteStripe () {
+    return dispatch => {
+        loadStripe('pk_test_51GwbI2HoVViQEl0lRjMW3EcIVYg9nNQrdrehnFW0u2iLMLr2PDd1E4Y3CsdfHHoACID1nfMs5LNVrrJzOxROOHh300uPYfTGn7')
+            .then(res  => dispatch(success(commonConstants.LOAD_STRIPE_LIB, res)))
+            .catch(err => console.log(err))
+    }
 }
 
 function fetchItemTypes(){

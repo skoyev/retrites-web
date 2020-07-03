@@ -10,8 +10,26 @@ export const commonService = {
     sendEmail,
     fetchItemTypes,
     forgotPassword,
-    resetPassword
+    resetPassword,
+    createCheckoutSession,
+    fetchBillingProducts
 };
+
+function fetchBillingProducts() {
+    const headers = {'Content-Type': 'application/json',
+                     'x-auth-key': getAuthKey() };
+    return axios.get(`${URL}/billing-product`, {headers:headers});    
+}
+
+/**
+ * Create checkout session ID.
+ * @param {*} quantity 
+ */
+function createCheckoutSession(quantity, prdId) {
+    const headers = {'Content-Type': 'application/json',
+                     'x-auth-key': getAuthKey() };
+    return axios.post(`${URL}/create-checkout`, {quantity:quantity, prdId:prdId}, {headers:headers});    
+}
 
 /**
  * Reset password

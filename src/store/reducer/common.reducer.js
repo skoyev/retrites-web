@@ -11,11 +11,38 @@ const INITIAL_STATE = {
   itemTypes: [],
   leadStates: [{id:0, name:'ALL'}],
   isLoading: false,
-  messageStates: [{id: 1, name: 'All'}, {id: 2, name: 'Unread'}]
+  messageStates: [{id: 1, name: 'All'}, {id: 2, name: 'Unread'}],
+  isValidBillingForm: false,
+  billingForm: {},
+  stripe: {},
+  billingProducts: [
+      //{id: '1', name: 'Free Trail 15 days'},
+      //{id: 'price_1GyOYOHoVViQEl0lMf8u9JOZ', name: '1 Month - 15$'}      
+  ]
 };
 
 export function common(state = INITIAL_STATE, action) {
-    switch (action.type) {
+    switch (action.type) {  
+        case commonConstants.FETCH_BILLING_PRODUCTS:
+            return {
+                ...state,
+                billingProducts: action.data
+            }      
+        case commonConstants.LOAD_STRIPE_LIB:
+            return {
+                ...state,
+                stripe: action.data
+            }
+        case commonConstants.SET_BILLING_FORM:
+            return {
+                ...state,
+                billingForm: action.billingForm
+            };             
+        case commonConstants.IS_VALID_BILLING_FORM:
+            return {
+                ...state,
+                isValidBillingForm: action.isValid
+            };             
         case commonConstants.IS_LOADING_SUCCESS:
             return {
                 ...state,

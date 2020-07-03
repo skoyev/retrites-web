@@ -1,6 +1,6 @@
 import React from 'react';
 import PrivateHeader from '../../components/private/PrivateHeader';
-import { Row, Layout, Icon, Modal, Drawer, Steps } from 'antd';
+import { Row, Layout, Icon, Modal, Drawer, Steps, Col } from 'antd';
 import '../style/DashboardPage.css';
 import DashboardMenu from '../../components/private/DashboardMenu';
 import {Aminity, Leads, Report, Dashboard, Message, MessageDetails} from '../../components/private';
@@ -22,6 +22,10 @@ import moment from 'moment';
 import { history } from '../../helpers';
 import { renderToStaticMarkup } from "react-dom/server";
 import globalTranslations from "../../translations/global.json";
+import { commonService } from '../../services';
+import BillingProduct from '../../components/private/billing/product/BillingProduct';
+import BillingProductSuccess from '../../components/private/billing/success/BillingProductSuccess';
+import BillingProductFailed from '../../components/private/billing/failed/BillingProductFailed';
 
 const { Header, Content, Sider, Footer } = Layout;
 
@@ -29,10 +33,21 @@ const UserSettings = props => {
     return (
         <React.Fragment>
             <div><Button type="link" onClick={props.handleHome}>Home</Button></div>
+            {
+                props.user && props.user.roleId == 2 // OWNER
+                &&
+                <div><Button type="link" onClick={props.handleBilling}>Billing</Button></div>
+            }            
             <div><Button type="link" onClick={props.handleLogout}>Logout</Button></div>
         </React.Fragment>
     )
 }
+
+export const BILLING_CONTENT_NAME = {
+    BILLING:         'BILLING',
+    PAYMENT_SUCCESS: 'PAYMENT_SUCCESS',
+    PAYMENT_FAILED:  'PAYMENT_FAILED'
+};
 
 class DashboardPage extends React.Component {
 
@@ -51,11 +66,15 @@ class DashboardPage extends React.Component {
         //this.step1ItemRef = React.createRef();
         
         this.state = {
+            billingShouldShowProduct: true,
+            billingProductId: '',
+            billingContentName: BILLING_CONTENT_NAME.BILLING,
             itemType: 'retrite',
             collapsed: false,
             createItemWizardStep: 0,
             messageId: 0,
             messagePageNum: 0,
+            isBillingCheckout: false,
             // Modal windows
             createEditCustomerModalVisible: false,
             deleteItemModalVisible: false,
@@ -64,6 +83,7 @@ class DashboardPage extends React.Component {
             isValidNext: false,
 
             isRightMenuVisible: false,
+            isBillingModalVisible: false,
             selectedCategory: '',
             selectedSubCategory: '',
             lead: {},
@@ -194,10 +214,6 @@ class DashboardPage extends React.Component {
         if (this.props.isNextStepValid !== prevProps.isNextStepValid){ 
             this.setState({isValidNext : this.props.isNextStepValid})
         }
-
-        if(!this.props.isValidToken) {
-            history.push('/home');
-        }
     }
     
     componentDidMount() {
@@ -208,11 +224,27 @@ class DashboardPage extends React.Component {
             return;
         }
 
+        this.props.isLoggedIn()
+            .then((res) => res ? this.loadData(user) : history.push('/home'), error => history.push('/home'));        
+    }   
+    
+    loadData = (user) => {
         // load summary data for the dashboard (amenities, leads, reports)
         this.props.fetchSummary(user.id);
-
-        this.props.isLoggedIn();
-    }    
+        this.props.loadRemoteStripe();    
+        // check url params: billing pop-up
+        const urlParams = new URLSearchParams(this.props.location.search)
+        const billing  = urlParams.get('billing');        
+        const checkout = urlParams.get('checkout');        
+        if(billing && checkout){
+            this.setState({isBillingModalVisible : billing, 
+                           isBillingCheckout: true,
+                           isValidBillingForm: true,
+                           billingContentName : checkout == 'true' ? 
+                                    BILLING_CONTENT_NAME.PAYMENT_SUCCESS : 
+                                    BILLING_CONTENT_NAME.PAYMENT_FAILED});
+        }
+    }
 
     handleAminityDetails = (item) => {
         this.setState({
@@ -373,6 +405,22 @@ class DashboardPage extends React.Component {
         });        
     }
 
+    handleBillingModalOk = async () => {
+        let {billingProductId} = this.state;
+
+        if(billingProductId && billingProductId.length > 0){
+            const response  = await commonService.createCheckoutSession(1, billingProductId);
+            const { error } = this.props.stripe.redirectToCheckout({  sessionId: response.data.data });
+            if (error) {
+                console.warn(error);
+            }    
+        }        
+    }
+
+    handleBillingModalCancel = () => {        
+        this.setState({ isBillingModalVisible: false });
+    }
+
     handleLeadDeleteModalOk = () => {
         this.setState({
             deleteLeadModalVisible: false,
@@ -401,6 +449,12 @@ class DashboardPage extends React.Component {
         e.preventDefault();
         this.setState({ logedOut: true });
         this.props.logout();
+    }
+
+    handleBilling = async (e) => {
+        this.handleRightMenuOpenClose();
+        // create session and redirect to payment screen
+        this.setState(prevState => ({isBillingModalVisible: !prevState.isBillingModalVisible}));        
     }
 
     handleHome = (e) => {
@@ -523,10 +577,36 @@ class DashboardPage extends React.Component {
         this.setState({isValidNext: false})
     }
 
+    getBillingContent = (name) => {
+        let res = <BillingProduct {...this.props} setBillingProduct={this.setBillingProduct}/>
+        switch(name) {
+            case BILLING_CONTENT_NAME.PAYMENT_SUCCESS:
+                res = <BillingProductSuccess {...this.props}/>
+                break;
+            case BILLING_CONTENT_NAME.PAYMENT_FAILED:
+                res = <BillingProductFailed {...this.props}/>
+                break;
+        }
+
+        return res;
+    }
+
+    setBillingProduct = (billingProductSysId) => {
+        this.setState({billingProductId: billingProductSysId});
+    }
+
     render() {
-        const { createEditItem, lead, createItemWizardStep, createItemSteps: createItemTotalSteps, isValidNext } = this.state;
+        const { createEditItem, lead, createItemWizardStep, 
+                createItemSteps: createItemTotalSteps, 
+                isValidNext, billingShouldShowProduct, 
+                billingContentName, isBillingCheckout } = this.state;
         //const { TextArea } = Input;        
-        const {selectedItem, user} = this.props;
+        const {selectedItem, user, isValidBillingForm} = this.props;
+
+        let billingContent = '';
+        if(billingShouldShowProduct) {
+            billingContent = this.getBillingContent(billingContentName);
+        }
 
         return (
             <Layout style={{height:'100%'}}>
@@ -603,6 +683,30 @@ class DashboardPage extends React.Component {
                     <p>Message Details: <b>{lead.details}</b></p>
                 </Modal> 
 
+                {/* Dashboard Billing Modal Window */}
+                <Modal
+                        title={'Retreat Billing'}
+                        visible={this.state.isBillingModalVisible}
+                        footer={[
+                            <Row>
+                                {
+                                    !isBillingCheckout &&
+                                    <Col span={4}>                                    
+                                        <Button key="cancel-button" onClick={this.handleBillingModalCancel} htmlType="button">
+                                            Cancel
+                                        </Button>
+                                    </Col>
+                                }
+                                <Col span={4}>
+                                    <Button disabled={isValidBillingForm} key="cancel-button" onClick={isBillingCheckout ? this.handleBillingModalCancel : this.handleBillingModalOk} htmlType="button">
+                                        {isBillingCheckout ? 'Close' : 'Buy'}
+                                    </Button>
+                                </Col>
+                            </Row>
+                        ]}>
+                     {billingContent}
+                </Modal>   
+
                 <Drawer title="User Settings"
                         placement="right"
                         closable={true}
@@ -610,6 +714,8 @@ class DashboardPage extends React.Component {
                         onClose={this.handleRightMenuOpenClose}
                         visible={this.state.isRightMenuVisible}>
                     <UserSettings handleHome={this.handleHome}
+                                  {...this.props}
+                                  handleBilling={this.handleBilling}
                                   handleLogout={this.handleLogout}/>
                 </Drawer>  
             </Layout>
@@ -629,6 +735,8 @@ function mapStateToProps(state) {
         user : JSON.parse(sessionStorage.getItem('user')),
         items: [...state.items.items],
         leads: [],
+        billingForm: state.common.billingForm,
+        isValidBillingForm: state.common.isValidBillingForm,
         summaryReports: state.summary.reportSummary,
         summaryLeads: state.summary.leadSummary,
         summaryItem: state.summary.itemSummary,
@@ -636,7 +744,8 @@ function mapStateToProps(state) {
         subCategories: [...state.common.subCategories],
         selectedItem: state.common.selectedItem,
         isNextStepValid: state.common.isNextStepValid,
-        isValidToken : state.users.isLoggedIn
+        isValidToken : state.users.isLoggedIn,
+        stripe: state.common.stripe
     };
 }
 
