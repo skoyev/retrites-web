@@ -7,8 +7,6 @@ import { commonActions, messageActions } from '../../../store/action';
 import { withLocalize } from "react-localize-redux";
 import './index.css'
 import { typeMenu } from '../../common';
-import { Link } from 'react-router-dom';
-import { page } from '../../../store/reducer/page.reducer';
 
 const WAIT_INTERVAL = 2500;
 
@@ -24,15 +22,11 @@ const rowSelection = {
   
 const Message = props => {
     let timer;  
-    const {states, messageGroups, handleViewMessage, messagePageNum, user} = props;  
+    const {states, messageGroups, handleViewMessage, handleDeleteMessage, messagePageNum, user} = props;  
 
     const [name, setName] = useState('');
     const [selectedState, setSelectedState] = useState({});   
     const [pageNum, setPageNum] = useState(0);   
-
-    const handleDeleteMessage = (e) => {
-    }
-
     const getRecipientName = (record) => {
       return user.firstName == record.recipient.firstName && 
               user.lastName == record.recipient.lastName ? 
@@ -59,7 +53,7 @@ const Message = props => {
               <Button key={record.id} type="link" onClick={() => handleViewMessage({id:record.id, pageNum:pageNum, recipient:getRecipientName(record), itemID: record.item.id})}>View</Button>
             </Col>
             <Col span={6}>
-              <Button key={record.id} type="link" onClick={() => handleDeleteMessage()}>Delete</Button>
+              <Button key={record.id} type="link" onClick={() => handleDeleteMessage(record.id, getRecipientName(record))}>Delete</Button>
             </Col>
           </Row>
         )
@@ -67,7 +61,7 @@ const Message = props => {
     ];    
 
     let onChangeDebounced = () => {
-        //props.fetchItemsByNameStatus(selectedItem, selectedType.id);
+        //props.fetchMessageGroups();
     };
                       
     useEffect(()=> {

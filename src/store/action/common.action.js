@@ -1,5 +1,5 @@
 import { commonService } from '../../services';
-import { commonConstants } from '../../constants';
+import { commonConstants, itemConstants } from '../../constants';
 import { loadStripe } from '@stripe/stripe-js';
 
 export const commonActions = {
@@ -17,7 +17,8 @@ export const commonActions = {
     setIsValidBillingForm,
     setBillingForm,
     loadRemoteStripe,
-    fetchBillingProducts
+    fetchBillingProducts,
+    fetchSummary
 };
 
 function success(type, data) { return { type: type, data } }
@@ -52,6 +53,14 @@ function loadRemoteStripe () {
         loadStripe('pk_test_51GwbI2HoVViQEl0lRjMW3EcIVYg9nNQrdrehnFW0u2iLMLr2PDd1E4Y3CsdfHHoACID1nfMs5LNVrrJzOxROOHh300uPYfTGn7')
             .then(res  => dispatch(success(commonConstants.LOAD_STRIPE_LIB, res)))
             .catch(err => console.log(err))
+    }
+}
+
+export function fetchSummary() {
+    return dispatch => {
+        return commonService.fetchSummary()
+                          .then(res => dispatch(success(itemConstants.SUMMARY_FETCH_SUCCESS, res.data)))
+                          .catch(error => {throw (error)})
     }
 }
 

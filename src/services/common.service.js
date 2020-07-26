@@ -12,8 +12,15 @@ export const commonService = {
     forgotPassword,
     resetPassword,
     createCheckoutSession,
-    fetchBillingProducts
+    fetchBillingProducts,
+    fetchSummary
 };
+
+function fetchSummary() {
+    const headers = {'Content-Type': 'application/json',
+                     'x-auth-key':    getAuthKey() };
+    return axios.get(`${URL}/summary`, {headers:headers});
+}
 
 function fetchBillingProducts() {
     const headers = {'Content-Type': 'application/json',

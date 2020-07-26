@@ -5,12 +5,32 @@ export const messageActions = {
     fetchMessageGroups,
     fetchMessagesByGroupID,
     createMessage,
+    deleteMessageGroup,
     createMessageGroupAndMessage
 };
 
 function success(type, data) { return { type: type, data } }
 function failure(type, error) { return { type: type, error } }
 function loading(isLoading) { return { type: commonConstants.IS_LOADING_SUCCESS, isLoading } }
+
+/**
+ * Delete message group
+ */
+function deleteMessageGroup(msgGrpId) {
+    return dispatch => {
+        return new Promise( (resolve, reject) => {
+            messageService.deleteMessageGroup(msgGrpId)
+                        .then(_  => { 
+                            dispatch(success(messageConstants.DELETE_MESSAGE_GROUP_SUCCESS));
+                            resolve();
+                        })
+                        .catch(_ => { 
+                            dispatch(failure(messageConstants.DELETE_MESSAGE_GROUP_FAILURE));
+                            reject();
+                        });
+        });
+    }
+}
 
 /**
  * Create message group and message.
@@ -31,7 +51,9 @@ function createMessageGroupAndMessage(itemID, details) {
                           .catch(_ => dispatch(failure(messageConstants.CREATE_MESSAGE_GROUP_FAILURE)));
         }
     } else {
-        return dispatch => failure(messageConstants.CREATE_MESSAGE_GROUP_FAILURE)
+        return dispatch => { 
+            failure(messageConstants.CREATE_MESSAGE_GROUP_FAILURE) 
+        };
     }
 }
 

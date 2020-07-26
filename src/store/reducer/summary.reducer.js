@@ -1,9 +1,7 @@
 import {itemConstants} from '../../constants';
 
 const INITIAL_STATE = {
-  reportSummary: [],
-  leadSummary: [],
-  itemSummary: []
+  summary: {reports: {}, amenities: {}, deals: []},
 };
 
 export function summary(state = INITIAL_STATE, action) {
@@ -11,9 +9,7 @@ export function summary(state = INITIAL_STATE, action) {
         case itemConstants.SUMMARY_FETCH_SUCCESS:
           return {
             ...state,
-            reportSummary: action.summary.reportSummary,
-            itemSummary: action.summary.itemSummary,
-            leadSummary: action.summary.leadSummary
+            summary: action.data.summary
           };             
         default:
           return state

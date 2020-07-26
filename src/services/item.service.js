@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { configConstants } from '../constants';
+import { getAuthKey } from '../helpers';
 
 // SET FOR LOCAL ENV
 if(configConstants.ENVIRONMENT === configConstants.ENV_LOCAL){
@@ -20,7 +21,6 @@ export const itemService = {
     fetchCountries,
     search,
     fetchUserAmenities,
-    fetchSummary,
     fetchItemsByNameStatus
 };
 
@@ -38,10 +38,6 @@ const requestOptions = {
 function fetchItemsByNameStatus(name, statusID) {
     let params = {status:statusID, name:name};
     return axios.get('api/items', {params:params});
-}
-
-function fetchSummary(userID) {
-    return axios.get(`/api/items/summary/owner/${userID}`);
 }
 
 function fetchUserAmenities(userID) {

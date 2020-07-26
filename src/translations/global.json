@@ -1,6 +1,6 @@
 {
-    "movie": {
-      "title": ["Jurassic Park", "Le Parc jurassique"]
+    "messages": {
+      "delete-message-group": ["Would you like to delete message group", "Le Parc jurassique"]
     }, 
     
     "header": {
@@ -55,7 +55,13 @@
 
     "dashboard": {
       "total": ["Total", "Total Fr"],
-      "last_created_date": ["Last Created Date", "last_created_date fr"],
+      "totalVisits": ["Total Visits", "Total Fr"],
+      "totalRequests": ["Total Requests", "Total Fr"],
+      "lastRequestedDate": ["Last Requested Date", "Total Fr"],
+      "name": ["Name", "Name Fr"],
+      "date": ["Date", "Date Fr"],
+      "price": ["Price", "Price Fr"],
+      "last_created": ["Last Created Amenity", "last_created_date fr"],
       "last_requested_date": ["Last Requested Date", "last_requested_date fr"],
       "total_visits": ["Total Visits", "total_visits fr"],
       "last_visit_date": ["Last Visit Date", "last_visit_date fr"]

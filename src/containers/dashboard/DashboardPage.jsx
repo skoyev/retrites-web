@@ -15,7 +15,7 @@ import Step7Item from '../../components/private/wizard/steps/step7';
 import { Button, Form, Input } from 'antd';
 import { connect } from 'react-redux';
 import { withLocalize } from "react-localize-redux";
-import {itemActions, reportActions, userActions, commonActions} from '../../store/action'
+import {itemActions, reportActions, userActions, commonActions, messageActions} from '../../store/action'
 import {pageConstants} from '../../constants';
 import './index.css'
 import moment from 'moment';
@@ -26,6 +26,7 @@ import { commonService } from '../../services';
 import BillingProduct from '../../components/private/billing/product/BillingProduct';
 import BillingProductSuccess from '../../components/private/billing/success/BillingProductSuccess';
 import BillingProductFailed from '../../components/private/billing/failed/BillingProductFailed';
+import { Translate } from "react-localize-redux";
 
 const { Header, Content, Sider, Footer } = Layout;
 
@@ -67,6 +68,9 @@ class DashboardPage extends React.Component {
         
         this.state = {
             billingShouldShowProduct: true,
+            deleteGrpMsgCfrmModalVisible: false,
+            msgGrpId: 0,
+            msgGrpRecipientName: '',
             billingProductId: '',
             billingContentName: BILLING_CONTENT_NAME.BILLING,
             itemType: 'retrite',
@@ -203,7 +207,7 @@ class DashboardPage extends React.Component {
                 //this.props.fetchReportSummary(user.id);
                 break;
             case pageConstants.DASHBOARD_CONTENT:
-                this.props.fetchSummary(user.id)
+                //this.props.fetchSummary(user.id)
                 break;
 
         }   
@@ -217,20 +221,20 @@ class DashboardPage extends React.Component {
     }
     
     componentDidMount() {
-        const {user} = this.props;        
+        this.props.isLoggedIn()
+            .then((res) => res ? this.loadInitData() : history.push('/home'), error => history.push('/home'));        
+    }   
+    
+    loadInitData = () => {
+        const {user} = this.props;
 
         if(!user){
             console.warn('User is null...')
             return;
         }
 
-        this.props.isLoggedIn()
-            .then((res) => res ? this.loadData(user) : history.push('/home'), error => history.push('/home'));        
-    }   
-    
-    loadData = (user) => {
         // load summary data for the dashboard (amenities, leads, reports)
-        this.props.fetchSummary(user.id);
+        //this.props.fetchSummary(user.id);
         this.props.loadRemoteStripe();    
         // check url params: billing pop-up
         const urlParams = new URLSearchParams(this.props.location.search)
@@ -306,13 +310,17 @@ class DashboardPage extends React.Component {
         })
     }
 
+    handleDeleteMessage = (msgGrpId, recipientName) => {
+        this.setState({deleteGrpMsgCfrmModalVisible : true, msgGrpId: msgGrpId, msgGrpRecipientName:recipientName});
+    }
+
     backToMessageFromDetails = () => {
         this.setState({selectedContentName: pageConstants.MESSAGE_CONTENT})
     }
 
     renderSwitchPage(){
         const { selectedContentName, messageId, pageNum, messageRecipient, itemID } = this.state;
-        const {items, leads, summaryItem, summaryLeads, summaryReports, user} = this.props; 
+        const {items, leads} = this.props; 
 
         switch(selectedContentName){
             case pageConstants.MESSAGE_DETAILS_CONTENT:
@@ -328,6 +336,7 @@ class DashboardPage extends React.Component {
                 return ([
                     <Message ref={this.child} 
                              handleViewMessage={this.handleViewMessage}
+                             handleDeleteMessage={this.handleDeleteMessage}
                              messagePageNum={pageNum}
                              key="message"/>
                 ]);
@@ -353,10 +362,7 @@ class DashboardPage extends React.Component {
                 ]);
             case pageConstants.DASHBOARD_CONTENT:
                 return ([
-                    <Dashboard key="dashboard"
-                               amentities={summaryItem}
-                               leads={summaryLeads}
-                               reports={summaryReports}/>
+                    <Dashboard key="dashboard"/>
                 ]);
             default:
                 return ([
@@ -595,11 +601,28 @@ class DashboardPage extends React.Component {
         this.setState({billingProductId: billingProductSysId});
     }
 
+    handleDeleteGrpMsgCfrmModalVisiblelOk = () => {
+        let {msgGrpId} = this.state;        
+        if(msgGrpId && msgGrpId > 0)
+            this.props.deleteMessageGroup(msgGrpId)
+                      .then(_ => { 
+                          this.props.fetchMessageGroups();
+                          this.setState({deleteGrpMsgCfrmModalVisible : false, msgGrpRecipientName: '', msgGrpId: 0});
+                        }, error => {
+                            console.error('handleDeleteGrpMsgCfrmModalVisiblelOk !!!');
+                        });        
+    }
+
+    handleDeleteGrpMsgCfrmModalVisiblelCancel = () => {
+        this.setState({deleteGrpMsgCfrmModalVisible : false});
+    }
+
     render() {
         const { createEditItem, lead, createItemWizardStep, 
                 createItemSteps: createItemTotalSteps, 
                 isValidNext, billingShouldShowProduct, 
-                billingContentName, isBillingCheckout } = this.state;
+                billingContentName, isBillingCheckout,
+                msgGrpRecipientName } = this.state;
         //const { TextArea } = Input;        
         const {selectedItem, user, isValidBillingForm} = this.props;
 
@@ -654,14 +677,55 @@ class DashboardPage extends React.Component {
                     <p>Would you like to delete {createEditItem.name}</p>
                 </Modal>   
 
-                {/* Dashboard Delete Lead Modal Window */}
+                {/* Dashboard Delete Group Message Modal Window */}
                 <Modal
                         title="Delete Lead"
-                        visible={this.state.deleteLeadModalVisible}
-                        onOk={this.handleLeadDeleteModalOk}
-                        onCancel={this.handleLeadDeleteModalCancel}>                    
-                    <p>Would you like to delete item with name: <b>{lead.name}</b></p>
+                        visible={this.state.deleteGrpMsgCfrmModalVisible}
+                        onOk={this.handleDeleteGrpMsgCfrmModalVisiblelOk}
+                        onCancel={this.handleDeleteGrpMsgCfrmModalVisiblelCancel}>                    
+                        <Translate>
+                            {({ translate }) =>
+                                <p>{`${translate('messages.delete-message-group')} for recipient - ${msgGrpRecipientName} ?`}</p>}
+                        </Translate>
                 </Modal>   
+
+                {/* Dashboard View Details Lead Modal Window */}
+                <Modal
+                        title="View Lead Details"
+                        key="leadsDetailsModal1"
+                        visible={this.state.viewLeadModalVisible}
+                        footer={[
+                            <Row>
+                                <Button key="cancel-button" onClick={this.handleLeadViewModalCancel} htmlType="button">
+                                    OK
+                                </Button>
+                            </Row>
+                        ]}
+>                    
+                    <p>Lead Name: <b>{lead.name}</b></p>
+                    <p>Lead Email: <b>{lead.emailAddress}</b></p>
+                    <p>Message Status: <b>{lead.status}</b></p>
+                    <p>Posted Date: <b>{moment(lead.createdAt).format('MMMM Do YYYY, h:mm:ss a')}</b></p>
+                    <p>Message Details: <b>{lead.details}</b></p>
+                </Modal> 
+
+                {/*  Confirm Delete Message Group */}
+                <Modal
+                        title="Confirm Delete Message Group"
+                        key="deleteMessageGroup"
+                        visible={this.state.viewDeleteMessageGroup}
+                        footer={[
+                            <Row>
+                                <Col span={4}>
+                                    <Button key="cancel-button" onClick={this.handleLeadViewModalCancel} htmlType="button">OK</Button>
+                                </Col>                                
+                                <Col span={4}>
+                                    <Button key="cancel-button" onClick={this.handleLeadViewModalCancel} htmlType="button">OK</Button>
+                                </Col>
+                            </Row>
+                        ]}>                    
+                    <p>W</p>
+                </Modal>
 
                 {/* Dashboard View Details Lead Modal Window */}
                 <Modal
@@ -727,7 +791,8 @@ const mapDispatchToProps = {
     ...itemActions,
     ...reportActions,
     ...userActions,
-    ...commonActions
+    ...commonActions,
+    ...messageActions
 }; 
 
 function mapStateToProps(state) {
@@ -737,9 +802,6 @@ function mapStateToProps(state) {
         leads: [],
         billingForm: state.common.billingForm,
         isValidBillingForm: state.common.isValidBillingForm,
-        summaryReports: state.summary.reportSummary,
-        summaryLeads: state.summary.leadSummary,
-        summaryItem: state.summary.itemSummary,
         categories: [...state.common.categories],
         subCategories: [...state.common.subCategories],
         selectedItem: state.common.selectedItem,

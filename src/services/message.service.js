@@ -7,7 +7,28 @@ export const messageService = {
     fetchMessagesByGroupID,
     createMessage,
     createMessageGroup,
+    deleteMessageGroup
 };
+
+function deleteMessageGroup(msgGroupID) {
+    if(msgGroupID) {
+        let authKey = getAuthKey();
+
+        if(!authKey){
+            console.log('authKey is null')
+            return;
+        }
+    
+        const headers = {
+            'Content-Type': 'application/json',
+            'x-auth-key'  : authKey
+        }
+    
+        return axios.delete(`${URL}/message/group/${msgGroupID}`, {headers:headers});    
+    } else {
+        Promise.reject({error:'Invalid data'});
+    }
+}
 
 /**
  * Create message group

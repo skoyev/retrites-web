@@ -35,6 +35,7 @@ export const commonConstants = {
 
     PUBLIC_USER_ROLE: 'public',
     OWNER_USER_ROLE: 'owner',
+    EXPIRED_USER_ROLE_MENU: [{name: 'Dashboard', type: 'dashboard', index: 'view-dashboard'}],
     PUBLIC_USER_ROLE_MENU: [{name: 'Dashboard', type: 'dashboard', index: 'view-dashboard'}, {name: 'Messages', type: 'user', index: 'view-messages'}],
     OWNER_USER_ROLE_MENU: [{name: 'Dashboard', type: 'dashboard', index: 'view-dashboard'}, {name: 'Amentities', type: 'laptop', index: 'view-amentities'}, {name: 'Messages', type: 'user', index: 'view-messages'}, {name: 'Statistics/Activity', type: 'notification', index: 'view-report'}],
     ADMIN_USER_ROLE_MENU: [{name: 'Users', type: 'user', index: 'view-users'}, {name: 'Items', type: 'laptop', index: 'view-items'}],

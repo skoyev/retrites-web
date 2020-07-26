@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types'
 import { Row, Layout, Menu, Breadcrumb, Icon } from 'antd';
 import {pageConstants, commonConstants} from '../../constants';
+import {isExpiredUser} from '../common/CommonUtil';
 
 const { SubMenu } = Menu;
 
@@ -22,9 +23,15 @@ const buildMenu = (links, handleClickMenu) =>
 </Menu>
 
 
-const getUserMenuByRole = (roleId, handleClickMenu) => {
+const getUserMenuByRole = (user, handleClickMenu) => {
     let result = '';
-    let role   = commonConstants.USER_ROLES.find(r => r.id == roleId);
+    let isBillingExpired = isExpiredUser(user);
+
+    if(isBillingExpired){
+        return buildMenu(commonConstants.EXPIRED_USER_ROLE_MENU, handleClickMenu);
+    }
+
+    let role = commonConstants.USER_ROLES.find(r => r.id == user.roleId);
     switch (role.role) {
         case commonConstants.PUBLIC_USER_ROLE: 
           result = buildMenu(commonConstants.PUBLIC_USER_ROLE_MENU, handleClickMenu);
@@ -49,7 +56,7 @@ const DashboardMenu = ({handleClickMenu, user}) => {
                 </div>                        
             </Row>
             {
-                user && getUserMenuByRole(user.roleId, handleClickMenu)
+                user && getUserMenuByRole(user, handleClickMenu)
             }              
         </React.Fragment>
     )

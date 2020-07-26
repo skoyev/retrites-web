@@ -14,7 +14,7 @@ const INITIAL_STATE = {
   messageStates: [{id: 1, name: 'All'}, {id: 2, name: 'Unread'}],
   isValidBillingForm: false,
   billingForm: {},
-  stripe: {},
+  stripe: {},  
   billingProducts: [
       //{id: '1', name: 'Free Trail 15 days'},
       //{id: 'price_1GyOYOHoVViQEl0lMf8u9JOZ', name: '1 Month - 15$'}      
@@ -22,7 +22,7 @@ const INITIAL_STATE = {
 };
 
 export function common(state = INITIAL_STATE, action) {
-    switch (action.type) {  
+    switch (action.type) { 
         case commonConstants.FETCH_BILLING_PRODUCTS:
             return {
                 ...state,

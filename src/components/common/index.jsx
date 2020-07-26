@@ -10,7 +10,7 @@ export {
 	Loader,
 	CategoryList,
 	SubscriptionModal,
-	typeMenu
+    typeMenu
 }
 
 const typeMenu = (data, handleMenuClick, name) => {
