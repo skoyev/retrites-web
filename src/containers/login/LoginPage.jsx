@@ -117,7 +117,7 @@ class LoginPage extends React.Component {
                                             </Row>
                                         </div>
 
-                                        <div className="form-group">
+                                        <div className="form-group left">
                                             <Translate>
                                                 {({ translate }) =>
                                                     <Link to="/register" className="btn btn-link d-inline">{translate('public.links.signup')}</Link>}

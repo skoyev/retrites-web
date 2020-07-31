@@ -24,6 +24,7 @@ export const commonConstants = {
     HOME_PAGE_LINK: '/home',
     ADD_PAGE_LINK: '/add',
     ITEMS_PAGE_LINK: '/items',
+    ITEM_PAGE_LINK: '/item',
     ABOUT_PAGE_LINK: '/about',
     DASHBOARD_PAGE_LINK: '/dashboard',
     SECRET_PASSPHRASE: 'love',
