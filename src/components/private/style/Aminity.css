@@ -13,3 +13,18 @@
 #type > *:first-child {
     min-width: 120px;
 }
+
+.title {
+    text-align: center;
+    font-size: 16px;
+}
+
+.title:hover {
+    cursor: pointer;
+}
+
+.item-scroll {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 90%;
+}

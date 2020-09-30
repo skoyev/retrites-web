@@ -30,6 +30,7 @@ export const commonConstants = {
     SECRET_PASSPHRASE: 'love',
 
     STATUS_CREATED: 201,
+    IDLE_TIME_MIN: 15,
 
     START_LOADING: true,
     END_LOADING: false,

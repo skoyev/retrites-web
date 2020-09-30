@@ -3,6 +3,7 @@ import { Row, Form, Input, Col, Button } from 'antd';
 import PropTypes from 'prop-types'
 import { Translate } from "react-localize-redux";
 import { Link } from 'react-router-dom';
+import './index.css';
 
 const loggedInHeader = (handleLogoutClick) => (
     <React.Fragment>
@@ -52,10 +53,10 @@ const SearchHeader = ({title, handleNameChange, isLoggedIn, handleLogoutClick, s
     </Col>
 
     <Col span={6}>
-        { shouldShowSearchInput ?
+        {/* shouldShowSearchInput ?
             <Input placeholder="Search" value={selectedName} onChange={handleNameChange}/>
             : ''
-        }
+        */}
     </Col>
 
     <Col span={13}>

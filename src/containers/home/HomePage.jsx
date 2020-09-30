@@ -1,19 +1,20 @@
 import React from 'react';
-import { PublicHeader, 
-         PublicSearchSingle,
+import { PublicHeader,          
          Section, 
          ItemList} from '../../components/public';
-import {CategoryList, Loading, SubscriptionModal} from '../../components/common'
+import {SearchBar} from '../../components/public/search';         
+import {CategoryList, Loading, SubscriptionModal, CategoryWithTitleList} from '../../components/common'
 import AppFooter from '../../components/common/AppFooter';
 import { renderToStaticMarkup } from "react-dom/server";
 import { withLocalize } from "react-localize-redux";
 import globalTranslations from "../../translations/global.json";
 import {connect} from "react-redux";
-import {itemActions, userActions} from '../../store/action/index'
+import {itemActions, userActions, commonActions} from '../../store/action/index'
 import { history, validateEmail } from '../../helpers';
 import '../style/HomePage.css'
 import {pageConstants} from '../../constants';
 import { Form, notification } from 'antd';
+import HomeSearchSection from '../../components/common/section/HomeSearchSection';
 
 class HomePage extends React.Component {
 
@@ -31,17 +32,16 @@ class HomePage extends React.Component {
         this.state = {
             selectedSubcategory: 'Retreat Type',    
             selectedSubcategoryId: 0,      
-            retreatByTypeTitle: 'Find Retreat By Type',
+            selectedCategoryId: 0,      
+            retreatByTypeTitle: 'Find Your Activity By Type',
             retreatByTypeDescription: 'Find Out More About Our Amazing Retreats',
-            popularRetreatTitle: 'Our Popular Destinations',
-            popularRetreatDescription: 'Find Best Places For Yourself',
-            retreatByCountriesTitle: 'Explore our sacred world',
+            //popularRetreatTitle: 'Our Popular Destinations',
+            popularRetreatTitle: 'Popular Destinations',
+            //popularRetreatDescription: 'Find Best Places For Yourself',
+            retreatByCountriesTitle: 'Explore Sacred World',
             retreatByCountriesDescription: '',
-            selectedDuration: 'Duraion',
-            selectedCountry: 'Country',
             selectedDurationValue: '',
             selectedCountryId: '',
-            selectedInputSearchBy: '',
             selectedStartDate: '',
             selectedItemId: 0,
             ourVisionTitle: 'Our Vision',
@@ -57,9 +57,6 @@ class HomePage extends React.Component {
             ourVisionDescription: 'We believe human beings are innately wise, strong and kind. This wisdom, although not always experienced, is always present. Going on retreat is a beautiful way to reconnect to our basic sanity and health. Our aspiration at Retreat Your Mind is to inspire people to experience authentic retreats and reconnect with their innate wisdom, strength and kindness.'
         }
 
-        this.handleDurationClick = this.handleDurationClick.bind(this);
-        this.handleInputSearchBy = this.handleInputSearchBy.bind(this);
-        this.handleStartDate = this.handleStartDate.bind(this);
         this.handleRetreatCategoryClick = this.handleRetreatCategoryClick.bind(this);
         this.handleCountrySelectClick = this.handleCountrySelectClick.bind(this);
         this.handleCountrySelectClickNoRedirect = this.handleCountrySelectClickNoRedirect.bind(this);
@@ -77,11 +74,8 @@ class HomePage extends React.Component {
         this.props.fetchPopularRedirectLoginIfNoData(polularItemCount)
             .then(() => window.scrollTo(0, 0))   
 
-        // fetch countries for retrites
+        // fetch countries
         this.props.fetchCountries();
-
-        // fetch retreatTypes
-        this.props.fetchRetreatSubCategories();
 
         // check if user logged in
         this.props.isLoggedIn();
@@ -103,35 +97,28 @@ class HomePage extends React.Component {
         } 
     }
 
-    search = () => {
-        this.props.clearItemsAndNavigateToPage('search')
-    }
-
-    handleSearchTypeClick = (e) => {
-        this.setState({selectedSubcategory:e.item.props.children, selectedSubcategoryId: e.key});        
-    }
-
-    handleDurationClick = (e) => {
-        this.setState({selectedDuration:e.key, selectedDurationValue: e.key});
-    }
-
-    handleInputSearchBy = (e) => {
-        this.setState({selectedInputSearchBy: e.target.value});
-    }
-
-    handleStartDate = (date, dateString) => {
-        this.setState({selectedStartDate: dateString});
+    search = ({id:countryID}, {id:selectedCategoryId}, {id:selectedSubcategoryId}, selectedStartDate, selectedDuration) => {
+        this.setState({
+                    selectedCountryId: countryID ? countryID : '', 
+                    selectedStartDate: selectedStartDate ? selectedStartDate : '',
+                    selectedSubcategoryId: selectedSubcategoryId ? selectedSubcategoryId: '',
+                    selectedDurationValue: selectedDuration ? selectedDuration : '',
+                    selectedCategoryId: selectedCategoryId ? selectedCategoryId : ''
+                }, 
+                () => {
+            this.props.clearItemsAndNavigateToPage(pageConstants.SEARCH)
+        });            
     }
 
     componentWillReceiveProps(nextProps){
         if(nextProps.nextPageName){
             if( nextProps.nextPageName === pageConstants.SEARCH ){
                 const {selectedSubcategoryId, 
+                    selectedCategoryId,
                     selectedDurationValue,
-                    selectedInputSearchBy,
                     selectedStartDate, 
                     selectedCountryId } = this.state;     
-                let param = `/items?subCategoryId=${selectedSubcategoryId}&duration=${selectedDurationValue}&name=${selectedInputSearchBy}&startDate=${selectedStartDate}&countryId=${selectedCountryId}`;
+                let param = `/items?subCategoryId=${selectedSubcategoryId}&duration=${selectedDurationValue}&startDate=${selectedStartDate}&countryId=${selectedCountryId}&categoryId=${selectedCategoryId}`;
                 history.push(param);        
             } else if( nextProps.nextPageName === pageConstants.DETAILS ) {
                 const {selectedItemId} = this.state;  
@@ -147,14 +134,20 @@ class HomePage extends React.Component {
     } 
 
     handleRetreatCategoryClick = (id) => {        
-        this.setState({selectedSubcategoryId: id}, () => {
+        this.setState({selectedCategoryId: id}, () => {
             this.props.clearItemsAndNavigateToPage(pageConstants.SEARCH)
         });            
     }
 
     handleCountrySelectClick = (id) => {        
         const today = new Date().toISOString().slice(0, 10)
-        this.setState({selectedCountryId: id, selectedStartDate: today}, () => {
+        this.setState(
+            {
+                selectedCountryId: id, 
+                selectedStartDate: today,
+                selectedStartDate: today,
+            }, 
+            () => {
             this.props.clearItemsAndNavigateToPage(pageConstants.SEARCH)
         });            
     }
@@ -195,7 +188,7 @@ class HomePage extends React.Component {
 
     handleSubscriptionSubmit = (form) => {
         const {subscriptionName, subscriptionEmail, selectedCategoryList, isCaptchaValid} = this.state;
-        const {retreatTypes} = this.props;
+        const {categories} = this.props;
 
         if(!isCaptchaValid) {
             console.log('Invalid captcha');
@@ -217,7 +210,8 @@ class HomePage extends React.Component {
 
         this.setState({isCaptchaValid:false})
 
-        const catIds = retreatTypes.filter(r => selectedCategoryList.includes(r.name)).map(r => r.id);
+        //const catIds = retreatTypes.filter(r => selectedCategoryList.includes(r.name)).map(r => r.id);
+        const catIds = categories.filter(r => selectedCategoryList.includes(r.name)).map(r => r.id);
         this.props.userSubscribe({email:subscriptionEmail, name:subscriptionName, catIds:catIds})
             .then(() => {
                form.resetFields();
@@ -256,20 +250,18 @@ class HomePage extends React.Component {
                 popularRetreatDescription,
                 retreatByCountriesTitle,
                 retreatByCountriesDescription,
-                ourVisionTitle, ourVisionDescription,
-                selectedSubcategory,
-                selectedDuration, selectedCountry, isLoggedInRes,
-                shouldShowSubscriptionModal,
+                ourVisionTitle, ourVisionDescription,                
+                isLoggedInRes, shouldShowSubscriptionModal,
                 selectedCategoryList, showSuccessMessage, isCaptchaValid } = this.state;
-        const { items, retreatByCountries, retreatTypes, searchLength, SubscriptionWrapper } = this.props;
+        const { items, retreatByCountries, categories, countries, SubscriptionWrapper } = this.props;
         const shouldHideLoadMore = true;
-
+        
         if ( !items || items.length === 0 ) {
             console.warn('There is no items has been found. Please check items collection!!!')
-            return <Loading text={'Loading...'}/>;
-        }
+            //return <Loading text={'Loading...'}/>;
+        }        
 
-        const subscriptionCategoryList = retreatTypes && retreatTypes.length > 1 ? this.extractRetriteTypes(retreatTypes) : [];
+        const subscriptionCategoryList = categories && categories.length > 1 ? this.extractRetriteTypes(categories) : [];
         return (
             <React.Fragment>
                 <div className="slider-section">
@@ -279,30 +271,17 @@ class HomePage extends React.Component {
                                   handleLogoutClick={this.handleLogoutClick}/>
 
                     {/* Slider/Search Section */}
-                    <PublicSearchSingle title="Find Retreates For Any Season"
-                                        search={this.search}
-                                        handleTypeClick={this.handleSearchTypeClick}
-                                        handleDurationClick={this.handleDurationClick}
-                                        handleInputSearchBy={this.handleInputSearchBy}
-                                        handleStartDate={this.handleStartDate}
-                                        subCategory={selectedSubcategory}
-                                        selectedDuration={selectedDuration}
-                                        types={retreatTypes}
-                                        selectedCountry = {selectedCountry}
-                                        countries = {retreatByCountries}
-                                        handleCountryClick = {this.handleCountrySelectClickNoRedirect}
-                                        length={searchLength}/>                 
+                    <HomeSearchSection handleSearch={this.search}/>
                 </div>
 
                 <div className="container">
                     {/* Types Section */}
                     <CategoryList className="margin-top-bottom-50" 
-                                  items={retreatTypes}
+                                  items={categories}
                                   title={retreatByTypeTitle}
                                   numItemsPerRow={4}
                                   type="subCategoryId"
-                                  handleCategoryClick={this.handleRetreatCategoryClick}
-                                  description={retreatByTypeDescription}/>
+                                  handleCategoryClick={this.handleRetreatCategoryClick}/>
 
                     {/* Our Vision Section */}
                     <Section description={ourVisionDescription} title={ourVisionTitle}/>
@@ -318,7 +297,7 @@ class HomePage extends React.Component {
 
                     {/* Retreat By Countries Section */}
                     <CategoryList className="margin-top-bottom-50" 
-                                  items={retreatByCountries}
+                                  items={countries}
                                   title={retreatByCountriesTitle}
                                   numItemsPerRow={4}
                                   type="countryId"
@@ -326,8 +305,8 @@ class HomePage extends React.Component {
                                   description={retreatByCountriesDescription}/>
                 </div>
 
-                <AppFooter title="@2019 Retreat In Mind Inc." 
-                           countries={retreatByCountries}/>
+                <AppFooter title="@2020 Retreat In Mind Inc." 
+                           countries={countries}/>
 
                 {/* User Subscription */}
                 <SubscriptionWrapper title={'Subscription'}
@@ -343,7 +322,6 @@ class HomePage extends React.Component {
                                    handleSubscriptionChange={this.handleSubscriptionChange}
                                    isCaptchaValid={isCaptchaValid}
                                    handleSubscriptionSubmit={this.handleSubscriptionSubmit}/>
-
             </React.Fragment>
         )
     }
@@ -353,9 +331,10 @@ function mapStateToProps(state) {
     return {
       items: state.items.items,
       retreatByCountries: state.items.retreatByCountries,
-      retreatTypes: state.items.retriteTypes,
-      nextPageName: state.items.pageName,
-      searchLength: state.items.searchLength,
+      //retreatTypes: state.items.retriteTypes,
+      categories: state.common.categories,
+      countries: state.common.countries,
+      nextPageName: state.items.pageName,      
       isLoggedInRes: state.users.isLoggedIn,
       SubscriptionWrapper: Form.create({ name: 'subscription' })( SubscriptionModal )
       //shouldReloadItems: state.items.shouldReloadItems
@@ -364,7 +343,8 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {    
     ...itemActions, 
-    ...userActions
+    ...userActions,
+    ...commonActions
 };
 
 //export default withLocalize(HomePage);

@@ -141,16 +141,18 @@ function fetchFacilitatorTypes() {
 
 function fetchCategories() {
     return dispatch => {
-        commonService.getAllCategories()
-            .then(
-                res => { 
-                    dispatch(success(commonConstants.FETCH_CATEGORIES_SUCCESS, res.data.data));
-                },
-                error => {
-                    console.error(`There was an error while fetchCategories - ${error}`)
-                    dispatch(failure(error));                    
-                }
-            );
+        return commonService
+                .getAllCategories()
+                .then(
+                    res => { 
+                        dispatch(success(commonConstants.FETCH_CATEGORIES_SUCCESS, res.data.data));
+                        return res;
+                    },
+                    error => {
+                        console.error(`There was an error while fetchCategories - ${error}`)
+                        dispatch(failure(error));                    
+                    }
+                );
     };
 }
 
@@ -169,9 +171,9 @@ function fetchCountries() {
     };
 }
 
-function fetchSubCategories() {
+function fetchSubCategories(catID) {
     return dispatch => {
-        commonService.getAllSubcategories()
+        commonService.getSubCategories(catID)
             .then(
                 res => { 
                     dispatch(success(commonConstants.FETCH_SUB_CATEGORIES_SUCCESS, res.data.data));

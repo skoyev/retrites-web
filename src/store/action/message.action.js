@@ -41,7 +41,7 @@ function createMessageGroupAndMessage(itemID, details) {
             messageService.createMessageGroup(itemID)
                           .then(res => {
                             if(res.status == commonConstants.STATUS_CREATED){
-                                messageService.createMessage(details, res.data.data)
+                                messageService.createMessage(details, res.headers.messagegroupid)
                                               .then(_ => dispatch => failure(messageConstants.CREATE_MESSAGE_SUCCESS))
                                               .catch(_ => dispatch => failure(messageConstants.CREATE_MESSAGE_FAILURE));
                             } else {

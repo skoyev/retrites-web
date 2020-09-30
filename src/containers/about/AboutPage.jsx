@@ -1,11 +1,8 @@
 import React from 'react';
-import { Translate } from "react-localize-redux";
 import { connect } from 'react-redux';
 import { withLocalize } from "react-localize-redux";
-import {userActions, itemActions} from '../../store/action'
-import { history } from '../../helpers';
+import {userActions, itemActions, commonActions} from '../../store/action'
 import './style.css'
-import { PublicHeader } from '../../components/public';
 import AppFooter from '../../components/common/AppFooter';
 import SimpleHeader from '../../components/public/SimpleHeader';
 
@@ -21,7 +18,7 @@ class AboutPage extends React.Component {
     }
 
     render() { 
-        const {isLoggedIn, retreatByCountries} = this.props;       
+        const {retreatByCountries} = this.props;       
         return (
             <React.Fragment>
                 <SimpleHeader/>
@@ -50,6 +47,7 @@ class AboutPage extends React.Component {
 
 const mapDispatchToProps = {    
     ...itemActions, 
+    ...commonActions, 
     ...userActions
 };
 

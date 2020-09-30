@@ -22,7 +22,7 @@ const AppFooter = ({title, countries}) => {
                                 <li key={index}>
                                     <Translate>
                                         {({ translate }) =>                                                
-                                        <Link to={`/items?subCategoryId=0&duration=&name=&startDate=&countryId=${c.id}`}>{translate(c.name)}</Link>}                                                 
+                                        <Link to={`/items?subCategoryId=0&duration=&name=&startDate=&countryId=${c.id}`}>{translate(`label.${c.name.toLowerCase()}`)}</Link>}                                                 
                                     </Translate>     
                                 </li>
                             )}

@@ -18,3 +18,7 @@
 #step1Item_itemSubCategory > *:first-child {
     min-width: 150px;
 }
+
+.error {
+    color: red;
+}

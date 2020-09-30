@@ -1,10 +1,8 @@
-import React, {useState} from 'react';
-import PropTypes from 'prop-types'
-import { Row, Input, Form, InputNumber, Col, Menu, Icon, Dropdown } from 'antd';
+import React from 'react';
+import { Row, Input, Form, Col, Menu, Dropdown } from 'antd';
 import { withLocalize } from "react-localize-redux";
-import { Translate } from "react-localize-redux";
 import { connect } from 'react-redux';
-import {commonActions} from '../../../../../store/action'
+import {commonActions, itemActions} from '../../../../../store/action'
 import './style.css';
 
 const formItemLayout = {
@@ -33,11 +31,18 @@ class Step1Item extends React.Component {
     constructor(props, context){
         super(props); 
         this.checkIsStepValid = this.checkIsStepValid.bind(this);
+        this.state = {
+            itemNameError: ''
+        }
     }
 
     componentDidMount() {
-        this.props.fetchCategories();
-        this.props.fetchSubCategories();   
+        //this.props.fetchCategories();
+        //this.props.fetchSubCategories();   
+        this.props
+        .fetchCategories()
+        .then(({data:{data:[{id}]}}) => this.props.fetchSubCategories(id));    
+
         this.props.onRef(this);  
         this.checkIsStepValid();                           
     }
@@ -80,27 +85,43 @@ class Step1Item extends React.Component {
     
     checkIsStepValid = () => {
         const { getFieldsError, isFieldTouched, getFieldDecorator } = this.props.form;
+        let {selectedItem} = this.props;
 
         // check name error validation
-        let hasNameErrors = !( (isFieldTouched('itemName') === true || this.props.selectedItem.name) 
+        let hasNameErrors = !( (isFieldTouched('itemName') === true || selectedItem.name) 
                                     && getFieldsError().itemName === undefined);
         // check title error validation
-        let hasTitleErrors = !( (isFieldTouched('itemTitle') === true || this.props.selectedItem.title) 
+        let hasTitleErrors = !( (isFieldTouched('itemTitle') === true || selectedItem.title) 
                                     && getFieldsError().itemTitle === undefined);
 
         // check description error validation
-        let hasDescriptionErrors = !( (isFieldTouched('itemDescription') === true || this.props.selectedItem.description) 
+        let hasDescriptionErrors = !( (isFieldTouched('itemDescription') === true || selectedItem.description) 
                                     && getFieldsError().itemDescription === undefined);
 
         // check category error validation
-        let hasCategoryErrors = !(isFieldTouched('itemCategory') === true || this.props.selectedItem.category);
+        let hasCategoryErrors = !(isFieldTouched('itemCategory') === true || selectedItem.category);
 
-        this.props.setIsNextStepValid(!hasNameErrors && !hasTitleErrors && !hasDescriptionErrors && !hasCategoryErrors);            
+        //check if same item name is already exist - give warning
+        if(!hasNameErrors && isFieldTouched('itemName') && isFieldTouched('itemName') == true){
+            this.props.isItemExistWithName(selectedItem.name)
+                .then(({data:{items:[item]}}) => {
+                    if(item){
+                        this.setState({itemNameError:'This item name is already exist!'})
+                    } else {
+                        this.setState({itemNameError:''})
+                    }
+                    hasNameErrors = item != undefined;
+                    this.props.setIsNextStepValid(!hasNameErrors && !hasTitleErrors && !hasDescriptionErrors && !hasCategoryErrors);            
+                });
+        } else {       
+            this.props.setIsNextStepValid(!hasNameErrors && !hasTitleErrors && !hasDescriptionErrors && !hasCategoryErrors);            
+        }
     }
 
     render() {
         const { getFieldDecorator, getFieldsError, isFieldTouched } = this.props.form;
         const { categories, subCategories, selectedItem } = this.props;
+        const { itemNameError } = this.state;
 
         /*
         const pageObj = { name: '', title: '', category: '', description: '', subCategory: {}, category: {} };
@@ -129,6 +150,7 @@ class Step1Item extends React.Component {
                                         ],
                                     })
                                 (<Input name="name" onChange={this.handleItemChange}/>)}
+                                <span className="error">{itemNameError}</span>
                             </Form.Item>
                             <Form.Item label="Title">           
                                 {getFieldDecorator('itemTitle', {
@@ -194,7 +216,8 @@ Step1Item.propTypes = {
 };
 
 const mapDispatchToProps = {  
-    ...commonActions  
+    ...commonActions,
+    ...itemActions  
 }; 
 
 function mapStateToProps(state) {

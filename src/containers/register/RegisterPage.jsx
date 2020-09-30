@@ -152,8 +152,10 @@ class RegisterPage extends React.Component {
             user.roleId = selectedType.id;
             user.password = AES.encrypt(user.password, commonConstants.SECRET_PASSPHRASE).toString();
             window.recaptchaRef.current.reset();
-            register(user);
-            history.push('/home');
+            let copyUser = Object.assign({}, user);
+            delete copyUser.confirmPassword;
+            register(copyUser);
+            //history.push('/home');
         }
     }   
     

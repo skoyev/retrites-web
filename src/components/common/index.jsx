@@ -1,6 +1,7 @@
 import React from 'react';
 import { Menu } from 'antd';
-import CategoryList from './CategoryList';
+import CategoryList from './category/CategoryList';
+import CategoryWithTitleList from './category/categoryWithTitle/CategoryWithTitleList';
 import Loading from './Loading';
 import Loader from './loader/Loader';
 import SubscriptionModal from './SubscriptionModal';
@@ -10,7 +11,8 @@ export {
 	Loader,
 	CategoryList,
 	SubscriptionModal,
-    typeMenu
+    typeMenu,
+    CategoryWithTitleList
 }
 
 const typeMenu = (data, handleMenuClick, name) => {

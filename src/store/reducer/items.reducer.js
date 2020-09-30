@@ -7,7 +7,7 @@ const INITIAL_STATE = {
   retreatByCountries: [],
   retriteTypes: [],
   pageName: '',
-  searchLength: ['3', '7', '14', '14>']
+  searchLength: ['Any','3', '7', '14', '14>']
 };
 
 const itemFetchSuccess = (state, action) => {
@@ -35,18 +35,18 @@ export function items(state = INITIAL_STATE, action) {
           return {
             ...state,
             pageName: '',
-            retreatByCountries: action.retreatByCountries.map(d => {
+            retreatByCountries: action.retreatByCountries ? action.retreatByCountries.map(d => {
               return {id : d.id, name : `label.${d.name.toLowerCase()}`, type: `${d.name.toLowerCase().replace(" ", "-")}`, picture : d.picture};
-            })
+            }) : []
           }
 
         case itemConstants.FETCH_RETRITE_TYPES_SUCCESS:
           return {
             ...state,
             pageName: '',
-            retriteTypes: action.retriteTypes.map(d => {
+            retriteTypes: action.retriteTypes ? action.retriteTypes.map(d => {
               return {id : d.id, name : `label.${d.name.toLowerCase()}`, type: `${d.name.toLowerCase().replace(" ", "-")}`, picture : d.picture};
-            })
+            }) : []
           }
 
         case pageConstants.CLEAR_ITEMS_AND_REDIRECT_PAGE:
@@ -72,7 +72,7 @@ export function items(state = INITIAL_STATE, action) {
             //console.log(action.item.get('name'))
             return {
               ...state,
-              items: state.items.map(i => 
+              items: state.items ? state.items.map(i => 
                             i.id == action.item.get('id') ? 
                             {...i, 
                               name:  action.item.get('name'), 
@@ -87,7 +87,7 @@ export function items(state = INITIAL_STATE, action) {
                               picture: action.item.get('picture'),
                               address: action.item.get('address')
                             }
-                        : i)
+                        : i) : []
             }
             default:
           return state

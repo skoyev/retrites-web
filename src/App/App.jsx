@@ -53,7 +53,9 @@ class App extends React.Component {
                                 <Route path="/forgot" component={WaitingComponent(LazyForgotPasswordPage)} />                        
                                 <Route path="/reset-password" component={WaitingComponent(LazyResetPasswordPage)} />                        
                                 {/*<Route path="/" render={ history.push('/home')} />*/}
-                                {/*<Redirect from={'/'} to={'/home'} />*/}
+                                <Route exact path="/">
+                                    <Redirect to="/home" />
+                                </Route>                                
                         </div>                    
                     </Router>                
                 </LocalizeProvider>

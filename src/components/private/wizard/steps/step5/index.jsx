@@ -116,7 +116,7 @@ class Step5Item extends React.Component {
                 <Row className="step2-content">
                     <div>Add Course Schedule For The Periods</div>                    
                         {events.map((v, i) => 
-                            <Form {...formItemLayout} className="form">
+                            <Form key={i} {...formItemLayout} className="form">
                                 <Row className="border-row">                                                                 
                                     <Row>
                                         <Col span={12}>

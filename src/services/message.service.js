@@ -24,7 +24,7 @@ function deleteMessageGroup(msgGroupID) {
             'x-auth-key'  : authKey
         }
     
-        return axios.delete(`${URL}/message/group/${msgGroupID}`, {headers:headers});    
+        return axios.delete(`${URL}/messageGroup/${msgGroupID}`, {headers:headers});    
     } else {
         Promise.reject({error:'Invalid data'});
     }
@@ -46,7 +46,7 @@ function createMessageGroup(itemID) {
         'x-auth-key'  : authKey
     }
 
-    return axios.post(`${URL}/message/group`, {itemID}, {headers:headers});    
+    return axios.post(`${URL}/messageGroup`, {itemID}, {headers:headers});    
 }
 
 /**
@@ -55,8 +55,8 @@ function createMessageGroup(itemID) {
 function createMessage(message, msgGroupID) {
     let authKey = getAuthKey();
 
-    if(!authKey){
-        console.log('authKey is null')
+    if(!authKey || !msgGroupID){
+        console.log('authKey or msgGroupID is null')
         return;
     }
 
@@ -102,5 +102,5 @@ function fetchMessageGroups() {
         'x-auth-key': authKey
     }
 
-    return axios.get(`${URL}/message/group`,{headers:headers});
+    return axios.get(`${URL}/messageGroup`,{headers:headers});
 }

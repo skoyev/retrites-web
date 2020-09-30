@@ -1,10 +1,13 @@
-import React, {useState} from 'react';
-import '../style/SearchBar.css'
+import React, { useEffect, useState } from 'react';
+import './index.css';
 import { Row, Dropdown, Button, Col, Menu, DatePicker, 
          Input, Modal, InputNumber, Slider } from 'antd';
 //import SubMenu from 'antd/lib/menu/SubMenu';
 import PropTypes from 'prop-types'
+import { withLocalize } from "react-localize-redux";
 import moment from 'moment';
+import { itemActions, commonActions } from '../../../../store/action';
+import { connect } from 'react-redux';
 
 const { SubMenu }  = Menu;
 
@@ -90,8 +93,8 @@ const MoreFiltersModal = ({isMoreFiltersModalVisible, cancelMoreFiltersModal, ap
         applyMoreFilters(fromInputValue, toInputValue);
 
         // reset values
-        setFromInputValue(100);
-        setToInputValue(100);
+        setFromInputValue(fromInputValue);
+        setToInputValue(toInputValue);
     }
 
     return ( 
@@ -140,13 +143,17 @@ const durationMenu = (data, handleClick) => {
           </Menu>
 };
 
-const SearchBar = props => {
-    const { handleBack, startDate, 
-            countries, types, duration, 
-            handleCountryClick, handleTypeClick, handleStartDateClick, handleDurationClick, handleSubmitSearch,
-            moreFilterClick, 
-            selectedCountryId, selectedTypeId, selectedDuration } = props;
+const SearchResultPageBar = props => {
+    const { handleBack, handleSubmitSearch, countries, durarions, moreFilterClick } = props;
 
+    let urlParams = new URLSearchParams(window.location.search)
+    const initDuration  = urlParams.get('duration');
+    const initStartDate = urlParams.get('startDate');
+
+    const [searchText, setSearchText] = useState();            
+    const [durarion, setDurarion] = useState();            
+    const [startDate, setStartDate] = useState(); 
+    
     // More Filters Modal
     const [isMoreFiltersModalVisible, setIsMoreFiltersModalVisible] = useState(false);
     const handleShowHideMoreFiltersModal = (isVisible) => setIsMoreFiltersModalVisible(isVisible);
@@ -155,49 +162,76 @@ const SearchBar = props => {
         moreFilterClick(fromPrice, toPrice);
     }
 
-    if(!countries || !types) {
+    const initData = () => {
+        let urlParams = new URLSearchParams(window.location.search)
+        const initDuration  = urlParams.get('duration');
+        const initStartDate = urlParams.get('startDate');    
+        
+        setDurarion(initDuration ? initDuration : 'Any');
+        setStartDate(initStartDate ? initStartDate : moment().format());
+    }
+
+    useEffect(()=> {
+        // fetch categories
+        props
+        .fetchCategories()
+        .then(({data:{data:[{id}]}}) => props.fetchSubCategories(id));    
+
+        // fetch countries
+        props.fetchCountries();
+
+        // init data
+        initData();
+    }, []);  
+
+    if(!countries || countries.length == 0 ) {
         return <div>No Search Data Provided.</div>;
     }
 
-    const selectedCountry = selectedCountryId ? countries.find(c => c.id == selectedCountryId).type : '';
-    const selectedType    = (selectedTypeId && selectedTypeId > 0) ? types.find(t => t.id == selectedTypeId).name : '';
-    const selectedDate    = (startDate && startDate.length > 0) ? moment(startDate, 'YYYY-MM-DD') : null;
+    const selectedDate  = (startDate && startDate.length > 0) ? moment(startDate, 'YYYY-MM-DD') : null;    
+    const handleSubmitSearchInner = () => {
+        handleSubmitSearch(searchText, durarion, startDate);
+    }
 
     return (
         <React.Fragment>
             <Row className="searchBar" gutter={8}>
-                <Col span={3}>
-                    {/* Country Choice */}
-                    <Dropdown.Button id="country" overlay={countryMenu(countries, handleCountryClick)} style={{ marginLeft: '5px' }}>
-                        <span style={{color: '#b1b0b0'}}>{selectedCountry}</span>
-                    </Dropdown.Button>
-                </Col>
                 <Col span={4}>
-                    {/* Item Type */}
-                    <Dropdown.Button id="type" overlay={typeMenu(types, handleTypeClick)} style={{ marginLeft: '5px' }}>
-                        <span style={{color: '#b1b0b0'}}>{selectedType}</span>
-                    </Dropdown.Button>
+                    <Row gutter={8} style={{marginTop: -25}}>
+                        <div style={{height:25}}><label htmlFor="name">Name</label></div>
+                        <div style={{marginRight:10}}><Input value={searchText} onChange={({target:{value:data}})=>setSearchText(data)} placeholder="Retreat Name"/></div>
+                    </Row>
                 </Col>
                 <Col span={3}>
-                    {/* Start Date */}                    
-                    <DatePicker value={selectedDate} 
-                                onChange={handleStartDateClick} 
-                                placeholder="Start Date" />
+                    <Row gutter={8} style={{marginTop: -25}}>
+                        <div style={{height:25}}><label htmlFor="name">Start Date</label></div>
+                        <div style={{marginRight:10}}>
+                            {/* Start Date */}                    
+                            <DatePicker value={selectedDate} 
+                                        onChange={(date, dateString) => setStartDate(dateString)}
+                                        placeholder="Start Date" />
+                        </div>
+                    </Row>
                 </Col>
                 <Col span={3}>
-                    {/* Duration Choice */}
-                    <Dropdown.Button id="duration" overlay={durationMenu(duration, handleDurationClick)}>
-                        <span style={{color: '#b1b0b0'}}>{selectedDuration}</span>
-                    </Dropdown.Button>
+                    <Row gutter={8} style={{marginTop: -25}}>
+                        <div style={{height:25}}><label htmlFor="name">Duration</label></div>
+                        <div>
+                            {/* Duration Choice */}
+                            <Dropdown.Button id="duration" overlay={durationMenu(durarions, (e) => {setDurarion(durarions.find((d) => d == e.key) )})}>
+                                <span style={{color: '#b1b0b0'}}>{durarion}</span>
+                            </Dropdown.Button>
+                        </div>
+                    </Row>
                 </Col>
                 <Col span={3}>
                     <Button onClick={() => handleShowHideMoreFiltersModal(true)}>{`More Filters...`}</Button>
                 </Col>
                 <Col span={2}>
-                    <Button onClick={handleSubmitSearch}>Search</Button>
+                    <Button type="primary" onClick={handleSubmitSearchInner}>Search</Button>
                 </Col>
                 <Col span={2}>
-                    <Button onClick={handleBack}>Back</Button>
+                    <Button type="primary" onClick={handleBack}>Back</Button>
                 </Col>
 
                 {/*
@@ -225,9 +259,23 @@ const SearchBar = props => {
     )
 }
 
-SearchBar.propTypes = {
+SearchResultPageBar.propTypes = {
     handleSubmitSearch: PropTypes.func.isRequired,
     handleBack: PropTypes.func.isRequired
 }
 
-export default SearchBar;
+const mapDispatchToProps = { 
+    ...commonActions,
+    ...itemActions
+}; 
+
+function mapStateToProps(state) {
+    return {
+        categories: state.common.categories,
+        subCategories: state.common.subCategories,
+        countries: state.common.countries,
+        durarions: state.items.searchLength,
+    };
+}
+
+export default withLocalize(connect(mapStateToProps, mapDispatchToProps)(SearchResultPageBar));

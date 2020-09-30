@@ -3,14 +3,14 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom';
 import { Button } from 'antd';
 import { Translate } from "react-localize-redux";
-import "./style/CategoryList.css";
-import { chunk } from '../../helpers/';
+import "./index.css";
+import { chunk } from '../../../../helpers';
 
 const style = {
     marginBottom: '20px'
 }
 
-const CaregoryList = ({items, className, numItemsPerRow, title, description, type, handleCategoryClick}) => {
+const CategoryWithTitleList = ({items, className, numItemsPerRow, title, description, type, handleCategoryClick}) => {
     if(!numItemsPerRow || !items){
         console.log(`Error CategoryList - items or numItemsPerRow is null !!!`);
         return <div></div>;
@@ -55,7 +55,7 @@ const CaregoryList = ({items, className, numItemsPerRow, title, description, typ
     )
 }
 
-CaregoryList.propTypes = {
+CategoryWithTitleList.propTypes = {
     items: PropTypes.array.isRequired,
     className: PropTypes.string,
     title: PropTypes.string,
@@ -66,4 +66,4 @@ CaregoryList.propTypes = {
 }
 
 
-export default CaregoryList;
+export default CategoryWithTitleList;

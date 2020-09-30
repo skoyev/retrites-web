@@ -1,5 +1,9 @@
+import SearchResultPageBar from './SearchResultPageBar';
 import SearchBar from './SearchBar';
+import SearchHeader from './SearchHeader';
 
 export {	
-	SearchBar
+	SearchResultPageBar,
+	SearchBar,
+	SearchHeader
 }

@@ -13,7 +13,8 @@ export const commonService = {
     resetPassword,
     createCheckoutSession,
     fetchBillingProducts,
-    fetchSummary
+    fetchSummary,
+    getSubCategories
 };
 
 function fetchSummary() {
@@ -77,6 +78,10 @@ function getAllSubcategories(){
     return axios.get(`${URL}/sub-category`);
 }
 
+function getSubCategories(catID){
+    return axios.get(`${URL}/sub-category/category/${catID}`);
+}
+
 function getAllCategories(){
     return axios.get(`${URL}/category`);
 }
@@ -86,5 +91,5 @@ function getAllCountries() {
 }
 
 function getFacilitatorTypes() {
-    return axios.get(`${URL}/facilitator-types`);
+    return axios.get(`${URL}/facilitator-type`);
 }

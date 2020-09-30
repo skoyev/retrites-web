@@ -12,6 +12,8 @@ import globalTranslations from "../../translations/global.json";
 import { Button, Row, Col } from 'antd';
 import { SimpleHeader } from '../../components/public';
 import loader from '../../assets/images/loader.gif';
+import { AES } from "crypto-js";
+import { commonConstants } from '../../constants';
 
 class LoginPage extends React.Component {
     
@@ -59,7 +61,7 @@ class LoginPage extends React.Component {
         const activateValues = this.props.location.search.split('activateCode=');
 
         if (email && password) {
-            login(email, password, activateValues.length == 2 ? activateValues[1] : "");
+            login(email, AES.encrypt(password, commonConstants.SECRET_PASSPHRASE).toString(), activateValues.length == 2 ? activateValues[1] : "");
         }
     }
 

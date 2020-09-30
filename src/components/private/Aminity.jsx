@@ -10,6 +10,7 @@ import { commonActions, itemActions } from '../../store/action';
 import { Loader } from '../common';
 import './style/Aminity.css'
 //import debounce from 'lodash.debounce';
+import moment from 'moment';
 
 const typeMenu = (data, handleMenuClick, name) => {
     return (
@@ -22,9 +23,10 @@ const typeMenu = (data, handleMenuClick, name) => {
 const WAIT_INTERVAL = 1500;
 
 const Aminity = props => {
-
+    const {types, isLoading} = props;
     let timer;
     const {items, handleAminityDetails, handleAminityDelete, numItemsPerRow} = props;
+    const DEFAULT_ITEM = {accomodation: {}, document:{}, facilitators: [{}], events:[{duration:1, from: moment().format('YYYY-MM-DD'), to: moment().add(1,'days').format('YYYY-MM-DD')}]};
 
     let onChangeDebounced = () => {
         props.fetchItemsByNameStatus(selectedItem, selectedType.id);
@@ -32,8 +34,14 @@ const Aminity = props => {
                       
     useEffect(()=> {
         props.fetchItemTypes();
-        //this.props.onRef(this);   
+        //this.props.onRef(this); 
     }, []);
+
+    useEffect(()=> {
+        if(types.length > 0){
+            setSelectedType(types[0]);  
+        }
+    }, [types]);
 
     const [selectedItem, setSelectedItem] = useState('');
     const [selectedType, setSelectedType] = useState({});   
@@ -43,8 +51,7 @@ const Aminity = props => {
         timer = setTimeout(onChangeDebounced, WAIT_INTERVAL);
     }, [selectedItem, selectedType]);    
 
-    const itemsInRow = chunk(items, numItemsPerRow);
-    const {types, isLoading} = props;
+    const itemsInRow = chunk(items, numItemsPerRow);    
 
     return (
         <React.Fragment>
@@ -65,22 +72,27 @@ const Aminity = props => {
                         </Dropdown.Button>
                     </Col>
                     <Col span={4}>
-                        <Translate>{({ translate }) =><button onClick={()=>handleAminityDetails(props.selectedItem)} className="btn btn-primary">{translate("button.item")}</button>}</Translate>                                        
+                        <Translate>{({ translate }) => <div style={{width:80, margin: 'auto'}}><button onClick={()=>handleAminityDetails(DEFAULT_ITEM)} className="btn btn-primary">+ {translate("button.item")} </button></div>}</Translate>                                        
                     </Col>                    
                 </Row>
             </Row>
+            <Row className="item-scroll">
             {itemsInRow.map((items, index) => ( 
                 <Row key={index} style={{marginBottom: 20}}>
                      {items.map((item, index) => (
-                        <div key={`row-${index}`} style={{display: 'inline-block', marginRight: 20, maxWidth: 250, minWidth: 135}}>
-                            <Card title={<a href="#" onClick={()=>handleAminityDetails(item)}>{item.name}</a>}
+                        <div key={`row-${index}`} style={{display: 'inline-block', marginRight: 20, maxWidth: 250, minWidth: 245}}>
+                            <Card title={<h4 className="title" href="#" onClick={()=>handleAminityDetails(item)}>{item.name}</h4>}
                                   actions={[<Icon type="setting" />, <Icon onClick={()=>handleAminityDetails(item)} type="edit" />, <Icon onClick={()=>handleAminityDelete(item)} type="delete" />]}>
-                                <p>{item.description}</p>
+                                <p>{`Price: ${item.events.find(v=>v).price} ${item.events.find(v=>v).currency}`}</p>
+                                <p>{`Event From: ${moment(item.events.find(v=>v).from).format('L')}`}</p>
+                                <p>{`Event To: ${moment(item.events.find(v=>v).to).format('L')}`}</p>
+                                <p>{`Country: ${item.country.name}`}</p>
                             </Card>                            
                         </div>
                      ))}
-                </Row>
+                </Row>            
             ))}
+            </Row>
             {
                 isLoading && <Loader text=""/>
             }

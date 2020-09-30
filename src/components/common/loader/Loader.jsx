@@ -16,7 +16,7 @@ const Loader = ({text}) => {
                         <div className="text">{text}</div>
                     </Row>
                     <Row>
-                        <img src={loader}/>
+                        <div style={{width:60, margin: 'auto'}}><img src={loader}/></div>
                     </Row>
                 </Col>
                 <Col span={10}></Col>

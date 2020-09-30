@@ -8,9 +8,9 @@ import RetreatBreadcrumb from '../../components/public/retreat/RetreatBreadcrumb
 import RetreatPhotoAlbum from '../../components/public/retreat/RetreatPhotoAlbum';
 import RetreatDetailsSummary from '../../components/public/retreat/RetreatDetailsSummary';
 import RetreatBookSection from '../../components/public/retreat/RetreatBookSection';
-import { history, validateEmail } from '../../helpers';
+import { history } from '../../helpers';
 import { Layout, notification, Row, Col, Modal } from 'antd';
-import SearchHeader from '../../components/public/search/SearchHeader';
+import { SearchHeader } from '../../components/public/search';
 import '../style/RetreateDetailPage.css';
 import { renderToStaticMarkup } from "react-dom/server";
 import globalTranslations from "../../translations/global.json";
@@ -155,7 +155,7 @@ class RetreateDetailPage extends React.Component {
             return <div>Item details is loading...</div>;
         }
 
-        const { Header, Footer, Sider, Content } = Layout;
+        const { Header, Content } = Layout;
         
         return (
             <div>
@@ -194,7 +194,7 @@ class RetreateDetailPage extends React.Component {
                                 {
                                     user 
                                         &&
-                                    (user.roleId == 1)
+                                    (user.roleId === 1)
                                         &&
                                     <Row>
                                         <RetreatBookSection item={item}

@@ -1,15 +1,11 @@
-import React, { useEffect, useState, Fragment } from 'react';
-import PropTypes from 'prop-types'
+import React, { useEffect, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col, Card, DatePicker, Icon } from 'antd';
-//import Icon from '@ant-design/icons';
 import { Translate } from "react-localize-redux";
 import { withLocalize } from "react-localize-redux";
 import { connect } from 'react-redux';
 import { commonActions } from '../../store/action';
 import { commonConstants } from '../../constants';
-
-const { RangePicker } = DatePicker;
 
 const reportWitget = (reports) => (
     <>
@@ -138,7 +134,7 @@ const Dashboard = props => {
     }, []);
 
     const {amenities, deals, reports} = props;
-    let size = 'default';
+
     return (
         <>
             <Row>

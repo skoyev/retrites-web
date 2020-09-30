@@ -115,7 +115,7 @@ function updateItem(resolve, reject, url, opts) {
         console.log('id is null');
         resolve({ ok: false });
     }
-    let foundItem = items.filter(c => c.id == id)[0];
+    let foundItem = items.filter(c => c.id === id)[0];
     if(foundItem){
         foundItem.name = params.name;
         foundItem.email = params.email;

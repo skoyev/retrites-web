@@ -1,6 +1,6 @@
 import React from 'react';
 import PrivateHeader from '../../components/private/PrivateHeader';
-import { Row, Layout, Icon, Modal, Drawer, Steps, Col } from 'antd';
+import { Row, Layout, Icon, Modal, Drawer, Steps, Col, notification } from 'antd';
 import '../style/DashboardPage.css';
 import DashboardMenu from '../../components/private/DashboardMenu';
 import {Aminity, Leads, Report, Dashboard, Message, MessageDetails} from '../../components/private';
@@ -12,11 +12,12 @@ import Step4Item from '../../components/private/wizard/steps/step4';
 import Step5Item from '../../components/private/wizard/steps/step5';
 import Step6Item from '../../components/private/wizard/steps/step6';
 import Step7Item from '../../components/private/wizard/steps/step7';
+import IdleTimer from 'react-idle-timer';
 import { Button, Form, Input } from 'antd';
 import { connect } from 'react-redux';
 import { withLocalize } from "react-localize-redux";
 import {itemActions, reportActions, userActions, commonActions, messageActions} from '../../store/action'
-import {pageConstants} from '../../constants';
+import {pageConstants, commonConstants} from '../../constants';
 import './index.css'
 import moment from 'moment';
 import { history } from '../../helpers';
@@ -172,13 +173,34 @@ class DashboardPage extends React.Component {
         this.handleLeadEdit = this.handleLeadEdit.bind(this);        
         this.handleCreateItemNext = this.handleCreateItemNext.bind(this);        
         this.handleCreateItemDone = this.handleCreateItemDone.bind(this);        
-        this.handleCreateItemCancel = this.handleCreateItemCancel.bind(this);        
+        this.handleCreateItemCancel = this.handleCreateItemCancel.bind(this); 
+        
+        this.idleTimer = null
+        this.handleOnAction = this.handleOnAction.bind(this)
+        this.handleOnActive = this.handleOnActive.bind(this)
+        this.handleOnIdle   = this.handleOnIdle.bind(this)
     } 
+
+    handleOnAction (event) {
+        //console.log('user did something', event)
+    }
+     
+    handleOnActive (event) {
+        console.log('user is active', event)
+        console.log('time remaining', this.idleTimer.getRemainingTime())
+    }
+    
+    handleOnIdle (event) {
+        //console.log('user is idle', event)
+        //console.log('last active', this.idleTimer.getLastActiveTime())
+
+        // show warning and log user out.
+        this.showNotification();        
+    }    
 
     handleCreateItemChange = (e) => {
         this.setState({[e.target.name]:e.target.value})
     }
-
     
     loadData() {
         const { user } = this.props;
@@ -251,11 +273,14 @@ class DashboardPage extends React.Component {
     }
 
     handleAminityDetails = (item) => {
-        this.setState({
-            createEditItemModalVisible: true,
-        })
-
-        this.props.addIntoStoreSelectedItem(item);
+        this.setState({ createEditItemModalVisible: true })
+        
+        if(item.id) {
+            // fetch by id aminity
+            this.props.fetchByID(item.id).then(({data:{item:item}}) => this.props.addIntoStoreSelectedItem(item));
+        } else {
+            this.props.addIntoStoreSelectedItem(item);
+        }
     }
 
     handleLeadEdit = (lead) => {
@@ -293,6 +318,16 @@ class DashboardPage extends React.Component {
             console.log('Error - component does not registered');
         }
     }
+
+    showNotification = () => {
+        const args = {
+            message: 'Idle Timeout',
+            description:`You have been away. We will log you out for your security!`,
+            duration: 5,
+            onClose: () => {this.props.logout()}
+        };
+        notification.open(args);
+    };    
 
     handleItemChange = (event) => {
         let {createEditItem} = this.state;
@@ -344,7 +379,7 @@ class DashboardPage extends React.Component {
                 return ([
                     <Aminity items={items} 
                              key="aminity"
-                             numItemsPerRow={6}
+                             numItemsPerRow={4}
                              handleAminityDetails={this.handleAminityDetails} 
                              handleAminityDelete={this.handleAminityDelete} 
                              ref={this.child}/>
@@ -489,10 +524,11 @@ class DashboardPage extends React.Component {
         this.props.addIntoStoreSelectedItem({});
 
         // clear steps
+        /*
         if(this.step1Item){
             this.step1Item.cancel();
         }
-
+        
         if(this.step2Item){
             this.step2Item.cancel();
         }
@@ -512,11 +548,11 @@ class DashboardPage extends React.Component {
         if(this.step6Item){
             this.step6Item.cancel();
         }
-
+        
         if(this.step7Item){
             this.step7Item.cancel();
-        }
-
+        }        
+        */
     }
 
     handleCreateItemDone = () => {
@@ -632,157 +668,168 @@ class DashboardPage extends React.Component {
         }
 
         return (
-            <Layout style={{height:'100%'}}>
-                <Sider style={{marginRight: 5}}>
-                    <DashboardMenu handleClickMenu = {this.handleClickMenu} user={user}/>
-                </Sider>
+            <>
+                <IdleTimer
+                    ref={ref => { this.idleTimer = ref }}
+                    //timeout={1000 * 60 * 15}
+                    timeout={1000 * 60 * commonConstants.IDLE_TIME_MIN}
+                    onActive={this.handleOnActive}
+                    onIdle={this.handleOnIdle}
+                    onAction={this.handleOnAction}
+                    debounce={250}/>
 
-                <Layout>
-                    <Header style={{backgroundColor:'#c5c4c4', marginBottom:10}}>
-                        <PrivateHeader handleMenu={this.handleRightMenuOpenClose} user={this.props.user}/>
-                    </Header>
+                <Layout style={{height:'100%', overflowY: 'hidden'}}>
+                    <Sider style={{marginRight: 5}}>
+                        <DashboardMenu handleClickMenu = {this.handleClickMenu} user={user}/>
+                    </Sider>
 
-                    <Content className="ant-layout-content-override" style={{overflowY:'scroll'}}>
-                        {user && this.renderSwitchPage()}
-                    </Content>
+                    <Layout>
+                        <Header style={{backgroundColor:'#c5c4c4', marginBottom:10}}>
+                            <PrivateHeader handleMenu={this.handleRightMenuOpenClose} user={this.props.user}/>
+                        </Header>
 
-                    <Footer style={{backgroundColor:'#c5c4c4', marginTop:10}}>
-                        Retriete Copyrights 2020.
-                    </Footer>
-                </Layout>
+                        <Content className="ant-layout-content-override" style={{overflowY:'scroll'}}>
+                            {user && this.renderSwitchPage()}
+                        </Content>
 
-                {/* Create  Amenity Wizard */}
-                {createItemTotalSteps &&
-                    <Modal title={(selectedItem && selectedItem.id) ? "Modify Retreat" : "Create Retreat"}
-                        visible={this.state.createEditItemModalVisible}
-                        width={1150}
-                        onCancel={this.handleCreateItemCancel}
-                        footer={[
-                                <Button key="cancel" onClick={this.handleCreateItemCancel}>Cancel</Button>,
-                                <Button style={createItemWizardStep == 0 ? {display:'none'} : {}} key="back" onClick={this.handleCreateItemPrevious}>Previous</Button>,
-                                <Button disabled={!isValidNext} style={createItemWizardStep == (createItemTotalSteps.length - 1) ? {display:'none'} : {}} key="next" type="primary" onClick={this.handleCreateItemNext}>Next</Button>,
-                                <Button style={createItemWizardStep == (createItemTotalSteps.length - 1) ? {} : {display:'none'}} disabled={!isValidNext} key="done" type="primary" onClick={this.handleCreateItemDone}>Done</Button>
-                            ]}> 
-                            <AmenityWizard step={createItemWizardStep} 
-                                           steps={createItemTotalSteps}/>
+                        <Footer style={{backgroundColor:'#c5c4c4', marginTop:10}}>
+                            Retriete Copyrights 2020.
+                        </Footer>
+                    </Layout>
+
+                    {/* Create  Amenity Wizard */}
+                    {createItemTotalSteps &&
+                        <Modal title={(selectedItem && selectedItem.id) ? "Modify Retreat" : "Create Retreat"}
+                            visible={this.state.createEditItemModalVisible}
+                            width={1150}
+                            onCancel={this.handleCreateItemCancel}
+                            footer={[
+                                    <Button key="cancel" onClick={this.handleCreateItemCancel}>Cancel</Button>,
+                                    <Button style={createItemWizardStep == 0 ? {display:'none'} : {}} key="back" onClick={this.handleCreateItemPrevious}>Previous</Button>,
+                                    <Button disabled={!isValidNext} style={createItemWizardStep == (createItemTotalSteps.length - 1) ? {display:'none'} : {}} key="next" type="primary" onClick={this.handleCreateItemNext}>Next</Button>,
+                                    <Button style={createItemWizardStep == (createItemTotalSteps.length - 1) ? {} : {display:'none'}} disabled={!isValidNext} key="done" type="primary" onClick={this.handleCreateItemDone}>Done</Button>
+                                ]}> 
+                                <AmenityWizard step={createItemWizardStep} 
+                                            steps={createItemTotalSteps}/>
+                        </Modal>
+                    }
+
+                    {/* Dashboard Delete Aminity Modal Window */}
+                    <Modal
+                            title="Delete Retreat"
+                            visible={this.state.deleteItemModalVisible}
+                            onOk={this.handleItemDeleteModalOk}
+                            onCancel={this.handleItemDeleteModalCancel}>                    
+                        <p>Would you like to delete {createEditItem.name}</p>
+                    </Modal>   
+
+                    {/* Dashboard Delete Group Message Modal Window */}
+                    <Modal
+                            title="Delete Lead"
+                            visible={this.state.deleteGrpMsgCfrmModalVisible}
+                            onOk={this.handleDeleteGrpMsgCfrmModalVisiblelOk}
+                            onCancel={this.handleDeleteGrpMsgCfrmModalVisiblelCancel}>                    
+                            <Translate>
+                                {({ translate }) =>
+                                    <p>{`${translate('messages.delete-message-group')} for recipient - ${msgGrpRecipientName} ?`}</p>}
+                            </Translate>
+                    </Modal>   
+
+                    {/* Dashboard View Details Lead Modal Window */}
+                    <Modal
+                            title="View Lead Details"
+                            key="leadsDetailsModal1"
+                            visible={this.state.viewLeadModalVisible}
+                            footer={[
+                                <Row>
+                                    <Button key="cancel-button" onClick={this.handleLeadViewModalCancel} htmlType="button">
+                                        OK
+                                    </Button>
+                                </Row>
+                            ]}
+    >                    
+                        <p>Lead Name: <b>{lead.name}</b></p>
+                        <p>Lead Email: <b>{lead.emailAddress}</b></p>
+                        <p>Message Status: <b>{lead.status}</b></p>
+                        <p>Posted Date: <b>{moment(lead.createdAt).format('MMMM Do YYYY, h:mm:ss a')}</b></p>
+                        <p>Message Details: <b>{lead.details}</b></p>
+                    </Modal> 
+
+                    {/*  Confirm Delete Message Group */}
+                    <Modal
+                            title="Confirm Delete Message Group"
+                            key="deleteMessageGroup"
+                            visible={this.state.viewDeleteMessageGroup}
+                            footer={[
+                                <Row>
+                                    <Col span={4}>
+                                        <Button key="cancel-button" onClick={this.handleLeadViewModalCancel} htmlType="button">OK</Button>
+                                    </Col>                                
+                                    <Col span={4}>
+                                        <Button key="cancel-button" onClick={this.handleLeadViewModalCancel} htmlType="button">OK</Button>
+                                    </Col>
+                                </Row>
+                            ]}>                    
+                        <p>W</p>
                     </Modal>
-                }
 
-                {/* Dashboard Delete Aminity Modal Window */}
-                <Modal
-                        title="Delete Retreat"
-                        visible={this.state.deleteItemModalVisible}
-                        onOk={this.handleItemDeleteModalOk}
-                        onCancel={this.handleItemDeleteModalCancel}>                    
-                    <p>Would you like to delete {createEditItem.name}</p>
-                </Modal>   
+                    {/* Dashboard View Details Lead Modal Window */}
+                    <Modal
+                            title="View Lead Details"
+                            key="leadsDetailsModal"
+                            visible={this.state.viewLeadModalVisible}
+                            footer={[
+                                <Row>
+                                    <Button key="cancel-button" onClick={this.handleLeadViewModalCancel} htmlType="button">
+                                        OK
+                                    </Button>
+                                </Row>
+                            ]}
+    >                    
+                        <p>Lead Name: <b>{lead.name}</b></p>
+                        <p>Lead Email: <b>{lead.emailAddress}</b></p>
+                        <p>Message Status: <b>{lead.status}</b></p>
+                        <p>Posted Date: <b>{moment(lead.createdAt).format('MMMM Do YYYY, h:mm:ss a')}</b></p>
+                        <p>Message Details: <b>{lead.details}</b></p>
+                    </Modal> 
 
-                {/* Dashboard Delete Group Message Modal Window */}
-                <Modal
-                        title="Delete Lead"
-                        visible={this.state.deleteGrpMsgCfrmModalVisible}
-                        onOk={this.handleDeleteGrpMsgCfrmModalVisiblelOk}
-                        onCancel={this.handleDeleteGrpMsgCfrmModalVisiblelCancel}>                    
-                        <Translate>
-                            {({ translate }) =>
-                                <p>{`${translate('messages.delete-message-group')} for recipient - ${msgGrpRecipientName} ?`}</p>}
-                        </Translate>
-                </Modal>   
-
-                {/* Dashboard View Details Lead Modal Window */}
-                <Modal
-                        title="View Lead Details"
-                        key="leadsDetailsModal1"
-                        visible={this.state.viewLeadModalVisible}
-                        footer={[
-                            <Row>
-                                <Button key="cancel-button" onClick={this.handleLeadViewModalCancel} htmlType="button">
-                                    OK
-                                </Button>
-                            </Row>
-                        ]}
->                    
-                    <p>Lead Name: <b>{lead.name}</b></p>
-                    <p>Lead Email: <b>{lead.emailAddress}</b></p>
-                    <p>Message Status: <b>{lead.status}</b></p>
-                    <p>Posted Date: <b>{moment(lead.createdAt).format('MMMM Do YYYY, h:mm:ss a')}</b></p>
-                    <p>Message Details: <b>{lead.details}</b></p>
-                </Modal> 
-
-                {/*  Confirm Delete Message Group */}
-                <Modal
-                        title="Confirm Delete Message Group"
-                        key="deleteMessageGroup"
-                        visible={this.state.viewDeleteMessageGroup}
-                        footer={[
-                            <Row>
-                                <Col span={4}>
-                                    <Button key="cancel-button" onClick={this.handleLeadViewModalCancel} htmlType="button">OK</Button>
-                                </Col>                                
-                                <Col span={4}>
-                                    <Button key="cancel-button" onClick={this.handleLeadViewModalCancel} htmlType="button">OK</Button>
-                                </Col>
-                            </Row>
-                        ]}>                    
-                    <p>W</p>
-                </Modal>
-
-                {/* Dashboard View Details Lead Modal Window */}
-                <Modal
-                        title="View Lead Details"
-                        key="leadsDetailsModal"
-                        visible={this.state.viewLeadModalVisible}
-                        footer={[
-                            <Row>
-                                <Button key="cancel-button" onClick={this.handleLeadViewModalCancel} htmlType="button">
-                                    OK
-                                </Button>
-                            </Row>
-                        ]}
->                    
-                    <p>Lead Name: <b>{lead.name}</b></p>
-                    <p>Lead Email: <b>{lead.emailAddress}</b></p>
-                    <p>Message Status: <b>{lead.status}</b></p>
-                    <p>Posted Date: <b>{moment(lead.createdAt).format('MMMM Do YYYY, h:mm:ss a')}</b></p>
-                    <p>Message Details: <b>{lead.details}</b></p>
-                </Modal> 
-
-                {/* Dashboard Billing Modal Window */}
-                <Modal
-                        title={'Retreat Billing'}
-                        visible={this.state.isBillingModalVisible}
-                        footer={[
-                            <Row>
-                                {
-                                    !isBillingCheckout &&
-                                    <Col span={4}>                                    
-                                        <Button key="cancel-button" onClick={this.handleBillingModalCancel} htmlType="button">
-                                            Cancel
+                    {/* Dashboard Billing Modal Window */}
+                    <Modal
+                            title={'Retreat Billing'}
+                            visible={this.state.isBillingModalVisible}
+                            footer={[
+                                <Row>
+                                    {
+                                        !isBillingCheckout &&
+                                        <Col span={4}>                                    
+                                            <Button key="cancel-button" onClick={this.handleBillingModalCancel} htmlType="button">
+                                                Cancel
+                                            </Button>
+                                        </Col>
+                                    }
+                                    <Col span={4}>
+                                        <Button disabled={isValidBillingForm} key="cancel-button" onClick={isBillingCheckout ? this.handleBillingModalCancel : this.handleBillingModalOk} htmlType="button">
+                                            {isBillingCheckout ? 'Close' : 'Buy'}
                                         </Button>
                                     </Col>
-                                }
-                                <Col span={4}>
-                                    <Button disabled={isValidBillingForm} key="cancel-button" onClick={isBillingCheckout ? this.handleBillingModalCancel : this.handleBillingModalOk} htmlType="button">
-                                        {isBillingCheckout ? 'Close' : 'Buy'}
-                                    </Button>
-                                </Col>
-                            </Row>
-                        ]}>
-                     {billingContent}
-                </Modal>   
+                                </Row>
+                            ]}>
+                        {billingContent}
+                    </Modal>   
 
-                <Drawer title="User Settings"
-                        placement="right"
-                        closable={true}
-                        className="user-setting"
-                        onClose={this.handleRightMenuOpenClose}
-                        visible={this.state.isRightMenuVisible}>
-                    <UserSettings handleHome={this.handleHome}
-                                  {...this.props}
-                                  handleBilling={this.handleBilling}
-                                  handleLogout={this.handleLogout}/>
-                </Drawer>  
-            </Layout>
+                    <Drawer title="User Settings"
+                            placement="right"
+                            closable={true}
+                            className="user-setting"
+                            onClose={this.handleRightMenuOpenClose}
+                            visible={this.state.isRightMenuVisible}>
+                        <UserSettings handleHome={this.handleHome}
+                                    {...this.props}
+                                    handleBilling={this.handleBilling}
+                                    handleLogout={this.handleLogout}/>
+                    </Drawer>  
+                </Layout>
+            </>
         )
     }
 }

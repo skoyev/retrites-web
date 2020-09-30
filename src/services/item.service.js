@@ -24,7 +24,7 @@ export const itemService = {
     fetchItemsByNameStatus
 };
 
-const ITEM_STATUS = {
+export const ITEM_STATUS = {
     CREATED: 1,
     PUBLISHED: 2,
     REJECTED: 3
@@ -41,17 +41,17 @@ function fetchItemsByNameStatus(name, statusID) {
 }
 
 function fetchUserAmenities(userID) {
-    return axios.get(`/api/items/user/${userID}`);
+    return axios.get(`/api/items/user/${userID}`, getHeader());
 }
 
 function loadPopularItems(count) {
     return axios.get(`/api/items?popular=1&count=${count}&status=${ITEM_STATUS.PUBLISHED}`);
 }
 
-function search(subCategoryID, duration, name, startDate, countryId, count, fromPrice, toPrice) {
-    let params = {subCategoryId:subCategoryID, duration:duration, name:name, startDate:startDate, 
+function search(categoryId, subCategoryID, duration, name, startDate, countryId, count, fromPrice, toPrice, status) {
+    let params = {categoryId:categoryId, subCategoryId:subCategoryID, duration:duration, name:name, startDate:startDate, 
                   countryId:countryId, count: count, priceFrom: fromPrice, priceTo: toPrice,
-                  status: ITEM_STATUS.PUBLISHED};
+                  status: status};
     return axios.get('api/items', {params:params});
 }
 
@@ -93,7 +93,12 @@ function deleteItem(id, authKey) {
         'x-auth-key': authKey
     }
 
-    return axios.delete(`/api/items/${id}`,{headers:headers});
+    return axios.delete(`/api/items/${id}`, {headers:headers});
+}
+
+function getHeader() {
+    return {headers: { 'Content-Type': 'application/json',
+                       'x-auth-key'  :  getAuthKey() }};
 }
 
 function updateItem(item, authKey) {

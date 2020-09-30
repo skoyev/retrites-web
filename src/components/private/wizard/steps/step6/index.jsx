@@ -114,7 +114,7 @@ class Step6Item extends React.Component {
                 <Form {...formItemLayout}>
                     <Row className="step2-content">
                         <Col span={18}>                        
-                            <Form.Item label="details" className="full-width">           
+                            <Form.Item label="Details" className="full-width">           
                                 {getFieldDecorator(`details`, {
                                         initialValue: selectedItem.accomodation && selectedItem.accomodation.details ? selectedItem.accomodation.details : '',
                                         rules: [

@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types'
+import React, { useEffect } from 'react';
 import { withLocalize } from "react-localize-redux";
 import { connect } from 'react-redux';
 import './index.css'

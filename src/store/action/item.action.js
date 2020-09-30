@@ -21,10 +21,10 @@ export const itemActions = {
     fetchRetreatByCountries,    
     fetchSearchRetreatTypes,
     fetchRetreatSubCategories,
-    fetchCountries,
     search,
     clearItemsAndNavigateToPage,
-    getCountrieFromStore
+    getCountrieFromStore,
+    isItemExistWithName
 };
 
 function loading(isLoading) { return { type: commonConstants.IS_LOADING_SUCCESS, isLoading } }
@@ -41,16 +41,26 @@ export function clearItemsAndNavigateToPage(pageName) {
 }
 
 /**
+ * Check if item with this name is exist.
+ * @param {*} name 
+ */
+export function isItemExistWithName(name){
+    return dispatch => {
+        return itemService.search('', '', name, '', '', '', '', '', '');
+    }
+}
+
+/**
  * Home Page, Search by: subCategoryID, duration, name, startDate
  * @param {*} selectedRetreatTypeId 
  * @param {*} selectedDuration 
  * @param {*} selectedInputSearchBy 
  * @param {*} selectedStartDate 
  */
-export function search(subCategoryID, duration, name, startDate, countryId, count, fromPrice, toPrice) {
+export function search(categoryId, subCategoryID, duration, name, startDate, countryId, count, fromPrice, toPrice, status) {
     return dispatch => {
         dispatch(loading(commonConstants.START_LOADING));
-        return itemService.search(subCategoryID, duration, name, startDate, countryId, count, fromPrice, toPrice).then(res => {            
+        return itemService.search(categoryId, subCategoryID, duration, name, startDate, countryId, count, fromPrice, toPrice, status).then(res => {            
             dispatch(loading(commonConstants.END_LOADING));
             dispatch(fetchItemsSuccess(res.data.items))    
         }).catch(error => {
@@ -92,16 +102,6 @@ export function fetchUserAmenities(userID) {
                             dispatch(loading(commonConstants.END_LOADING));
                             throw(error);
                           });
-    }
-}
-
-export function fetchCountries() {
-    return dispatch => {
-        return itemService.fetchCountries().then(res => {
-            dispatch(fetchRetreatByCountriesSuccess(res.data.data))    
-        }).catch(error => {
-            throw(error);
-        });
     }
 }
 
@@ -212,13 +212,13 @@ export function fetchRetreatTypesSuccess(retriteTypes){
     } 
 }
 
-
 export function fetchRetreatByCountriesSuccess(retreatByCountries){
     return { 
         type: itemConstants.FETCH_RETRITE_BY_COUNTRY_SUCCESS, 
         retreatByCountries
     } 
 }
+
 
 export function fetchAmenitySummarySuccess(amenitySummary) {
     return { 
@@ -329,6 +329,7 @@ export function fetchByID(id){
         return itemService.loadItemByID(id).then(res => {
                 dispatch(loading(commonConstants.END_LOADING));
                 dispatch(fetchItemSuccess(res.data.item))    
+                return res;
         }).catch(error => {
             throw(error);
         });
@@ -340,7 +341,7 @@ export function fetchPopularRedirectLoginIfNoData(count) {
         dispatch(loading(commonConstants.START_LOADING));
         return itemService.loadPopularItems(count).then(res => {
             if(res.status === 200){
-                if(res.data.items.length > 0) {
+                if(res.data.items && res.data.items.length > 0) {
                     dispatch(fetchItemsSuccess(res.data.items))    
                 } else {
                     dispatch(clearItemsAndNavigateToPage(pageConstants.LOGIN))

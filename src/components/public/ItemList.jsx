@@ -5,6 +5,7 @@ import { Translate } from "react-localize-redux";
 import "./style/ItemList.css";
 import { Button } from 'antd/lib/radio';
 import { chunk } from '../../helpers/';
+import moment from 'moment';
 
 const style = {
     marginBottom: '20px'
@@ -14,6 +15,10 @@ const style = {
 
 const ItemList = ({items, className, numItemsPerRow, title, description, handleMoreItems, 
                    shouldHideLoadMore, handleItemClick}) => {
+    if(!items){
+        return;
+    }
+    
     let itemsInRow = chunk(items, numItemsPerRow);
     return (
         <div className={`container margin-top-bottom-50 item-list ${className}`}>
@@ -44,13 +49,11 @@ const ItemList = ({items, className, numItemsPerRow, title, description, handleM
                                 </div>
                                 */}
                                 <div className="card-body-no">
-                                    <h5 className="card-title card-font">{item.name}</h5>
-                                    <h5 className="card-title card-font" style={{'display' : item.title ? 'block' : 'none'}}>{item.title ? item.title : ''}</h5>
-                                    <h5 className="card-title card-font" style={{'display' : item.title_center ? 'block' : 'none'}}>{item.title_center ? item.title_center : ''}</h5>
-                                    <h5 className="card-title card-font-2 margin-top-4" style={{'display' : item.title_bottom ? 'block' : 'none'}}>{item.title_bottom ? item.title_bottom : ''}</h5>
-                                    <div className="card-title card-font-3 margin-top-4" style={{'display' : item.price ? 'block' : 'none'}}>{item.price ? '$' + item.price + '/per course': ''}</div>
-                                    <div className="card-title card-font-3 margin-top-4" style={{'display' : item.start_date ? 'block' : 'none'}}>{item.start_date ? item.start_date + '/' + item.duration + ' days': ''}</div>
-                                    <p className="card-text">{item.description}</p>                                    
+                                    <h5 className="card-title card-font">{`Name: ${item.name}`}</h5>
+                                    <div className="card-title card-font-3 margin-top-4 card-text" style={{'display' : item.events ? 'block' : 'none'}}>{item.events ? 'Price: $' + item.events[0].price + '/per course': ''}</div>
+                                    <div className="card-title card-font-3 margin-top-4 card-text" style={{'display' : item.events ? 'block' : 'none'}}>{item.events ? 'Date: ' + moment( item.events[0].from ).format('L') + ' - ' + item.events[0].duration + ' days': ''}</div>
+                                    <p className="card-text">{`Country: ${item.country.name}`}</p>                                    
+                                    <p className="card-text">{`Description: ${item.description}`}</p>                                    
                                 </div>                                
                             </div>            
                         </div>

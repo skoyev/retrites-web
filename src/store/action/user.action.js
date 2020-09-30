@@ -134,7 +134,7 @@ function register(user) {
             .then(
                 user => { 
                     dispatch(createUserSuccess(true));
-                    //history.push('/home');
+                    history.push('/home');
                 },
                 error => {
                     dispatch(createUserFailure(error));

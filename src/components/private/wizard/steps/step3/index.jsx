@@ -52,7 +52,8 @@ class Step3Item extends React.Component {
     }
 
     cancel = () => {
-        this.props.form.setFieldsValue({itemName: ''})
+        this.props.form.setFieldsValue({name: ''})
+        this.props.form.setFieldsValue({details: ''})
     }
 
     handleItemChange = e => {   
