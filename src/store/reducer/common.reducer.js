@@ -16,6 +16,7 @@ const INITIAL_STATE = {
   isValidBillingForm: false,
   billingForm: {},
   stripe: {},  
+  isSelectedItemChanged: false,
   billingProducts: [
       //{id: '1', name: 'Free Trail 15 days'},
       //{id: 'price_1GyOYOHoVViQEl0lMf8u9JOZ', name: '1 Month - 15$'}      
@@ -72,11 +73,7 @@ export function common(state = INITIAL_STATE, action) {
         case commonConstants.ADD_SELECTED_ITEM_INTO_STORE:
             return {
                 ...state,
-                selectedItem: action.item,
-            }
-        case commonConstants.ADD_SELECTED_ITEM_INTO_STORE:
-            return {
-                ...state,
+                isSelectedItemChanged: false,
                 selectedItem: action.item,
             }
         case commonConstants.IS_NEXT_STEP_VALID:
@@ -93,8 +90,9 @@ export function common(state = INITIAL_STATE, action) {
         case commonConstants.SET_SELECTED_ITEM_FIELD:
                 return {
                     ...state,
+                    isSelectedItemChanged: true,
                     selectedItem: {
-                        ... state.selectedItem,
+                        ... state.selectedItem,                        
                         //[action.fieldName] : Array.isArray( action.fieldValue ) ? action.fieldValue[0] : action.fieldValue
                         [action.fieldName] : action.fieldValue
                     }

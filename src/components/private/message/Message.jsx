@@ -75,7 +75,7 @@ const Message = props => {
 
     return (
         <Fragment>
-            <Row className="header">
+            <Row className="msg-header">
               <Col span={2} className="label">
                 <Translate>{({ translate }) => <span>{translate("label.name")}</span>}</Translate>                                        
               </Col>

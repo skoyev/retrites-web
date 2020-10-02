@@ -14,6 +14,15 @@
 
 .slider-section .search-witget{
     width: 65%;
+}
+
+@media only screen and (min-width: 768px) {
+    .slider-section .search-witget{
+        width: 70%;
+    }
+}
+
+.slider-section .search-witget{
     /*opacity: 0.7; */
     margin-left: auto;
     margin-right: auto;   

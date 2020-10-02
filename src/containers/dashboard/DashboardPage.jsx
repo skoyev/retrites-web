@@ -556,13 +556,18 @@ class DashboardPage extends React.Component {
     }
 
     handleCreateItemDone = () => {
-        const {user, selectedItem} = this.props;
+        const {user, selectedItem, isSelectedItemChanged} = this.props;
 
         this.setState({createEditItemModalVisible: false, createItemWizardStep: 0})
 
         if( !selectedItem.name || !selectedItem.description || !selectedItem.title){
             console.warn('Create a new Item error...');
             this.setState({createItemError: 'Validation error'})
+            return;
+        }
+
+        // check if item update - fileds not changed - don't trigger back end call.
+        if(selectedItem && selectedItem.id && !isSelectedItemChanged){
             return;
         }
 
@@ -852,6 +857,7 @@ function mapStateToProps(state) {
         categories: [...state.common.categories],
         subCategories: [...state.common.subCategories],
         selectedItem: state.common.selectedItem,
+        isSelectedItemChanged: state.common.isSelectedItemChanged,
         isNextStepValid: state.common.isNextStepValid,
         isValidToken : state.users.isLoggedIn,
         stripe: state.common.stripe

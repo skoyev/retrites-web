@@ -10,7 +10,7 @@ import { commonConstants } from '../../constants';
 const reportWitget = (reports) => (
     <>
         {
-            reports &&
+            reports &&  
                 <Card title="Reports"
                     actions={[<Icon type="setting" />, <Icon type="edit" />]} 
                     style={{textAlign:'center'}}>
@@ -48,7 +48,7 @@ const reportWitget = (reports) => (
 
 const dealsWitget = (deals) => (
     <>
-        { deals &&
+        { deals && deals.length > 0 &&
                 <Card title="Deals" 
                     actions={[<Icon type="setting" />, <Icon type="edit" />]} 
                     style={{textAlign:'center'}}>

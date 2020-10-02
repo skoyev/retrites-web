@@ -113,7 +113,7 @@ class Step5Item extends React.Component {
 
         return (
             <React.Fragment>
-                <Row className="step2-content">
+                <Row className="step5-content" className={events && events.length > 1 ? 'scroll' : ''}>
                     <div>Add Course Schedule For The Periods</div>                    
                         {events.map((v, i) => 
                             <Form key={i} {...formItemLayout} className="form">

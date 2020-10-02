@@ -12,8 +12,9 @@ import {connect} from "react-redux";
 import {itemActions, userActions, commonActions} from '../../store/action/index'
 import { history, validateEmail } from '../../helpers';
 import '../style/HomePage.css'
-import {pageConstants} from '../../constants';
+import {pageConstants, commonConstants} from '../../constants';
 import { Form, notification } from 'antd';
+import IdleTimer from 'react-idle-timer';
 import HomeSearchSection from '../../components/common/section/HomeSearchSection';
 
 class HomePage extends React.Component {
@@ -57,6 +58,11 @@ class HomePage extends React.Component {
             ourVisionDescription: 'We believe human beings are innately wise, strong and kind. This wisdom, although not always experienced, is always present. Going on retreat is a beautiful way to reconnect to our basic sanity and health. Our aspiration at Retreat Your Mind is to inspire people to experience authentic retreats and reconnect with their innate wisdom, strength and kindness.'
         }
 
+        this.idleTimer = null
+        this.handleOnAction = this.handleOnAction.bind(this)
+        this.handleOnActive = this.handleOnActive.bind(this)
+        this.handleOnIdle   = this.handleOnIdle.bind(this)
+
         this.handleRetreatCategoryClick = this.handleRetreatCategoryClick.bind(this);
         this.handleCountrySelectClick = this.handleCountrySelectClick.bind(this);
         this.handleCountrySelectClickNoRedirect = this.handleCountrySelectClickNoRedirect.bind(this);
@@ -65,7 +71,35 @@ class HomePage extends React.Component {
         this.handleSubscriptionCancel = this.handleSubscriptionCancel.bind(this);
         this.handleSubscriptionSubmit = this.handleSubscriptionSubmit.bind(this);
         this.showNotification = this.showNotification.bind(this);
+        this.showIdleNotification = this.showIdleNotification.bind(this);
         this.captchaOnChange = this.captchaOnChange.bind(this);
+    }
+
+    handleOnAction (event) {
+        //console.log('user did something', event)
+    }
+     
+    handleOnActive (event) {
+        //console.log('user is active', event)
+        //console.log('time remaining', this.idleTimer.getRemainingTime())
+    }
+    
+    handleOnIdle (event) {
+        //console.log('user is idle', event)
+        //console.log('last active', this.idleTimer.getLastActiveTime())
+
+        // show warning and log user out.
+        this.showIdleNotification();        
+    }   
+    
+    showIdleNotification() {
+        const args = {
+            message: 'Idle Timeout',
+            description:`You have been away. We will log you out for your security!`,
+            duration: 5,
+            onClose: () => {this.props.logout()}
+        };
+        notification.open(args);
     }
 
     componentDidMount() {
@@ -262,8 +296,21 @@ class HomePage extends React.Component {
         }        
 
         const subscriptionCategoryList = categories && categories.length > 1 ? this.extractRetriteTypes(categories) : [];
+        console.log(isLoggedInRes)
         return (
             <React.Fragment>
+                {
+                    isLoggedInRes &&
+                    <IdleTimer
+                        ref={ref => { this.idleTimer = ref }}
+                        //timeout={1000 * 60 * 15}
+                        timeout={1000 * 60 * commonConstants.IDLE_TIME_MIN}
+                        onActive={this.handleOnActive}
+                        onIdle={this.handleOnIdle}
+                        onAction={this.handleOnAction}
+                        debounce={250}/>
+                }
+
                 <div className="slider-section">
                     {/* Home Header Section */}
                     <PublicHeader isLoggedInRes={isLoggedInRes}

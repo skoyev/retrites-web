@@ -46,7 +46,7 @@ export function clearItemsAndNavigateToPage(pageName) {
  */
 export function isItemExistWithName(name){
     return dispatch => {
-        return itemService.search('', '', name, '', '', '', '', '', '');
+        return itemService.search('', '', '', name, '', '', '', '', '', '');
     }
 }
 

@@ -81,7 +81,19 @@ class Step1Item extends React.Component {
             this.props.form.setFieldsValue({itemTitle: selectedItem ? selectedItem.title : ''})
             this.props.form.setFieldsValue({itemDescription: selectedItem ? selectedItem.description : ''})    
         }
+
+        // check for the category update
+        if(prevProps.selectedItem.category && 
+            this.props.selectedItem.category &&
+                this.props.selectedItem.category.id !== prevProps.selectedItem.category.id){
+            // update subcategory
+            this.props.fetchSubCategories(this.props.selectedItem.category.id)
+        }
     }  
+
+    componentWillReceiveProps() {
+        this.setState({itemNameError: ''})
+    }
     
     checkIsStepValid = () => {
         const { getFieldsError, isFieldTouched, getFieldDecorator } = this.props.form;
@@ -202,7 +214,7 @@ class Step1Item extends React.Component {
                                             }
                                             ],
                                         })
-                                    (<Dropdown.Button name="subCategory" overlay={menu(subCategories, this.handleItemChange, 'subCategory')}>{selectedItem && selectedItem.subCategory ? selectedItem.subCategory.name : 'Select Item Sub Category'}</Dropdown.Button>)}
+                                    (<Dropdown.Button disabled={subCategories && subCategories.length > 0 ? '' : 'disabled'} name="subCategory" overlay={menu(subCategories, this.handleItemChange, 'subCategory')}>{selectedItem && selectedItem.subCategory ? selectedItem.subCategory.name : 'Select Item Sub Category'}</Dropdown.Button>)}
                             </Form.Item>
                         </Form>
                     </Col>
