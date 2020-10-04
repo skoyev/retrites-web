@@ -98,7 +98,7 @@ const MessageDetails = props => {
 
     return (
         <Fragment>
-            <Row className="header">
+            <Row className="msg-header">
               <Col span={2} className="label">
                 <Translate>{({ translate }) => <Button onClick={() => props.backToMessageFromDetails()}>{translate("label.back")}</Button>}</Translate>
               </Col>

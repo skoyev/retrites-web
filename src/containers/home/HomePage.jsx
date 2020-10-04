@@ -16,6 +16,7 @@ import {pageConstants, commonConstants} from '../../constants';
 import { Form, notification } from 'antd';
 import IdleTimer from 'react-idle-timer';
 import HomeSearchSection from '../../components/common/section/HomeSearchSection';
+import moment from 'moment';
 
 class HomePage extends React.Component {
 
@@ -73,6 +74,7 @@ class HomePage extends React.Component {
         this.showNotification = this.showNotification.bind(this);
         this.showIdleNotification = this.showIdleNotification.bind(this);
         this.captchaOnChange = this.captchaOnChange.bind(this);
+        this.hasSubscriptionInSession = this.hasSubscriptionInSession.bind(this);
     }
 
     handleOnAction (event) {
@@ -112,7 +114,15 @@ class HomePage extends React.Component {
         this.props.fetchCountries();
 
         // check if user logged in
-        this.props.isLoggedIn();
+        // check user subscription - prompt window option.
+        this.props.isLoggedIn()
+            .catch(err => 
+                !this.hasSubscriptionInSession() ? 
+                    setTimeout(()=>this.setState({shouldShowSubscriptionModal:true}), commonConstants.SUBSCRIBE_TIMEOUT_SEC) : '' )
+    }
+
+    hasSubscriptionInSession() {
+        return sessionStorage.getItem(commonConstants.SUBSCRIPTION_VALUE) != undefined;
     }
 
     componentDidUpdate() {
@@ -129,6 +139,11 @@ class HomePage extends React.Component {
             }           
           }, false);
         } 
+
+        if(this.state.shouldShowSubscriptionModal && 
+                !sessionStorage.getItem(commonConstants.SUBSCRIPTION_VALUE)){
+            sessionStorage.setItem(commonConstants.SUBSCRIPTION_VALUE, moment().format())
+        }
     }
 
     search = ({id:countryID}, {id:selectedCategoryId}, {id:selectedSubcategoryId}, selectedStartDate, selectedDuration) => {
@@ -201,7 +216,7 @@ class HomePage extends React.Component {
     }
 
     handleSubscribeClick = () => {
-        this.setState({shouldShowSubscriptionModal:true});
+        this.setState({shouldShowSubscriptionModal:true});        
     }
 
     handleSubscriptionChange = (e) => {
@@ -296,7 +311,7 @@ class HomePage extends React.Component {
         }        
 
         const subscriptionCategoryList = categories && categories.length > 1 ? this.extractRetriteTypes(categories) : [];
-        console.log(isLoggedInRes)
+        //console.log(isLoggedInRes)
         return (
             <React.Fragment>
                 {

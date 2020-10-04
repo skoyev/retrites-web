@@ -51,7 +51,7 @@ function isUserEmailAlreadyRegistered(email) {
 function isLoggedIn() {
     return dispatch => {
         const hasKey = hasAuthKey();
-        console.log(hasKey)
+        //console.log(hasKey)
         if(hasKey){
             dispatch(loading(true));
             // check if key is valid
@@ -76,7 +76,8 @@ function isLoggedIn() {
             });
         } else {
             dispatch( isLoggedInResult(hasKey) )
-            return Promise.reject(new Error('Failed token')).then(() => console.log(''), () => console.log(''));
+            //return Promise.reject(new Error('Failed token')).then(() => console.log('No token...'), () => console.log(''));
+            return Promise.reject(new Error('Failed token'));
         }        
     }
 }

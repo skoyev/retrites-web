@@ -53,6 +53,26 @@ const Aminity = props => {
 
     const itemsInRow = chunk(items, numItemsPerRow);    
 
+    const convertItemStatus = (id) => {
+        let res = '';
+        switch (id) {
+            case 1:
+                res = 'Created';
+                break;
+            case 2:
+                res = 'Published';
+                break;
+            case 3:
+                res = 'Rejected';
+                break;
+            default:
+                res = '';
+                break;            
+        }
+    
+        return res;
+    }
+
     return (
         <React.Fragment>
             <Row className="search-row">
@@ -87,6 +107,7 @@ const Aminity = props => {
                                 <p>{`Event From: ${moment(item.events.find(v=>v).from).format('L')}`}</p>
                                 <p>{`Event To: ${moment(item.events.find(v=>v).to).format('L')}`}</p>
                                 <p>{`Country: ${item.country.name}`}</p>
+                                <p>Status: <b>{`${convertItemStatus(item.status)}`}</b></p>
                             </Card>                            
                         </div>
                      ))}

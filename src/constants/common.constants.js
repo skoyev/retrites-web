@@ -14,6 +14,8 @@ export const commonConstants = {
     SET_BILLING_FORM: 'SET_BILLING_FORM',
     LOAD_STRIPE_LIB: 'LOAD_STRIPE_LIB',
     FETCH_BILLING_PRODUCTS: 'FETCH_BILLING_PRODUCTS',
+
+    SUBSCRIPTION_VALUE: 'retrite-app-subscription',
     
     ADD: 'ADD',
     SIGN_UP: 'SIGN_UP',
@@ -31,6 +33,7 @@ export const commonConstants = {
 
     STATUS_CREATED: 201,
     IDLE_TIME_MIN: 15,
+    SUBSCRIBE_TIMEOUT_SEC: 10000,
 
     START_LOADING: true,
     END_LOADING: false,
