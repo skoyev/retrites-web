@@ -199,7 +199,7 @@ const SearchResultPageBar = props => {
                 <Col span={4}>
                     <Row gutter={8} style={{marginTop: -25}}>
                         <div style={{height:25}}><label htmlFor="name">Name</label></div>
-                        <div style={{marginRight:10}}><Input value={searchText} onChange={({target:{value:data}})=>setSearchText(data)} placeholder="Retreat Name"/></div>
+                        <div style={{marginRight:10}}><Input className="color" value={searchText} onChange={({target:{value:data}})=>setSearchText(data)} placeholder="Retreat Name"/></div>
                     </Row>
                 </Col>
                 <Col span={3}>

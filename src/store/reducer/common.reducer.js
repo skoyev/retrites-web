@@ -17,6 +17,7 @@ const INITIAL_STATE = {
   billingForm: {},
   stripe: {},  
   isSelectedItemChanged: false,
+  isMainteinMode: undefined,
   billingProducts: [
       //{id: '1', name: 'Free Trail 15 days'},
       //{id: 'price_1GyOYOHoVViQEl0lMf8u9JOZ', name: '1 Month - 15$'}      
@@ -25,6 +26,11 @@ const INITIAL_STATE = {
 
 export function common(state = INITIAL_STATE, action) {
     switch (action.type) { 
+        case commonConstants.IS_MAINTENANCE_MODE:
+            return {
+                ...state,
+                isMainteinMode: action.data
+            }      
         case commonConstants.FETCH_BILLING_PRODUCTS:
             return {
                 ...state,

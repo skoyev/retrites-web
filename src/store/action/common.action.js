@@ -18,7 +18,9 @@ export const commonActions = {
     setBillingForm,
     loadRemoteStripe,
     fetchBillingProducts,
-    fetchSummary
+    fetchSummary,
+    isMaintenance,
+    subscribe
 };
 
 function success(type, data) { return { type: type, data } }
@@ -38,6 +40,22 @@ function setIsNextStepValid(isValid){
 
 function setIsValidBillingForm(isValid) {
     return {type: commonConstants.IS_VALID_BILLING_FORM, isValid}
+}
+
+function subscribe(name, email) {
+    return dispatch => {
+        commonService.subscribe(name, email)
+                     //.then(res  => )
+                     .catch(err => console.log(err))
+    }
+}
+
+function isMaintenance(){
+    return dispatch => {
+        commonService.isMaintenance()
+                     .then(res  => dispatch(success(commonConstants.IS_MAINTENANCE_MODE, res.data.result)))
+                     .catch(err => console.log(err))
+    }
 }
 
 function fetchBillingProducts() {

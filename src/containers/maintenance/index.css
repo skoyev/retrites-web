@@ -1,0 +1,13 @@
+.title h2, h3 {
+    text-align: center;
+    color: #0d1f23;
+}
+
+.notify {
+    text-align: center;
+    font-size: 18px;
+}
+
+.red {
+    color: #dc143c;
+}

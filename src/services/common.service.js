@@ -14,8 +14,20 @@ export const commonService = {
     createCheckoutSession,
     fetchBillingProducts,
     fetchSummary,
-    getSubCategories
+    getSubCategories,
+    isMaintenance,
+    subscribe
 };
+
+function subscribe(name, email){
+    const headers = {'Content-Type': 'application/json'};
+    return axios.post(`${URL}/subscribe`, {name, email}, {headers:headers});    
+}
+
+function isMaintenance(){
+    const headers = {'Content-Type': 'application/json'};
+    return axios.get(`${URL}/check-maintenance`, {headers:headers});
+}
 
 function fetchSummary() {
     const headers = {'Content-Type': 'application/json',

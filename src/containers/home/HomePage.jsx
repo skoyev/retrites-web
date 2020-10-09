@@ -398,6 +398,7 @@ function mapStateToProps(state) {
       countries: state.common.countries,
       nextPageName: state.items.pageName,      
       isLoggedInRes: state.users.isLoggedIn,
+      isMaintenMode: state.common.isMaintenMode,
       SubscriptionWrapper: Form.create({ name: 'subscription' })( SubscriptionModal )
       //shouldReloadItems: state.items.shouldReloadItems
     };

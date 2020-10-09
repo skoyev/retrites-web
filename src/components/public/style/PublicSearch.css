@@ -66,5 +66,25 @@
 }
 
 #category > *:first-child {
-    width: 135px;
+    width: 140px;
+}
+
+#subcategory > *:first-child {
+    width: 140px;
+}
+
+#subcategory > *:first-child span {
+    margin-left: -5px;
+}
+
+#subcategory > *:first-child span, 
+#category > *:first-child span,
+#country > *:first-child span,
+#duration > *:first-child span
+{
+    color: rgb(119 105 105) !important;
+}
+
+.ant-calendar-picker-input::-webkit-input-placeholder {
+    color: rgb(119 105 105) !important;
 }

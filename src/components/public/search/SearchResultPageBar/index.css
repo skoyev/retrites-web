@@ -18,3 +18,16 @@
     padding: 120px 50px;
     background: white;
 }
+
+.ant-layout-header {
+    line-height: 
+}
+
+.color::-webkit-input-placeholder {
+    color: rgb(119 105 105) !important;
+}
+
+#duration > *:first-child span
+{
+    color: rgb(119 105 105) !important;
+}
