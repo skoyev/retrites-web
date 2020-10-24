@@ -15,6 +15,7 @@ export const commonConstants = {
     LOAD_STRIPE_LIB: 'LOAD_STRIPE_LIB',
     FETCH_BILLING_PRODUCTS: 'FETCH_BILLING_PRODUCTS',
     IS_MAINTENANCE_MODE: 'IS_MAINTENANCE_MODE',
+    FETCH_USERS: 'FETCH_USERS',
 
     SUBSCRIPTION_VALUE: 'retrite-app-subscription',
     
@@ -44,7 +45,7 @@ export const commonConstants = {
     EXPIRED_USER_ROLE_MENU: [{name: 'Dashboard', type: 'dashboard', index: 'view-dashboard'}],
     PUBLIC_USER_ROLE_MENU: [{name: 'Dashboard', type: 'dashboard', index: 'view-dashboard'}, {name: 'Messages', type: 'user', index: 'view-messages'}],
     OWNER_USER_ROLE_MENU: [{name: 'Dashboard', type: 'dashboard', index: 'view-dashboard'}, {name: 'Amentities', type: 'laptop', index: 'view-amentities'}, {name: 'Messages', type: 'user', index: 'view-messages'}, {name: 'Statistics/Activity', type: 'notification', index: 'view-report'}],
-    ADMIN_USER_ROLE_MENU: [{name: 'Users', type: 'user', index: 'view-users'}, {name: 'Items', type: 'laptop', index: 'view-items'}],
+    ADMIN_USER_ROLE_MENU: [{name: 'Users', type: 'user', index: 'view-users'}, {name: 'Amentities', type: 'laptop', index: 'view-admin-amentities'}],
     USER_ROLES: [{id:1, name:'Search And Attend Event(s)', role: 'public'}, {id:2, name:'Host Event(s)', role: 'owner'}],
 
     FORGOT_PASSWORD_SUCCESS: 'FORGOT_PASSWORD_SUCCESS',

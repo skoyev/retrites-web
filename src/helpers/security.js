@@ -1,3 +1,5 @@
+import { commonConstants } from "../constants";
+
 export const AUTH_KEY = 'x-auth-key';
 export const USER_KEY = 'user';
 
@@ -21,5 +23,26 @@ export const resetAuthKey = () => {
 export const removeSessionAttribute = (key) => {
     if(key){
         sessionStorage.removeItem(key);
+    }
+}
+
+export const getUserRoleMenuLinks = () => {
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    if(user) {
+        let res = undefined;
+        switch (user.roleId) {
+            case 3:
+                res = commonConstants.ADMIN_USER_ROLE_MENU;
+                break;
+            case 1:
+                res = commonConstants.PUBLIC_USER_ROLE_MENU;
+                break;
+            case 2:
+                res = commonConstants.OWNER_USER_ROLE_MENU;
+                break;        
+        }
+        return res;
+    } else {
+        return undefined;
     }
 }

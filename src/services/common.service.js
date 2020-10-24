@@ -16,8 +16,30 @@ export const commonService = {
     fetchSummary,
     getSubCategories,
     isMaintenance,
-    subscribe
+    subscribe,
+    fetchUsers,
+    fetchUsersByName,
+    updateUser,
 };
+
+function updateUser(id, status){
+    if(id){
+        const headers = {'Content-Type': 'application/json', 'x-auth-key':    getAuthKey() };
+        return axios.put(`${URL}/users/${id}`, {status}, {headers:headers});
+    }
+}
+
+function fetchUsersByName(name) {
+    const headers = {'Content-Type': 'application/json',
+                     'x-auth-key':    getAuthKey() };
+    return axios.get(`${URL}/users?name=${name}`, {headers:headers});
+}
+
+function fetchUsers(){
+    const headers = {'Content-Type': 'application/json',
+                     'x-auth-key':    getAuthKey() };
+    return axios.get(`${URL}/users`, {headers:headers});
+}
 
 function subscribe(name, email){
     const headers = {'Content-Type': 'application/json'};

@@ -20,7 +20,10 @@ export const commonActions = {
     fetchBillingProducts,
     fetchSummary,
     isMaintenance,
-    subscribe
+    subscribe,
+    fetchUsers,
+    fetchUsersByName,
+    updateUser
 };
 
 function success(type, data) { return { type: type, data } }
@@ -40,6 +43,30 @@ function setIsNextStepValid(isValid){
 
 function setIsValidBillingForm(isValid) {
     return {type: commonConstants.IS_VALID_BILLING_FORM, isValid}
+}
+
+function updateUser(id, status){
+    return dispatch => {
+        commonService.updateUser(id, status)
+                     .then(res  => dispatch(fetchUsers()))
+                     .catch(err => console.log(err))
+    }
+}
+
+function fetchUsersByName(name) {
+    return dispatch => {
+        commonService.fetchUsersByName(name)
+                     .then(res  => dispatch(success(commonConstants.FETCH_USERS, res.data.result)))
+                     .catch(err => console.log(err))
+    }
+}
+
+function fetchUsers(){
+    return dispatch => {
+        commonService.fetchUsers()
+                     .then(res  => dispatch(success(commonConstants.FETCH_USERS, res.data.result)))
+                     .catch(err => console.log(err))
+    }
 }
 
 function subscribe(name, email) {

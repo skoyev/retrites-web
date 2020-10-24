@@ -41,7 +41,7 @@ class Step1Item extends React.Component {
         //this.props.fetchSubCategories();   
         this.props
         .fetchCategories()
-        .then(({data:{data:[{id}]}}) => this.props.fetchSubCategories(id));    
+        //.then(({data:{data:[{id}]}}) => this.props.fetchSubCategories(id));    
 
         this.props.onRef(this);  
         this.checkIsStepValid();                           
@@ -86,6 +86,12 @@ class Step1Item extends React.Component {
         if(prevProps.selectedItem.category && 
             this.props.selectedItem.category &&
                 this.props.selectedItem.category.id !== prevProps.selectedItem.category.id){
+            // update subcategory
+            this.props.fetchSubCategories(this.props.selectedItem.category.id)
+        }
+        // only for the new loaded page
+        if(!prevProps.selectedItem.category && 
+            this.props.selectedItem.category ){
             // update subcategory
             this.props.fetchSubCategories(this.props.selectedItem.category.id)
         }

@@ -73,7 +73,7 @@ class RetreateDetailPage extends React.Component {
         }
 
         // check if user logged in
-        this.props.isLoggedIn();
+        this.props.isLoggedIn().catch(()=>console.log('Not loggeds'));
 
         window.scrollTo(0, 0);
     }
@@ -192,10 +192,10 @@ class RetreateDetailPage extends React.Component {
                                     <RetreatDetailsSummary item={item}></RetreatDetailsSummary>                        
                                 </Row>
                                 {
-                                    user 
+                                    /*user 
                                         &&
                                     (user.roleId === 1)
-                                        &&
+                                        && */
                                     <Row>
                                         <RetreatBookSection item={item}
                                                             isLoggedInRes={this.props.isLoggedInRes}

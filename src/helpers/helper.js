@@ -1,4 +1,5 @@
 import { createBrowserHistory } from 'history';
+import { commonConstants } from '../constants';
 
 export const history = createBrowserHistory();
 
@@ -20,4 +21,8 @@ export const validateEmail = (email) => {
 
     var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return new RegExp(re).test(email);
+}
+
+export const getRoleByID = (id) => {
+    return commonConstants.USER_ROLES.find(r => r.id == id);
 }

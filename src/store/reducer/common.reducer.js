@@ -2,6 +2,7 @@ import {commonConstants} from '../../constants';
 import moment from 'moment';
 
 const INITIAL_STATE = {
+  users: [],
   categories: [],
   countries: [],
   subCategories: [],  
@@ -25,7 +26,12 @@ const INITIAL_STATE = {
 };
 
 export function common(state = INITIAL_STATE, action) {
-    switch (action.type) { 
+    switch (action.type) {         
+        case commonConstants.FETCH_USERS:
+            return {
+                ...state,
+                users: action.data
+            }      
         case commonConstants.IS_MAINTENANCE_MODE:
             return {
                 ...state,

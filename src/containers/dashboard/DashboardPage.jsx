@@ -3,7 +3,7 @@ import PrivateHeader from '../../components/private/PrivateHeader';
 import { Row, Layout, Icon, Modal, Drawer, Steps, Col, notification } from 'antd';
 import '../style/DashboardPage.css';
 import DashboardMenu from '../../components/private/DashboardMenu';
-import {Aminity, Leads, Report, Dashboard, Message, MessageDetails} from '../../components/private';
+import {Aminity, Leads, Report, Dashboard, Message, MessageDetails, Users, AdminAminity} from '../../components/private';
 import AmenityWizard from '../../components/private/wizard';
 import Step1Item from '../../components/private/wizard/steps/step1';
 import Step2Item from '../../components/private/wizard/steps/step2';
@@ -20,7 +20,7 @@ import {itemActions, reportActions, userActions, commonActions, messageActions} 
 import {pageConstants, commonConstants} from '../../constants';
 import './index.css'
 import moment from 'moment';
-import { history } from '../../helpers';
+import { history, getUserRoleMenuLinks } from '../../helpers';
 import { renderToStaticMarkup } from "react-dom/server";
 import globalTranslations from "../../translations/global.json";
 import { commonService } from '../../services';
@@ -158,7 +158,13 @@ class DashboardPage extends React.Component {
             
             menuContentCmps: [
                 //{name:'view-amentities', component: Aminity, params: {items: items, handleAminityDetails: this.handleAminityDetails, shouldUpdateChild:this.shouldUpdateChild, ref:this.child}},
-                {name: pageConstants.MESSAGE_CONTENT}, {name:pageConstants.AMENITY_CONTENT}, {name:pageConstants.LEADS_CONTENT}, {name:pageConstants.STATISTIC_CONTENT},{name:pageConstants.DASHBOARD_CONTENT}
+                {name:pageConstants.MESSAGE_CONTENT}, 
+                {name:pageConstants.AMENITY_CONTENT}, 
+                {name:pageConstants.ADMIN_AMENITY_CONTENT}, 
+                {name:pageConstants.LEADS_CONTENT}, 
+                {name:pageConstants.STATISTIC_CONTENT},
+                {name:pageConstants.DASHBOARD_CONTENT},
+                {name:pageConstants.USER_CONTENT}
             ]    
         }
         this.handleClickMenu = this.handleClickMenu.bind(this);
@@ -220,6 +226,8 @@ class DashboardPage extends React.Component {
                 // load all user amentities        
                 this.props.fetchUserAmenities(user.id);   
                 break;
+            case pageConstants.ADMIN_AMENITY_CONTENT:
+                break;
             case pageConstants.LEADS_CONTENT:
                 // load leads
                 this.props.fetchLeads(user.id);
@@ -243,6 +251,10 @@ class DashboardPage extends React.Component {
     }
     
     componentDidMount() {
+        const [first] = getUserRoleMenuLinks();
+
+        this.setState({selectedContentName:first.index});
+
         this.props.isLoggedIn()
             .then((res) => res ? this.loadInitData() : history.push('/home'), error => history.push('/home'));        
     }   
@@ -358,6 +370,10 @@ class DashboardPage extends React.Component {
         const {items, leads} = this.props; 
 
         switch(selectedContentName){
+            case pageConstants.USER_CONTENT:
+                return ([
+                    <Users key="users"/>
+                ]);
             case pageConstants.MESSAGE_DETAILS_CONTENT:
                 return ([
                     <MessageDetails 
@@ -383,6 +399,11 @@ class DashboardPage extends React.Component {
                              handleAminityDetails={this.handleAminityDetails} 
                              handleAminityDelete={this.handleAminityDelete} 
                              ref={this.child}/>
+                ]);
+            case pageConstants.ADMIN_AMENITY_CONTENT:
+                return ([
+                    <AdminAminity key="admin-aminity"
+                                  ref={this.child}/>
                 ]);
             case pageConstants.LEADS_CONTENT:
                 return ([

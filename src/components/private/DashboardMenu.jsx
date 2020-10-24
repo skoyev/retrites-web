@@ -31,18 +31,19 @@ const getUserMenuByRole = (user, handleClickMenu) => {
         return buildMenu(commonConstants.EXPIRED_USER_ROLE_MENU, handleClickMenu);
     }
 
-    let role = commonConstants.USER_ROLES.find(r => r.id == user.roleId);
-    switch (role.role) {
-        case commonConstants.PUBLIC_USER_ROLE: 
-          result = buildMenu(commonConstants.PUBLIC_USER_ROLE_MENU, handleClickMenu);
-          break;
-        case commonConstants.OWNER_USER_ROLE: 
-          result = buildMenu(commonConstants.OWNER_USER_ROLE_MENU, handleClickMenu);
-          break;
+    //let role = commonConstants.USER_ROLES.find(r => r.id == user.roleId);
+
+    switch (user.roleId) {
+        case 1: 
+            result = buildMenu(commonConstants.PUBLIC_USER_ROLE_MENU, handleClickMenu);
+            break;
+        case 2: 
+            result = buildMenu(commonConstants.OWNER_USER_ROLE_MENU, handleClickMenu);
+            break;
         default:
-          result = buildMenu(commonConstants.ADMIN_USER_ROLE_MENU, handleClickMenu);
-          break;
-    }  
+            result = buildMenu(commonConstants.ADMIN_USER_ROLE_MENU, handleClickMenu);
+            break;
+    } 
     
     return result;
 }
