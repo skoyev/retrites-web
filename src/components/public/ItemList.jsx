@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom';
-import { Translate } from "react-localize-redux";
 import "./style/ItemList.css";
 import { Button } from 'antd/lib/radio';
 import { chunk } from '../../helpers/';
 import moment from 'moment';
+import { Row, Col } from 'antd';
 
 const style = {
     marginBottom: '20px'
@@ -15,8 +14,12 @@ const style = {
 
 const ItemList = ({items, className, numItemsPerRow, title, description, handleMoreItems, 
                    shouldHideLoadMore, handleItemClick}) => {
-    if(!items){
-        return;
+    if(!items || items.length == 0){
+        return <Row className="margin-top-bottom-50 ">            
+                <Col>
+                    <div style={{margin: 'auto', width: 150}}>No Search Result</div>
+                </Col>
+            </Row>
     }
     
     let itemsInRow = chunk(items, numItemsPerRow);

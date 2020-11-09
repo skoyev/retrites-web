@@ -7,9 +7,13 @@ import { bindActionCreators } from 'redux'
 import LanguageToggle from '../common/LanguageToggle';
 import './style/PublicHeader.css'
 import { Translate } from "react-localize-redux";
-import { Button } from 'antd';
+import { Button, Input, Tooltip, Row, Col } from 'antd';
 import {withRouter} from 'react-router-dom';
 import { commonConstants } from '../../constants';
+import { SearchOutlined } from '@ant-design/icons';
+import { withLocalize } from "react-localize-redux";
+import globalTranslations from "../../translations/global.json";
+import { renderToStaticMarkup } from "react-dom/server";
 
 class PublicHeader extends React.Component {
 
@@ -23,13 +27,30 @@ class PublicHeader extends React.Component {
             username: '',
             password: '',
             submitted: false,
+            name: '',
             isLoggedInRes: this.props.isLoggedInRes,
             title: 'Retreat Your Mind'
         };
 
+        this.props.initialize({
+            languages: [
+                {name : "English", code: "en"},
+                {name : "French", code: "fr"}
+            ],
+            translation: globalTranslations,
+            options: { renderToStaticMarkup },
+        });        
+
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-    }    
+        this.onKeyUp      = this.onKeyUp.bind(this);
+    }   
+    
+    onKeyUp(event) {
+        if (event.charCode === 13) {
+            this.props.handleSearchClick(this.state.name)
+        }
+    }
 
     handleSubmit(e) {
         e.preventDefault();
@@ -55,7 +76,7 @@ class PublicHeader extends React.Component {
         this.setState({ [name]: value });
     }    
 
-    publicHeader = () => {
+    publicHeader = () => {        
         return (
             <React.Fragment>
                 <div className={"d-inline-block white"}>
@@ -104,21 +125,45 @@ class PublicHeader extends React.Component {
     )}
 
     publicAddHeader = () => 
-        <React.Fragment>
-            <div className="d-inline-block white">
-                <Translate>
-                    {({ translate }) =>
-                        <Link to={commonConstants.LOGIN_PAGE_LINK} className="btn btn-link d-inline">{translate('public.links.login')}</Link>}
-                </Translate>
-            </div>                                
-            <div className="d-inline-block white">
-                <Translate>
-                    {({ translate }) =>
-                        <Link to={commonConstants.REGISTER_PAGE_LINK} className="btn btn-link d-inline">{translate('public.links.signup')}</Link>}
-                </Translate>
-            </div>
-        </React.Fragment>
+        <Row>
+            <Col span={8} offset={16}>
+                <div className="d-inline-block white">
+                    <Translate>
+                        {({ translate }) =>
+                            <Link to={commonConstants.LOGIN_PAGE_LINK} className="btn btn-link d-inline">{translate('public.links.login')}</Link>}
+                    </Translate>
+                </div>                                
+                <div className="d-inline-block white">
+                    <Translate>
+                        {({ translate }) =>
+                            <Link to={commonConstants.REGISTER_PAGE_LINK} className="btn btn-link d-inline">{translate('public.links.signup')}</Link>}
+                    </Translate>
+                </div>
+            </Col>
+        </Row>
     
+
+    getContentLeft = (isLoggedInRes) => {
+        const loc = this.props.location.pathname;
+        let {showTopSearch} = this.props;
+        let {name} = this.state;
+        console.log(name)        
+
+        if(!isLoggedInRes && 
+            !(loc && loc.includes("add")) &&
+                showTopSearch){
+            return <Row>
+                        <Col span={16} offset={2}>
+                            <Input value={name} onKeyPress={this.onKeyUp} onChange={({target:{value:data}}) => this.setState({name:data})}/>                            
+                        </Col>
+                        <Col span={2} offset={1}>
+                            <Button shape="circle" icon='search' onClick={() => this.props.handleSearchClick(name)} />
+                        </Col>
+                   </Row>
+        } else {
+            return '';
+        }
+    }
 
     getContent = (isLoggedInRes) => {
         const loc = this.props.location.pathname;
@@ -135,6 +180,7 @@ class PublicHeader extends React.Component {
     render() {        
         const { username, password, submitted, title, isLoggedInRes } = this.state;
         const content = this.getContent(isLoggedInRes);
+        const contentLeft = this.getContentLeft(isLoggedInRes);
         return (
             <div id="main-header" className="row">
                 <div className="col-md-3 header">
@@ -146,7 +192,14 @@ class PublicHeader extends React.Component {
                         <div className={isLoggedInRes ? "col-md-8" : "col-md-6"}></div>
                         <div className={isLoggedInRes ? "col-md-4 down-35 header-right" : "col-md-6 down-35 header-right"}>{content}</div> 
                         */}
-                    <div className="header-right">{content}</div> 
+                    <div className='row'>
+                        <div className="col-md-6"> 
+                            {contentLeft}                           
+                        </div>
+                        <div className="col-md-6">  
+                            {content}                          
+                        </div>
+                    </div>
                 </div>
 
                 {/*
@@ -163,4 +216,4 @@ const mapDispatchToProps = {
     ...userActions
 };  
   
-export default connect(null, mapDispatchToProps)(withRouter(PublicHeader));
+export default withLocalize(connect(null, mapDispatchToProps)(withRouter(PublicHeader)));

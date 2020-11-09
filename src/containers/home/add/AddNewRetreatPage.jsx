@@ -12,7 +12,7 @@ import {withRouter, Link} from 'react-router-dom';
 import ReCAPTCHA from "react-google-recaptcha";
 import { configConstants } from '../../../constants';
 import { validateEmail } from '../../../helpers';
-
+import { withLocalize } from "react-localize-redux";
 
 const layout = {
     labelCol: { span: 8 },
@@ -83,8 +83,8 @@ class AddNewRetreatPage extends React.Component {
             <Row className="section1">
                 <PublicHeader />                
                 <div className="main">
-                    <h1>250,000 people book a retreat through Retreat In Mind every year</h1>
-                    <div className="content">Our all-in-one retreat management software helps you save precious time, fill your events, build relationships with your participants, manage your bookings and finances, and run smooth retreats so you can focus on what you do best – delivering programs that impact lives.</div>
+                    <h1>150,000 people book a wellness session through Retreat In Mind every year</h1>
+                    <div className="content">Our all-in-one wellness management software helps you save time, streemline service to the right audience, fill up your event, manage your booking which would let you focus on delivering programs that impact humans.</div>
                     <div className="register">
                         <div className="btn custom"><Link className="btn" to={commonConstants.REGISTER_PAGE_LINK}>JOIN OUR COMMUNITY</Link></div>
                     </div>
@@ -93,12 +93,12 @@ class AddNewRetreatPage extends React.Component {
 
             <Row className="main-content gray">
                 <div className="lead container">
-                    <h2>How It Works</h2>
+                    <h2>HOW IT WORKS</h2>
                     <p>We make it easy to scale your team - on demand. Using our proven process, typical time from first convo to the ideal new hire is days, rather than months.</p>
                 </div>
 
                 <div className="lead container">
-                    <h2>What We Offer</h2>
+                    <h2>WHAT WE OFFER</h2>
                     <p>Market Your Event With Us, We Will Take Care Of Marketing To The Right Audience.</p>
                     <p>Manage bookings and rooms, communicate with your guests, and free up time to focus on your retreat with Retreat Guru's registration, event management, payment processing and guest communication and analytics solutions.</p>
                 </div>
@@ -106,32 +106,35 @@ class AddNewRetreatPage extends React.Component {
 
             <Row className="section2">
                 <div className="main space-top">
-                    <h1>Seamless integration with your Retreat</h1>
-                    <div className="content">We make it easy to scale your team - on demand. Using our proven process, typical time from first convo to the ideal new hire is days, rather than months.</div>
+                    <h1>EASY INTEGRATION WITH YOUR PLATFORM</h1>
+                    <div className="content" style={{color: '#27282b'}}>We make it easy to scale your team on demand. Using our proven process.</div>
                     <div className="register">
                         <div className="btn custom"><Link className="btn" to={commonConstants.REGISTER_PAGE_LINK}>JOIN OUR COMMUNITY</Link></div>
                     </div>
                 </div>              
             </Row>
 
-            <Row className="main-content gray">
+            <Row className="main-content gray space-padding-top">
                 <div className="bottom-form">
-                    <h1>How Can We Help You</h1>
+                    <h1>HOW CAN WE HELP YOU</h1>
                     <Form
                         layout="vertical"
                         className="contact-form">                       
-                            <Form.Item label="Name"
+                            <Form.Item label="NAME OR ORGANIZATION"
                                        name="name"
+                                       className="wide-label"                                       
                                        rules={[{ required: true, message: 'Please input your name!' }]}>
                                 <Input required name="name" onChange={this.handleChange}/>
                             </Form.Item>                
-                            <Form.Item label="Email"
+                            <Form.Item label="EMAIL"
                                        name="email"
+                                       className="wide-label" 
                                        rules={[{ required: true, message: 'Please input your email!' }]}>
                                 <Input required name="email" type="email" onChange={this.handleChange}/>
                             </Form.Item>                
-                            <Form.Item label="Details"
+                            <Form.Item label="DETAILS"
                                        name="details"
+                                       className="wide-label" 
                                        rules={[{ required: true, message: 'Please input your details!' }]}>
                                 <TextArea required rows={5} name="details" onChange={this.handleChange}/>
                             </Form.Item>                
@@ -148,13 +151,11 @@ class AddNewRetreatPage extends React.Component {
                             </Form.Item>
 
                             <Form.Item>                                
-                                <Button disabled={isValid ? '' : 'disabled'} style={{float:'right'}} type="primary" onClick={this.submitRequest} htmlType="submit">Submit</Button>
+                                <Button disabled={isValid ? '' : 'disabled'} style={{float:'right'}} type="primary" onClick={this.submitRequest} htmlType="submit">SUBMIT</Button>
                             </Form.Item>                            
                     </Form>
                 </div>
-            </Row>
-
-            <AppFooter title="@2019 Retreat In Mind Inc." countries={retreatByCountries}/>
+            </Row>            
         </React.Fragment>
         )
     }
@@ -170,4 +171,4 @@ const mapDispatchToProps = {
     ...commonActions
 };
   
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AddNewRetreatPage));
+export default withLocalize(connect(mapStateToProps, mapDispatchToProps)(withRouter(AddNewRetreatPage)));

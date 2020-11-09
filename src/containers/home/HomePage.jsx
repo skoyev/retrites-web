@@ -32,6 +32,7 @@ class HomePage extends React.Component {
         });        
 
         this.state = {
+            showTopSearch: false,
             selectedSubcategory: 'Retreat Type',    
             selectedSubcategoryId: 0,      
             selectedCategoryId: 0,      
@@ -44,6 +45,7 @@ class HomePage extends React.Component {
             retreatByCountriesDescription: '',
             selectedDurationValue: '',
             selectedCountryId: '',
+            itemName: '',
             selectedStartDate: '',
             selectedItemId: 0,
             ourVisionTitle: 'Our Vision',
@@ -68,6 +70,7 @@ class HomePage extends React.Component {
         this.handleCountrySelectClick = this.handleCountrySelectClick.bind(this);
         this.handleCountrySelectClickNoRedirect = this.handleCountrySelectClickNoRedirect.bind(this);
         this.handleSubscribeClick = this.handleSubscribeClick.bind(this);
+        this.handleSearchClick = this.handleSearchClick.bind(this);
         this.handleSubscriptionChange = this.handleSubscriptionChange.bind(this);
         this.handleSubscriptionCancel = this.handleSubscriptionCancel.bind(this);
         this.handleSubscriptionSubmit = this.handleSubscriptionSubmit.bind(this);
@@ -75,6 +78,7 @@ class HomePage extends React.Component {
         this.showIdleNotification = this.showIdleNotification.bind(this);
         this.captchaOnChange = this.captchaOnChange.bind(this);
         this.hasSubscriptionInSession = this.hasSubscriptionInSession.bind(this);
+        this.handleScroll = this.handleScroll.bind(this);
     }
 
     handleOnAction (event) {
@@ -119,6 +123,25 @@ class HomePage extends React.Component {
             .catch(err => 
                 !this.hasSubscriptionInSession() ? 
                     setTimeout(()=>this.setState({shouldShowSubscriptionModal:true}), commonConstants.SUBSCRIBE_TIMEOUT_SEC) : '' )
+
+        window.addEventListener("scroll", this.handleScroll, false);
+    }
+
+    handleScroll(e) {
+        let el = document.getElementById('main-header'); 
+        let el2 = document.getElementsByClassName('slider-section1')[0];
+
+        if(!el || !el2) return;
+
+        if (document.documentElement.scrollTop > 50 ) {
+            el.classList.add("fixed");
+            el2.classList.add("top-space");
+            this.setState({showTopSearch:true})
+        } else {
+            el.classList.remove("fixed");
+            el2.classList.remove("top-space");
+            this.setState({showTopSearch:false})
+        }
     }
 
     hasSubscriptionInSession() {
@@ -126,33 +149,20 @@ class HomePage extends React.Component {
     }
 
     componentDidUpdate() {
-        let el = document.getElementById('main-header');        
-        let el2 = document.getElementsByClassName('slider-section1')[0];        
-        if(el){      
-          window.addEventListener("scroll", function () {
-            if (document.documentElement.scrollTop > 50 ) {
-              el.classList.add("fixed");
-              el2.classList.add("top-space");
-            } else {
-              el.classList.remove("fixed");
-              el2.classList.remove("top-space");
-            }           
-          }, false);
-        } 
-
         if(this.state.shouldShowSubscriptionModal && 
                 !sessionStorage.getItem(commonConstants.SUBSCRIPTION_VALUE)){
             sessionStorage.setItem(commonConstants.SUBSCRIPTION_VALUE, moment().format())
         }
     }
 
-    search = ({id:countryID}, {id:selectedCategoryId}, {id:selectedSubcategoryId}, selectedStartDate, selectedDuration) => {
+    search = ({id:countryID}, {id:selectedCategoryId}, {id:selectedSubcategoryId}, selectedStartDate, selectedDuration, itemName = '') => {
         this.setState({
                     selectedCountryId: countryID ? countryID : '', 
                     selectedStartDate: selectedStartDate ? selectedStartDate : '',
                     selectedSubcategoryId: selectedSubcategoryId ? selectedSubcategoryId: '',
                     selectedDurationValue: selectedDuration ? selectedDuration : '',
-                    selectedCategoryId: selectedCategoryId ? selectedCategoryId : ''
+                    selectedCategoryId: selectedCategoryId ? selectedCategoryId : '',
+                    itemName: itemName || ''
                 }, 
                 () => {
             this.props.clearItemsAndNavigateToPage(pageConstants.SEARCH)
@@ -166,8 +176,25 @@ class HomePage extends React.Component {
                     selectedCategoryId,
                     selectedDurationValue,
                     selectedStartDate, 
-                    selectedCountryId } = this.state;     
-                let param = `/items?subCategoryId=${selectedSubcategoryId}&duration=${selectedDurationValue}&startDate=${selectedStartDate}&countryId=${selectedCountryId}&categoryId=${selectedCategoryId}`;
+                    selectedCountryId,
+                    itemName } = this.state;     
+                //let param = `/items?subCategoryId=${selectedSubcategoryId}&duration=${selectedDurationValue}&startDate=${selectedStartDate}&countryId=${selectedCountryId}&categoryId=${selectedCategoryId}&name=${itemName}`;
+
+                let param = `/items?`;
+
+                if(selectedSubcategoryId)
+                    param += `subCategoryId=${selectedSubcategoryId}`
+                if(selectedDurationValue)
+                    param += `&duration=${selectedDurationValue}`
+                if(selectedStartDate)
+                    param += `&startDate=${selectedStartDate}`
+                if(selectedCountryId)
+                    param += `&countryId=${selectedCountryId}`
+                if(selectedCategoryId)
+                    param += `&categoryId=${selectedCategoryId}`
+                if(itemName)
+                    param += `&name=${itemName}`
+
                 history.push(param);        
             } else if( nextProps.nextPageName === pageConstants.DETAILS ) {
                 const {selectedItemId} = this.state;  
@@ -217,6 +244,10 @@ class HomePage extends React.Component {
 
     handleSubscribeClick = () => {
         this.setState({shouldShowSubscriptionModal:true});        
+    }
+
+    handleSearchClick = (name) => {
+        this.search({},{},{},'','', name);
     }
 
     handleSubscriptionChange = (e) => {
@@ -301,7 +332,8 @@ class HomePage extends React.Component {
                 retreatByCountriesDescription,
                 ourVisionTitle, ourVisionDescription,                
                 isLoggedInRes, shouldShowSubscriptionModal,
-                selectedCategoryList, showSuccessMessage, isCaptchaValid } = this.state;
+                selectedCategoryList, showSuccessMessage, 
+                isCaptchaValid, showTopSearch } = this.state;
         const { items, retreatByCountries, categories, countries, SubscriptionWrapper } = this.props;
         const shouldHideLoadMore = true;
         
@@ -311,7 +343,6 @@ class HomePage extends React.Component {
         }        
 
         const subscriptionCategoryList = categories && categories.length > 1 ? this.extractRetriteTypes(categories) : [];
-        //console.log(isLoggedInRes)
         return (
             <React.Fragment>
                 {
@@ -329,7 +360,9 @@ class HomePage extends React.Component {
                 <div className="slider-section">
                     {/* Home Header Section */}
                     <PublicHeader isLoggedInRes={isLoggedInRes}
+                                  showTopSearch={showTopSearch}
                                   handleSubscribeClick={this.handleSubscribeClick}
+                                  handleSearchClick={this.handleSearchClick}
                                   handleLogoutClick={this.handleLogoutClick}/>
 
                     {/* Slider/Search Section */}

@@ -67,9 +67,18 @@
     background-color: #e8e6e6 ;
 }
 
+.wide-label .ant-form-item-label{
+    width: 200px !important;
+}
+
+.wide-label .ant-form-item-label label{
+    color: #134e71;
+    letter-spacing: 1px;
+}
+
 .bottom-form h1 {
     text-align: center;
-    font-size: 2.5rem;
+    font-size: 2.0rem;
     line-height: 49px;
     font-family: Open Sans,sans-serif;
     font-weight: 700;
@@ -98,7 +107,7 @@
     width: 85%;
     margin: auto;
     text-align: center;
-    color: #87898c;
+    color: #a7a9ad;
     font-size: 1.5rem;
     line-height: 40px;
     font-family: Open Sans,sans-serif;
@@ -110,7 +119,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 25px;
+    margin-top: 50px;
+}
+
+.space-padding-top {
+    padding-top: 50px;
 }
 
 .section1 .main .register .custom,

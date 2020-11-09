@@ -13,6 +13,7 @@ const AppFooter = ({title, countries}) => {
                         <h4 className="text-center">Retreate In Mind</h4>
                         <ul>
                             <li><Link to="/about">About Us</Link></li>
+                            <li><Link to="/contact">Contact Us</Link></li>
                         </ul>
                     </div>
                     <div className="col-md-3">
@@ -35,7 +36,7 @@ const AppFooter = ({title, countries}) => {
                         </ul>
                     </div>
                     <div className="col-md-3">
-                        <h4 className="text-center">Join Us On</h4>
+                        <h4 className="text-center">Social Networks</h4>
                         <ul>
                             <li><Link to="/">Facebook</Link></li>
                             <li><Link to="/">Instagram</Link></li>
@@ -43,8 +44,8 @@ const AppFooter = ({title, countries}) => {
                     </div>
                 </div>
 
-                <div className="row offset-10">
-                    <h4 style={{margin:'auto', marginTop:100}}>{title}</h4>
+                <div className="row offset-10 gray">
+                    <h4 className="vertical-space" style={{margin:'auto', marginTop:50}}>{title}</h4>
                 </div>
             </div>
         </React.Fragment>

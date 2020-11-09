@@ -95,15 +95,11 @@ const Users = props => {
         timer = setTimeout(onChangeDebounced, WAIT_INTERVAL);
     }, [name]);
 
-    const onChange = (pagination, filters, sorter, extra) => {
-        //console.log('params', pagination, filters, sorter, extra);
-        //props.updateUser(1, "");
-    }
-
     let {users} = props;
 
     return (
         <>
+            <h4> Users </h4>
             <Row>
                 <Col span={1}>
                     <Translate>{({ translate }) => <div style={{marginTop:5}}>{translate("label.name")}</div>}</Translate>                                       
@@ -114,7 +110,7 @@ const Users = props => {
             </Row>
 
             <Row style={{marginTop:20}}>
-                <Table columns={columns} dataSource={users} onChange={onChange} rowKey={record => record.id}/>
+                <Table columns={columns} dataSource={users} rowKey={record => record.id}/>
             </Row>
         </>
     )

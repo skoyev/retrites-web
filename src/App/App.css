@@ -58,7 +58,7 @@
 .footer {
     border-top: 2px solid #cac8c8;
     background-color: #e4e3e3;
-    height: 200px;
+    height: 180px;
     padding-top: 25px;    
 }
 
@@ -75,7 +75,7 @@
 
 .footer ul {
     margin: auto;
-    width: 60%;
+    width: 50%;
 }
 
 #root{

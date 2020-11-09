@@ -3,9 +3,11 @@ import { itemService } from '../../services';
 import { history, getAuthKey } from '../../helpers';
 
 export const itemActions = {
+    fetchItemsByName,
     fetchItemsByNameStatus,
     fetchUserAmenities,
     fetch,
+    fetchAllItems,
     fetchPopularRedirectLoginIfNoData,
     fetchByID,
 
@@ -24,7 +26,9 @@ export const itemActions = {
     search,
     clearItemsAndNavigateToPage,
     getCountrieFromStore,
-    isItemExistWithName
+    isItemExistWithName,
+
+    updateItemStatus
 };
 
 function loading(isLoading) { return { type: commonConstants.IS_LOADING_SUCCESS, isLoading } }
@@ -51,6 +55,22 @@ export function isItemExistWithName(name){
 }
 
 /**
+ * 
+ * @param {*} id 
+ * @param {*} statusId 
+ */
+export function updateItemStatus(id, statusId) {
+    return dispatch => {
+        return itemService.updateItemStatus(id, statusId).then(res => {            
+            dispatch(loading(commonConstants.END_LOADING));
+            dispatch(fetchAllItems())
+        }).catch(error => {
+            throw(error);
+        });
+    }
+}
+
+/**
  * Home Page, Search by: subCategoryID, duration, name, startDate
  * @param {*} selectedRetreatTypeId 
  * @param {*} selectedDuration 
@@ -68,6 +88,26 @@ export function search(categoryId, subCategoryID, duration, name, startDate, cou
         });
     }
 }
+
+/**
+ * Fetch items by name
+ * @param {*} name 
+ * @param {*} status 
+ */
+export function fetchItemsByName(name) {
+    return dispatch => {
+        dispatch(loading(commonConstants.START_LOADING));
+        return itemService.fetchItemsByName(name)
+                          .then(res => {
+                            dispatch(fetchItemsSuccess(res.data.items))    
+                            dispatch(loading(commonConstants.END_LOADING));
+                          }).catch(error => {
+                            dispatch(loading(commonConstants.END_LOADING));
+                            throw(error);
+                          });
+    }
+}
+
 
 /**
  * Fetch items by name, status
@@ -360,6 +400,22 @@ export function fetch(categoryId) {
     return dispatch => {
         dispatch(loading(commonConstants.START_LOADING));
         return itemService.loadItems(categoryId).then(res => {
+            if(res.status === 200){
+                dispatch(fetchItemsSuccess(res.data.items))    
+            } else {
+                throw('No data');
+            }
+            dispatch(loading(commonConstants.END_LOADING));
+        }).catch(error => {
+            throw(error);
+        });
+    }
+}
+
+export function fetchAllItems() {
+    return dispatch => {
+        dispatch(loading(commonConstants.START_LOADING));
+        return itemService.loadAllItems().then(res => {
             if(res.status === 200){
                 dispatch(fetchItemsSuccess(res.data.items))    
             } else {

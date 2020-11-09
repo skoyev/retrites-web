@@ -1,13 +1,21 @@
 .footer h4 {
-    font-weight: bold;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .footer a {
     font-weight: 450;
-    font-size: 18px;
+    font-size: 14px;
 }
 
 .footer {
-    min-height: 250px;
+    min-height: 180px;
+}
+
+.gray {
+    background-color: #e4e3e3;
+}
+
+.vertical-space {
+    position: relative;
+    top: -25px;
 }

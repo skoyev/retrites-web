@@ -9,6 +9,7 @@ if(configConstants.ENVIRONMENT === configConstants.ENV_LOCAL){
 
 export const itemService = {
     loadItems,
+    loadAllItems,
     loadPopularItems,
     updateItem,
     deleteItem,
@@ -21,7 +22,9 @@ export const itemService = {
     fetchCountries,
     search,
     fetchUserAmenities,
-    fetchItemsByNameStatus
+    fetchItemsByNameStatus,
+    updateItemStatus,
+    fetchItemsByName
 };
 
 export const ITEM_STATUS = {
@@ -35,6 +38,15 @@ const requestOptions = {
     headers: { 'Content-Type': 'application/json' }        
 };
 
+function updateItemStatus(id, statusId) {
+    const headers = {
+        'Content-Type': 'application/json',
+        'x-auth-key': getAuthKey()
+    }
+
+    return axios.put(`/api/items/${id}/status`, {statusId:statusId}, {headers: headers});
+}
+
 function fetchItemsByNameStatus(name, statusID) {
     let params = {status:statusID, name:name};
     return axios.get('api/items', {params:params});
@@ -46,6 +58,10 @@ function fetchUserAmenities(userID) {
 
 function loadPopularItems(count) {
     return axios.get(`/api/items?popular=1&count=${count}&status=${ITEM_STATUS.PUBLISHED}`);
+}
+
+function fetchItemsByName(name){
+    return axios.get(`/api/items?name=${name}`);
 }
 
 function search(categoryId, subCategoryID, duration, name, startDate, countryId, count, fromPrice, toPrice, status) {
@@ -80,6 +96,10 @@ function fetchRetreatByCountries() {
 
 function loadItems(categoryId){
     return axios.get(`/api/items?categoryId=${categoryId}`);
+}
+
+function loadAllItems(){
+    return axios.get(`/api/items`);
 }
 
 function deleteItem(id, authKey) {

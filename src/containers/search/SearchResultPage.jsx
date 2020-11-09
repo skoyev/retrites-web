@@ -71,7 +71,8 @@ class SearchResultPage extends React.Component {
         this.setState({ subCategoryId: subCategoryId && subCategoryId > 0 ? subCategoryId : '', 
                         duration: duration, 
                         categoryId: categoryId && categoryId > 0 ? categoryId : '', 
-                        startDate: startDate ? startDate : moment().format("YYYY-MM-DD"),
+                        //startDate: startDate ? startDate : moment().format("YYYY-MM-DD"),
+                        startDate: startDate || '',
                         countryId: countryId && countryId > 0 ? countryId : '', 
                         searchText: name }, 
                     () => this.loadItems()); 

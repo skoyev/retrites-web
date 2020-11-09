@@ -166,9 +166,13 @@ const SearchResultPageBar = props => {
         let urlParams = new URLSearchParams(window.location.search)
         const initDuration  = urlParams.get('duration');
         const initStartDate = urlParams.get('startDate');    
+        const initSearchText= urlParams.get('name');    
         
+        setSearchText(initSearchText || '');
         setDurarion(initDuration ? initDuration : 'Any');
-        setStartDate(initStartDate ? initStartDate : moment().format());
+
+        //if(!initSearchText)
+        setStartDate(initStartDate || {});
     }
 
     useEffect(()=> {
