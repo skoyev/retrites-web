@@ -43,7 +43,7 @@
 }
 
 .section1 {
-    background-image: url(https://retreat-app.s3.us-east-2.amazonaws.com/add/meditation1.jpg);
+    background-image: url(https://retreat-app.s3.us-east-2.amazonaws.com/contact/contactus.jpg);
     background-position: 0 60%;
     background-size: cover;
     height: 500px;
@@ -63,7 +63,7 @@
 }
 
 .section1 .main h1 {
-    color: #ffffff;
+    color: #003448;
 }
 
 .container h2 {
@@ -156,13 +156,6 @@
     color: white;
     font-weight: 500;
     font-family: Open Sans,sans-serif;
-}
-
-.section2 {
-    background-image: url(https://retreat-app.s3.us-east-2.amazonaws.com/add/wellness-retreat.jpg);
-    background-position: 0 60%;
-    background-size: cover;
-    height: 500px;    
 }
 
 .bottom-form {

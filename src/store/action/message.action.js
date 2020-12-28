@@ -1,5 +1,6 @@
 import { messageService } from '../../services';
 import { messageConstants, commonConstants } from '../../constants';
+import { reportActions } from './report.action';
 
 export const messageActions = {
     fetchMessageGroups,
@@ -42,7 +43,11 @@ function createMessageGroupAndMessage(itemID, details) {
                           .then(res => {
                             if(res.status == commonConstants.STATUS_CREATED){
                                 messageService.createMessage(details, res.headers.messagegroupid)
-                                              .then(_ => dispatch => failure(messageConstants.CREATE_MESSAGE_SUCCESS))
+                                              .then(_ => {
+                                                  dispatch(success(messageConstants.CREATE_MESSAGE_SUCCESS))
+                                                  // send page reuest statistic call
+                                                  dispatch(reportActions.clickPageRequests(itemID) )
+                                                })
                                               .catch(_ => dispatch => failure(messageConstants.CREATE_MESSAGE_FAILURE));
                             } else {
                                 dispatch(failure(messageConstants.CREATE_MESSAGE_GROUP_FAILURE));

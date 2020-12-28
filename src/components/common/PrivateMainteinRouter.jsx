@@ -3,9 +3,10 @@ import { Route, Redirect } from 'react-router-dom';
 import { commonActions } from '../../store/action';
 import { withLocalize } from "react-localize-redux";
 import { connect } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 const PrivateMainteinRouter = props => {
-    
+    const location = useLocation(); 
     const { component: Component, isMainteinMode, ...rest } = props;
 
     useEffect(()=> {

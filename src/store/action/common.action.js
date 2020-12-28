@@ -154,9 +154,9 @@ function forgotPassword(email) {
     }
 }
 
-function sendEmail(itemId, details, name, email) {
+function sendEmail(details, subject, email) {
     return dispatch => {
-        commonService.sendEmail(itemId, details, name, email)
+        commonService.sendEmail(details, subject, email)
             .then(
                 res => { 
                     dispatch(success(commonConstants.SEND_EMAIL_SUCCESS));

@@ -10,7 +10,9 @@ export const userActions = {
     resetLogin,
     isLoggedIn,
     userSubscribe,
-    isUserEmailAlreadyRegistered
+    isUserEmailAlreadyRegistered,
+    confirmUserAgreementDate,
+    refreshUser
 };
 
 function request(user) { return { type: userConstants.LOGIN_REQUEST, user } }
@@ -32,6 +34,18 @@ function resetLogin(){
 function userSubscribe(data) {
     return dispatch => {
         return userService.userSubscribe(data).then(_=>dispatch(success_()));
+    }
+}
+
+function confirmUserAgreementDate() {
+    return dispatch => {
+        return userService.confirmUserAgreementDate();
+    }
+}
+
+function refreshUser() {
+    return dispatch => {
+        userService.refreshUser(res => dispatch(success(res.data)) );
     }
 }
 

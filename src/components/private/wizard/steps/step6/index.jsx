@@ -113,7 +113,7 @@ class Step6Item extends React.Component {
             <React.Fragment>
                 <Form {...formItemLayout}>
                     <Row className="step2-content">
-                        <Col span={18}>                        
+                        <Col span={12}>                        
                             <Form.Item label="Details" className="full-width">           
                                 {getFieldDecorator(`details`, {
                                         initialValue: selectedItem.accomodation && selectedItem.accomodation.details ? selectedItem.accomodation.details : '',
@@ -131,7 +131,7 @@ class Step6Item extends React.Component {
                     </Row>
                     <Row>
                         <Col span={18}>  
-                            <Form.Item label="Picture" className="ant-form-item-required">
+                            <Form.Item label="Picture" className="ant-form-item">
                                 { selectedItem.accomodation &&
                                 <Row>
                                     <Col span={12}>

@@ -155,7 +155,7 @@ class Step3Item extends React.Component {
                         </Form>
                     </Col>
                     <Col span={12}>
-                        <Form.Item label="Document Picture" className="ant-form-item-required">
+                        <Form.Item label="Document Picture" className="ant-form-item-required upload-text">
                             { selectedItem.document &&
                             <Row>
                                 <Col span={12}>

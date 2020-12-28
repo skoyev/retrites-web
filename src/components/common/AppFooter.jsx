@@ -11,8 +11,7 @@ const AppFooter = ({title, countries}) => {
                 <div className="row offset-10">
                     <div className="col-md-3">
                         <h4 className="text-center">Retreate In Mind</h4>
-                        <ul>
-                            <li><Link to="/about">About Us</Link></li>
+                        <ul>                            
                             <li><Link to="/contact">Contact Us</Link></li>
                         </ul>
                     </div>
@@ -38,8 +37,8 @@ const AppFooter = ({title, countries}) => {
                     <div className="col-md-3">
                         <h4 className="text-center">Social Networks</h4>
                         <ul>
-                            <li><Link to="/">Facebook</Link></li>
-                            <li><Link to="/">Instagram</Link></li>
+                            <li><a target="_blank" href="https://www.facebook.com/retreatyourmind">Facebook</a></li>
+                            <li><a target="_blank" href="https://www.instagram.com/retreatmind/">Instagram</a></li>
                         </ul>
                     </div>
                 </div>

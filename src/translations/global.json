@@ -2,6 +2,11 @@
     "messages": {
       "delete-message-group": ["Would you like to delete message group", "Le Parc jurassique"]
     }, 
+
+    "user": {
+      "agreement": ["<b>User Must Be Agreed With The Below Conditions:</b><br/>1. This Agreement does not create or imply any relationship in agency or partnership between the Vendor and the Licensee.<br/>2. ....",        
+                    "Agreement FR"]
+    },
     
     "header": {
       "newretrite": ["Add New Retreate","Add New Retreate Fr"],
@@ -12,6 +17,7 @@
     },
 
     "label": {
+      "is_online_event": ["Is is Online Event ?", "Is is Online Event ? Fr"],
       "back": ["Back", "Back Fr"],
       "name": ["Name", "Name Fr"],
       "status": ["Status", "Status Fr"],

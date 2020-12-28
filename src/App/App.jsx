@@ -14,6 +14,7 @@ import PrivateNotMainteinRouter from '../components/common/PrivateNotMainteinRou
 const LazyDashboardComponent = lazy(() => import('../containers/dashboard/DashboardPage'));
 const LazyHomeComponent = lazy(() => import('../containers/home/HomePage'));
 const LazyLogin = lazy(() => import('../containers/login/LoginPage'));
+const LazyContactUs = lazy(() => import('../containers/contact'));
 const LazyRegisterPage = lazy(() => import('../containers/register/RegisterPage'));
 const LazyForgotPasswordPage = lazy(() => import('../containers/forgot-password/ForgotPasswordPage'));
 //const LazyAddRetreatePage = lazy(() => import('../containers/retreate/new/AddRetreatePage'));
@@ -51,6 +52,7 @@ class App extends React.Component {
                                 <PrivateMainteinRouter path="/register" component={WaitingComponent(LazyRegisterPage)} />                        
                                 {/*<Route path="/new-retreate" component={WaitingComponent(LazyAddRetreatePage)} />*/}
                                 <PrivateMainteinRouter path="/add" component={WaitingComponent(LazyAddNewRetreatPage)} />
+                                <PrivateMainteinRouter path="/contact" component={WaitingComponent(LazyContactUs)} />
                                 <PrivateMainteinRouter path="/item/:itemID" component={WaitingComponent(LazyRetreateDetailPage)} />                        
                                 <PrivateMainteinRouter path="/items" component={WaitingComponent(LazySearchResultPage)} />                        
                                 <PrivateMainteinRouter path="/about" component={WaitingComponent(LazyAboutPage)} />                        

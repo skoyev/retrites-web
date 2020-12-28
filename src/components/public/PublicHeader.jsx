@@ -88,19 +88,19 @@ class PublicHeader extends React.Component {
                 <div className={"d-inline-block white"}>
                     <Translate>
                         {({ translate }) =>
-                            <Link to={commonConstants.ADD_PAGE_LINK} className="btn btn-link d-inline">{translate('public.links.addretreate')}</Link>}
+                            <Link to={commonConstants.ADD_PAGE_LINK} className="btn btn-link d-inline header-link">{translate('public.links.addretreate')}</Link>}
                     </Translate>
                 </div>
                 <div className="d-inline-block white">
                     <Translate>
                         {({ translate }) =>
-                            <Link to={commonConstants.LOGIN_PAGE_LINK} className="btn btn-link d-inline">{translate('public.links.login')}</Link>}
+                            <Link to={commonConstants.LOGIN_PAGE_LINK} className="btn btn-link d-inline header-link">{translate('public.links.login')}</Link>}
                     </Translate>
                 </div>                                
                 <div className="d-inline-block white">
                     <Translate>
                         {({ translate }) =>
-                            <Link to={commonConstants.REGISTER_PAGE_LINK} className="btn btn-link d-inline">{translate('public.links.signup')}</Link>}
+                            <Link to={commonConstants.REGISTER_PAGE_LINK} className="btn btn-link d-inline header-link">{translate('public.links.signup')}</Link>}
                     </Translate>
                 </div>
             </React.Fragment>
@@ -126,7 +126,7 @@ class PublicHeader extends React.Component {
 
     publicAddHeader = () => 
         <Row>
-            <Col span={8} offset={16}>
+            <Col span={10} offset={8}>
                 <div className="d-inline-block white">
                     <Translate>
                         {({ translate }) =>
@@ -193,10 +193,10 @@ class PublicHeader extends React.Component {
                         <div className={isLoggedInRes ? "col-md-4 down-35 header-right" : "col-md-6 down-35 header-right"}>{content}</div> 
                         */}
                     <div className='row'>
-                        <div className="col-md-6"> 
+                        <div className="col-md-7"> 
                             {contentLeft}                           
                         </div>
-                        <div className="col-md-6">  
+                        <div className="col-md-5">  
                             {content}                          
                         </div>
                     </div>

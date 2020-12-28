@@ -106,6 +106,7 @@ class Step2Item extends React.Component {
             <React.Fragment>
                 <Row className="step2-content">
                     <Col span={12}>
+                        <div style={{marginBottom:20}}>Address Of The Amenity:</div>
                         <Form {...formItemLayout}>
                             <Form.Item label="Country" className="country">           
                                     {getFieldDecorator('itemCountry', {

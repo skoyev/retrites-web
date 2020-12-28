@@ -100,10 +100,9 @@ class Step7Item extends React.Component {
                         </Col>
                         { selectedItem.picture &&
                             <Col span={12}>
-                                <Form.Item label="Existing Picture">           
+                                <Form.Item label="Selected Picture" className="pic">           
                                     <img src={selectedItem.picture instanceof File ? window.URL.createObjectURL(selectedItem.picture) : selectedItem.picture} style={{width:'60%'}}/>
                                 </Form.Item>
-                                <CloseOutlined />
                             </Col>
                         }
                     </Row>

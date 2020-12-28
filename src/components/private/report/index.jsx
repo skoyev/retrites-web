@@ -1,11 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types'
-import { Row, Col } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Row, Col, Input, Table, Button } from 'antd';
+import { commonActions, itemActions, reportActions } from '../../../store/action';
+import './index.css'
+import { connect } from 'react-redux';
+import { Translate } from "react-localize-redux";
 import {
     LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, BarChart, Bar, Cell,
   } from 'recharts';
 
-  const data = [
+  /*
+const data = [
     {
       name: 'Page A', uv: 4000, pv: 2400, amt: 2400,
     },
@@ -27,56 +31,73 @@ import {
     {
       name: 'Page G', uv: 3490, pv: 4300, amt: 2100,
     },
-  ];
+];*/
 
-const Report = ({}) => {
+const Report = props => {                      
+    useEffect(()=> {
+      props.fetchTotalPageVisists();
+      props.fetchTotalPageRequests();
+    }, []);
+
+    let {totalPageVisists, totalPageRequests} = props
+
     return (
-        <div>
+        <>
             <Row>
                 <Col span={12}>              
-                    <h3 style={{textAlign:'center'}}>Daily Retrite Site Visits</h3>
+                    <h3 style={{textAlign:'center'}}>Montly Total Page Visits</h3>
                     <LineChart
                         width={500}
                         height={300}
-                        data={data}
+                        data={totalPageVisists}
                         style={{margin:'auto'}}
                         margin={{
                         top: 5, right: 30, left: 20, bottom: 5,
                         }}>
                             <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="name" />
+                            <XAxis dataKey="date" />
                             <YAxis />
                             <Tooltip />
                             <Legend />
-                            <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-                            <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+                            { /* <Line type="monotone" dataKey="date" stroke="#8884d8" activeDot={{ r: 8 }} /> */ }
+                            <Line type="monotone" dataKey="value" stroke="#82ca9d" />
                     </LineChart> 
                 </Col>  
                 
                 <Col span={12}>              
-                    <h3 style={{textAlign:'center'}}>Number of Retrite Lead Requests</h3>
+                    <h3 style={{textAlign:'center'}}>Monthly Total Page Requests</h3>
                     <BarChart
                         width={500}
                         height={300}
-                        data={data}
+                        data={totalPageRequests}
                         margin={{
                         top: 5, right: 30, left: 20, bottom: 5,
                         }}>
                             <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="name" />
+                            <XAxis dataKey="date" />
                             <YAxis />
                             <Tooltip />
                             <Legend />
+                            <Bar dataKey="value" fill="#8884d8" />
+                            {/*
                             <Bar dataKey="pv" fill="#8884d8" />
-                            <Bar dataKey="uv" fill="#82ca9d" />
+                            <Bar dataKey="uv" fill="#82ca9d" />*/}
                     </BarChart>
                 </Col>         
             </Row>
-        </div>
-    )
+        </>
+        )
 }
 
-Report.propTypes = {    
+const mapDispatchToProps = { 
+    ...reportActions
+}; 
+
+function mapStateToProps(state) {
+    return {
+        totalPageVisists: state.report.totalPageVisists,
+        totalPageRequests: state.report.totalPageRequests,
+    };
 }
 
-export default Report;
+export default connect(mapStateToProps, mapDispatchToProps)(Report);

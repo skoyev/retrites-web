@@ -9,7 +9,7 @@ import RetreatPhotoAlbum from '../../components/public/retreat/RetreatPhotoAlbum
 import RetreatDetailsSummary from '../../components/public/retreat/RetreatDetailsSummary';
 import RetreatBookSection from '../../components/public/retreat/RetreatBookSection';
 import { history } from '../../helpers';
-import { Layout, notification, Row, Col, Modal } from 'antd';
+import { Layout, notification, Row, Col, Modal, Button } from 'antd';
 import { SearchHeader } from '../../components/public/search';
 import '../style/RetreateDetailPage.css';
 import { renderToStaticMarkup } from "react-dom/server";
@@ -27,7 +27,8 @@ class RetreateDetailPage extends React.Component {
             formDescription: '',
             back: 'home',
             error: '',
-            isCaptchaValid: false
+            isCaptchaValid: false,
+            showUserAgreementModal: false
         };        
 
         this.props.initialize({
@@ -58,6 +59,7 @@ class RetreateDetailPage extends React.Component {
     };    
 
     componentDidMount() {
+        let {user} = this.props;
         const urlParams = new URLSearchParams(this.props.location.search)
         const back = urlParams.get('back');        
         this.setState({ back: back}); 
@@ -96,7 +98,10 @@ class RetreateDetailPage extends React.Component {
     };    
 
     handleSubmitBookNow(e) {
-        e.preventDefault();
+        if(e && e.preventDefault())
+            e.preventDefault();
+
+        let {user} = this.props;
 
         /*
         this.setState({
@@ -104,31 +109,34 @@ class RetreateDetailPage extends React.Component {
         });
         */
 
-       const {isCaptchaValid} = this.state;
+        const {isCaptchaValid} = this.state;
 
-       if(!isCaptchaValid) {
+        if(!isCaptchaValid) {
            this.setState({error: 'Captcha is invalid'})
            return;
-       }
+        }
 
-       const { item } = this.props;
-       const {formDescription} = this.state;
+        const { item } = this.props;
+        const {formDescription} = this.state;
 
-       if(!formDescription) {
+        if(!formDescription) {
            this.setState({error: 'Some Data Inputs Are Missing.'})
            return;
-       }
-       
-       this.props.createMessageGroupAndMessage(item.id, formDescription);   
-       
-       this.openNotification();
+        }
 
-       setTimeout(()=> {
-        this.props.history.push(`/home`);
-       },3000);
+        // check user agreement date
+        if(!user.acceptUserAgreementDate){
+            this.setState({showUserAgreementModal:true});
+        } else {       
+            this.props.createMessageGroupAndMessage(item.id, formDescription);          
+            this.openNotification();
+            setTimeout(()=> {
+                this.props.history.push(`/home`);
+            },3000);
 
-       window.recaptchaRef.current.reset();
-       this.setState({error: ''});
+            window.recaptchaRef.current.reset();
+            this.setState({error: ''});
+        }
     }
 
     handleFormDescriptionChange(e) {
@@ -147,9 +155,21 @@ class RetreateDetailPage extends React.Component {
         this.setState({isCaptchaValid: true})
     }
 
+    handleAgreementOk = () => {
+        this.setState({showUserAgreementModal:false});
+        this.props.confirmUserAgreementDate().then(_ => {
+            this.props.refreshUser();
+            this.handleSubmitBookNow({})
+        });        
+    }
+
+    handleAgreementCancel = () => {
+        this.setState({showUserAgreementModal:false});
+    }
+
     render() {      
         const { item, isLoggedInRes, user } = this.props;
-        const { isCaptchaValid, error } = this.state;
+        const { isCaptchaValid, error, showUserAgreementModal } = this.state;
 
         if(!item) {
             return <div>Item details is loading...</div>;
@@ -221,6 +241,30 @@ class RetreateDetailPage extends React.Component {
                     <p>Please Login and check under Messages our response/communication!</p>
                     <p>Retreate Management Team.</p>
                 </Modal>
+
+                <Modal title="User Request Agreement"
+                       visible={showUserAgreementModal}
+                       className="agreement"
+                       footer={[
+                            <Row key="agreement-row">
+                                <Col span={4} offset={7}>
+                                    <Button key="cancel-button-1" onClick={this.handleAgreementCancel} htmlType="button">Disagree</Button>
+                                </Col>                                
+                                <Col span={4} offset={1}>
+                                    <Button key="cancel-button-2" onClick={this.handleAgreementOk} htmlType="button">Agree</Button>
+                                </Col>
+                            </Row>
+                        ]}>                    
+                        <Translate>
+                        {
+                            ({ translate }) => 
+                            <div style={{overflow:"auto"}} key="dialog">
+                                {translate("user.agreement", null, { renderInnerHtml: true })}
+                            </div>
+                        }
+                        </Translate>
+                </Modal>
+
             </div>
         );
     }

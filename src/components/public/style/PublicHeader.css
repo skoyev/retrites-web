@@ -28,6 +28,16 @@
     float: right;
 }
 
+.white .header-link:hover {
+    text-decoration: none;
+    color: #ffffff;
+    cursor: pointer !important;
+}
+
+.fixed .header-link:hover {
+    color: #007bff;
+}
+
 .fixed .header {
     padding-left: 30px; 
 }

@@ -28,3 +28,11 @@
 .steps-content {
     margin-top: 20px; 
 }
+
+.duration .ant-form-item-label{
+    padding-left: 15px; 
+}
+
+.duration .ant-form-item-control-wrapper {
+    padding-left: 25px; 
+}

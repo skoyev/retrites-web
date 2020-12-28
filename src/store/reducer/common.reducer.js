@@ -65,17 +65,17 @@ export function common(state = INITIAL_STATE, action) {
         case commonConstants.FETCH_CATEGORIES_SUCCESS:
             return {
                 ...state,
-                categories: [...action.data]
+                categories: action.data && Array.isArray(action.data) ? [...action.data] : []
             };             
         case commonConstants.FETCH_SUB_CATEGORIES_SUCCESS:
             return {
                 ...state,
-                subCategories: [...action.data]
+                subCategories: action.data && Array.isArray(action.data) ? [...action.data] : []
             }; 
         case commonConstants.FETCH_COUNTRIES_SUCCESS:
             return {
                 ...state,
-                countries: [...action.data]
+                countries: action.data && Array.isArray(action.data) ? [...action.data] : []
             }; 
         case commonConstants.FETCH_FASCILITATOR_TYPES_SUCCESS:
             return {

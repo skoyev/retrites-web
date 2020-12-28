@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Form, Input, Menu, Dropdown, InputNumber, Button, DatePicker } from 'antd';
+import { Row, Col, Form, Input, Menu, Dropdown, InputNumber, Button, DatePicker,Checkbox } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { withLocalize } from "react-localize-redux";
 import { Translate } from "react-localize-redux";
@@ -37,6 +37,7 @@ class Step5Item extends React.Component {
         }
         this.deleteEvent = this.deleteEvent.bind(this);
         this.addEvent = this.addEvent.bind(this);
+        this.isOnlineCourse = this.isOnlineCourse.bind(this);
     }
 
     componentDidMount() {
@@ -72,9 +73,15 @@ class Step5Item extends React.Component {
         this.checkIsStepValid(events);
     }
 
+    isValidEmail = (link) => {
+        let pattern = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
+        return pattern.test(link); 
+    }
+
     checkIsStepValid = (events) => {
         let isValid = events.every(e => {
             return e.from && e.to && (moment(e.from) < moment(e.to)) && 
+                    ((e.link && this.isValidEmail(e.link)) || (!e.link)) &&
                     (e.description && e.description.length > 9) && 
                         e.currency && (e.price && e.price > 0) && 
                             (e.duration && e.duration > 0);
@@ -106,6 +113,17 @@ class Step5Item extends React.Component {
         this.checkIsStepValid(this.props.selectedItem.events);
     }
 
+    isOnlineCourse = ({target:{checked:isChecked}}, i) => {
+        let {events} = this.props.selectedItem;
+        if(events){
+            events[i]['isOnlineCourse'] = isChecked
+            if(!isChecked){
+                events[i].link = ''; // reset value
+            }
+            this.props.setSelectedItemField('events', events);
+        }
+    }
+
     render() {
         const { getFieldDecorator } = this.props.form;
         const { selectedItem, currency } = this.props;
@@ -115,7 +133,7 @@ class Step5Item extends React.Component {
             <React.Fragment>
                 <Row className="step5-content" className={events && events.length > 1 ? 'scroll' : ''}>
                     <div>Add Course Schedule For The Periods</div>                    
-                        {events.map((v, i) => 
+                        {events.map((event, i) => 
                             <Form key={i} {...formItemLayout} className="form">
                                 <Row className="border-row">                                                                 
                                     <Row>
@@ -127,7 +145,7 @@ class Step5Item extends React.Component {
                                         </Col>
                                     </Row>
                                     <Row>
-                                        <Col span={8}>
+                                        <Col span={6}>
                                             <Form.Item label="Start Date" className="full-width">           
                                                 <DatePicker name="from" 
                                                             onChange={(e, value) => this.handleItemChange({target:{name:'from', value:value, index: i}})} 
@@ -136,7 +154,7 @@ class Step5Item extends React.Component {
                                                             style={{ marginLeft: '5px' }} />
                                             </Form.Item>
                                         </Col>
-                                        <Col span={8}>
+                                        <Col offset={2} span={6}>
                                             <Form.Item label="End Date" className="full-width">           
                                                 <DatePicker name="to" 
                                                             onChange={(e, value) => this.handleItemChange({target:{name:'to', value:value, index: i}})} 
@@ -145,8 +163,8 @@ class Step5Item extends React.Component {
                                                             style={{ marginLeft: '5px' }} />
                                             </Form.Item>
                                         </Col>
-                                        <Col span={8}>
-                                            <Form.Item label="Duration" className="full-width">           
+                                        <Col span={7}>
+                                            <Form.Item label="Duration" className="full-width duration">           
                                                 {getFieldDecorator(`duration-${i}`, {
                                                         initialValue: selectedItem.events[i].duration ? selectedItem.events[i].duration : '',
                                                         rules: [
@@ -171,7 +189,7 @@ class Step5Item extends React.Component {
                                                 </Dropdown.Button>
                                             </Form.Item>
                                         </Col>
-                                        <Col span={5}>
+                                        <Col span={6}>
                                             <Form.Item label="Price" className="full-width">           
                                                 {getFieldDecorator(`price-${i}`, {
                                                         initialValue: selectedItem.events[i].price ? selectedItem.events[i].price : '',
@@ -185,7 +203,7 @@ class Step5Item extends React.Component {
                                                 (<InputNumber name="price" onChange={(e) => this.handleItemChange({target:{name:'price', value:e, index: i}})}/>)}$
                                             </Form.Item>
                                         </Col>
-                                        <Col span={11}>
+                                        <Col span={10}>
                                             <Form.Item label="Description" className="full-width">           
                                                 {getFieldDecorator(`description-${i}`, {
                                                         initialValue: selectedItem.events[i].description ? selectedItem.events[i].description : '',
@@ -200,7 +218,33 @@ class Step5Item extends React.Component {
                                                 (<TextArea rows={5} name="description" onChange={(v) => this.handleItemChange({target:{name:'description', value:v.target.value, index: i}})} />)}
                                             </Form.Item>
                                         </Col>
-                                    </Row>                             
+                                    </Row> 
+
+                                    <Row>
+                                        <Col span={8}>
+                                            <Checkbox defaultChecked={event.isOnlineCourse || event.link} onChange={(e) => this.isOnlineCourse(e,i)} style={{marginTop:12}}>
+                                                <Translate>{({ translate }) =><span>{translate(`label.is_online_event`)}</span>}</Translate>                                    
+                                            </Checkbox>
+                                        </Col>
+                                        <Col span={12}>
+                                            {
+                                                (event.isOnlineCourse || event.link)
+                                                    &&
+                                                <Form.Item label="Event Link:" className="full-width">           
+                                                    {getFieldDecorator(`link-${i}`, {
+                                                            initialValue: selectedItem.events[i].link ? selectedItem.events[i].link : '',
+                                                            rules: [
+                                                            {
+                                                                required: true,
+                                                                message: 'Please input link!',
+                                                            }
+                                                            ],
+                                                        })
+                                                    (<Input name="link" onChange={({target:{value:result}}) => this.handleItemChange({target:{name:'link', value:result, index: i}})}/>)}
+                                                </Form.Item>
+                                            }
+                                        </Col>
+                                    </Row>  
                                 </Row>                        
                             </Form>
                         )}                    

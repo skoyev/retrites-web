@@ -1,6 +1,7 @@
 import {itemConstants, pageConstants, commonConstants} from '../../constants';
 import { itemService } from '../../services';
 import { history, getAuthKey } from '../../helpers';
+import { reportActions } from './report.action';
 
 export const itemActions = {
     fetchItemsByName,
@@ -367,9 +368,10 @@ export function fetchByID(id){
     return dispatch => {
         dispatch(loading(commonConstants.START_LOADING));
         return itemService.loadItemByID(id).then(res => {
-                dispatch(loading(commonConstants.END_LOADING));
-                dispatch(fetchItemSuccess(res.data.item))    
-                return res;
+            dispatch(loading(commonConstants.END_LOADING));
+            dispatch(reportActions.clickPageVisits(id));
+            dispatch(fetchItemSuccess(res.data.item))    
+            return res;
         }).catch(error => {
             throw(error);
         });

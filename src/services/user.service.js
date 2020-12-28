@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { configConstants } from '../constants';
+import { getAuthKey } from '../helpers';
 
 // SET FOR LOCAL ENV
 if(configConstants.ENVIRONMENT === configConstants.ENV_LOCAL){
@@ -12,8 +13,42 @@ export const userService = {
     register,
     validateAuthKey,
     userSubscribe,
-    isUserEmailAlreadyRegistered
+    isUserEmailAlreadyRegistered,
+    confirmUserAgreementDate,
+    refreshUser
 };
+
+function refreshUser() {
+    let authKey = getAuthKey();
+
+    if(!authKey){
+        console.log('authKey is null')
+        return;
+    }
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'x-auth-key': authKey
+    }
+
+    return axios.get(`/api/user`,{ headers: headers });
+}
+
+function confirmUserAgreementDate(){
+    let authKey = getAuthKey();
+
+    if(!authKey){
+        console.log('authKey is null')
+        return;
+    }
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'x-auth-key': authKey
+    }
+
+    return axios.post(`/api/user/agreement`, {}, { headers: headers });
+}
 
 function isUserEmailAlreadyRegistered(email){
     let params = {email:email};

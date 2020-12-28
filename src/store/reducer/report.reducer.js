@@ -1,12 +1,26 @@
-import {reportConstants, itemConstants} from '../../constants';
+import {reportConstants} from '../../constants';
 
 const INITIAL_STATE = {
-  reports: []
+  reports: [],
+  totalPageVisists: [],
+  totalPageRequests: []
 };
 
 export function report(state = INITIAL_STATE, action) {
     switch (action.type) {
-        default:
-          return state
+      case reportConstants.TOTAL_PAGE_REQUESTS_SUCCESS:
+        return {
+          ...state,
+          totalPageRequests: action.data.data
+        };
+
+      case reportConstants.TOTAL_PAGE_VISITS_SUCCESS:
+        return {
+          ...state,
+          totalPageVisists: action.data.data
+        };
+
+      default:
+        return state
     }
 }

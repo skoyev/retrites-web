@@ -3,7 +3,7 @@ import { itemActions, userActions, commonActions } from '../../../store/action';
 import { connect } from 'react-redux'
 import { Translate } from "react-localize-redux";
 import { PublicHeader } from '../../../components/public';
-import { Row, Form, Input, Button, notification } from 'antd';
+import { Row, Form, Input, Button, notification, Col } from 'antd';
 import AppFooter from '../../../components/common/AppFooter';
 import './index.css';
 import JoinUs from '../../../components/common/join/JoinCommunity';
@@ -42,7 +42,7 @@ class AddNewRetreatPage extends React.Component {
 
     submitRequest = () => {
         let {details, name, email} = this.state;
-        this.props.sendEmail(undefined,details, name, email);  
+        this.props.sendEmail(details, "Info", email);  
         this.openNotification();
 
         setTimeout(()=> {
@@ -91,22 +91,76 @@ class AddNewRetreatPage extends React.Component {
                 </div>                
             </Row>            
 
-            <Row className="main-content gray">
+            <Row className="main-content">
                 <div className="lead container">
                     <h2>HOW IT WORKS</h2>
-                    <p>We make it easy to scale your team - on demand. Using our proven process, typical time from first convo to the ideal new hire is days, rather than months.</p>
+                    <Col offset={3} span={18}>
+                        <p>We make it easy to scale your team - on demand. Using our proven process, typical time from first convo to the ideal new hire is days, rather than months.</p>
+                    </Col>                    
                 </div>
 
+            </Row>
+
+            <Row className="main-content gray">
+                <div className="lead container text-white">
+                    <h2>The Best Wellness Organization Software</h2>
+                    <h4>IT HAS ALL TO MAKE YOUR RETRITE RUNNING SUCCESSFULY</h4>
+                    <Row>
+                        <Col className="img-container wide" offset={2} span={10}>
+                            <article>
+                                <div className="img">
+                                    <div className="animate">
+                                        <img id="pair-1" src="https://retreat-app.s3.us-east-2.amazonaws.com/add/1.svg" alt="pair1" className="animated"/>
+                                        <img id="pair-2" src="https://retreat-app.s3.us-east-2.amazonaws.com/add/2.svg" alt="pair2" className="animated"/>
+                                        <img id="pair-3" src="https://retreat-app.s3.us-east-2.amazonaws.com/add/3.svg" alt="pair1" className="animated"/>
+                                        <img id="pair-4" src="https://retreat-app.s3.us-east-2.amazonaws.com/add/4.svg" alt="pair1" className="animated"/>
+                                        <img id="pair-5" src="https://retreat-app.s3.us-east-2.amazonaws.com/add/5.svg" alt="pair1" className="animated"/>
+                                    </div>
+                                </div>
+                                <p>Discuss students goals with a dedicated instant messaging tool</p>
+                            </article>
+                        </Col>
+
+                        <Col className="img-container" offset={1} span={10}>
+                            <article>
+                                <div className="img">
+                                    <img id="matched-1" src="https://retreat-app.s3.us-east-2.amazonaws.com/add/matched.svg" alt="pair1" className="animated"/>
+                                </div>
+                                <p>Get intelligently know your audience so you can deliver best sessions to them</p>
+                            </article>
+                        </Col>
+
+                        <Col className="img-container" offset={1} span={10}>
+                            <article>
+                                <div className="img">
+                                    <img id="pair-1" src="https://retreat-app.s3.us-east-2.amazonaws.com/add/risk-free.svg" alt="pair1" className="animated"/>
+                                </div>
+                                <p>Start risk-free to use our software ensure it's a right fit</p>
+                            </article>
+                        </Col>
+
+                    </Row>
+                    <Row className="space-top-bottom">
+                        <Col className="register" span={8} offset={8}>
+                            <div className="btn custom"><Link className="btn" to={commonConstants.REGISTER_PAGE_LINK}>JOIN OUR COMMUNITY</Link></div>
+                        </Col>
+                    </Row>
+                </div>
+            </Row>
+
+            <Row className="main-content space-bottom">
                 <div className="lead container">
-                    <h2>WHAT WE OFFER</h2>
-                    <p>Market Your Event With Us, We Will Take Care Of Marketing To The Right Audience.</p>
-                    <p>Manage bookings and rooms, communicate with your guests, and free up time to focus on your retreat with Retreat Guru's registration, event management, payment processing and guest communication and analytics solutions.</p>
+                    <h2>What We Offer</h2>
+                    <Col offset={3} span={18}>
+                        <p>Market Your Event With Us, We Will Take Care Of Marketing To The Right Audience.
+                        Manage bookings and rooms, communicate with your audience, and free up time to focus on your event with Retreat In Mind registration, event management, payment processing and guest communication and analytics solutions.</p>
+                    </Col>
                 </div>
             </Row>
 
             <Row className="section2">
                 <div className="main space-top">
-                    <h1>EASY INTEGRATION WITH YOUR PLATFORM</h1>
+                    <h1>Easy Integration With Your Platform</h1>
                     <div className="content" style={{color: '#27282b'}}>We make it easy to scale your team on demand. Using our proven process.</div>
                     <div className="register">
                         <div className="btn custom"><Link className="btn" to={commonConstants.REGISTER_PAGE_LINK}>JOIN OUR COMMUNITY</Link></div>
@@ -114,7 +168,7 @@ class AddNewRetreatPage extends React.Component {
                 </div>              
             </Row>
 
-            <Row className="main-content gray space-padding-top">
+            <Row className="main-content space-padding-top gray">
                 <div className="bottom-form">
                     <h1>HOW CAN WE HELP YOU</h1>
                     <Form
@@ -151,7 +205,7 @@ class AddNewRetreatPage extends React.Component {
                             </Form.Item>
 
                             <Form.Item>                                
-                                <Button disabled={isValid ? '' : 'disabled'} style={{float:'right'}} type="primary" onClick={this.submitRequest} htmlType="submit">SUBMIT</Button>
+                                <Button disabled={isValid ? '' : 'disabled'} style={{float:'right', marginTop: -50}} type="primary" onClick={this.submitRequest} htmlType="submit">SUBMIT</Button>
                             </Form.Item>                            
                     </Form>
                 </div>

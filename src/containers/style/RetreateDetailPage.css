@@ -5,6 +5,10 @@
     background-color: rgb(255, 255, 255);
 }
 
+.agreement .ant-modal-body {
+    height: 350px;
+}
+
 .top {
     margin-top: 40px;
 }

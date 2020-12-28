@@ -97,15 +97,15 @@ function fetchItemTypes() {
     return axios.get(`${URL}/item-status`);
 }
 
-function sendEmail(itemId, details, name, email) {
-    if(!details ){
+function sendEmail(details, subject, email) {
+    if(!details || !email || !subject){
         console.error(`Wrong send email params`)
         return
     }
 
     const headers = {'Content-Type': 'application/json'}
 
-    return axios.post(`/api/common/email`, {itemId, details, name, from: email}, {headers: headers});
+    return axios.post(`/api/common/email`, {details, subject, from: email}, {headers: headers});
 }
 
 function getAllSubcategories(){

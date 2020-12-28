@@ -237,7 +237,9 @@ class Step4Item extends React.Component {
                                 selectedItem.facilitators[index].picture &&
                                 <Form.Item label="Selected Picture" className="picture">
                                     <Row>
-                                        <img src={pic instanceof File ? window.URL.createObjectURL(pic) : pic} style={{width:'60%'}}/>
+                                        <Col span={12}>
+                                            <img src={pic instanceof File ? window.URL.createObjectURL(pic) : pic} style={{width:'60%'}}/>                                                
+                                        </Col>                                        
                                     </Row>
                                 </Form.Item>
                             }

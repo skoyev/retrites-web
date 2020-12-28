@@ -3,7 +3,8 @@ import PrivateHeader from '../../components/private/PrivateHeader';
 import { Row, Layout, Icon, Modal, Drawer, Steps, Col, notification } from 'antd';
 import '../style/DashboardPage.css';
 import DashboardMenu from '../../components/private/DashboardMenu';
-import {Aminity, Leads, Report, Dashboard, Message, MessageDetails, Users, AdminAminity} from '../../components/private';
+import {Aminity, Dashboard, Message, MessageDetails, Users, AdminAminity} from '../../components/private';
+import Report from '../../components/private/report';
 import AmenityWizard from '../../components/private/wizard';
 import Step1Item from '../../components/private/wizard/steps/step1';
 import Step2Item from '../../components/private/wizard/steps/step2';
@@ -104,7 +105,7 @@ class DashboardPage extends React.Component {
                                 })
                 },
                 {
-                    title: 'Address',
+                    title: 'Location',
                     content: React.createElement(
                         Form.create({ name: 'step2Item' })( Step2Item ), 
                         {
@@ -128,7 +129,7 @@ class DashboardPage extends React.Component {
                         })
                 },
                 {
-                    title: 'Schedule',
+                    title: 'Events',
                     content: React.createElement(
                         Form.create({ name: 'step5Item' })( Step5Item ), 
                         {
@@ -161,7 +162,6 @@ class DashboardPage extends React.Component {
                 {name:pageConstants.MESSAGE_CONTENT}, 
                 {name:pageConstants.AMENITY_CONTENT}, 
                 {name:pageConstants.ADMIN_AMENITY_CONTENT}, 
-                {name:pageConstants.LEADS_CONTENT}, 
                 {name:pageConstants.STATISTIC_CONTENT},
                 {name:pageConstants.DASHBOARD_CONTENT},
                 {name:pageConstants.USER_CONTENT}
@@ -228,10 +228,6 @@ class DashboardPage extends React.Component {
                 break;
             case pageConstants.ADMIN_AMENITY_CONTENT:
                 break;
-            case pageConstants.LEADS_CONTENT:
-                // load leads
-                this.props.fetchLeads(user.id);
-                break;
             case pageConstants.STATISTIC_CONTENT:
                  // load dashboard total report summary
                 //this.props.fetchReportSummary(user.id);
@@ -267,7 +263,7 @@ class DashboardPage extends React.Component {
             return;
         }
 
-        // load summary data for the dashboard (amenities, leads, reports)
+        // load summary data for the dashboard (amenities, reports)
         //this.props.fetchSummary(user.id);
         this.props.loadRemoteStripe();    
         // check url params: billing pop-up
@@ -367,7 +363,7 @@ class DashboardPage extends React.Component {
 
     renderSwitchPage(){
         const { selectedContentName, messageId, pageNum, messageRecipient, itemID } = this.state;
-        const {items, leads} = this.props; 
+        const {items} = this.props; 
 
         switch(selectedContentName){
             case pageConstants.USER_CONTENT:
@@ -404,13 +400,6 @@ class DashboardPage extends React.Component {
                 return ([
                     <AdminAminity key="admin-aminity"
                                   ref={this.child}/>
-                ]);
-            case pageConstants.LEADS_CONTENT:
-                return ([
-                    <Leads items={leads} 
-                           key="leads"
-                           handleLeadDelete={this.handleLeadDelete} 
-                           handleLeadEdit={this.handleLeadEdit}/>
                 ]);
             case pageConstants.STATISTIC_CONTENT:
                 return ([
@@ -761,26 +750,6 @@ class DashboardPage extends React.Component {
                             </Translate>
                     </Modal>   
 
-                    {/* Dashboard View Details Lead Modal Window */}
-                    <Modal
-                            title="View Lead Details"
-                            key="leadsDetailsModal1"
-                            visible={this.state.viewLeadModalVisible}
-                            footer={[
-                                <Row>
-                                    <Button key="cancel-button" onClick={this.handleLeadViewModalCancel} htmlType="button">
-                                        OK
-                                    </Button>
-                                </Row>
-                            ]}
-    >                    
-                        <p>Lead Name: <b>{lead.name}</b></p>
-                        <p>Lead Email: <b>{lead.emailAddress}</b></p>
-                        <p>Message Status: <b>{lead.status}</b></p>
-                        <p>Posted Date: <b>{moment(lead.createdAt).format('MMMM Do YYYY, h:mm:ss a')}</b></p>
-                        <p>Message Details: <b>{lead.details}</b></p>
-                    </Modal> 
-
                     {/*  Confirm Delete Message Group */}
                     <Modal
                             title="Confirm Delete Message Group"
@@ -798,26 +767,6 @@ class DashboardPage extends React.Component {
                             ]}>                    
                         <p>W</p>
                     </Modal>
-
-                    {/* Dashboard View Details Lead Modal Window */}
-                    <Modal
-                            title="View Lead Details"
-                            key="leadsDetailsModal"
-                            visible={this.state.viewLeadModalVisible}
-                            footer={[
-                                <Row>
-                                    <Button key="cancel-button" onClick={this.handleLeadViewModalCancel} htmlType="button">
-                                        OK
-                                    </Button>
-                                </Row>
-                            ]}
-    >                    
-                        <p>Lead Name: <b>{lead.name}</b></p>
-                        <p>Lead Email: <b>{lead.emailAddress}</b></p>
-                        <p>Message Status: <b>{lead.status}</b></p>
-                        <p>Posted Date: <b>{moment(lead.createdAt).format('MMMM Do YYYY, h:mm:ss a')}</b></p>
-                        <p>Message Details: <b>{lead.details}</b></p>
-                    </Modal> 
 
                     {/* Dashboard Billing Modal Window */}
                     <Modal
@@ -872,7 +821,6 @@ function mapStateToProps(state) {
     return {
         user : JSON.parse(sessionStorage.getItem('user')),
         items: [...state.items.items],
-        leads: [],
         billingForm: state.common.billingForm,
         isValidBillingForm: state.common.isValidBillingForm,
         categories: [...state.common.categories],

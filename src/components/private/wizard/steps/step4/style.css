@@ -1,3 +1,7 @@
 .step2-content {
     margin-top: 40px; 
 }
+
+.picture .ant-form-item-label {
+    width: 120px !important;
+}
