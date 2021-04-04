@@ -3,7 +3,7 @@ import { Translate } from "react-localize-redux";
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withLocalize } from "react-localize-redux";
-import {userActions, commonActions} from '../../store/action'
+import { userActions, commonActions } from '../../store/action'
 import { history } from '../../helpers';
 import '../style/Base.css'
 import './index.css'
@@ -16,17 +16,17 @@ import { AES } from "crypto-js";
 import { commonConstants } from '../../constants';
 
 class LoginPage extends React.Component {
-    
+
     constructor(props, context) {
-        super(props, context);        
+        super(props, context);
         this.props.initialize({
             languages: [
-                {name : "English", code: "en"},
-                {name : "French", code: "fr"}
+                { name: "English", code: "en" },
+                { name: "French", code: "fr" }
             ],
             translation: globalTranslations,
             options: { renderToStaticMarkup },
-        });        
+        });
 
         this.state = {
             email: '',
@@ -35,19 +35,19 @@ class LoginPage extends React.Component {
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChange = this.handleChange.bind(this);        
-    }  
+        this.handleChange = this.handleChange.bind(this);
+    }
 
     componentDidMount() {
         this.props.resetLogin();
     }
 
-    componentWillReceiveProps(nextProps){
-        if(nextProps.isLoggedInRes) {            
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.isLoggedInRes) {
             history.push('/dashboard');
         }
-    }    
-    
+    }
+
     handleChange(event) {
         this.setState({ [event.target.name]: event.target.value });
     }
@@ -71,13 +71,13 @@ class LoginPage extends React.Component {
 
         return (
             <React.Fragment>
-                <SimpleHeader/>
-                <div className="container center" style={{marginTop: 25}}>
+                <SimpleHeader />
+                <div className="container center" style={{ marginTop: 25 }}>
                     <div className="row vertical justify-content-center align-items-center new-retreate">
                         <div className="col-4">
                             <div className="card">
                                 <div className="card-body">
-                                    <Translate>{({ translate }) =><h2>{translate("header.login")}</h2>}</Translate>
+                                    <Translate>{({ translate }) => <h2>{translate("header.login")}</h2>}</Translate>
                                     <form name="form" onSubmit={this.handleSubmit}>
                                         <div className={'form-group' + (submitted && !email ? ' has-error' : '')}>
                                             <label htmlFor="email">Email</label>
@@ -95,25 +95,25 @@ class LoginPage extends React.Component {
                                             }
                                         </div>
 
-                                        <div className="form-group">                                                                                    
+                                        <div className="form-group">
                                             <Row>
                                                 <Col span={6}>
                                                     <Translate>
                                                         {({ translate }) =>
-                                                            <Button className="d-inline" onClick={() => this.props.history.push(`/home`)} style={{marginRight:20}}>{translate('public.links.cancel')}</Button>}
+                                                            <Button className="d-inline" onClick={() => this.props.history.push(`/home`)} style={{ marginRight: 20 }}>{translate('public.links.cancel')}</Button>}
                                                     </Translate>
                                                 </Col>
 
                                                 <Col span={6}>
                                                     <Translate>{({ translate }) =>
                                                         <Button htmlType="submit">{translate("button.login")}</Button>}
-                                                    </Translate>                                        
+                                                    </Translate>
                                                 </Col>
 
-                                                { isLoading 
-                                                    &&                                                    
+                                                {isLoading
+                                                    &&
                                                     <Col span={4}>
-                                                        <img src={loader} style={{width:60, marginTop:-15, marginLeft: -20}}/>
+                                                        <img src={loader} style={{ width: 60, marginTop: -15, marginLeft: -20 }} />
                                                     </Col>
                                                 }
                                             </Row>
@@ -123,13 +123,13 @@ class LoginPage extends React.Component {
                                             <Translate>
                                                 {({ translate }) =>
                                                     <Link to="/register" className="btn btn-link d-inline">{translate('public.links.signup')}</Link>}
-                                            </Translate>                         
+                                            </Translate>
                                             <Translate>
                                                 {({ translate }) =>
                                                     <Link to="/forgot" className="btn btn-link d-inline">{translate('public.links.forgot')}</Link>}
-                                            </Translate>                         
+                                            </Translate>
                                         </div>
-                                        <div className="form-group">                                            
+                                        <div className="form-group" style={{ clear: 'both' }}>
                                             <span className="error">{error}</span>
                                         </div>
                                     </form>
@@ -143,16 +143,16 @@ class LoginPage extends React.Component {
     }
 }
 
-const mapDispatchToProps = {    
+const mapDispatchToProps = {
     ...userActions,
     ...commonActions,
-}; 
+};
 
 function mapStateToProps(state) {
     return {
-      error: state.users.error,
-      isLoggedInRes: state.users.isLoggedIn,
-      isLoading: state.common.isLoading
+        error: state.users.error,
+        isLoggedInRes: state.users.isLoggedIn,
+        isLoading: state.common.isLoading
     };
 }
 

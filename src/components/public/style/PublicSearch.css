@@ -1,6 +1,5 @@
 .slider-section {
-    /*background-image: url(/images/pages/yoga.jpg);*/
-    background-image: url(https://retreat-app.s3.us-east-2.amazonaws.com/home/home.jpg);
+    background-image: var(--background-home-image);
     background-position: 0 60%;
     background-size: cover;
     height: 500px;

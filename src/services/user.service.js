@@ -56,7 +56,7 @@ function isUserEmailAlreadyRegistered(email){
 }
 
 function userSubscribe(data) {
-    return axios.post(`/api/user/subscribe`, {email:data.email, name: data.name, catIds:data.catIds}, {});
+    return axios.post(`/api/common/subscribe`, {email:data.email, name: data.name, catIds:data.catIds}, {});
 }
 
 function validateAuthKey(authKey) {

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { Translate } from "react-localize-redux";
 import { Link } from 'react-router-dom';
 import './index.css';
+import { commonConstants } from '../../../../constants';
 
 const loggedInHeader = (handleLogoutClick) => (
     <React.Fragment>
@@ -48,8 +49,8 @@ const publicHeader = () => (
 
 const SearchHeader = ({title, handleNameChange, isLoggedIn, handleLogoutClick, selectedName, shouldShowSearchInput}) => (
  <Row>
-    <Col span={5} style={{paddingTop: '15px'}}>
-        <h3>{title}</h3>
+    <Col className="header" span={5} style={{paddingTop: '15px'}}>
+        <h3 className="white"><Link to={commonConstants.HOME_PAGE_LINK}><img src={'/images/rymlogo-main.png'}/></Link></h3>
     </Col>
 
     <Col span={6}>

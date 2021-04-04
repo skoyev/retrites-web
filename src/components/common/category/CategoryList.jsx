@@ -34,10 +34,11 @@ const CategoryList = ({items, className, numItemsPerRow, title, description, typ
                                     {item.name && item.name.includes(".") ? 
                                         <Translate>
                                             {({ translate }) =>                                                
-                                                 <Button className="link-text" type="link">{translate(item.name)}</Button>}
+                                                 <span className="btn btn-link d-inline fancy-text">{translate(item.name)}</span>
+                                                 }
                                         </Translate> 
                                         :
-                                        <Link to="/" className="btn btn-link d-inline fancy-text">{item.name}</Link>
+                                        <span className="btn btn-link d-inline fancy-text">{item.name}</span>
                                     }                                   
                                 </div>
                             </div>            

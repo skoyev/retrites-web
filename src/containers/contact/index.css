@@ -43,7 +43,7 @@
 }
 
 .section1 {
-    background-image: url(https://retreat-app.s3.us-east-2.amazonaws.com/contact/contactus.jpg);
+    background-image: var(--background-contactus-image);
     background-position: 0 60%;
     background-size: cover;
     height: 500px;

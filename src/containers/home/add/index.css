@@ -29,7 +29,7 @@
 }
 
 .container {
-    margin: auto;
+    /* margin: auto; */
 }
 
 @media (min-width: 1200px){
@@ -43,7 +43,7 @@
 }
 
 .section1 {
-    background-image: url(https://retreat-app.s3.us-east-2.amazonaws.com/add/meditation1.jpg);
+    background-image: var(--background-add-meditation1-image);
     background-position: 0 60%;
     background-size: cover;
     height: 500px;
@@ -159,7 +159,7 @@
 }
 
 .section2 {
-    background-image: url(https://retreat-app.s3.us-east-2.amazonaws.com/add/wellness-retreat.jpg);
+    background-image: var(--background-add-wellness-retreat-image);
     background-position: 0 60%;
     background-size: cover;
     height: 500px;    

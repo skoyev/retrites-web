@@ -400,7 +400,7 @@ class HomePage extends React.Component {
                                   description={retreatByCountriesDescription}/>
                 </div>
 
-                <AppFooter title="@2020 Retreat In Mind Inc." 
+                <AppFooter title="@2021 Retreat Your Mind Inc." 
                            countries={countries}/>
 
                 {/* User Subscription */}

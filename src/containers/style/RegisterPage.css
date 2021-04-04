@@ -9,3 +9,7 @@
 #type {
   width: 100%;
 }
+
+form .form-group label {
+  float: left;
+}

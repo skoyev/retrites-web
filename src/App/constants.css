@@ -1,0 +1,33 @@
+:root {    
+    --env: 'dev';
+    --base-url: 'https://retreat-app.s3.us-east-2.amazonaws.com';
+
+    --home-image: 'home/home.jpg';
+    --home-wellness-image: 'home/wellness.jpg';
+
+    --contact-contactus-image: 'contact/contactus.jpg';
+
+    --add-meditation1-image: 'add/meditation1.jpg';
+    --add-wellness-retreat-image: 'add/wellness-retreat.jpg';
+    --add-retreat-1-image: 'add/1.svg';
+    --add-retreat-2-image: 'add/2.svg';
+    --add-retreat-3-image: 'add/3.svg';
+    --add-retreat-4-image: 'add/4.svg';
+    --add-retreat-5-image: 'add/5.svg';
+    --add-matched-image: 'add/matched.svg';
+    --add-risk-free-image: 'add/risk-free.svg';
+
+    --background-home-image: '';
+    --background-wellness-image: '';
+    --background-contactus-image: '';
+    --background-add-meditation1-image: '';
+    --background-add-wellness-retreat-image: '';
+
+    --add-retreat-1: '';
+    --add-retreat-2: '';
+    --add-retreat-3: '';
+    --add-retreat-4: '';
+    --add-retreat-5: '';
+    --add-matched: '';
+    --add-risk-free: '';
+  }

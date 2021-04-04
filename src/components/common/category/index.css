@@ -9,3 +9,8 @@
 .category:hover {
     cursor: pointer;
 }
+
+.fancy-text:hover {
+    text-decoration: none;
+    color: #f5f4ee;
+}
