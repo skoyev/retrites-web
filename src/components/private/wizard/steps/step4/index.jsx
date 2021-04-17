@@ -5,25 +5,26 @@ import { UploadOutlined } from '@ant-design/icons';
 import { withLocalize } from "react-localize-redux";
 import { Translate } from "react-localize-redux";
 import { connect } from 'react-redux';
-import {commonActions} from '../../../../../store/action';
+import { commonActions } from '../../../../../store/action';
 import './style.css';
+import globalTranslations from "../../../../../translations/global.json";
 
 const formItemLayout = {
     labelCol: {
-      xs: { span: 28 },
-      sm: { span: 12 },
+        xs: { span: 28 },
+        sm: { span: 12 },
     },
     wrapperCol: {
-      xs: { span: 28 },
-      sm: { span: 18 },
+        xs: { span: 28 },
+        sm: { span: 18 },
     },
 };
 
 const menu = (data, handleMenuClick, name) => {
     return (
         <Menu onClick={handleMenuClick}>
-            {data.map((d, index) => <Menu.Item data={data} name={name} key={index} id={d.id}>{d.name}</Menu.Item>)}            
-        </Menu>  
+            {data.map((d, index) => <Menu.Item data={data} name={name} key={index} id={d.id}>{d.name}</Menu.Item>)}
+        </Menu>
     )
 }
 
@@ -31,8 +32,8 @@ const { TextArea } = Input;
 
 class Step4Item extends React.Component {
 
-    constructor(props, context){
-        super(props); 
+    constructor(props, context) {
+        super(props);
         this.state = {
             index: 0,
             fileList: [],
@@ -42,36 +43,37 @@ class Step4Item extends React.Component {
     }
 
     componentDidMount() {
-        this.props.onRef(this);  
-        this.props.fetchFacilitatorTypes();   
-        const {selectedItem} = this.props;
+        this.props.onRef(this);
+        this.props.fetchFacilitatorTypes();
+        const { selectedItem } = this.props;
         this.setState({
-                facilitators: selectedItem && selectedItem.facilitators ? selectedItem.facilitators : []}, 
+            facilitators: selectedItem && selectedItem.facilitators ? selectedItem.facilitators : []
+        },
             () => {
-                const {index} = this.state;
-                const {facilitators} = this.props.selectedItem;        
+                const { index } = this.state;
+                const { facilitators } = this.props.selectedItem;
                 this.checkIsStepValid(facilitators[index])
             });
     }
 
     cancel = () => {
-        this.props.form.setFieldsValue({itemName: ''})
+        this.props.form.setFieldsValue({ itemName: '' })
     }
 
-    handleItemChange = e => {   
-        let name  = '';
+    handleItemChange = e => {
+        let name = '';
         let value = '';
 
-        if(e.target){ 
-            name  = e.target.name;     
-            value = e.target.value;     
-        } else if(e.item) {
-            name  = e.item.props.name;     
-            value = e.item.props.data[e.key];     
-        } 
+        if (e.target) {
+            name = e.target.name;
+            value = e.target.value;
+        } else if (e.item) {
+            name = e.item.props.name;
+            value = e.item.props.data[e.key];
+        }
 
-        const {index} = this.state;
-        const {facilitators} = this.props.selectedItem;
+        const { index } = this.state;
+        const { facilitators } = this.props.selectedItem;
 
         facilitators[index][name] = value;
 
@@ -84,18 +86,18 @@ class Step4Item extends React.Component {
         const { getFieldsError, isFieldTouched, getFieldDecorator } = this.props.form;
 
         // check facilitator name error validation
-        let hasNameErrors = !( facilitator.name && facilitator.name.length > 4 );
+        let hasNameErrors = !(facilitator.name && facilitator.name.length > 4);
 
         // check description error validation
-        let hasDescriptionErrors = !( facilitator.description && facilitator.description.length >= 10 );
+        let hasDescriptionErrors = !(facilitator.description && facilitator.description.length >= 10);
 
         // check type error validation
-        let hasTypeErrors = !( facilitator.type );
+        let hasTypeErrors = !(facilitator.type);
 
-        this.props.setIsNextStepValid(!hasNameErrors && 
-                                        !hasDescriptionErrors && 
-                                            !hasTypeErrors &&
-                                                ((this.state.fileList && this.state.fileList.length > 0) || facilitator.picture));            
+        this.props.setIsNextStepValid(!hasNameErrors &&
+            !hasDescriptionErrors &&
+            !hasTypeErrors &&
+            ((this.state.fileList && this.state.fileList.length > 0) || facilitator.picture));
     }
 
     /*
@@ -120,7 +122,7 @@ class Step4Item extends React.Component {
 
         this.props.setSelectedItemField('facilitators', facilitators);
     } 
-    */   
+    */
 
     render() {
         const { getFieldDecorator, getFieldsError, isFieldTouched } = this.props.form;
@@ -129,136 +131,145 @@ class Step4Item extends React.Component {
 
         const props = {
             onRemove: file => {
-              const {index} = this.state;
-              const {facilitators} = this.props.selectedItem;
-              facilitators[index]['picture'] = undefined;
+                const { index } = this.state;
+                const { facilitators } = this.props.selectedItem;
+                facilitators[index]['picture'] = undefined;
 
-              this.setState(state => {
-                const index = state.fileList.indexOf(file);
-                const newFileList = state.fileList.slice();
-                newFileList.splice(index, 1);
-                return {
-                  fileList: newFileList
-                };
-              }, () => this.checkIsStepValid(facilitators[index]));
+                this.setState(state => {
+                    const index = state.fileList.indexOf(file);
+                    const newFileList = state.fileList.slice();
+                    newFileList.splice(index, 1);
+                    return {
+                        fileList: newFileList
+                    };
+                }, () => this.checkIsStepValid(facilitators[index]));
             },
             beforeUpload: file => {
-                const {index} = this.state;
-                const {facilitators} = this.props.selectedItem;
+                const { index } = this.state;
+                const { facilitators } = this.props.selectedItem;
                 const isValidType = file.type.includes("png") || file.type.includes("jpeg") || file.type.includes("gif")
 
-                if(isValidType) {
-                    facilitators[index]['picture'] = file;        
+                if (isValidType) {
+                    facilitators[index]['picture'] = file;
                     this.props.setSelectedItemField('facilitators', facilitators);
                     this.setState(state => ({
-                        fileList: [...state.fileList, file]
+                        //fileList: [...state.fileList, file], // multiple files
+                        fileList: [...new Array(file)], // just 1 file
                     }), () => this.checkIsStepValid(facilitators[index]));
                 }
 
                 return false;
             },
             fileList,
-        };      
-        
+        };
+
         const pic = selectedItem.facilitators[index].picture;
 
         return (
             <React.Fragment>
-                <Row className="step2-content">
-                    <Col span={12}>
-                        <Form {...formItemLayout}>
-                            <Form.Item label="Name">           
-                                {getFieldDecorator('name', {
+                <Row className="step4-content">
+                    <Row className="description">
+                        <Col span={12}>
+                            <Translate>{({ translate }) => <span className="font-description">{translate("wizard.step4")}</span>}</Translate>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span={12}>
+                            <Form {...formItemLayout}>
+                                <Form.Item label="Name">
+                                    {getFieldDecorator('name', {
                                         initialValue: selectedItem.facilitators && selectedItem.facilitators.length > 0 ? selectedItem.facilitators[index].name : '',
                                         rules: [
-                                        {
-                                            required: true,
-                                            message: 'Please input fascilitator name!',
-                                        },
-                                        { min: 4, message: 'Name must be minimum 4 characters.' }
+                                            {
+                                                required: true,
+                                                message: 'Please input fascilitator name!',
+                                            },
+                                            { min: 4, message: 'Name must be minimum 4 characters.' }
                                         ],
                                     })
-                                (<Input name="name" onChange={this.handleItemChange}/>)}
-                            </Form.Item>
-                            
-                            <Form.Item label="Type">           
+                                        (<Input name="name" onChange={this.handleItemChange} />)}
+                                </Form.Item>
+
+                                <Form.Item label="Type">
                                     {getFieldDecorator('type', {
-                                            rules: [
+                                        rules: [
                                             {
                                                 required: true
                                             }
-                                            ],
-                                        })
-                                (<Dropdown.Button className="itemCountry-btn" 
-                                                name="type" 
-                                                overlay={menu(types, this.handleItemChange, 'type')}>
-                                    {selectedItem && selectedItem.facilitators 
-                                                  && selectedItem.facilitators.length > 0 
-                                                  && selectedItem.facilitators[index].type ? 
-                                        selectedItem.facilitators[index].type.name : 'Select Type'}
-                                </Dropdown.Button>)}
-                            </Form.Item>
-
-                            <Form.Item label="Picture">
-                                <Row>
-                                    <Col span={12}>
-                                        <Upload {...props}>
-                                            <Button>
-                                                <UploadOutlined /> Select File (jpeg, gif, png)
-                                            </Button>
-                                        </Upload>
-                                    </Col>
-                                </Row>
-                            </Form.Item>
-
-                        </Form>
-                    </Col>
-
-                    <Col span={12}>
-                        <Form {...formItemLayout}>
-                            <Form.Item label="Description" className="description">           
-                                {getFieldDecorator('description', {
-                                        initialValue: selectedItem && selectedItem.facilitators && selectedItem.facilitators.length > 0 ? selectedItem.facilitators[index].description : '',
-                                        rules: [
-                                        {
-                                            required: true,
-                                            message: 'Please Description!',
-                                        },
-                                        { min: 10, message: 'Description must be minimum 10 characters.' }
                                         ],
                                     })
-                                (<TextArea rows={5} name="description" onChange={this.handleItemChange} />)}
-                            </Form.Item>
+                                        (<Dropdown.Button className="itemCountry-btn"
+                                            name="type"
+                                            overlay={menu(types, this.handleItemChange, 'type')}>
+                                            {selectedItem && selectedItem.facilitators
+                                                && selectedItem.facilitators.length > 0
+                                                && selectedItem.facilitators[index].type ?
+                                                selectedItem.facilitators[index].type.name : 'Select Type'}
+                                        </Dropdown.Button>)}
+                                </Form.Item>
 
-                            {
-                                selectedItem && 
-                                selectedItem.facilitators && 
-                                selectedItem.facilitators[index] &&
-                                selectedItem.facilitators[index].picture &&
-                                <Form.Item label="Selected Picture" className="picture">
+                                <Form.Item label="Picture">
                                     <Row>
                                         <Col span={12}>
-                                            <img src={pic instanceof File ? window.URL.createObjectURL(pic) : pic} style={{width:'60%'}}/>                                                
-                                        </Col>                                        
+                                            <Upload {...props}>
+                                                <Button>
+                                                    <UploadOutlined /> Select File (jpeg, gif, png)
+                                                </Button>
+                                            </Upload>
+                                        </Col>
                                     </Row>
                                 </Form.Item>
-                            }
-                        </Form>
-                    </Col>
+
+                            </Form>
+                        </Col>
+
+                        <Col span={12}>
+                            <Form {...formItemLayout}>
+                                <Form.Item label="Description" className="description">
+                                    {getFieldDecorator('description', {
+                                        initialValue: selectedItem && selectedItem.facilitators && selectedItem.facilitators.length > 0 ? selectedItem.facilitators[index].description : '',
+                                        rules: [
+                                            {
+                                                required: true,
+                                                message: 'Please Description!',
+                                            },
+                                            { min: 10, message: 'Description must be minimum 10 characters.' }
+                                        ],
+                                    })
+                                        (<TextArea rows={5} name="description" onChange={this.handleItemChange} />)}
+                                </Form.Item>
+
+                                {
+                                    selectedItem &&
+                                    selectedItem.facilitators &&
+                                    selectedItem.facilitators[index] &&
+                                    selectedItem.facilitators[index].picture &&
+                                    <Form.Item label="Selected Picture" className="picture">
+                                        <Row>
+                                            <Col span={12}>
+                                                <img className="upload-image" src={pic instanceof File ? window.URL.createObjectURL(pic) : pic} />
+                                            </Col>
+                                        </Row>
+                                    </Form.Item>
+                                }
+                            </Form>
+                        </Col>
+                    </Row>
                 </Row>
             </React.Fragment>
         )
     }
 }
 
-const mapDispatchToProps = {  
-    ...commonActions     
-}; 
+const mapDispatchToProps = {
+    ...commonActions
+};
 
 function mapStateToProps(state) {
     return {
         selectedItem: state.common.selectedItem,
-        types: [...state.common.fascilitatorTypes]
+        types: [...state.common.fascilitatorTypes],
+        translation: globalTranslations
     };
 }
 

@@ -3,7 +3,7 @@ import PrivateHeader from '../../components/private/PrivateHeader';
 import { Row, Layout, Icon, Modal, Drawer, Steps, Col, notification } from 'antd';
 import '../style/DashboardPage.css';
 import DashboardMenu from '../../components/private/DashboardMenu';
-import {Aminity, Dashboard, Message, MessageDetails, Users, AdminAminity} from '../../components/private';
+import { Aminity, Dashboard, Message, MessageDetails, Users, AdminAminity } from '../../components/private';
 import Report from '../../components/private/report';
 import AmenityWizard from '../../components/private/wizard';
 import Step1Item from '../../components/private/wizard/steps/step1';
@@ -17,8 +17,8 @@ import IdleTimer from 'react-idle-timer';
 import { Button, Form, Input } from 'antd';
 import { connect } from 'react-redux';
 import { withLocalize } from "react-localize-redux";
-import {itemActions, reportActions, userActions, commonActions, messageActions} from '../../store/action'
-import {pageConstants, commonConstants} from '../../constants';
+import { itemActions, reportActions, userActions, commonActions, messageActions } from '../../store/action'
+import { pageConstants, commonConstants } from '../../constants';
 import './index.css'
 import moment from 'moment';
 import { history, getUserRoleMenuLinks } from '../../helpers';
@@ -32,7 +32,7 @@ import { Translate } from "react-localize-redux";
 
 const { Header, Content, Sider, Footer } = Layout;
 
-const UserSettings = props => {    
+const UserSettings = props => {
     return (
         <React.Fragment>
             <div><Button type="link" onClick={props.handleHome}>Home</Button></div>
@@ -40,34 +40,34 @@ const UserSettings = props => {
                 props.user && props.user.roleId == 2 // OWNER
                 &&
                 <div><Button type="link" onClick={props.handleBilling}>Billing</Button></div>
-            }            
+            }
             <div><Button type="link" onClick={props.handleLogout}>Logout</Button></div>
         </React.Fragment>
     )
 }
 
 export const BILLING_CONTENT_NAME = {
-    BILLING:         'BILLING',
+    BILLING: 'BILLING',
     PAYMENT_SUCCESS: 'PAYMENT_SUCCESS',
-    PAYMENT_FAILED:  'PAYMENT_FAILED'
+    PAYMENT_FAILED: 'PAYMENT_FAILED'
 };
 
 class DashboardPage extends React.Component {
 
-    constructor(props, context){
-        super(props); 
+    constructor(props, context) {
+        super(props);
 
         this.props.initialize({
             languages: [
-                {name : "English", code: "en"},
-                {name : "French", code: "fr"}
+                { name: "English", code: "en" },
+                { name: "French", code: "fr" }
             ],
             translation: globalTranslations,
             options: { renderToStaticMarkup },
-        });        
-        
+        });
+
         //this.step1ItemRef = React.createRef();
-        
+
         this.state = {
             billingShouldShowProduct: true,
             deleteGrpMsgCfrmModalVisible: false,
@@ -99,193 +99,195 @@ class DashboardPage extends React.Component {
                 {
                     title: 'Details',
                     content: React.createElement(
-                                Form.create({ name: 'step1Item' })( Step1Item ), 
-                                {
-                                    onRef:ref => (this.step1Item = ref)
-                                })
+                        Form.create({ name: 'step1Item' })(Step1Item),
+                        {
+                            onRef: ref => (this.step1Item = ref)
+                        })
                 },
                 {
                     title: 'Location',
                     content: React.createElement(
-                        Form.create({ name: 'step2Item' })( Step2Item ), 
+                        Form.create({ name: 'step2Item' })(Step2Item),
                         {
-                            onRef:ref => (this.step2Item = ref)
+                            onRef: ref => (this.step2Item = ref)
                         }),
                 },
                 {
                     title: 'Documents',
                     content: React.createElement(
-                        Form.create({ name: 'step3Item' })( Step3Item ), 
+                        Form.create({ name: 'step3Item' })(Step3Item),
                         {
-                            onRef:ref => (this.step3Item = ref)
+                            onRef: ref => (this.step3Item = ref)
                         })
                 },
                 {
                     title: 'Facilitators',
                     content: React.createElement(
-                        Form.create({ name: 'step4Item' })( Step4Item ), 
+                        Form.create({ name: 'step4Item' })(Step4Item),
                         {
-                            onRef:ref => (this.step4Item = ref)
+                            onRef: ref => (this.step4Item = ref)
                         })
                 },
                 {
                     title: 'Events',
                     content: React.createElement(
-                        Form.create({ name: 'step5Item' })( Step5Item ), 
+                        Form.create({ name: 'step5Item' })(Step5Item),
                         {
-                            onRef:ref => (this.step5Item = ref)
+                            onRef: ref => (this.step5Item = ref)
                         })
                 },
                 {
                     title: 'Accomodation',
                     content: React.createElement(
-                        Form.create({ name: 'step6Item' })( Step6Item ), 
+                        Form.create({ name: 'step6Item' })(Step6Item),
                         {
-                            onRef:ref => (this.step6Item = ref)
+                            onRef: ref => (this.step6Item = ref)
                         })
                 },
                 {
                     title: 'Photo',
                     content: React.createElement(
-                        Form.create({ name: 'step7Item' })( Step7Item ), 
+                        Form.create({ name: 'step7Item' })(Step7Item),
                         {
-                            onRef:ref => (this.step7Item = ref)
+                            onRef: ref => (this.step7Item = ref)
                         })
                 }
             ],
 
             createEditItem: {},
             selectedContentName: 'dashboard',
-            
+
             menuContentCmps: [
                 //{name:'view-amentities', component: Aminity, params: {items: items, handleAminityDetails: this.handleAminityDetails, shouldUpdateChild:this.shouldUpdateChild, ref:this.child}},
-                {name:pageConstants.MESSAGE_CONTENT}, 
-                {name:pageConstants.AMENITY_CONTENT}, 
-                {name:pageConstants.ADMIN_AMENITY_CONTENT}, 
-                {name:pageConstants.STATISTIC_CONTENT},
-                {name:pageConstants.DASHBOARD_CONTENT},
-                {name:pageConstants.USER_CONTENT}
-            ]    
+                { name: pageConstants.MESSAGE_CONTENT },
+                { name: pageConstants.AMENITY_CONTENT },
+                { name: pageConstants.ADMIN_AMENITY_CONTENT },
+                { name: pageConstants.STATISTIC_CONTENT },
+                { name: pageConstants.DASHBOARD_CONTENT },
+                { name: pageConstants.USER_CONTENT }
+            ]
         }
         this.handleClickMenu = this.handleClickMenu.bind(this);
         this.handleAminityDetails = this.handleAminityDetails.bind(this);
-        this.handleItemChange = this.handleItemChange.bind(this);        
-        this.handleItemDeleteModalOk = this.handleItemDeleteModalOk.bind(this);        
-        this.handleItemDeleteModalCancel = this.handleItemDeleteModalCancel.bind(this);        
+        this.handleItemChange = this.handleItemChange.bind(this);
+        this.handleItemDeleteModalOk = this.handleItemDeleteModalOk.bind(this);
+        this.handleItemDeleteModalCancel = this.handleItemDeleteModalCancel.bind(this);
 
-        this.handleAminityDelete = this.handleAminityDelete.bind(this);        
+        this.handleAminityDelete = this.handleAminityDelete.bind(this);
 
-        this.handleLeadDelete = this.handleLeadDelete.bind(this);        
-        this.handleLeadEdit = this.handleLeadEdit.bind(this);        
-        this.handleCreateItemNext = this.handleCreateItemNext.bind(this);        
-        this.handleCreateItemDone = this.handleCreateItemDone.bind(this);        
-        this.handleCreateItemCancel = this.handleCreateItemCancel.bind(this); 
-        
+        this.handleLeadDelete = this.handleLeadDelete.bind(this);
+        this.handleLeadEdit = this.handleLeadEdit.bind(this);
+        this.handleCreateItemNext = this.handleCreateItemNext.bind(this);
+        this.handleCreateItemDone = this.handleCreateItemDone.bind(this);
+        this.handleCreateItemCancel = this.handleCreateItemCancel.bind(this);
+
         this.idleTimer = null
         this.handleOnAction = this.handleOnAction.bind(this)
         this.handleOnActive = this.handleOnActive.bind(this)
-        this.handleOnIdle   = this.handleOnIdle.bind(this)
-    } 
+        this.handleOnIdle = this.handleOnIdle.bind(this)
+    }
 
-    handleOnAction (event) {
+    handleOnAction(event) {
         //console.log('user did something', event)
     }
-     
-    handleOnActive (event) {
+
+    handleOnActive(event) {
         console.log('user is active', event)
         console.log('time remaining', this.idleTimer.getRemainingTime())
     }
-    
-    handleOnIdle (event) {
+
+    handleOnIdle(event) {
         //console.log('user is idle', event)
         //console.log('last active', this.idleTimer.getLastActiveTime())
 
         // show warning and log user out.
-        this.showNotification();        
-    }    
+        this.showNotification();
+    }
 
     handleCreateItemChange = (e) => {
-        this.setState({[e.target.name]:e.target.value})
+        this.setState({ [e.target.name]: e.target.value })
     }
-    
+
     loadData() {
         const { user } = this.props;
         const { selectedContentName, messageId } = this.state;
 
-        if(!user){
+        if (!user) {
             console.warn('User is null...')
             return;
         }
-        
-        switch(selectedContentName){
+
+        switch (selectedContentName) {
             case pageConstants.MESSAGE_DETAILS_CONTENT:
                 // load user mesages        
                 //this.props.fetchUserAmenities(user.id);   
                 break;
             case pageConstants.AMENITY_CONTENT:
                 // load all user amentities        
-                this.props.fetchUserAmenities(user.id);   
+                this.props.fetchUserAmenities(user.id);
                 break;
             case pageConstants.ADMIN_AMENITY_CONTENT:
                 break;
             case pageConstants.STATISTIC_CONTENT:
-                 // load dashboard total report summary
+                // load dashboard total report summary
                 //this.props.fetchReportSummary(user.id);
                 break;
             case pageConstants.DASHBOARD_CONTENT:
                 //this.props.fetchSummary(user.id)
                 break;
 
-        }   
+        }
     }
 
     componentDidUpdate(prevProps) {
         // step validator
-        if (this.props.isNextStepValid !== prevProps.isNextStepValid){ 
-            this.setState({isValidNext : this.props.isNextStepValid})
+        if (this.props.isNextStepValid !== prevProps.isNextStepValid) {
+            this.setState({ isValidNext: this.props.isNextStepValid })
         }
     }
-    
+
     componentDidMount() {
         const [first] = getUserRoleMenuLinks();
 
-        this.setState({selectedContentName:first.index});
+        this.setState({ selectedContentName: first.index });
 
         this.props.isLoggedIn()
-            .then((res) => res ? this.loadInitData() : history.push('/home'), error => history.push('/home'));        
-    }   
-    
-    loadInitData = () => {
-        const {user} = this.props;
+            .then((res) => res ? this.loadInitData() : history.push('/home'), error => history.push('/home'));
+    }
 
-        if(!user){
+    loadInitData = () => {
+        const { user } = this.props;
+
+        if (!user) {
             console.warn('User is null...')
             return;
         }
 
         // load summary data for the dashboard (amenities, reports)
         //this.props.fetchSummary(user.id);
-        this.props.loadRemoteStripe();    
+        this.props.loadRemoteStripe();
         // check url params: billing pop-up
         const urlParams = new URLSearchParams(this.props.location.search)
-        const billing  = urlParams.get('billing');        
-        const checkout = urlParams.get('checkout');        
-        if(billing && checkout){
-            this.setState({isBillingModalVisible : billing, 
-                           isBillingCheckout: true,
-                           isValidBillingForm: true,
-                           billingContentName : checkout == 'true' ? 
-                                    BILLING_CONTENT_NAME.PAYMENT_SUCCESS : 
-                                    BILLING_CONTENT_NAME.PAYMENT_FAILED});
+        const billing = urlParams.get('billing');
+        const checkout = urlParams.get('checkout');
+        if (billing && checkout) {
+            this.setState({
+                isBillingModalVisible: billing,
+                isBillingCheckout: true,
+                isValidBillingForm: true,
+                billingContentName: checkout == 'true' ?
+                    BILLING_CONTENT_NAME.PAYMENT_SUCCESS :
+                    BILLING_CONTENT_NAME.PAYMENT_FAILED
+            });
         }
     }
 
     handleAminityDetails = (item) => {
         this.setState({ createEditItemModalVisible: true })
-        
-        if(item.id) {
+
+        if (item.id) {
             // fetch by id aminity
-            this.props.fetchByID(item.id).then(({data:{item:item}}) => this.props.addIntoStoreSelectedItem(item));
+            this.props.fetchByID(item.id).then(({ data: { item: item } }) => this.props.addIntoStoreSelectedItem(item));
         } else {
             this.props.addIntoStoreSelectedItem(item);
         }
@@ -297,7 +299,7 @@ class DashboardPage extends React.Component {
             lead: lead
         });
     }
-    
+
     handleLeadDelete = (lead) => {
         this.setState({
             deleteLeadModalVisible: true,
@@ -306,21 +308,21 @@ class DashboardPage extends React.Component {
     }
 
     handleLeadDeleteOk = () => {
-        this.setState({deleteLeadModalVisible: false});
+        this.setState({ deleteLeadModalVisible: false });
     }
 
     onCollapse = collapsed => {
         this.setState({ collapsed });
     };
-    
+
     handleClickMenu = (e) => {
         let foundCmd = this.state.menuContentCmps.find(
             c => (e.length > 1 && c.name.trim() === e.trim())
         );
-            
-        if(foundCmd) {  
+
+        if (foundCmd) {
             //let cmp = React.createElement(foundCmd.component, foundCmd.params);
-            this.setState({selectedContentName: foundCmd.name}, () => this.loadData());
+            this.setState({ selectedContentName: foundCmd.name }, () => this.loadData());
             //this.setState({content: foundCmd.component});            
         } else {
             console.log('Error - component does not registered');
@@ -330,23 +332,23 @@ class DashboardPage extends React.Component {
     showNotification = () => {
         const args = {
             message: 'Idle Timeout',
-            description:`You have been away. We will log you out for your security!`,
+            description: `You have been away. We will log you out for your security!`,
             duration: 5,
-            onClose: () => {this.props.logout()}
+            onClose: () => { this.props.logout() }
         };
         notification.open(args);
-    };    
+    };
 
     handleItemChange = (event) => {
-        let {createEditItem} = this.state;
+        let { createEditItem } = this.state;
         createEditItem[event.target.name] = event.target.value;
-        this.setState({createEditItem:createEditItem})
+        this.setState({ createEditItem: createEditItem })
     }
 
     handleViewMessage = (val) => {
         this.setState({
-            selectedContentName: pageConstants.MESSAGE_DETAILS_CONTENT, 
-            messageId: val.id, 
+            selectedContentName: pageConstants.MESSAGE_DETAILS_CONTENT,
+            messageId: val.id,
             pageNum: val.pageNum,
             messageRecipient: val.recipient,
             itemID: val.itemID
@@ -354,76 +356,76 @@ class DashboardPage extends React.Component {
     }
 
     handleDeleteMessage = (msgGrpId, recipientName) => {
-        this.setState({deleteGrpMsgCfrmModalVisible : true, msgGrpId: msgGrpId, msgGrpRecipientName:recipientName});
+        this.setState({ deleteGrpMsgCfrmModalVisible: true, msgGrpId: msgGrpId, msgGrpRecipientName: recipientName });
     }
 
     backToMessageFromDetails = () => {
-        this.setState({selectedContentName: pageConstants.MESSAGE_CONTENT})
+        this.setState({ selectedContentName: pageConstants.MESSAGE_CONTENT })
     }
 
-    renderSwitchPage(){
+    renderSwitchPage() {
         const { selectedContentName, messageId, pageNum, messageRecipient, itemID } = this.state;
-        const {items} = this.props; 
+        const { items } = this.props;
 
-        switch(selectedContentName){
+        switch (selectedContentName) {
             case pageConstants.USER_CONTENT:
                 return ([
-                    <Users key="users"/>
+                    <Users key="users" />
                 ]);
             case pageConstants.MESSAGE_DETAILS_CONTENT:
                 return ([
-                    <MessageDetails 
-                             recipient={messageRecipient}
-                             messageGroupId={messageId}
-                             itemID={itemID}
-                             backToMessageFromDetails={this.backToMessageFromDetails}
-                             key="message-details"/>
+                    <MessageDetails
+                        recipient={messageRecipient}
+                        messageGroupId={messageId}
+                        itemID={itemID}
+                        backToMessageFromDetails={this.backToMessageFromDetails}
+                        key="message-details" />
                 ]);
             case pageConstants.MESSAGE_CONTENT:
                 return ([
-                    <Message ref={this.child} 
-                             handleViewMessage={this.handleViewMessage}
-                             handleDeleteMessage={this.handleDeleteMessage}
-                             messagePageNum={pageNum}
-                             key="message"/>
+                    <Message ref={this.child}
+                        handleViewMessage={this.handleViewMessage}
+                        handleDeleteMessage={this.handleDeleteMessage}
+                        messagePageNum={pageNum}
+                        key="message" />
                 ]);
             case pageConstants.AMENITY_CONTENT:
                 return ([
-                    <Aminity items={items} 
-                             key="aminity"
-                             numItemsPerRow={4}
-                             handleAminityDetails={this.handleAminityDetails} 
-                             handleAminityDelete={this.handleAminityDelete} 
-                             ref={this.child}/>
+                    <Aminity items={items}
+                        key="aminity"
+                        numItemsPerRow={4}
+                        handleAminityDetails={this.handleAminityDetails}
+                        handleAminityDelete={this.handleAminityDelete}
+                        ref={this.child} />
                 ]);
             case pageConstants.ADMIN_AMENITY_CONTENT:
                 return ([
                     <AdminAminity key="admin-aminity"
-                                  ref={this.child}/>
+                        ref={this.child} />
                 ]);
             case pageConstants.STATISTIC_CONTENT:
                 return ([
-                    <Report key="report"/>
+                    <Report key="report" />
                 ]);
             case pageConstants.DASHBOARD_CONTENT:
                 return ([
-                    <Dashboard key="dashboard"/>
+                    <Dashboard key="dashboard" />
                 ]);
             default:
                 return ([
-                    <Dashboard key="dashboard-default"/>
+                    <Dashboard key="dashboard-default" />
                 ]);
         }
     }
 
     handleAminityDelete(item) {
         this.setState({
-            createEditItem:item,
+            createEditItem: item,
             deleteItemModalVisible: true,
         });
     }
 
-    handleItemDeleteModalCancel() {  
+    handleItemDeleteModalCancel() {
         this.setState({
             deleteItemModalVisible: false,
         });
@@ -436,7 +438,7 @@ class DashboardPage extends React.Component {
 
         const { createEditItem } = this.state;
 
-        if(createEditItem){
+        if (createEditItem) {
             this.props.deleteItem(createEditItem.id)
                 .then(() => this.props.fetchUserAmenities(this.props.user.id))
         } else {
@@ -453,47 +455,47 @@ class DashboardPage extends React.Component {
     handleLeadViewModalCancel = () => {
         this.setState({
             viewLeadModalVisible: false,
-        });        
+        });
     }
 
     handleBillingModalOk = async () => {
-        let {billingProductId} = this.state;
+        let { billingProductId } = this.state;
 
-        if(billingProductId && billingProductId.length > 0){
-            const response  = await commonService.createCheckoutSession(1, billingProductId);
-            const { error } = this.props.stripe.redirectToCheckout({  sessionId: response.data.data });
+        if (billingProductId && billingProductId.length > 0) {
+            const response = await commonService.createCheckoutSession(1, billingProductId);
+            const { error } = this.props.stripe.redirectToCheckout({ sessionId: response.data.data });
             if (error) {
                 console.warn(error);
-            }    
-        }        
+            }
+        }
     }
 
-    handleBillingModalCancel = () => {        
+    handleBillingModalCancel = () => {
         this.setState({ isBillingModalVisible: false });
     }
 
     handleLeadDeleteModalOk = () => {
         this.setState({
             deleteLeadModalVisible: false,
-        });      
-        
+        });
+
         const { lead } = this.state;
 
-        if(lead){
-            this.props.deleteLead(lead.id)                
+        if (lead) {
+            this.props.deleteLead(lead.id)
         } else {
             console.log('Selected lead is null');
-        }        
+        }
     }
 
     handleLeadDeleteModalCancel = () => {
         this.setState({
             deleteLeadModalVisible: false,
-        });        
+        });
     }
 
     handleRightMenuOpenClose = () => {
-        this.setState(prevState => ({isRightMenuVisible: !prevState.isRightMenuVisible}))
+        this.setState(prevState => ({ isRightMenuVisible: !prevState.isRightMenuVisible }))
     }
 
     handleLogout = (e) => {
@@ -505,7 +507,7 @@ class DashboardPage extends React.Component {
     handleBilling = async (e) => {
         this.handleRightMenuOpenClose();
         // create session and redirect to payment screen
-        this.setState(prevState => ({isBillingModalVisible: !prevState.isBillingModalVisible}));        
+        this.setState(prevState => ({ isBillingModalVisible: !prevState.isBillingModalVisible }));
     }
 
     handleHome = (e) => {
@@ -515,21 +517,23 @@ class DashboardPage extends React.Component {
     handleCreateItemNext = () => {
         this.setState((prevState, props) => ({
             createItemWizardStep: prevState.createItemWizardStep + 1
-        }));   
-        
+        }));
+
         // save into store temp data
     }
 
     handleCreateItemPrevious = () => {
         this.setState((prevState, props) => ({
             createItemWizardStep: prevState.createItemWizardStep - 1
-        }));        
+        }));
     }
 
     handleCreateItemCancel = () => {
-        this.setState({createEditItemModalVisible: false, 
-                       createItemWizardStep: 0, 
-                       isValidNext: false})
+        this.setState({
+            createEditItemModalVisible: false,
+            createItemWizardStep: 0,
+            isValidNext: false
+        })
         // clear all steps in store
         this.props.addIntoStoreSelectedItem({});
 
@@ -566,18 +570,18 @@ class DashboardPage extends React.Component {
     }
 
     handleCreateItemDone = () => {
-        const {user, selectedItem, isSelectedItemChanged} = this.props;
+        const { user, selectedItem, isSelectedItemChanged } = this.props;
 
-        this.setState({createEditItemModalVisible: false, createItemWizardStep: 0})
+        this.setState({ createEditItemModalVisible: false, createItemWizardStep: 0 })
 
-        if( !selectedItem.name || !selectedItem.description || !selectedItem.title){
+        if (!selectedItem.name || !selectedItem.description || !selectedItem.title) {
             console.warn('Create a new Item error...');
-            this.setState({createItemError: 'Validation error'})
+            this.setState({ createItemError: 'Validation error' })
             return;
         }
 
         // check if item update - fileds not changed - don't trigger back end call.
-        if(selectedItem && selectedItem.id && !isSelectedItemChanged){
+        if (selectedItem && selectedItem.id && !isSelectedItemChanged) {
             return;
         }
 
@@ -609,7 +613,7 @@ class DashboardPage extends React.Component {
         itemFormData.append('countryId', selectedItem.country.id);
         itemFormData.append('document', JSON.stringify(selectedItem.document));
         itemFormData.append('docPicture', selectedItem.document.picture);
-        if(selectedItem.facilitators && selectedItem.facilitators.length > 0){
+        if (selectedItem.facilitators && selectedItem.facilitators.length > 0) {
             itemFormData.append('fascilitatorPicture', selectedItem.facilitators[0].picture);
         }
         itemFormData.append('facilitators', JSON.stringify(selectedItem.facilitators));
@@ -622,7 +626,7 @@ class DashboardPage extends React.Component {
         itemFormData.append('address', selectedItem.address);
         itemFormData.append('metaData', '{}');
 
-        if(selectedItem.id && selectedItem.id > 0){
+        if (selectedItem.id && selectedItem.id > 0) {
             this.props.updateItem(itemFormData);
         } else {
             this.props.createItem(itemFormData, user.id);
@@ -631,17 +635,17 @@ class DashboardPage extends React.Component {
         // clear all steps in store
         this.props.addIntoStoreSelectedItem({});
 
-        this.setState({isValidNext: false})
+        this.setState({ isValidNext: false })
     }
 
     getBillingContent = (name) => {
-        let res = <BillingProduct {...this.props} setBillingProduct={this.setBillingProduct}/>
-        switch(name) {
+        let res = <BillingProduct {...this.props} setBillingProduct={this.setBillingProduct} />
+        switch (name) {
             case BILLING_CONTENT_NAME.PAYMENT_SUCCESS:
-                res = <BillingProductSuccess {...this.props}/>
+                res = <BillingProductSuccess {...this.props} />
                 break;
             case BILLING_CONTENT_NAME.PAYMENT_FAILED:
-                res = <BillingProductFailed {...this.props}/>
+                res = <BillingProductFailed {...this.props} />
                 break;
         }
 
@@ -649,36 +653,36 @@ class DashboardPage extends React.Component {
     }
 
     setBillingProduct = (billingProductSysId) => {
-        this.setState({billingProductId: billingProductSysId});
+        this.setState({ billingProductId: billingProductSysId });
     }
 
     handleDeleteGrpMsgCfrmModalVisiblelOk = () => {
-        let {msgGrpId} = this.state;        
-        if(msgGrpId && msgGrpId > 0)
+        let { msgGrpId } = this.state;
+        if (msgGrpId && msgGrpId > 0)
             this.props.deleteMessageGroup(msgGrpId)
-                      .then(_ => { 
-                          this.props.fetchMessageGroups();
-                          this.setState({deleteGrpMsgCfrmModalVisible : false, msgGrpRecipientName: '', msgGrpId: 0});
-                        }, error => {
-                            console.error('handleDeleteGrpMsgCfrmModalVisiblelOk !!!');
-                        });        
+                .then(_ => {
+                    this.props.fetchMessageGroups();
+                    this.setState({ deleteGrpMsgCfrmModalVisible: false, msgGrpRecipientName: '', msgGrpId: 0 });
+                }, error => {
+                    console.error('handleDeleteGrpMsgCfrmModalVisiblelOk !!!');
+                });
     }
 
     handleDeleteGrpMsgCfrmModalVisiblelCancel = () => {
-        this.setState({deleteGrpMsgCfrmModalVisible : false});
+        this.setState({ deleteGrpMsgCfrmModalVisible: false });
     }
 
     render() {
-        const { createEditItem, lead, createItemWizardStep, 
-                createItemSteps: createItemTotalSteps, 
-                isValidNext, billingShouldShowProduct, 
-                billingContentName, isBillingCheckout,
-                msgGrpRecipientName } = this.state;
+        const { createEditItem, lead, createItemWizardStep,
+            createItemSteps: createItemTotalSteps,
+            isValidNext, billingShouldShowProduct,
+            billingContentName, isBillingCheckout,
+            msgGrpRecipientName } = this.state;
         //const { TextArea } = Input;        
-        const {selectedItem, user, isValidBillingForm} = this.props;
+        const { selectedItem, user, isValidBillingForm } = this.props;
 
         let billingContent = '';
-        if(billingShouldShowProduct) {
+        if (billingShouldShowProduct) {
             billingContent = this.getBillingContent(billingContentName);
         }
 
@@ -691,24 +695,24 @@ class DashboardPage extends React.Component {
                     onActive={this.handleOnActive}
                     onIdle={this.handleOnIdle}
                     onAction={this.handleOnAction}
-                    debounce={250}/>
+                    debounce={250} />
 
-                <Layout style={{height:'100%', overflowY: 'hidden'}}>
-                    <Sider style={{marginRight: 5}}>
-                        <DashboardMenu handleClickMenu = {this.handleClickMenu} user={user}/>
+                <Layout style={{ height: '100%', overflowY: 'hidden' }}>
+                    <Sider style={{ marginRight: 5 }}>
+                        <DashboardMenu handleClickMenu={this.handleClickMenu} user={user} />
                     </Sider>
 
                     <Layout>
-                        <Header style={{backgroundColor:'#c5c4c4', marginBottom:10}}>
-                            <PrivateHeader handleMenu={this.handleRightMenuOpenClose} user={this.props.user}/>
+                        <Header style={{ backgroundColor: '#c5c4c4', marginBottom: 10 }}>
+                            <PrivateHeader handleMenu={this.handleRightMenuOpenClose} user={this.props.user} />
                         </Header>
 
-                        <Content className="ant-layout-content-override" style={{overflowY:'scroll'}}>
+                        <Content className="ant-layout-content-override" style={{ overflowY: 'scroll' }}>
                             {user && this.renderSwitchPage()}
                         </Content>
 
-                        <Footer style={{backgroundColor:'#c5c4c4', marginTop:10}}>
-                            Retriete Copyrights 2020.
+                        <Footer style={{ backgroundColor: '#c5c4c4', marginTop: 10 }}>
+                            Retreat Your Mind Copyrights 2021.
                         </Footer>
                     </Layout>
 
@@ -719,107 +723,107 @@ class DashboardPage extends React.Component {
                             width={1150}
                             onCancel={this.handleCreateItemCancel}
                             footer={[
-                                    <Button key="cancel" onClick={this.handleCreateItemCancel}>Cancel</Button>,
-                                    <Button style={createItemWizardStep == 0 ? {display:'none'} : {}} key="back" onClick={this.handleCreateItemPrevious}>Previous</Button>,
-                                    <Button disabled={!isValidNext} style={createItemWizardStep == (createItemTotalSteps.length - 1) ? {display:'none'} : {}} key="next" type="primary" onClick={this.handleCreateItemNext}>Next</Button>,
-                                    <Button style={createItemWizardStep == (createItemTotalSteps.length - 1) ? {} : {display:'none'}} disabled={!isValidNext} key="done" type="primary" onClick={this.handleCreateItemDone}>Done</Button>
-                                ]}> 
-                                <AmenityWizard step={createItemWizardStep} 
-                                            steps={createItemTotalSteps}/>
+                                <Button key="cancel" onClick={this.handleCreateItemCancel}>Cancel</Button>,
+                                <Button style={createItemWizardStep == 0 ? { display: 'none' } : {}} key="back" onClick={this.handleCreateItemPrevious}>Previous</Button>,
+                                <Button disabled={!isValidNext} style={createItemWizardStep == (createItemTotalSteps.length - 1) ? { display: 'none' } : {}} key="next" type="primary" onClick={this.handleCreateItemNext}>Next</Button>,
+                                <Button style={createItemWizardStep == (createItemTotalSteps.length - 1) ? {} : { display: 'none' }} disabled={!isValidNext} key="done" type="primary" onClick={this.handleCreateItemDone}>Done</Button>
+                            ]}>
+                            <AmenityWizard step={createItemWizardStep}
+                                steps={createItemTotalSteps} />
                         </Modal>
                     }
 
                     {/* Dashboard Delete Aminity Modal Window */}
                     <Modal
-                            title="Delete Retreat"
-                            visible={this.state.deleteItemModalVisible}
-                            onOk={this.handleItemDeleteModalOk}
-                            onCancel={this.handleItemDeleteModalCancel}>                    
+                        title="Delete Retreat"
+                        visible={this.state.deleteItemModalVisible}
+                        onOk={this.handleItemDeleteModalOk}
+                        onCancel={this.handleItemDeleteModalCancel}>
                         <p>Would you like to delete {createEditItem.name}</p>
-                    </Modal>   
+                    </Modal>
 
                     {/* Dashboard Delete Group Message Modal Window */}
                     <Modal
-                            title="Delete Lead"
-                            visible={this.state.deleteGrpMsgCfrmModalVisible}
-                            onOk={this.handleDeleteGrpMsgCfrmModalVisiblelOk}
-                            onCancel={this.handleDeleteGrpMsgCfrmModalVisiblelCancel}>                    
-                            <Translate>
-                                {({ translate }) =>
-                                    <p>{`${translate('messages.delete-message-group')} for recipient - ${msgGrpRecipientName} ?`}</p>}
-                            </Translate>
-                    </Modal>   
+                        title="Delete Lead"
+                        visible={this.state.deleteGrpMsgCfrmModalVisible}
+                        onOk={this.handleDeleteGrpMsgCfrmModalVisiblelOk}
+                        onCancel={this.handleDeleteGrpMsgCfrmModalVisiblelCancel}>
+                        <Translate>
+                            {({ translate }) =>
+                                <p>{`${translate('messages.delete-message-group')} for recipient - ${msgGrpRecipientName} ?`}</p>}
+                        </Translate>
+                    </Modal>
 
                     {/*  Confirm Delete Message Group */}
                     <Modal
-                            title="Confirm Delete Message Group"
-                            key="deleteMessageGroup"
-                            visible={this.state.viewDeleteMessageGroup}
-                            footer={[
-                                <Row>
-                                    <Col span={4}>
-                                        <Button key="cancel-button" onClick={this.handleLeadViewModalCancel} htmlType="button">OK</Button>
-                                    </Col>                                
-                                    <Col span={4}>
-                                        <Button key="cancel-button" onClick={this.handleLeadViewModalCancel} htmlType="button">OK</Button>
-                                    </Col>
-                                </Row>
-                            ]}>                    
+                        title="Confirm Delete Message Group"
+                        key="deleteMessageGroup"
+                        visible={this.state.viewDeleteMessageGroup}
+                        footer={[
+                            <Row>
+                                <Col span={4}>
+                                    <Button key="cancel-button" onClick={this.handleLeadViewModalCancel} htmlType="button">OK</Button>
+                                </Col>
+                                <Col span={4}>
+                                    <Button key="cancel-button" onClick={this.handleLeadViewModalCancel} htmlType="button">OK</Button>
+                                </Col>
+                            </Row>
+                        ]}>
                         <p>W</p>
                     </Modal>
 
                     {/* Dashboard Billing Modal Window */}
                     <Modal
-                            title={'Retreat Billing'}
-                            visible={this.state.isBillingModalVisible}
-                            footer={[
-                                <Row>
-                                    {
-                                        !isBillingCheckout &&
-                                        <Col span={4}>                                    
-                                            <Button key="cancel-button" onClick={this.handleBillingModalCancel} htmlType="button">
-                                                Cancel
-                                            </Button>
-                                        </Col>
-                                    }
+                        title={'Retreat Billing'}
+                        visible={this.state.isBillingModalVisible}
+                        footer={[
+                            <Row>
+                                {
+                                    !isBillingCheckout &&
                                     <Col span={4}>
-                                        <Button disabled={isValidBillingForm} key="cancel-button" onClick={isBillingCheckout ? this.handleBillingModalCancel : this.handleBillingModalOk} htmlType="button">
-                                            {isBillingCheckout ? 'Close' : 'Buy'}
-                                        </Button>
+                                        <Button key="cancel-button" onClick={this.handleBillingModalCancel} htmlType="button">
+                                            Cancel
+                                            </Button>
                                     </Col>
-                                </Row>
-                            ]}>
+                                }
+                                <Col span={4}>
+                                    <Button disabled={isValidBillingForm} key="cancel-button" onClick={isBillingCheckout ? this.handleBillingModalCancel : this.handleBillingModalOk} htmlType="button">
+                                        {isBillingCheckout ? 'Close' : 'Buy'}
+                                    </Button>
+                                </Col>
+                            </Row>
+                        ]}>
                         {billingContent}
-                    </Modal>   
+                    </Modal>
 
                     <Drawer title="User Settings"
-                            placement="right"
-                            closable={true}
-                            className="user-setting"
-                            onClose={this.handleRightMenuOpenClose}
-                            visible={this.state.isRightMenuVisible}>
+                        placement="right"
+                        closable={true}
+                        className="user-setting"
+                        onClose={this.handleRightMenuOpenClose}
+                        visible={this.state.isRightMenuVisible}>
                         <UserSettings handleHome={this.handleHome}
-                                    {...this.props}
-                                    handleBilling={this.handleBilling}
-                                    handleLogout={this.handleLogout}/>
-                    </Drawer>  
+                            {...this.props}
+                            handleBilling={this.handleBilling}
+                            handleLogout={this.handleLogout} />
+                    </Drawer>
                 </Layout>
             </>
         )
     }
 }
 
-const mapDispatchToProps = {    
+const mapDispatchToProps = {
     ...itemActions,
     ...reportActions,
     ...userActions,
     ...commonActions,
     ...messageActions
-}; 
+};
 
 function mapStateToProps(state) {
     return {
-        user : JSON.parse(sessionStorage.getItem('user')),
+        user: JSON.parse(sessionStorage.getItem('user')),
         items: [...state.items.items],
         billingForm: state.common.billingForm,
         isValidBillingForm: state.common.isValidBillingForm,
@@ -828,7 +832,7 @@ function mapStateToProps(state) {
         selectedItem: state.common.selectedItem,
         isSelectedItemChanged: state.common.isSelectedItemChanged,
         isNextStepValid: state.common.isNextStepValid,
-        isValidToken : state.users.isLoggedIn,
+        isValidToken: state.users.isLoggedIn,
         stripe: state.common.stripe
     };
 }

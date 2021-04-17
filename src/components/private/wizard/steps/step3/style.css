@@ -1,7 +1,27 @@
-.step2-content {
-    margin-top: 40px; 
+.step3-content {
+    margin-top: 20px; 
 }
 
 .upload-text .ant-form-item-label {
     width: 150px !important;
+}
+.description {
+    margin-bottom: 10px;
+}
+
+.font-description {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+}
+
+.ant-upload-list-item-card-actions {
+    opacity: 1;
+}
+
+.ant-upload-list-item-info:hover {
+    background-color: white;
+}
+
+.upload-image {
+    border-radius: 5px;
+    width: 60%;
 }

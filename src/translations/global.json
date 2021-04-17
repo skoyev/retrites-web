@@ -1,104 +1,352 @@
 {
-    "messages": {
-      "delete-message-group": ["Would you like to delete message group", "Le Parc jurassique"]
-    }, 
-
-    "user": {
-      "agreement": ["<b>User Must Be Agreed With The Below Conditions:</b><br/>1. This Agreement does not create or imply any relationship in agency or partnership between the Vendor and the Licensee.<br/>2. ....",        
-                    "Agreement FR"]
+  "messages": {
+    "delete-message-group": [
+      "Would you like to delete message group",
+      "Le Parc jurassique"
+    ]
+  },
+  "user": {
+    "agreement": [
+      "<b>User Must Be Agreed With The Below Conditions:</b><br/>1. This Agreement does not create or imply any relationship in agency or partnership between the Vendor and the Licensee.<br/>2. ....",
+      "Agreement FR"
+    ]
+  },
+  "header": {
+    "newretrite": [
+      "Add New Retreate",
+      "Add New Retreate Fr"
+    ],
+    "login": [
+      "Login",
+      "Login Fr"
+    ],
+    "newuser": [
+      "Register New User",
+      "Register New User Fr"
+    ],
+    "forgot": [
+      "Forgot Password",
+      "Forgot Password Fr"
+    ],
+    "forgot-confirm": [
+      "Forgot Password Confirm",
+      "Forgot Password Confirm Fr"
+    ]
+  },
+  "wizard": {
+    "step1": [
+      "Event Details:",
+      "Event Details:"
+    ],
+    "step2": [
+      "Event Location Details:",
+      "Event Location Details:"
+    ],
+    "step3": [
+      "Event Documents:",
+      "Event Documents:"
+    ],
+    "step4": [
+      "Event Facilitator Details:",
+      "Event Facilitator Details:"
+    ],
+    "step5": [
+      "Add Course Schedule Details For The Selected Periods",
+      "Add Course Schedule Details For The SelectedPeriods"
+    ],
+    "step6": [
+      "Provide Accomodation Details",
+      "Provide Accomodation Details"
+    ],
+    "step7": [
+      "Your Retreat Photo",
+      "Your Retreat Photo"
+    ]
+  },
+  "label": {
+    "is_online_event": [
+      "Is is Online Event ?",
+      "Is is Online Event ? Fr"
+    ],
+    "back": [
+      "Back",
+      "Back Fr"
+    ],
+    "name": [
+      "Name",
+      "Name Fr"
+    ],
+    "status": [
+      "Status",
+      "Status Fr"
+    ],
+    "details": [
+      "Details",
+      "Details Fr"
+    ],
+    "description": [
+      "Description",
+      "Description Fr"
+    ],
+    "price": [
+      "Price",
+      "price Fr"
+    ],
+    "currency": [
+      "Currency",
+      "currency Fr"
+    ],
+    "picture": [
+      "Picture",
+      "picture Fr"
+    ],
+    "location": [
+      "Location",
+      "location Fr"
+    ],
+    "yoga": [
+      "Yoga",
+      "Yoga Fr"
+    ],
+    "plantmedicine": [
+      "Plant Medicine",
+      ""
+    ],
+    "meditation": [
+      "Meditation",
+      ""
+    ],
+    "nutrition": [
+      "Health, Healing & Nutrition",
+      ""
+    ],
+    "artscreativitymovement": [
+      "Art, Creativity & Movement",
+      ""
+    ],
+    "adventure": [
+      "Adventure & Outdoor",
+      ""
+    ],
+    "bali": [
+      "Bali",
+      ""
+    ],
+    "india": [
+      "India",
+      ""
+    ],
+    "mexica": [
+      "Mexica",
+      ""
+    ],
+    "canada": [
+      "Canada",
+      ""
+    ],
+    "costa rica": [
+      "Costa Rica",
+      ""
+    ],
+    "peru": [
+      "Peru",
+      ""
+    ],
+    "california": [
+      "California",
+      ""
+    ],
+    "usa": [
+      "USA",
+      ""
+    ],
+    "spain": [
+      "Spain",
+      ""
+    ],
+    "tibet": [
+      "Tibet",
+      ""
+    ],
+    "goback": [
+      "Back",
+      ""
+    ],
+    "massage": [
+      "Healing Massage Therapy",
+      ""
+    ],
+    "cleansing": [
+      "Body Cleansing Program",
+      ""
+    ],
+    "type": [
+      "Type",
+      "Type Fr"
+    ],
+    "leadname": [
+      "Lead Name",
+      "Lead Name Fr"
+    ]
+  },
+  "button": {
+    "submit": [
+      "Submit",
+      "Submit Fr"
+    ],
+    "create": [
+      "Create",
+      "Create Fr"
+    ],
+    "cancel": [
+      "Cancel",
+      "Cancel Fr"
+    ],
+    "login": [
+      "Login",
+      "Login Fr"
+    ],
+    "search": [
+      "Search",
+      "Search Fr"
+    ],
+    "go-back": [
+      "Back",
+      "Back Fr"
+    ],
+    "item": [
+      "Item",
+      "Item Fr"
+    ],
+    "more": [
+      "Load More",
+      "Load More Fr"
+    ]
+  },
+  "dashboard": {
+    "total": [
+      "Total",
+      "Total Fr"
+    ],
+    "totalVisits": [
+      "Total Visits",
+      "Total Fr"
+    ],
+    "totalRequests": [
+      "Total Requests",
+      "Total Fr"
+    ],
+    "lastRequestedDate": [
+      "Last Requested Date",
+      "Total Fr"
+    ],
+    "name": [
+      "Name",
+      "Name Fr"
+    ],
+    "date": [
+      "Date",
+      "Date Fr"
+    ],
+    "price": [
+      "Price",
+      "Price Fr"
+    ],
+    "last_created": [
+      "Last Created Amenity",
+      "last_created_date fr"
+    ],
+    "last_requested_date": [
+      "Last Requested Date",
+      "last_requested_date fr"
+    ],
+    "total_visits": [
+      "Total Visits",
+      "total_visits fr"
+    ],
+    "last_visit_date": [
+      "Last Visit Date",
+      "last_visit_date fr"
+    ]
+  },
+  "public": {
+    "menu": {
+      "retrite": [
+        "Retreate",
+        "Retreate Fr"
+      ],
+      "flights": [
+        "Flights",
+        "Flights Fr"
+      ],
+      "hotels": [
+        "Hotels",
+        "Hotels Fr"
+      ],
+      "cars": [
+        "Cars",
+        "Cars Fr"
+      ],
+      "cruises": [
+        "Cruises",
+        "Cruises Fr"
+      ],
+      "groups": [
+        "Groups",
+        "Groups Fr"
+      ],
+      "deals": [
+        "Deals",
+        "Deals Fr"
+      ]
     },
-    
-    "header": {
-      "newretrite": ["Add New Retreate","Add New Retreate Fr"],
-      "login": ["Login", "Login Fr"],
-      "newuser": ["Register New User", "Register New User Fr"],
-      "forgot": ["Forgot Password", "Forgot Password Fr"],
-      "forgot-confirm": ["Forgot Password Confirm", "Forgot Password Confirm Fr"]
+    "slider": {
+      "slider1": [
+        "Host Retreats? Find participants on Retreat Guru",
+        "Host Retreats? Find participants on Retreat Guru Fr"
+      ]
     },
-
-    "label": {
-      "is_online_event": ["Is is Online Event ?", "Is is Online Event ? Fr"],
-      "back": ["Back", "Back Fr"],
-      "name": ["Name", "Name Fr"],
-      "status": ["Status", "Status Fr"],
-      "details": ["Details", "Details Fr"],
-      "description": ["Description", "Description Fr"],
-      "price": ["Price", "price Fr"],
-      "currency": ["Currency", "currency Fr"],
-      "picture": ["Picture", "picture Fr"],
-      "location": ["Location", "location Fr"],
-      "yoga":["Yoga", "Yoga Fr"],
-      "plantmedicine":["Plant Medicine", ""],
-      "meditation":["Meditation", ""],
-      "nutrition":["Health, Healing & Nutrition", ""],
-      "artscreativitymovement":["Art, Creativity & Movement", ""],
-      "adventure":["Adventure & Outdoor", ""],
-      "bali":["Bali",""],
-      "india":["India",""],
-      "mexica":["Mexica",""],
-      "canada":["Canada",""],
-      "costa rica":["Costa Rica",""],
-      "peru":["Peru",""],
-      "california":["California",""],
-      "usa":["USA",""],
-      "spain":["Spain",""],
-      "tibet":["Tibet",""],
-      "goback":["Back",""],
-      "massage":["Healing Massage Therapy",""],
-      "cleansing":["Body Cleansing Program",""],
-      "type":["Type", "Type Fr"],
-      "leadname": ["Lead Name", "Lead Name Fr"]
-    },
-
-    "button": {
-      "submit": ["Submit","Submit Fr"],
-      "create": ["Create","Create Fr"],
-      "cancel": ["Cancel","Cancel Fr"],
-      "login": ["Login", "Login Fr"],
-      "search": ["Search", "Search Fr"],
-      "go-back": ["Back", "Back Fr"],
-      "item": ["Item", "Item Fr"],
-      "more": ["Load More", "Load More Fr"]
-    },
-
-    "dashboard": {
-      "total": ["Total", "Total Fr"],
-      "totalVisits": ["Total Visits", "Total Fr"],
-      "totalRequests": ["Total Requests", "Total Fr"],
-      "lastRequestedDate": ["Last Requested Date", "Total Fr"],
-      "name": ["Name", "Name Fr"],
-      "date": ["Date", "Date Fr"],
-      "price": ["Price", "Price Fr"],
-      "last_created": ["Last Created Amenity", "last_created_date fr"],
-      "last_requested_date": ["Last Requested Date", "last_requested_date fr"],
-      "total_visits": ["Total Visits", "total_visits fr"],
-      "last_visit_date": ["Last Visit Date", "last_visit_date fr"]
-    },
-  
-    "public": {
-      "menu": {
-        "retrite": ["Retreate", "Retreate Fr"],
-        "flights": ["Flights", "Flights Fr"],
-        "hotels": ["Hotels", "Hotels Fr"],
-        "cars": ["Cars", "Cars Fr"],
-        "cruises": ["Cruises", "Cruises Fr"],
-        "groups": ["Groups", "Groups Fr"],
-        "deals": ["Deals", "Deals Fr"]
-      },
-      "slider": {
-        "slider1": ["Host Retreats? Find participants on Retreat Guru", "Host Retreats? Find participants on Retreat Guru Fr"]
-      },
-      "links": {
-        "addretreate": ["Add Retreat", "ADD RETREATE FR"],
-        "signup": ["Sign Up","Sign Up Fr"],
-        "login": ["Login", "Login FR"],
-        "signout": ["Logout", "Logout FR"],
-        "dashboard": ["Dashboard", "Dashboard FR"],
-        "cancel": ["Cancel", "Cancel FR"],
-        "join": ["Join Our Retreat Community", "Join Our Community FR"],
-        "login_community": ["Login Into Retreat Community", "Login Into Retreat Community FR"],
-        "subscribe": ["Subscribe", "SUBSCRIBE FR"],
-        "forgot": ["Forgot Password", "Forgot Password FR"]
-      }
+    "links": {
+      "addretreate": [
+        "Add Retreat",
+        "ADD RETREATE FR"
+      ],
+      "signup": [
+        "Sign Up",
+        "Sign Up Fr"
+      ],
+      "login": [
+        "Login",
+        "Login FR"
+      ],
+      "signout": [
+        "Logout",
+        "Logout FR"
+      ],
+      "dashboard": [
+        "Dashboard",
+        "Dashboard FR"
+      ],
+      "cancel": [
+        "Cancel",
+        "Cancel FR"
+      ],
+      "join": [
+        "Join Our Retreat Community",
+        "Join Our Community FR"
+      ],
+      "login_community": [
+        "Login Into Retreat Community",
+        "Login Into Retreat Community FR"
+      ],
+      "subscribe": [
+        "Subscribe",
+        "SUBSCRIBE FR"
+      ],
+      "forgot": [
+        "Forgot Password",
+        "Forgot Password FR"
+      ]
     }
   }
+}

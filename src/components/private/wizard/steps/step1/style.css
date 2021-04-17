@@ -11,7 +11,7 @@
 }
 
 .step1-content {
-    margin-top: 40px; 
+    margin-top: 20px; 
 }
 
 #step1Item_itemCategory > *:first-child, 
@@ -21,4 +21,12 @@
 
 .error {
     color: red;
+}
+
+.description {
+    margin-bottom: 10px;
+}
+
+.font-description {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
 }

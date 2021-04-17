@@ -1,7 +1,20 @@
-.step2-content {
-    margin-top: 40px; 
+.step4-content {
+    margin-top: 20px; 
 }
 
 .picture .ant-form-item-label {
     width: 120px !important;
+}
+
+.description {
+    margin-bottom: 10px;
+}
+
+.font-description {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+}
+
+.upload-image {
+    border-radius: 5px;
+    width: 60%;
 }

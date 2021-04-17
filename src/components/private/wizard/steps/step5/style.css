@@ -1,5 +1,5 @@
-.step2-content {
-    margin-top: 40px; 
+.step5-content {
+    margin-top: 20px; 
 }
 
 .form {
@@ -14,6 +14,14 @@
 
 .full-width .ant-form-item-label{
     width: 25% !important;
+}
+
+.full-width-duration .ant-form-item-label{
+    width: 40% !important;
+}
+
+.full-width-duration .ant-form-item-control-wrapper{
+    width: 50px;
 }
 
 .close:hover {
@@ -36,3 +44,21 @@
 .duration .ant-form-item-control-wrapper {
     padding-left: 25px; 
 }
+
+.description {
+    margin-bottom: 10px;
+}
+
+.font-description {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+}
+
+.ant-input-number-disabled {
+    border-color: white;
+}
+
+.ant-input-number-input {
+    background-color: white;
+    color: black;
+}
+

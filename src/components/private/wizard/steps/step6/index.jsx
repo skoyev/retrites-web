@@ -4,25 +4,26 @@ import { withLocalize } from "react-localize-redux";
 import { Translate } from "react-localize-redux";
 import { connect } from 'react-redux';
 import { UploadOutlined } from '@ant-design/icons';
-import {commonActions} from '../../../../../store/action';
+import { commonActions } from '../../../../../store/action';
 import './style.css';
+import globalTranslations from "../../../../../translations/global.json";
 
 const formItemLayout = {
     labelCol: {
-      xs: { span: 28 },
-      sm: { span: 12 },
+        xs: { span: 28 },
+        sm: { span: 12 },
     },
     wrapperCol: {
-      xs: { span: 28 },
-      sm: { span: 18 },
+        xs: { span: 28 },
+        sm: { span: 18 },
     },
 };
 
 const { TextArea } = Input;
 class Step6Item extends React.Component {
 
-    constructor(props, context){
-        super(props); 
+    constructor(props, context) {
+        super(props);
         this.state = {
             fileList: [],
             uploading: false,
@@ -31,7 +32,7 @@ class Step6Item extends React.Component {
     }
 
     componentDidMount() {
-        this.props.onRef(this);  
+        this.props.onRef(this);
         this.checkIsStepValid(this.props.selectedItem.accomodation);
     }
 
@@ -39,31 +40,31 @@ class Step6Item extends React.Component {
         const { getFieldsError, isFieldTouched } = this.props.form;
 
         // check document details error validation
-        let hasdetailsErrors = !( accomodation && accomodation.details && accomodation.details.length >= 4 && getFieldsError().details === undefined );
+        let hasdetailsErrors = !(accomodation && accomodation.details && accomodation.details.length >= 4 && getFieldsError().details === undefined);
 
-        this.props.setIsNextStepValid( !hasdetailsErrors && 
-                                            (this.state.pictureSelected || accomodation.picture));            
+        this.props.setIsNextStepValid(!hasdetailsErrors &&
+            (this.state.pictureSelected || accomodation.picture));
     }
 
     cancel = () => {
-        this.props.form.setFieldsValue({startDate: ''})
-        this.props.form.setFieldsValue({duration: ''})
+        this.props.form.setFieldsValue({ startDate: '' })
+        this.props.form.setFieldsValue({ duration: '' })
     }
 
-    handleItemChange = e => {   
-        let name  = '';
+    handleItemChange = e => {
+        let name = '';
         let value = '';
 
-        if(e.target){ 
-            name  = e.target.name;     
-            value = e.target.value;     
-        } 
+        if (e.target) {
+            name = e.target.name;
+            value = e.target.value;
+        }
 
-        const {accomodation} = this.props.selectedItem;
+        const { accomodation } = this.props.selectedItem;
 
         accomodation[name] = value;
 
-        if(name.length > 0 && value){
+        if (name.length > 0 && value) {
             this.props.setSelectedItemField('accomodation', accomodation);
         }
 
@@ -77,80 +78,87 @@ class Step6Item extends React.Component {
 
         const props = {
             onRemove: file => {
-              const {accomodation} = this.props.selectedItem;
-              accomodation.picture = undefined;
-        
-              this.setState(state => {
-                const index = state.fileList.indexOf(file);
-                const newFileList = state.fileList.slice();
-                newFileList.splice(index, 1);
-                return {
-                  fileList: newFileList,
-                  pictureSelected: false
-                };
-              }, () => this.checkIsStepValid(this.props.selectedItem.accomodation));
+                const { accomodation } = this.props.selectedItem;
+                accomodation.picture = undefined;
+
+                this.setState(state => {
+                    const index = state.fileList.indexOf(file);
+                    const newFileList = state.fileList.slice();
+                    newFileList.splice(index, 1);
+                    return {
+                        fileList: newFileList,
+                        pictureSelected: false
+                    };
+                }, () => this.checkIsStepValid(this.props.selectedItem.accomodation));
             },
             beforeUpload: file => {
                 const isValidType = file.type.includes("png") || file.type.includes("jpeg") || file.type.includes("gif")
-                if(isValidType) {
-                    const {accomodation} = this.props.selectedItem;
+                if (isValidType) {
+                    const { accomodation } = this.props.selectedItem;
                     accomodation.picture = file;
-      
+
                     this.setState(state => ({
-                        fileList: [...state.fileList, file],
+                        fileList: [...new Array(file)], // just 1 file
+                        //fileList: [...state.fileList, file],
                         pictureSelected: true
                     }), () => this.checkIsStepValid(this.props.selectedItem.accomodation));
-                }    
-                
+                }
+
                 return false;
-                
+
             },
             fileList,
-        }; 
+        };
         const pic = selectedItem.accomodation.picture;
 
         return (
             <React.Fragment>
                 <Form {...formItemLayout}>
-                    <Row className="step2-content">
-                        <Col span={12}>                        
-                            <Form.Item label="Details" className="full-width">           
-                                {getFieldDecorator(`details`, {
+                    <Row className="step6-content">
+                        <Row className="description">
+                            <Col span={12}>
+                                <Translate>{({ translate }) => <span className="font-description">{translate("wizard.step6")}</span>}</Translate>
+                            </Col>
+                        </Row>
+
+                        <Row>
+                            <Col span={10}>
+                                <Form.Item label="Details" className="full-width">
+                                    {getFieldDecorator(`details`, {
                                         initialValue: selectedItem.accomodation && selectedItem.accomodation.details ? selectedItem.accomodation.details : '',
                                         rules: [
-                                        {
-                                            required: true,
-                                            message: 'Please details!',
-                                        },
-                                        { min: 10, message: 'details must be minimum 10 characters.' }
+                                            {
+                                                required: true,
+                                                message: 'Please details!',
+                                            },
+                                            { min: 10, message: 'details must be minimum 10 characters.' }
                                         ],
                                     })
-                                (<TextArea rows={5} name="details" onChange={(v) => this.handleItemChange({target:{name:'details', value:v.target.value}})} />)}
-                            </Form.Item>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={18}>  
-                            <Form.Item label="Picture" className="ant-form-item">
-                                { selectedItem.accomodation &&
-                                <Row>
-                                    <Col span={12}>
-                                        <img src={pic instanceof File ? window.URL.createObjectURL(pic) : pic} style={{width:'60%'}}/>
-                                    </Col>
-                                </Row>
-                                }
-                                <Row>
-                                    <Col span={12}>
+                                        (<TextArea rows={5} name="details" onChange={(v) => this.handleItemChange({ target: { name: 'details', value: v.target.value } })} />)}
+                                </Form.Item>
+                            </Col>
 
-                                        <Upload {...props}>
-                                            <Button>
-                                                <UploadOutlined /> <label>Select Picture File (jpeg, gif, png)</label>
-                                            </Button>
-                                        </Upload>
-                                    </Col>
-                                </Row>
-                            </Form.Item>                                            
-                        </Col>
+                            <Col span={12} offset={2}>
+                                <Form.Item label="Picture" className="ant-form-item">
+                                    {selectedItem.accomodation &&
+                                        <Row>
+                                            <Col span={14}>
+                                                <img className="upload-image" src={pic instanceof File ? window.URL.createObjectURL(pic) : pic} />
+                                            </Col>
+                                        </Row>
+                                    }
+                                    <Row>
+                                        <Col span={14}>
+                                            <Upload {...props}>
+                                                <Button>
+                                                    <UploadOutlined /> <label>Select Picture File (jpeg, gif, png)</label>
+                                                </Button>
+                                            </Upload>
+                                        </Col>
+                                    </Row>
+                                </Form.Item>
+                            </Col>
+                        </Row>
                     </Row>
                 </Form>
             </React.Fragment>
@@ -158,13 +166,14 @@ class Step6Item extends React.Component {
     }
 }
 
-const mapDispatchToProps = {  
-    ...commonActions     
-}; 
+const mapDispatchToProps = {
+    ...commonActions
+};
 
 function mapStateToProps(state) {
     return {
-        selectedItem: state.common.selectedItem
+        selectedItem: state.common.selectedItem,
+        translation: globalTranslations
     };
 }
 
