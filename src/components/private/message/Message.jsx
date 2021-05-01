@@ -45,6 +45,14 @@ const Message = props => {
       dataIndex: 'createdAt',
     },
     {
+      title: <Translate>{({ translate }) => <span>{translate("label.total_messages")}</span>}</Translate>,
+      render: record => (
+        <Row style={{ paddingLeft: 20 }}>
+          <span>{record.message_total_count}</span> / <span style={{ color: 'red' }}>{record.message_new_count}</span>
+        </Row>
+      )
+    },
+    {
       title: 'Action',
       key: 'action',
       render: (text, record) => (
@@ -60,11 +68,13 @@ const Message = props => {
     }
   ];
 
+  /*
   let onChangeDebounced = () => {
     props.fetchMessageGroups();
-  };
+  };*/
 
   useEffect(() => {
+    props.fetchMessageGroups();
     const interval = setInterval(() => props.fetchMessageGroups(), WAIT_INTERVAL);
     return () => clearInterval(interval)
   }, []);

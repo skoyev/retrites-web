@@ -106,7 +106,7 @@ const MessageDetails = props => {
         </Col>
       </Row>
       <Row>
-        <Col span={16}>
+        <Col span={17}>
           <Table
             columns={columns}
             key="message-details"
@@ -116,23 +116,28 @@ const MessageDetails = props => {
             pagination={{ defaultPageSize: 5, hideOnSinglePage: true, simple: true }}
             dataSource={props.messageDetails} />
         </Col>
-        <Col span={8}>
+        <Col span={7} style={{ padding: 6 }}>
           {item
             &&
             <>
+              <Row>
+                <Col span={24} style={{ textAlign: 'center' }}>
+                  <span><b>Amenity Details</b></span>
+                </Col>
+              </Row>
               <Row>
                 <Col span={24}>
                   <img src={item ? item.picture : ''} style={{ width: '90%' }} />
                 </Col>
               </Row>
               <Row>
-                <Col className="center">
-                  <h3>{item.name}</h3>
+                <Col className="left">
+                  <span><b>Name: </b>{`${item.name}`}</span>
                 </Col>
               </Row>
               <Row>
                 <Col className="left">
-                  <h4>{`Description: ${item.description}`}</h4>
+                  <span><b>Description: </b>{`${item.description}`}</span>
                 </Col>
               </Row>
             </>

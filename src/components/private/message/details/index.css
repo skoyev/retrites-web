@@ -8,8 +8,9 @@
     text-align: center !important;
 }
 
-.left {
-    text-align: left !important;
+.left h4 {
+    font-size: 16px;
+    text-align: left;
 }
 
 .wide {
