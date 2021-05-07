@@ -42,6 +42,12 @@ const MessageDetails = props => {
             <Col span={6} style={{ textAlign: 'left' }}>
               <b>Message: </b>{record.content}
             </Col>
+            <Col span={6} offset={12}>
+              {
+                record.status == 1 &&
+                <Translate>{({ translate }) => <Button onClick={() => props.markMessageReaded(record.id)}>{translate("label.mark_readed")}</Button>}</Translate>
+              }
+            </Col>
           </Row>
         </>
       )

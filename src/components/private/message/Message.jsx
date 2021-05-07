@@ -48,7 +48,7 @@ const Message = props => {
       title: <Translate>{({ translate }) => <span>{translate("label.total_messages")}</span>}</Translate>,
       render: record => (
         <Row style={{ paddingLeft: 20 }}>
-          <span>{record.message_total_count}</span> / <span style={{ color: 'red' }}>{record.message_new_count}</span>
+          <span>{record.message_total_count}</span> {record.message_new_count && '/' + <span style={{ color: 'red' }}>{record.message_new_count}</span>}
         </Row>
       )
     },

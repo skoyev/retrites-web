@@ -363,6 +363,11 @@ class DashboardPage extends React.Component {
         this.setState({ selectedContentName: pageConstants.MESSAGE_CONTENT })
     }
 
+    markMessageReaded = (msgID) => {
+        const statusId = 2; // set status Viewed 
+        this.props.markMessageReaded(msgID, statusId);
+    }
+
     renderSwitchPage() {
         const { selectedContentName, messageId, pageNum, messageRecipient, itemID } = this.state;
         const { items } = this.props;
@@ -378,6 +383,7 @@ class DashboardPage extends React.Component {
                         recipient={messageRecipient}
                         messageGroupId={messageId}
                         itemID={itemID}
+                        markMessageReaded={this.markMessageReaded}
                         backToMessageFromDetails={this.backToMessageFromDetails}
                         key="message-details" />
                 ]);

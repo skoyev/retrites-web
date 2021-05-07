@@ -64,6 +64,10 @@
     ]
   },
   "label": {
+    "mark_readed": [
+      "Mark Viewed",
+      "Mark Viewed"
+    ],
     "is_online_event": [
       "Is is Online Event ?",
       "Is is Online Event ? Fr"
