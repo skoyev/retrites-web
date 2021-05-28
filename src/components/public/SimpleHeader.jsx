@@ -8,6 +8,7 @@ import LanguageToggle from '../common/LanguageToggle';
 import './style/SimpleHeader.css'
 import { Translate } from "react-localize-redux";
 import { Button } from 'antd';
+import { commonConstants } from '../../constants';
 
 class SimpleHeader extends React.Component {
 
@@ -17,13 +18,13 @@ class SimpleHeader extends React.Component {
         this.state = {
             title: 'Retreat Your Mind'
         };
-    }    
+    }
 
 
     publicHeader = () => {
         return (
-        <React.Fragment>
-            {/*
+            <React.Fragment>
+                {/*
             <div className={"d-inline-block white"}>
                 <Translate>
                     {({ translate }) =>
@@ -42,31 +43,33 @@ class SimpleHeader extends React.Component {
                         <Link to="/register" className="btn btn-link d-inline">{translate('public.links.signup')}</Link>}
                 </Translate>
             </div> */}
-        </React.Fragment>
-    )}
+            </React.Fragment>
+        )
+    }
 
-    render() {        
+    render() {
         const { title, isLoggedInRes } = this.state;
         const content = isLoggedInRes ? this.loggedHeader() : this.publicHeader();
         return (
             <div className="row offset-10 top-header">
                 <div className="col-md-3 header">
-                    <h3 className="white"><Link to="/">{title}</Link></h3>
+                    {/*<h3 className="white"><Link to="/">{title}</Link></h3>*/}
+                    <Link to={commonConstants.HOME_PAGE_LINK}><img src={'/images/rymlogo-main.png'} /></Link>
                 </div>
 
-                <div className="col-md-9"> 
+                <div className="col-md-9">
                     <div className="row">
                         <div className={isLoggedInRes ? "col-md-8" : "col-md-7"}></div>
-                        <div className={isLoggedInRes ? "col-md-4 down-35 header-right" : "col-md-5 down-35 header-right"}>{content}</div> 
-                    </div>                                                       
+                        <div className={isLoggedInRes ? "col-md-4 down-35 header-right" : "col-md-5 down-35 header-right"}>{content}</div>
+                    </div>
                 </div>
             </div>
         );
     }
-} 
+}
 
-const mapDispatchToProps = {    
+const mapDispatchToProps = {
     ...userActions
-};  
-  
+};
+
 export default connect(null, mapDispatchToProps)(SimpleHeader);

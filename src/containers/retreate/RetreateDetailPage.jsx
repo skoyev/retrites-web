@@ -29,26 +29,26 @@ class RetreateDetailPage extends React.Component {
             error: '',
             isCaptchaValid: false,
             showUserAgreementModal: false
-        };        
+        };
 
         this.props.initialize({
             languages: [
-                {name : "English", code: "en"},
-                {name : "French", code: "fr"}
+                { name: "English", code: "en" },
+                { name: "French", code: "fr" }
             ],
             translation: globalTranslations,
             options: { renderToStaticMarkup },
-        });   
-        
+        });
+
         this.onBack = this.onBack.bind(this);
         this.handleSubmitBookNow = this.handleSubmitBookNow.bind(this);
         this.handleFormDescriptionChange = this.handleFormDescriptionChange.bind(this);
-        this.handleOk = this.handleOk.bind(this);        
-        this.handleLogoutClick = this.handleLogoutClick.bind(this);        
-    }  
-    
+        this.handleOk = this.handleOk.bind(this);
+        this.handleLogoutClick = this.handleLogoutClick.bind(this);
+    }
+
     openNotification = () => {
-        const {item} = this.props;
+        const { item } = this.props;
         const args = {
             message: 'Retreat Request',
             description:
@@ -56,52 +56,52 @@ class RetreateDetailPage extends React.Component {
             duration: 4,
         };
         notification.open(args);
-    };    
+    };
 
     componentDidMount() {
-        let {user} = this.props;
+        let { user } = this.props;
         const urlParams = new URLSearchParams(this.props.location.search)
-        const back = urlParams.get('back');        
-        this.setState({ back: back}); 
+        const back = urlParams.get('back');
+        this.setState({ back: back });
 
-        let {match : {params}} = this.props;
+        let { match: { params } } = this.props;
         let itemID = params.itemID;
 
         const { fetchByID } = this.props;
-        if(itemID && (typeof parseInt(itemID) === "number")){
+        if (itemID && (typeof parseInt(itemID) === "number")) {
             fetchByID(parseInt(itemID));
         } else {
             console.log('Item ID is null');
         }
 
         // check if user logged in
-        this.props.isLoggedIn().catch(()=>console.log('Not loggeds'));
+        this.props.isLoggedIn().catch(() => console.log('Not loggeds'));
 
         window.scrollTo(0, 0);
     }
 
-    onBack(event){
-        let {back} = this.state;
+    onBack(event) {
+        let { back } = this.state;
         event.preventDefault();
-        if(back){
+        if (back) {
             history.push(`/${atob(back)}`);
         }
     }
 
     handleOk = e => {
     };
-    
+
     handleCancel = e => {
         this.setState({
-          visible: false,
+            visible: false,
         });
-    };    
+    };
 
     handleSubmitBookNow(e) {
-        if(e && e.preventDefault())
+        if (e && e.preventDefault())
             e.preventDefault();
 
-        let {user} = this.props;
+        let { user } = this.props;
 
         /*
         this.setState({
@@ -109,33 +109,33 @@ class RetreateDetailPage extends React.Component {
         });
         */
 
-        const {isCaptchaValid} = this.state;
+        const { isCaptchaValid } = this.state;
 
-        if(!isCaptchaValid) {
-           this.setState({error: 'Captcha is invalid'})
-           return;
+        if (!isCaptchaValid) {
+            this.setState({ error: 'Captcha is invalid' })
+            return;
         }
 
         const { item } = this.props;
-        const {formDescription} = this.state;
+        const { formDescription } = this.state;
 
-        if(!formDescription) {
-           this.setState({error: 'Some Data Inputs Are Missing.'})
-           return;
+        if (!formDescription) {
+            this.setState({ error: 'Some Data Inputs Are Missing.' })
+            return;
         }
 
         // check user agreement date
-        if(!user.acceptUserAgreementDate){
-            this.setState({showUserAgreementModal:true});
-        } else {       
-            this.props.createMessageGroupAndMessage(item.id, formDescription);          
+        if (!user.acceptUserAgreementDate) {
+            this.setState({ showUserAgreementModal: true });
+        } else {
+            this.props.createMessageGroupAndMessage(item.id, formDescription);
             this.openNotification();
-            setTimeout(()=> {
+            setTimeout(() => {
                 this.props.history.push(`/home`);
-            },3000);
+            }, 3000);
 
             window.recaptchaRef.current.reset();
-            this.setState({error: ''});
+            this.setState({ error: '' });
         }
     }
 
@@ -152,90 +152,87 @@ class RetreateDetailPage extends React.Component {
     }
 
     captchaOnChange = () => {
-        this.setState({isCaptchaValid: true})
+        this.setState({ isCaptchaValid: true })
     }
 
     handleAgreementOk = () => {
-        this.setState({showUserAgreementModal:false});
+        this.setState({ showUserAgreementModal: false });
         this.props.confirmUserAgreementDate().then(_ => {
             this.props.refreshUser();
             this.handleSubmitBookNow({})
-        });        
+        });
     }
 
     handleAgreementCancel = () => {
-        this.setState({showUserAgreementModal:false});
+        this.setState({ showUserAgreementModal: false });
     }
 
-    render() {      
+    render() {
         const { item, isLoggedInRes, user } = this.props;
         const { isCaptchaValid, error, showUserAgreementModal } = this.state;
 
-        if(!item) {
+        if (!item) {
             return <div>Item details is loading...</div>;
         }
 
         const { Header, Content } = Layout;
-        
+
         return (
             <div>
-                <Layout style={{background:'none'}}>
-                    <Header className="sticky" style={{zIndex:10, backgroundColor:'#ffffff'}}>
+                <Layout style={{ background: 'none' }}>
+                    <Header className="sticky" style={{ zIndex: 10, backgroundColor: '#ffffff' }}>
                         <SearchHeader title="Retreat Your Mind"
-                                      shouldShowSearchInput={false}
-                                      isLoggedIn={isLoggedInRes}
-                                      handleLogoutClick={this.handleLogoutClick}
-                                      handleSearch={this.handleSearch}
+                            shouldShowSearchInput={false}
+                            isLoggedIn={isLoggedInRes}
+                            handleLogoutClick={this.handleLogoutClick}
+                            handleSearch={this.handleSearch}
                         ></SearchHeader>
                         <Translate>
-                        {
-                            ({ translate }) =>
-                            <RetreatBreadcrumb item={item}
-                                               buttonName={translate("label.goback")}
-                                               onBack={this.onBack}>                            
-                            </RetreatBreadcrumb>
-                        }
+                            {
+                                ({ translate }) =>
+                                    <RetreatBreadcrumb item={item}
+                                        buttonName={translate("label.goback")}
+                                        onBack={this.onBack}>
+                                    </RetreatBreadcrumb>
+                            }
                         </Translate>
-                    </Header>                
+                    </Header>
                     <Content className="detail-content">
                         <Row>
                             <Col span={14}>
                                 <Row>
                                     <RetreatPhotoAlbum item={item}></RetreatPhotoAlbum>
-                                </Row>                                
+                                </Row>
                                 <Row>
                                     <RetreatDetails item={item}></RetreatDetails>
                                 </Row>
                             </Col>
                             <Col span={9} offset={1}>
-                                <Row style={{marginBottom: '20px'}}>
-                                    <RetreatDetailsSummary item={item}></RetreatDetailsSummary>                        
+                                <Row style={{ marginBottom: '20px' }}>
+                                    <RetreatDetailsSummary item={item}></RetreatDetailsSummary>
                                 </Row>
                                 {
-                                    /*user 
-                                        &&
-                                    (user.roleId === 1)
-                                        && */
                                     <Row>
                                         <RetreatBookSection item={item}
-                                                            isLoggedInRes={this.props.isLoggedInRes}
-                                                            handleSubmitBookNow={this.handleSubmitBookNow}
-                                                            handleCaptchaOnChange={this.captchaOnChange}
-                                                            isActiveBookNow={isCaptchaValid}
-                                                            error={error}
-                                                            generalMessage="Please Login in order to submit your request."
-                                                            handleFormDescriptionChange={this.handleFormDescriptionChange}/>
-                                    </Row> 
-                                }  
+                                            isLoggedInRes={this.props.isLoggedInRes}
+                                            handleSubmitBookNow={this.handleSubmitBookNow}
+                                            handleCaptchaOnChange={this.captchaOnChange}
+                                            isActiveBookNow={isCaptchaValid}
+                                            error={error}
+                                            isPublicUser={user && (user.roleId === 1)}
+                                            generalMessage="Please Login in order to submit your request."
+                                            handleFormDescriptionChange={this.handleFormDescriptionChange} />
+                                    </Row>
+                                }
                             </Col>
-                        </Row>                        
+                        </Row>
                     </Content>
-                </Layout> 
+                </Layout>
 
                 <Modal title="Request Retreate Availability Details"
-                       visible={this.state.visible}
-                       onOk={this.handleOk}
-                       onCancel={this.handleCancel}>
+                    visible={this.state.visible}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}>
                     <p>Thank you for booking request for the {item.name}</p>
                     <p>We will get back to you shortly!</p>
                     <p>Please Login and check under Messages our response/communication!</p>
@@ -243,44 +240,44 @@ class RetreateDetailPage extends React.Component {
                 </Modal>
 
                 <Modal title="User Request Agreement"
-                       visible={showUserAgreementModal}
-                       className="agreement"
-                       footer={[
-                            <Row key="agreement-row">
-                                <Col span={4} offset={7}>
-                                    <Button key="cancel-button-1" onClick={this.handleAgreementCancel} htmlType="button">Disagree</Button>
-                                </Col>                                
-                                <Col span={4} offset={1}>
-                                    <Button key="cancel-button-2" onClick={this.handleAgreementOk} htmlType="button">Agree</Button>
-                                </Col>
-                            </Row>
-                        ]}>                    
-                        <Translate>
+                    visible={showUserAgreementModal}
+                    className="agreement"
+                    footer={[
+                        <Row key="agreement-row">
+                            <Col span={4} offset={7}>
+                                <Button key="cancel-button-1" onClick={this.handleAgreementCancel} htmlType="button">Disagree</Button>
+                            </Col>
+                            <Col span={4} offset={1}>
+                                <Button key="cancel-button-2" onClick={this.handleAgreementOk} htmlType="button">Agree</Button>
+                            </Col>
+                        </Row>
+                    ]}>
+                    <Translate>
                         {
-                            ({ translate }) => 
-                            <div style={{overflow:"auto"}} key="dialog">
-                                {translate("user.agreement", null, { renderInnerHtml: true })}
-                            </div>
+                            ({ translate }) =>
+                                <div style={{ overflow: "auto" }} key="dialog">
+                                    {translate("user.agreement", null, { renderInnerHtml: true })}
+                                </div>
                         }
-                        </Translate>
+                    </Translate>
                 </Modal>
 
             </div>
         );
     }
-} 
+}
 
-const mapDispatchToProps = {    
+const mapDispatchToProps = {
     ...itemActions,
     ...userActions,
     ...messageActions
-};  
+};
 
 function mapStateToProps(state) {
     return {
-      user : JSON.parse(sessionStorage.getItem('user')),  
-      item : state.items.item,
-      isLoggedInRes: state.users.isLoggedIn
+        user: JSON.parse(sessionStorage.getItem('user')),
+        item: state.items.item,
+        isLoggedInRes: state.users.isLoggedIn
     };
 }
 

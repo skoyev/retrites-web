@@ -11,6 +11,7 @@ import moment from 'moment';
 import RetreatPhotoAlbum from '../../../public/retreat/RetreatPhotoAlbum';
 
 const MessageDetails = props => {
+  const { user } = props;
 
   const columns = [
     {
@@ -44,8 +45,8 @@ const MessageDetails = props => {
             </Col>
             <Col span={6} offset={12}>
               {
-                record.status == 1 &&
-                <Translate>{({ translate }) => <Button onClick={() => props.markMessageReaded(record.id)}>{translate("label.mark_readed")}</Button>}</Translate>
+                record.status == 1 && record.owner.id != user.id &&
+                <Translate>{({ translate }) => <Button onClick={() => props.markMessageReaded(record.id, 2)}>{translate("label.mark_readed")}</Button>}</Translate>
               }
             </Col>
           </Row>
@@ -168,7 +169,8 @@ function mapStateToProps(state) {
     states: state.common.messageStates,
     messageDetails: state.message.messages,
     isLoading: state.common.isLoading,
-    item: state.items.item
+    item: state.items.item,
+    user: JSON.parse(sessionStorage.getItem('user'))
   };
 }
 

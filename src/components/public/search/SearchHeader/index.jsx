@@ -37,7 +37,7 @@ const publicHeader = () => (
                 {({ translate }) =>
                     <Link to="/login" className="btn btn-link d-inline">{translate('public.links.login')}</Link>}
             </Translate>
-        </div>                                
+        </div>
         <div className="d-inline-block white">
             <Translate>
                 {({ translate }) =>
@@ -47,25 +47,25 @@ const publicHeader = () => (
     </React.Fragment>
 )
 
-const SearchHeader = ({title, handleNameChange, isLoggedIn, handleLogoutClick, selectedName, shouldShowSearchInput}) => (
- <Row>
-    <Col className="header" span={5} style={{paddingTop: '15px'}}>
-        <h3 className="white"><Link to={commonConstants.HOME_PAGE_LINK}><img src={'/images/rymlogo-main.png'}/></Link></h3>
-    </Col>
+const SearchHeader = ({ title, handleNameChange, isLoggedIn, handleLogoutClick, selectedName, shouldShowSearchInput }) => (
+    <Row>
+        <Col className="header" span={5} style={{ paddingTop: '15px' }}>
+            <h3 className="white"><Link to={commonConstants.HOME_PAGE_LINK}><img src={'/images/rymlogo-main.png'} /></Link></h3>
+        </Col>
 
-    <Col span={6}>
-        {/* shouldShowSearchInput ?
+        <Col span={6}>
+            {/* shouldShowSearchInput ?
             <Input placeholder="Search" value={selectedName} onChange={handleNameChange}/>
             : ''
         */}
-    </Col>
+        </Col>
 
-    <Col span={13}>
-        <div style={{float: 'right'}}>
-            {isLoggedIn ? loggedInHeader(handleLogoutClick) : publicHeader()}        
-        </div>
-    </Col>
- </Row>
+        <Col span={13}>
+            <div style={{ float: 'right' }}>
+                {isLoggedIn ? loggedInHeader(handleLogoutClick) : publicHeader()}
+            </div>
+        </Col>
+    </Row>
 );
 
 SearchHeader.propTypes = {

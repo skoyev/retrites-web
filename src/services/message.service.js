@@ -12,7 +12,7 @@ export const messageService = {
 };
 
 function updateMessageStatus(msgId, statusId) {
-    if (msgId) {
+    if (msgId && statusId) {
         let authKey = getAuthKey();
 
         if (!authKey) {
@@ -26,6 +26,9 @@ function updateMessageStatus(msgId, statusId) {
         }
 
         return axios.put(`${URL}/message/${msgId}`, { statusId: statusId }, { headers: headers });
+    } else {
+        console.error(`msgId ${msgId} or statusId ${statusId} - is null `);
+        throw Error(`msgId ${msgId} or statusId ${statusId} - is null `);
     }
 }
 
@@ -108,7 +111,7 @@ function fetchMessagesByGroupID(msgGroupID) {
     }
 }
 
-function fetchMessageGroups() {
+function fetchMessageGroups(name, state) {
     let authKey = getAuthKey();
 
     if (!authKey) {
@@ -121,5 +124,10 @@ function fetchMessageGroups() {
         'x-auth-key': authKey
     }
 
-    return axios.get(`${URL}/messageGroup`, { headers: headers });
+    let params = {
+        name: name && name.length > 0 ? name : undefined,
+        state: state
+    };
+
+    return axios.get(`${URL}/messageGroup`, { headers: headers, params: params });
 }

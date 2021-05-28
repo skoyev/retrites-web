@@ -8,7 +8,7 @@ import { withLocalize } from "react-localize-redux";
 import './index.css'
 import { typeMenu } from '../../common';
 
-const WAIT_INTERVAL = 2500;
+const WAIT_INTERVAL = 1500;
 
 const rowSelection = {
   onChange: (selectedRowKeys, selectedRows) => {
@@ -21,7 +21,6 @@ const rowSelection = {
 };
 
 const Message = props => {
-  let timer;
   const { states, messageGroups, handleViewMessage, handleDeleteMessage, messagePageNum, user } = props;
 
   const [name, setName] = useState('');
@@ -48,7 +47,10 @@ const Message = props => {
       title: <Translate>{({ translate }) => <span>{translate("label.total_messages")}</span>}</Translate>,
       render: record => (
         <Row style={{ paddingLeft: 20 }}>
-          <span>{record.message_total_count}</span> {record.message_new_count && '/' + <span style={{ color: 'red' }}>{record.message_new_count}</span>}
+          <span>{record.message_total_count}</span>
+          {record.message_new_count ?
+            <span> / <span style={{ color: 'red' }}>{record.message_new_count}</span></span>
+            : ''}
         </Row>
       )
     },
@@ -68,27 +70,18 @@ const Message = props => {
     }
   ];
 
-  /*
-  let onChangeDebounced = () => {
-    props.fetchMessageGroups();
-  };*/
-
+  let interval;
   useEffect(() => {
-    props.fetchMessageGroups();
-    const interval = setInterval(() => props.fetchMessageGroups(), WAIT_INTERVAL);
+    clearInterval(interval);
+    interval = setInterval(() => props.fetchMessageGroups(name, selectedState && selectedState.id), WAIT_INTERVAL);
     return () => clearInterval(interval)
-  }, []);
-
-  useEffect(() => {
-    //clearTimeout(timer);
-    //timer = setTimeout(onChangeDebounced, WAIT_INTERVAL);
   }, [selectedState, name]);
 
   return (
     <Fragment>
       <Row className="msg-header">
-        <Col span={2} className="label">
-          <Translate>{({ translate }) => <span>{translate("label.name")}</span>}</Translate>
+        <Col span={3} className="label">
+          <Translate>{({ translate }) => <span>{translate("label.recipient-name")}</span>}</Translate>
         </Col>
         <Col span={3}>
           <Input onChange={(v) => setName(v.target.value)} />

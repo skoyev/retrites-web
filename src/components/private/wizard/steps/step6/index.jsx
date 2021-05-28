@@ -151,7 +151,7 @@ class Step6Item extends React.Component {
                                         <Col span={14}>
                                             <Upload {...props}>
                                                 <Button>
-                                                    <UploadOutlined /> <label>Select Picture File (jpeg, gif, png)</label>
+                                                    <UploadOutlined /> <label className="nofloat">Select Picture File (jpeg, gif, png)</label>
                                                 </Button>
                                             </Upload>
                                         </Col>

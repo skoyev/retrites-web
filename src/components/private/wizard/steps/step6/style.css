@@ -14,3 +14,7 @@
     border-radius: 5px;
     width: 60%;
 }
+
+.nofloat {
+    float: none;
+}

@@ -80,6 +80,10 @@
       "Name",
       "Name Fr"
     ],
+    "recipient-name": [
+      "Recipient Name",
+      "Recipient Name"
+    ],
     "status": [
       "Status",
       "Status Fr"

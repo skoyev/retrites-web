@@ -96,10 +96,10 @@ function createMessage(message, msgGroupID) {
 /**
  * Fetch Message Groups.
  */
-function fetchMessageGroups() {
+function fetchMessageGroups(name, state) {
     return dispatch => {
         dispatch(loading(commonConstants.START_LOADING));
-        return messageService.fetchMessageGroups()
+        return messageService.fetchMessageGroups(name, state)
             .then(res => {
                 dispatch(success(messageConstants.FETCH_MESSAGE_GROUPS_SUCCESS, res.data));
                 dispatch(loading(commonConstants.END_LOADING));
